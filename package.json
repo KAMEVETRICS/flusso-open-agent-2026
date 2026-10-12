@@ -14,7 +14,7 @@
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
     "@phosphor-icons/react": "^2.1.10",
-    "next": "^15.5.21",
+    "next": "^15.5.27",
     "openai": "^6.45.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@next/eslint-plugin-next": "^15.5.21",
+    "@next/eslint-plugin-next": "^15.5.27",
     "@types/node": "^22.13.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
@@ -34,6 +34,6 @@
   },
   "overrides": {
     "postcss": "8.5.23",
-    "sharp": "0.35.3"
+    "sharp": "0.35.5"
   }
 }
