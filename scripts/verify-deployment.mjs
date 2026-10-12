@@ -6,7 +6,7 @@ const engineUrl = process.env.FLUSSO_ENGINE_URL?.trim() || "http://127.0.0.1:310
 const endpoint = new URL("/api/health", engineUrl);
 
 const response = await fetch(endpoint, { signal: AbortSignal.timeout(10_000) });
-let payload = null;
+let payload;
 try {
   payload = JSON.parse(await response.text());
 } catch {
