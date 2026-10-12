@@ -5,6 +5,15 @@ APP_DIR="/opt/flusso"
 APP_USER="flusso"
 ENV_FILE="/etc/flusso/flusso.env"
 
+# Units installed by the retired OKX marketplace integration.
+LEGACY_UNITS=(
+  flusso-a2a-health.timer
+  flusso-a2a-health.service
+  flusso-recovery.timer
+  flusso-recovery.service
+  flusso-a2a.service
+)
+
 if [[ "${EUID}" -ne 0 ]]; then
   echo "Run this updater as root." >&2
   exit 1
@@ -31,32 +40,19 @@ fi
 runuser -u "$APP_USER" -- npm --prefix "$APP_DIR" ci
 runuser -u "$APP_USER" -- npm --prefix "$APP_DIR" run build
 
+for unit in "${LEGACY_UNITS[@]}"; do
+  if [[ -f "/etc/systemd/system/$unit" ]]; then
+    systemctl disable --now "$unit" >/dev/null 2>&1 || true
+    rm -f "/etc/systemd/system/$unit"
+    echo "Retired legacy unit $unit."
+  fi
+done
+
 install -o root -g root -m 0644 \
-  "$APP_DIR/deploy/systemd/flusso-a2a.service" \
-  /etc/systemd/system/flusso-a2a.service
-install -o root -g root -m 0644 \
-  "$APP_DIR/deploy/systemd/flusso-a2a-health.service" \
-  /etc/systemd/system/flusso-a2a-health.service
-install -o root -g root -m 0644 \
-  "$APP_DIR/deploy/systemd/flusso-a2a-health.timer" \
-  /etc/systemd/system/flusso-a2a-health.timer
-install -o root -g root -m 0644 \
-  "$APP_DIR/deploy/systemd/flusso-recovery.service" \
-  /etc/systemd/system/flusso-recovery.service
-install -o root -g root -m 0644 \
-  "$APP_DIR/deploy/systemd/flusso-recovery.timer" \
-  /etc/systemd/system/flusso-recovery.timer
+  "$APP_DIR/deploy/systemd/flusso-engine.service" \
+  /etc/systemd/system/flusso-engine.service
 systemctl daemon-reload
 systemctl restart flusso-engine.service
-systemctl enable --now flusso-recovery.timer
-loginctl enable-linger "$APP_USER"
-APP_DIR="$APP_DIR" APP_USER="$APP_USER" bash "$APP_DIR/deploy/configure-openclaw.sh"
-
-if systemctl is-enabled --quiet flusso-a2a.service; then
-  systemctl restart flusso-a2a.service
-  systemctl enable --now flusso-a2a-health.timer
-  systemctl start flusso-a2a-health.service
-fi
 
 APP_DIR="$APP_DIR" ENV_FILE="$ENV_FILE" bash "$APP_DIR/deploy/smoke-test.sh"
 

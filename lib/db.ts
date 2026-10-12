@@ -40,8 +40,8 @@ export function ensureCampaignSchema() {
     await sql`
       CREATE TABLE IF NOT EXISTS campaign_stage_artifacts (
         campaign_id text NOT NULL REFERENCES campaign_runs(id) ON DELETE CASCADE,
-        stage text NOT NULL CHECK (stage IN ('foundation', 'architecture', 'execution', 'editorial', 'governance')),
-        position smallint NOT NULL CHECK (position BETWEEN 1 AND 5),
+        stage text NOT NULL CHECK (stage IN ('foundation', 'architecture', 'execution', 'editorial', 'governance', 'verification')),
+        position smallint NOT NULL CHECK (position BETWEEN 1 AND 6),
         label text NOT NULL,
         status text NOT NULL,
         started_at timestamptz NOT NULL,
@@ -60,7 +60,7 @@ export function ensureCampaignSchema() {
     await sql`
       ALTER TABLE campaign_stage_artifacts
       ADD CONSTRAINT campaign_stage_artifacts_stage_check
-      CHECK (stage IN ('foundation', 'architecture', 'execution', 'editorial', 'governance'))
+      CHECK (stage IN ('foundation', 'architecture', 'execution', 'editorial', 'governance', 'verification'))
     `;
     await sql`
       ALTER TABLE campaign_stage_artifacts
@@ -69,7 +69,7 @@ export function ensureCampaignSchema() {
     await sql`
       ALTER TABLE campaign_stage_artifacts
       ADD CONSTRAINT campaign_stage_artifacts_position_check
-      CHECK (position BETWEEN 1 AND 5)
+      CHECK (position BETWEEN 1 AND 6)
     `;
     await sql`
       CREATE INDEX IF NOT EXISTS campaign_stage_artifacts_order_idx

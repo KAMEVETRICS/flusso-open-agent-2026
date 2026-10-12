@@ -18,7 +18,6 @@ import {
   ShareFat,
   ShieldCheck,
   Sparkle,
-  UploadSimple,
   Warning,
   Wrench,
   XCircle
@@ -28,6 +27,7 @@ import { pipelineStageNames } from "@/lib/pipeline-stages";
 import type { CampaignSummary } from "@/lib/campaign-store";
 import type { CampaignExportFormat } from "@/lib/exports";
 import type {
+  BriefInput,
   Claim,
   DeliveryPack,
   GenerationStage,
@@ -37,7 +37,8 @@ import type {
   ProjectBrief
 } from "@/lib/schemas";
 
-type ViewName = "workbench" | "history" | "pipeline" | "results" | "performance" | "proof" | "exports" | "listing";
+type ViewName = "workbench" | "history" | "pipeline" | "results" | "performance" | "proof" | "exports";
+type DiscoveredBrief = { brief: ProjectBrief; inferredFields: string[]; sourceCount: number };
 type ResultsTab = "strategy" | "landscape" | "audience" | "hooks" | "platform" | "lineage" | "calendar" | "content" | "visuals" | "proof" | "prompt-os" | "capacity";
 type ProofFilter = "all" | "repaired" | Claim["status"];
 
@@ -48,8 +49,7 @@ const viewLabels: Record<ViewName, string> = {
   results: "Results",
   performance: "Performance",
   proof: "Proof",
-  exports: "Exports",
-  listing: "Listing"
+  exports: "Exports"
 };
 
 const resultsTabs: Array<{ id: ResultsTab; label: string }> = [
@@ -72,7 +72,8 @@ const generationStageLabels: Array<{ id: GenerationStage["stage"]; label: string
   { id: "architecture", label: "Architecture", note: "Hooks, series, and platform adaptations" },
   { id: "execution", label: "Execution", note: "Calendar and first-draft assets" },
   { id: "editorial", label: "Editorial", note: "Anti-slop rewrite, platform formats, and visual briefs" },
-  { id: "governance", label: "Governance", note: "Claims, proof links, and production capacity" }
+  { id: "governance", label: "Governance", note: "Claims, proof links, and production capacity" },
+  { id: "verification", label: "Web verification", note: "Live web search for claims without a supplied source" }
 ];
 const proofFilters: Array<{ id: ProofFilter; label: string }> = [
   { id: "all", label: "All" },
@@ -131,8 +132,13 @@ function sourceMeta(source: DeliveryPack["sources"][number]) {
 }
 
 
+function websiteLabel(website: string) {
+  return website.trim().replace(/^[a-z][a-z0-9+.-]*:\/\//i, "").replace(/^www\./i, "").split("/")[0];
+}
+
 async function readGenerationStream(
   response: Response,
+  onDiscovery: (discovered: DiscoveredBrief) => void,
   onStage: (stage: GenerationStage) => void
 ): Promise<{ pack: DeliveryPack; campaignId: string }> {
   const reader = response.body?.getReader();
@@ -158,7 +164,9 @@ async function readGenerationStream(
         const event = eventLine.slice(7);
         const payload = JSON.parse(dataLine.slice(6)) as unknown;
 
-        if (event === "stage") {
+        if (event === "discovery") {
+          onDiscovery(payload as DiscoveredBrief);
+        } else if (event === "stage") {
           onStage(payload as GenerationStage);
         } else if (event === "complete") {
           return payload as { pack: DeliveryPack; campaignId: string };
@@ -202,17 +210,6 @@ function PromptLineage({ pack, compact = false }: { pack: DeliveryPack; compact?
   );
 }
 
-function listingCopy(pack: DeliveryPack) {
-  const serviceText = pack.listing.services
-    .map(
-      (service) =>
-        `${service.name}\nType: ${service.type}\nFee: ${service.fee ? `${service.fee} USDT` : "Negotiable"}\nDescription: ${service.description}\nRequired inputs: ${service.requiredInputs.join(", ")}\nDeliverables: ${service.deliverables.join(", ")}`
-    )
-    .join("\n\n");
-
-  return `ASP Name: Flusso\nDescription: ${pack.listing.description}\n\nServices\n\n${serviceText}`;
-}
-
 function TopNav({
   view,
   setView,
@@ -234,7 +231,7 @@ function TopNav({
         {(Object.keys(viewLabels) as ViewName[]).map((item) => {
           const disabled = loading
             ? item !== "pipeline"
-            : item === "pipeline" || (["results", "performance", "proof", "exports", "listing"].includes(item) && !hasPack);
+            : item === "pipeline" || (["results", "performance", "proof", "exports"].includes(item) && !hasPack);
           return (
             <button
               key={item}
@@ -248,7 +245,6 @@ function TopNav({
         })}
       </nav>
       <div className="nav-right">
-        <span className="nav-center">OKX.AI ASP</span>
         <div className="avatar">AK</div>
       </div>
     </header>
@@ -323,27 +319,24 @@ function Workbench({
   loading,
   error
 }: {
-  brief: ProjectBrief;
-  setBrief: (brief: ProjectBrief) => void;
+  brief: BriefInput;
+  setBrief: (brief: BriefInput) => void;
   pack: DeliveryPack | null;
   onGenerate: () => void;
   loading: boolean;
   error: string | null;
 }) {
-  const update = <K extends keyof ProjectBrief>(key: K, value: ProjectBrief[K]) => setBrief({ ...brief, [key]: value });
-  const platformOptions: ProjectBrief["platforms"] = ["X", "LinkedIn", "Newsletter", "Discord", "Mirror", "Medium"];
-  const togglePlatform = (platform: ProjectBrief["platforms"][number]) => {
+  const update = <K extends keyof BriefInput>(key: K, value: BriefInput[K]) => setBrief({ ...brief, [key]: value });
+  const platformOptions: BriefInput["platforms"] = ["X", "LinkedIn", "Newsletter", "Discord", "Mirror", "Medium"];
+  const togglePlatform = (platform: BriefInput["platforms"][number]) => {
     const platforms = brief.platforms.includes(platform)
       ? brief.platforms.filter((item) => item !== platform)
       : [...brief.platforms, platform];
     update("platforms", platforms);
   };
   const canGenerate =
-    brief.brand.trim().length >= 2 &&
-    brief.industry.trim().length >= 2 &&
+    websiteLabel(brief.website).includes(".") &&
     brief.goal.trim().length >= 5 &&
-    brief.audience.trim().length >= 3 &&
-    brief.tone.trim().length >= 2 &&
     brief.platforms.length > 0;
 
   return (
@@ -351,97 +344,103 @@ function Workbench({
       <section className="sidebar">
         <div className="section-label">Project Intake</div>
         <label className="form-field">
-          <span>Brand name</span>
+          <span>Website</span>
           <input
-            value={brief.brand}
-            onChange={(event) => update("brand", event.target.value)}
-            placeholder="e.g. OKX Wallet"
+            value={brief.website}
+            onChange={(event) => update("website", event.target.value)}
+            placeholder="example.com"
+            inputMode="url"
+            autoComplete="url"
             required
           />
-        </label>
-        <label className="form-field">
-          <span>Industry</span>
-          <input value={brief.industry} onChange={(event) => update("industry", event.target.value)} placeholder="e.g. Web3 infrastructure" required />
-        </label>
-        <label className="form-field">
-          <span>Website</span>
-          <input value={brief.website} onChange={(event) => update("website", event.target.value)} placeholder="https://example.com" />
-        </label>
-        <label className="form-field">
-          <span>Docs URL</span>
-          <input value={brief.docs} onChange={(event) => update("docs", event.target.value)} placeholder="https://docs.example.com" />
         </label>
         <label className="form-field">
           <span>Campaign goal</span>
           <textarea value={brief.goal} onChange={(event) => update("goal", event.target.value)} placeholder="e.g. Build awareness and drive qualified product sign-ups" required />
         </label>
-        <label className="form-field">
-          <span>Audience</span>
-          <textarea value={brief.audience} onChange={(event) => update("audience", event.target.value)} placeholder="e.g. Web3 developers and technical founders" required />
-        </label>
-        <label className="form-field">
-          <span>Competitors</span>
-          <textarea
-            value={brief.competitors.join(", ")}
-            onChange={(event) => update("competitors", event.target.value.split(",").map((item) => item.trim()).filter(Boolean))}
-            placeholder="e.g. Alchemy, QuickNode, Infura"
-          />
-        </label>
-        <label className="form-field">
-          <span>Tone</span>
-          <input value={brief.tone} onChange={(event) => update("tone", event.target.value)} placeholder="e.g. Clear, technical, confident" required />
-        </label>
-        <label className="form-field">
-          <span>Editorial profile</span>
-          <select
-            value={brief.editorialProfile}
-            onChange={(event) => update("editorialProfile", event.target.value as ProjectBrief["editorialProfile"])}
-          >
-            <option value="balanced">Balanced</option>
-            <option value="technical-authority">Technical authority</option>
-            <option value="founder-led">Founder-led</option>
-            <option value="direct-growth">Direct growth</option>
-          </select>
-        </label>
-        <div className="form-field">
-          <span>Platforms</span>
-          <div className="platform-options">
-            {platformOptions.map((platform) => (
-              <label key={platform} className="check-option">
-                <input
-                  type="checkbox"
-                  checked={brief.platforms.includes(platform)}
-                  onChange={() => togglePlatform(platform)}
-                />
-                <span>{platform}</span>
-              </label>
-            ))}
+        <details className="optional-details">
+          <summary>Optional details</summary>
+          <p className="optional-hint">Leave these blank and Flusso infers the brand, industry, audience, tone, and competitors from the website.</p>
+          <label className="form-field">
+            <span>Brand name</span>
+            <input value={brief.brand} onChange={(event) => update("brand", event.target.value)} placeholder="Inferred from the website" />
+          </label>
+          <label className="form-field">
+            <span>Industry</span>
+            <input value={brief.industry} onChange={(event) => update("industry", event.target.value)} placeholder="Inferred from the website" />
+          </label>
+          <label className="form-field">
+            <span>Audience</span>
+            <textarea value={brief.audience} onChange={(event) => update("audience", event.target.value)} placeholder="Inferred from the website" />
+          </label>
+          <label className="form-field">
+            <span>Competitors</span>
+            <textarea
+              value={brief.competitors.join(", ")}
+              onChange={(event) => update("competitors", event.target.value.split(",").map((item) => item.trim()).filter(Boolean))}
+              placeholder="Found by web search"
+            />
+          </label>
+          <label className="form-field">
+            <span>Tone</span>
+            <input value={brief.tone} onChange={(event) => update("tone", event.target.value)} placeholder="Inferred from the website" />
+          </label>
+          <label className="form-field">
+            <span>Docs URLs</span>
+            <input value={brief.docs} onChange={(event) => update("docs", event.target.value)} placeholder="https://docs.example.com" />
+          </label>
+          <label className="form-field">
+            <span>Editorial profile</span>
+            <select
+              value={brief.editorialProfile}
+              onChange={(event) => update("editorialProfile", event.target.value as BriefInput["editorialProfile"])}
+            >
+              <option value="balanced">Balanced</option>
+              <option value="technical-authority">Technical authority</option>
+              <option value="founder-led">Founder-led</option>
+              <option value="direct-growth">Direct growth</option>
+            </select>
+          </label>
+          <div className="form-field">
+            <span>Platforms</span>
+            <div className="platform-options">
+              {platformOptions.map((platform) => (
+                <label key={platform} className="check-option">
+                  <input
+                    type="checkbox"
+                    checked={brief.platforms.includes(platform)}
+                    onChange={() => togglePlatform(platform)}
+                  />
+                  <span>{platform}</span>
+                </label>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="field-grid">
+          <div className="field-grid">
+            <label className="form-field">
+              <span>Days</span>
+              <input type="number" min={7} max={30} value={brief.durationDays} onChange={(event) => update("durationDays", Number(event.target.value))} placeholder="30" />
+            </label>
+            <label className="form-field">
+              <span>Posts/wk</span>
+              <input type="number" min={1} max={20} value={brief.postsPerWeek} onChange={(event) => update("postsPerWeek", Number(event.target.value))} placeholder="5" />
+            </label>
+          </div>
+          <div className="field-grid">
+            <label className="form-field">
+              <span>Team size</span>
+              <input type="number" min={1} max={20} value={brief.teamSize} onChange={(event) => update("teamSize", Number(event.target.value))} placeholder="1" />
+            </label>
+            <label className="form-field">
+              <span>Team capacity</span>
+              <input type="number" min={1} max={80} value={brief.hoursPerWeek} onChange={(event) => update("hoursPerWeek", Number(event.target.value))} placeholder="8" />
+            </label>
+          </div>
           <label className="form-field">
-            <span>Days</span>
-            <input type="number" min={7} max={30} value={brief.durationDays} onChange={(event) => update("durationDays", Number(event.target.value))} placeholder="30" />
+            <span>Restrictions</span>
+            <textarea value={brief.restrictions} onChange={(event) => update("restrictions", event.target.value)} placeholder="e.g. Avoid pricing speculation and unverified performance claims" />
           </label>
-          <label className="form-field">
-            <span>Posts/wk</span>
-            <input type="number" min={1} max={20} value={brief.postsPerWeek} onChange={(event) => update("postsPerWeek", Number(event.target.value))} placeholder="5" />
-          </label>
-        </div>
-        <div className="field-grid">
-          <label className="form-field">
-            <span>Team size</span>
-            <input type="number" min={1} max={20} value={brief.teamSize} onChange={(event) => update("teamSize", Number(event.target.value))} placeholder="2" />
-          </label>
-          <label className="form-field">
-            <span>Team capacity</span>
-            <input type="number" min={1} max={80} value={brief.hoursPerWeek} onChange={(event) => update("hoursPerWeek", Number(event.target.value))} placeholder="8" />
-          </label>
-        </div>
-        <label className="form-field">
-          <span>Restrictions</span>
-          <textarea value={brief.restrictions} onChange={(event) => update("restrictions", event.target.value)} placeholder="e.g. Avoid token-price speculation and unverified performance claims" />
-        </label>
+        </details>
         <button className="btn btn-primary full" onClick={onGenerate} disabled={loading || !canGenerate}>
           {loading ? <Sparkle size={16} weight="duotone" /> : <Play size={16} weight="fill" />}
           {loading ? "Generating..." : "Generate Campaign Pack"}
@@ -453,7 +452,7 @@ function Workbench({
         <div className="workbench-header">
           <div>
             <h1>Evidence-backed campaign workbench</h1>
-            <p>Complete the intake to begin a new campaign.</p>
+            <p>Add a website and a goal. Flusso reads the site and fills in the rest.</p>
           </div>
           <div className={pack ? "badge bg-green" : "badge bg-gray"}>
             {pack ? <SealCheck size={14} weight="fill" /> : null}
@@ -504,26 +503,54 @@ function Workbench({
     </main>
   );
 }
-function PipelineView({ brief, stages }: { brief: ProjectBrief; stages: GenerationStage[] }) {
-  const activeStage = generationStageLabels[stages.length];
+function PipelineView({
+  brief,
+  discovered,
+  stages
+}: {
+  brief: BriefInput;
+  discovered: DiscoveredBrief | null;
+  stages: GenerationStage[];
+}) {
+  const activeStage = discovered ? generationStageLabels[stages.length] : null;
+  const summary = discovered?.brief ?? brief;
+  const projectName = summary.brand || websiteLabel(brief.website);
 
   return (
     <main className="main-layout" aria-busy="true">
       <aside className="col-left">
         <div className="section-label">Project Summary</div>
-        <h2>{brief.brand} Campaign</h2>
-        <div className="kv-row"><span>Goal</span><strong>{brief.goal}</strong></div>
-        <div className="kv-row"><span>Duration</span><strong>{brief.durationDays} days</strong></div>
-        <div className="kv-row"><span>Capacity</span><strong>{brief.hoursPerWeek} hrs/wk</strong></div>
+        <h2>{projectName} Campaign</h2>
+        <div className="kv-row"><span>Goal</span><strong>{summary.goal}</strong></div>
+        {discovered ? <div className="kv-row"><span>Industry</span><strong>{discovered.brief.industry}</strong></div> : null}
+        {discovered ? <div className="kv-row"><span>Audience</span><strong>{discovered.brief.audience}</strong></div> : null}
+        <div className="kv-row"><span>Duration</span><strong>{summary.durationDays} days</strong></div>
+        <div className="kv-row"><span>Capacity</span><strong>{summary.hoursPerWeek} hrs/wk</strong></div>
+        {discovered?.inferredFields.length ? (
+          <div className="kv-row"><span>Inferred</span><strong>{discovered.inferredFields.join(", ")}</strong></div>
+        ) : null}
       </aside>
       <section className="col-center">
         <div className="live-line"><span className="live-dot" /> Live generation stream</div>
         <h1>Generating campaign pack</h1>
         <p className="subcopy">Each structured stage validates before the next one begins.</p>
         <div className="pipeline">
+          <div className={discovered ? "stage-card complete" : "stage-card running"}>
+            <div className="stage-circle">{discovered ? <Check size={13} weight="bold" /> : null}</div>
+            <span className="st-num">00</span>
+            <div className="st-name-wrap">
+              <div className="st-name">Discovery</div>
+              <div className="st-note">
+                {discovered ? discovered.sourceCount + " sources read" : "Reading the website and inferring the brief"}
+              </div>
+            </div>
+            <div className="st-meta">
+              <span className="badge bg-green">{discovered ? "done" : "running"}</span>
+            </div>
+          </div>
           {generationStageLabels.map((stage, index) => {
             const completed = stages.find((item) => item.stage === stage.id);
-            const running = !completed && index === stages.length;
+            const running = Boolean(discovered) && !completed && index === stages.length;
             const className = completed ? "stage-card complete" : running ? "stage-card running" : "stage-card queued";
 
             return (
@@ -548,7 +575,9 @@ function PipelineView({ brief, stages }: { brief: ProjectBrief; stages: Generati
         <div className="section-label">Generation Status</div>
         <div className="empty-rail-state pipeline-waiting">
           <Sparkle size={28} weight="duotone" />
-          <strong>{activeStage ? activeStage.label + " in progress" : "Finalizing delivery pack"}</strong>
+          <strong>
+            {!discovered ? "Discovery in progress" : activeStage ? activeStage.label + " in progress" : "Finalizing delivery pack"}
+          </strong>
           <span>{stages.length} of {generationStageLabels.length} stages complete</span>
         </div>
       </aside>
@@ -991,6 +1020,42 @@ function ContentTab({ pack }: { pack: DeliveryPack }) {
   );
 }
 
+function BrandIdentityPanel({ identity }: { identity: DeliveryPack["brandIdentity"] }) {
+  if (!identity) return null;
+
+  return (
+    <section className="panel brand-identity" aria-label="Brand identity">
+      <div className="brand-identity-header">
+        <div>
+          <span className="section-label">Brand identity</span>
+          <p>Extracted from {websiteLabel(identity.sourceUrl)}. Visual briefs and generated images use this palette.</p>
+        </div>
+        {identity.logoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element -- external logo hosted on the brand's own site
+          <img className="brand-logo" src={identity.logoUrl} alt="Brand logo" referrerPolicy="no-referrer" />
+        ) : null}
+      </div>
+      {identity.colors.length ? (
+        <div className="swatch-row">
+          {identity.colors.map((color) => (
+            <div className="swatch" key={color.role}>
+              <span className="swatch-chip" style={{ background: color.value }} />
+              <strong>{color.value}</strong>
+              <span>{color.role}</span>
+            </div>
+          ))}
+        </div>
+      ) : null}
+      <div className="calendar-support">
+        {identity.headingFont ? <span><strong>Headings</strong> {identity.headingFont}</span> : null}
+        {identity.bodyFont ? <span><strong>Body</strong> {identity.bodyFont}</span> : null}
+        {identity.colorScheme ? <span><strong>Scheme</strong> {identity.colorScheme}</span> : null}
+        {identity.personality ? <span><strong>Personality</strong> {identity.personality}</span> : null}
+      </div>
+    </section>
+  );
+}
+
 function VisualsTab({
   pack,
   campaignId,
@@ -1029,11 +1094,17 @@ function VisualsTab({
   }
 
   if (!pack.visualBriefs.length) {
-    return <div className="performance-empty">No visual briefs were generated for this campaign.</div>;
+    return (
+      <div className="visuals-stack">
+        <BrandIdentityPanel identity={pack.brandIdentity} />
+        <div className="performance-empty">No visual briefs were generated for this campaign.</div>
+      </div>
+    );
   }
 
   return (
     <div className="visuals-stack">
+      <BrandIdentityPanel identity={pack.brandIdentity} />
       {!proofReady ? <div className="error-box">Repair unsupported or conflicting claims before generating visuals.</div> : null}
       {error ? <div className="error-box">{error}</div> : null}
       <div className="visual-grid">
@@ -1126,6 +1197,18 @@ function ProofTable({ pack, compact = false }: { pack: DeliveryPack; compact?: b
             (claim.status === "supported" || claim.resolutionStatus === "unresolved")
         );
   const selected = pack.proofReport.claims.find((claim) => claim.id === selectedId) ?? pack.proofReport.claims[0];
+  const sourceUrlById = new Map(
+    pack.sources
+      .filter((source) => source.url && /^https?:\/\//i.test(source.url))
+      .map((source) => [source.id, source.url as string])
+  );
+  const evidenceUrl = (claim: Claim) =>
+    claim.repairAction === "removed" || !claim.sourceId ? undefined : sourceUrlById.get(claim.sourceId);
+  const sourceLabel = (claim: Claim, missing: string) => {
+    if (claim.repairAction === "removed") return "Removed from content";
+    const title = claim.sourceTitle ?? missing;
+    return claim.sourceType === "web-search" ? title + " (web)" : title;
+  };
 
   return (
     <div className={compact ? "" : "proof-main"}>
@@ -1151,12 +1234,17 @@ function ProofTable({ pack, compact = false }: { pack: DeliveryPack; compact?: b
             <tbody>
               {claims.map((claim) => {
                 const meta = claimStatusMeta(claim);
-                const source = claim.repairAction === "removed" ? "Removed from content" : claim.sourceTitle ?? "Needs source";
+                const source = sourceLabel(claim, "Needs source");
+                const url = evidenceUrl(claim);
                 return (
                   <tr key={claim.id} className={claim.id === selected?.id ? "selected" : ""} onClick={() => setSelectedId(claim.id)}>
                     <td>{claim.text}</td>
                     <td>{claim.contentUsedIn}</td>
-                    <td>{source}</td>
+                    <td>
+                      {url ? (
+                        <a href={url} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()}>{source}</a>
+                      ) : source}
+                    </td>
                     <td>
                       <div className="mini-bar-wrap"><div className="mini-bar"><div className="mini-bar-fill" style={{ width: claim.confidence + "%" }} /></div>{claim.confidence}%</div>
                     </td>
@@ -1169,7 +1257,7 @@ function ProofTable({ pack, compact = false }: { pack: DeliveryPack; compact?: b
           <div className="proof-card-list">
             {claims.map((claim) => {
               const meta = claimStatusMeta(claim);
-              const source = claim.repairAction === "removed" ? "Removed from content" : claim.sourceTitle ?? "Needs source";
+              const source = sourceLabel(claim, "Needs source");
               return (
                 <button key={claim.id} className={claim.id === selected?.id ? "proof-card-row selected" : "proof-card-row"} onClick={() => setSelectedId(claim.id)}>
                   <span className={meta.className}>{meta.icon}{meta.label}</span>
@@ -1188,7 +1276,14 @@ function ProofTable({ pack, compact = false }: { pack: DeliveryPack; compact?: b
             <div className="claim-detail-box">{selected.text}</div>
             <div className="detail-row"><span>Status</span><strong>{claimStatusMeta(selected).label}</strong></div>
             <div className="detail-row"><span>Confidence</span><strong>{selected.confidence}%</strong></div>
-            <div className="detail-row"><span>Source</span><strong>{selected.repairAction === "removed" ? "Removed from content" : selected.sourceTitle ?? "Missing"}</strong></div>
+            <div className="detail-row">
+              <span>Source</span>
+              <strong>
+                {evidenceUrl(selected) ? (
+                  <a href={evidenceUrl(selected)} target="_blank" rel="noreferrer">{sourceLabel(selected, "Missing")}</a>
+                ) : sourceLabel(selected, "Missing")}
+              </strong>
+            </div>
             <div className="divider" />
             <div className="section-label">{selected.resolutionStatus === "repaired" ? "Repair Note" : "Recommendation"}</div>
             <div className="reco-box">{selected.resolutionStatus === "repaired" ? selected.repairNote : selected.recommendation}</div>
@@ -1350,79 +1445,6 @@ function ExportView({
             <div><dt>Sources</dt><dd>{pack.sources.length}</dd></div>
           </dl>
         </section>
-      </div>
-    </main>
-  );
-}
-function ListingView({ pack }: { pack: DeliveryPack }) {
-  const complete = pack.listing.checklist.filter((item) => item.complete).length;
-  const total = pack.listing.checklist.length;
-  return (
-    <main className="listing-page">
-      <div className="max-w">
-        <div className="page-header listing-header">
-          <div>
-            <h1>OKX.AI Marketplace Listing</h1>
-            <p>Prepare your ASP for hackathon submission.</p>
-            <div className="prog-row"><span>{complete} of {total} checks complete</span><div className="prog-bar-bg"><div className="prog-bar-fill" style={{ width: `${(complete / total) * 100}%` }} /></div></div>
-          </div>
-          <div className="btn-group">
-            <button className="btn btn-primary" onClick={() => copyText(listingCopy(pack))}><Copy size={15} /> Copy Listing Copy</button>
-            <button className="btn btn-outline"><ArrowRight size={15} /> Submit to OKX.AI</button>
-          </div>
-        </div>
-        <div className="layout-2col">
-          <section className="col-main">
-            <div className="card">
-              <div className="card-header"><div className="card-title">ASP Identity</div><span className="badge bg-green"><Check size={13} weight="bold" /> Valid</span></div>
-              <div className="grid-2 listing-identity">
-                <div className="avatar-upload"><UploadSimple size={24} /><span>Upload Avatar</span></div>
-                <div>
-                  <div className="field-row"><span>Name</span><strong>Flusso</strong><span className="badge bg-green">Valid</span></div>
-                  <div className="field-row"><span>Agent Type</span><strong>A2A ASP</strong><span className="badge bg-green">Valid</span></div>
-                  <div className="field-row"><span>Description</span><strong>{pack.listing.description}</strong><span className="badge bg-green">Valid</span></div>
-                </div>
-              </div>
-            </div>
-            <div className="card">
-              <div className="card-header"><div className="card-title">Services</div><span className="badge bg-green">{pack.listing.services.length} A2A</span></div>
-              <table>
-                <thead><tr><th>Service</th><th>Type</th><th>Fee</th><th>Inputs</th><th>Deliverables</th></tr></thead>
-                <tbody>
-                  {pack.listing.services.map((service) => (
-                    <tr key={service.name}>
-                      <td><strong>{service.name}</strong><br /><span className="muted">{service.description}</span></td>
-                      <td><span className="format-badge">{service.type}</span></td>
-                      <td>{service.fee} USDT</td>
-                      <td>{service.requiredInputs.slice(0, 3).join(", ")}</td>
-                      <td>{service.deliverables.slice(0, 3).join(", ")}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-          <aside className="col-rail">
-            <div className="hackathon-card">
-              <strong>Hackathon focus</strong>
-              <p>Best Product, Creative Genius, and Social Buzz. Submit the ASP listing, X post, and form before the final deadline.</p>
-            </div>
-            <div className="card">
-              <div className="card-title">Readiness Checklist</div>
-              <div className="check-grid">
-                {pack.listing.checklist.map((item) => (
-                  <div className="check-item" key={item.label}>
-                    <span className="check-label"><span className={item.complete ? "checkbox checked" : "checkbox"}>{item.complete ? <Check size={11} weight="bold" /> : null}</span>{item.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="preview-card">
-              <div className="preview-title"><FileText size={15} /> Listing Copy</div>
-              <pre>{listingCopy(pack)}</pre>
-            </div>
-          </aside>
-        </div>
       </div>
     </main>
   );
@@ -1790,9 +1812,10 @@ function HistoryView({ onOpen }: { onOpen: (pack: DeliveryPack, campaignId: stri
 
 export function ContentEngineerApp() {
   const [view, setView] = useState<ViewName>("workbench");
-  const [brief, setBrief] = useState<ProjectBrief>(emptyBrief);
+  const [brief, setBrief] = useState<BriefInput>(emptyBrief);
   const [pack, setPack] = useState<DeliveryPack | null>(null);
   const [campaignId, setCampaignId] = useState<string | null>(null);
+  const [discovered, setDiscovered] = useState<DiscoveredBrief | null>(null);
   const [liveStages, setLiveStages] = useState<GenerationStage[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -1819,6 +1842,7 @@ export function ContentEngineerApp() {
     setPack(null);
     setCampaignId(null);
     setRepairError(null);
+    setDiscovered(null);
     setLiveStages([]);
     setView("pipeline");
     try {
@@ -1833,7 +1857,7 @@ export function ContentEngineerApp() {
         throw new Error(payload.error ?? "Generation failed.");
       }
 
-      const generationResult = await readGenerationStream(response, (stage) => {
+      const generationResult = await readGenerationStream(response, setDiscovered, (stage) => {
         setLiveStages((current) => [
           ...current.filter((item) => item.stage !== stage.stage),
           stage
@@ -1881,12 +1905,11 @@ export function ContentEngineerApp() {
       <TopNav view={view} setView={setView} hasPack={Boolean(pack)} loading={loading} />
       {view === "workbench" ? <Workbench brief={brief} setBrief={setBrief} pack={pack} onGenerate={generatePack} loading={loading} error={error} /> : null}
       {view === "history" ? <HistoryView onOpen={openSavedCampaign} /> : null}
-      {view === "pipeline" ? <PipelineView brief={brief} stages={liveStages} /> : null}
+      {view === "pipeline" ? <PipelineView brief={brief} discovered={discovered} stages={liveStages} /> : null}
       {view === "results" && pack ? <ResultsView pack={pack} campaignId={campaignId} onPackChange={setPack} /> : null}
       {view === "performance" && pack ? <PerformanceView pack={pack} campaignId={campaignId} /> : null}
       {view === "proof" && pack ? <ProofView pack={pack} canRepair={Boolean(campaignId) && proofIssueCount > 0} repairing={repairing} repairError={repairError} onRepair={repairClaims} /> : null}
       {view === "exports" && pack ? <ExportView pack={pack} campaignId={campaignId} /> : null}
-      {view === "listing" && pack ? <ListingView pack={pack} /> : null}
       {proofIssueCount ? <div className="floating-alert"><Warning size={16} weight="fill" /> {proofIssueCount} proof issues need review</div> : null}
     </>
   );

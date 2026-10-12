@@ -1,34 +1,16 @@
-/* global clearTimeout */
-import type { SourceDocument } from "./schemas";
+import type { BrandIdentity, SourceDocument } from "./schemas";
+import { normalizeBranding } from "./brand-identity";
+import { firecrawlScrape, firecrawlSearch, type FirecrawlPage } from "./firecrawl";
+import { countWords } from "./json-values";
 
 const maxSourceChars = 12000;
-const fetchTimeoutMs = 10000;
 
-function decodeEntities(value: string) {
+function normalizeText(value: string) {
   return value
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
-}
-
-function htmlToText(value: string) {
-  return decodeEntities(value)
-    .replace(/<script[\s\S]*?<\/script>/gi, " ")
-    .replace(/<style[\s\S]*?<\/style>/gi, " ")
-    .replace(/<svg[\s\S]*?<\/svg>/gi, " ")
-    .replace(/<nav[\s\S]*?<\/nav>/gi, " ")
-    .replace(/<footer[\s\S]*?<\/footer>/gi, " ")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function normalizeText(value: string, contentType: string | null) {
-  const rawText = contentType?.includes("text/html") ? htmlToText(value) : value.replace(/\s+/g, " ").trim();
-  return rawText.slice(0, maxSourceChars);
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim()
+    .slice(0, maxSourceChars);
 }
 
 function sourceQuality(wordCount: number): SourceDocument["sourceQuality"] {
@@ -37,10 +19,17 @@ function sourceQuality(wordCount: number): SourceDocument["sourceQuality"] {
   return "none";
 }
 
-function failedSource(input: FetchSourceInput, fetchedAt: string, reason: string): SourceDocument {
+export type ScrapeSourceInput = {
+  id: string;
+  title?: string;
+  url: string;
+  sourceType: SourceDocument["sourceType"];
+};
+
+function failedSource(input: ScrapeSourceInput, fetchedAt: string, reason: string): SourceDocument {
   return {
     id: input.id,
-    title: input.title,
+    title: input.title || input.url,
     url: input.url,
     sourceType: input.sourceType,
     extractedText: `Source fetch failed: ${reason}`,
@@ -52,64 +41,79 @@ function failedSource(input: FetchSourceInput, fetchedAt: string, reason: string
   };
 }
 
-export type FetchSourceInput = {
-  id: string;
-  title: string;
-  url: string;
-  sourceType: SourceDocument["sourceType"];
-};
+function pageSource(input: ScrapeSourceInput, page: FirecrawlPage, fetchedAt: string): SourceDocument {
+  const extractedText = normalizeText(page.markdown);
+  const wordCount = countWords(extractedText);
+  const titled = { ...input, title: input.title || page.title || input.url };
 
-export function isLikelyUrl(value: string) {
-  try {
-    const url = new URL(value.trim());
-    return url.protocol === "http:" || url.protocol === "https:";
-  } catch {
-    return false;
+  if (!wordCount) {
+    return failedSource(titled, fetchedAt, "No readable text extracted");
   }
+
+  return {
+    id: titled.id,
+    title: titled.title,
+    url: input.url,
+    sourceType: input.sourceType,
+    extractedText,
+    fetchedAt,
+    fetchStatus: "fetched",
+    wordCount,
+    sourceQuality: sourceQuality(wordCount)
+  };
 }
 
-export async function fetchSourceDocument(input: FetchSourceInput, fetchedAt: string): Promise<SourceDocument> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), fetchTimeoutMs);
-
+export async function scrapeSourceDocument(input: ScrapeSourceInput, fetchedAt: string): Promise<SourceDocument> {
   try {
-    const response = await fetch(input.url, {
-      signal: controller.signal,
-      headers: {
-        "User-Agent": "OKX-Content-Engineer/0.1 (+source-verification)",
-        Accept: "text/html,text/plain,application/json;q=0.8,*/*;q=0.5"
-      }
-    });
-
-    if (!response.ok) {
-      return failedSource(input, fetchedAt, `HTTP ${response.status}`);
-    }
-
-    const contentType = response.headers.get("content-type");
-    const body = await response.text();
-    const extractedText = normalizeText(body, contentType);
-    const wordCount = extractedText ? extractedText.split(/\s+/).length : 0;
-
-    if (!wordCount) {
-      return failedSource(input, fetchedAt, "No readable text extracted");
-    }
-
-    return {
-      id: input.id,
-      title: input.title,
-      url: input.url,
-      sourceType: input.sourceType,
-      extractedText,
-      fetchedAt,
-      fetchStatus: "fetched",
-      wordCount,
-      sourceQuality: sourceQuality(wordCount)
-    };
+    return pageSource(input, await firecrawlScrape(input.url), fetchedAt);
   } catch (error) {
     const reason = error instanceof Error ? error.message : "Unknown fetch error";
     return failedSource(input, fetchedAt, reason);
-  } finally {
-    clearTimeout(timeout);
+  }
+}
+
+export async function scrapeBrandSite(
+  input: ScrapeSourceInput,
+  fetchedAt: string
+): Promise<{ source: SourceDocument; brandIdentity: BrandIdentity | null }> {
+  try {
+    const page = await firecrawlScrape(input.url, { branding: true });
+    return {
+      source: pageSource(input, page, fetchedAt),
+      brandIdentity: normalizeBranding(page.branding, page.url || input.url)
+    };
+  } catch {
+    // Branding is an enhancement; never lose the homepage text because of it.
+    return { source: await scrapeSourceDocument(input, fetchedAt), brandIdentity: null };
+  }
+}
+
+export async function searchSourceDocuments(
+  query: string,
+  limit: number,
+  fetchedAt: string
+): Promise<SourceDocument[]> {
+  try {
+    const results = await firecrawlSearch(query, limit);
+    return results.slice(0, limit).map((result, index) => {
+      const extractedText = normalizeText(result.markdown || result.description);
+      const wordCount = countWords(extractedText);
+      return {
+        id: `src-search-${index + 1}`,
+        title: result.title || result.url,
+        url: result.url,
+        sourceType: "search-result" as const,
+        extractedText,
+        fetchedAt,
+        fetchStatus: wordCount ? "fetched" as const : "failed" as const,
+        wordCount,
+        sourceQuality: sourceQuality(wordCount),
+        ...(wordCount ? {} : { failureReason: "No readable text extracted" })
+      };
+    });
+  } catch {
+    // Competitor search enriches discovery; the campaign can proceed without it.
+    return [];
   }
 }
 
@@ -121,7 +125,7 @@ export function noteSource(
   fetchedAt: string,
   qualityOverride?: SourceDocument["sourceQuality"]
 ): SourceDocument {
-  const wordCount = extractedText ? extractedText.split(/\s+/).length : 0;
+  const wordCount = countWords(extractedText);
   return {
     id,
     title,

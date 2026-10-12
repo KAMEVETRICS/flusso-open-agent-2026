@@ -208,6 +208,21 @@ export function buildStrategyMarkdown(pack: DeliveryPack) {
     lines.push("");
   });
 
+  if (pack.brandIdentity) {
+    const identity = pack.brandIdentity;
+    lines.push("## Brand Identity", "");
+    lines.push("Extracted from " + identity.sourceUrl + ".", "");
+    if (identity.colors.length) {
+      lines.push("- **Colors:** " + identity.colors.map((color) => color.role + " " + color.value).join(", "));
+    }
+    if (identity.headingFont) lines.push("- **Heading font:** " + cleanLine(identity.headingFont));
+    if (identity.bodyFont) lines.push("- **Body font:** " + cleanLine(identity.bodyFont));
+    if (identity.colorScheme) lines.push("- **Color scheme:** " + identity.colorScheme);
+    if (identity.personality) lines.push("- **Personality:** " + cleanLine(identity.personality));
+    if (identity.logoUrl) lines.push("- **Logo:** " + identity.logoUrl);
+    lines.push("");
+  }
+
   lines.push("## Visual Plan", "");
   if (pack.visualBriefs.length) {
     pack.visualBriefs.forEach((brief) => {
@@ -246,6 +261,18 @@ export function buildStrategyMarkdown(pack: DeliveryPack) {
   lines.push("- **Time-sensitive:** " + pack.proofReport.timeSensitive);
   lines.push("- **Repaired:** " + repairedClaims);
   lines.push("");
+
+  const sourcesById = new Map(pack.sources.map((source) => [source.id, source]));
+  const webClaims = pack.proofReport.claims.filter((claim) => claim.sourceType === "web-search");
+  if (webClaims.length) {
+    lines.push("### Web Evidence", "");
+    webClaims.forEach((claim) => {
+      const source = claim.sourceId ? sourcesById.get(claim.sourceId) : undefined;
+      const citation = source?.url ? "[" + cleanLine(source.title) + "](" + source.url + ")" : "source unavailable";
+      lines.push("- **" + claim.status + ":** " + cleanLine(claim.text) + " (" + citation + ")");
+    });
+    lines.push("");
+  }
 
   lines.push("## Production Capacity", "");
   lines.push("- **Total:** " + cleanLine(pack.productionPlan.totalHours));

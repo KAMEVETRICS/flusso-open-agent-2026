@@ -39,17 +39,50 @@ export const ProjectBriefSchema = z.object({
   restrictions: z.string().optional().default("")
 });
 
+// What a user must supply. Discovery infers the remaining brand fields from the website.
+export const BriefInputSchema = z.object({
+  website: z.string().trim().url(),
+  goal: z.string().trim().min(5),
+  brand: z.string().trim().default(""),
+  industry: z.string().trim().default(""),
+  audience: z.string().trim().default(""),
+  tone: z.string().trim().default(""),
+  docs: z.string().default(""),
+  competitors: z.array(z.string()).default([]),
+  platforms: z.array(PlatformSchema).min(1).default(["X", "LinkedIn"]),
+  editorialProfile: EditorialProfileSchema.default("balanced"),
+  durationDays: z.number().int().min(7).max(90).default(30),
+  postsPerWeek: z.number().int().min(1).max(20).default(5),
+  teamSize: z.number().int().min(1).max(20).default(1),
+  hoursPerWeek: z.number().int().min(1).max(80).default(8),
+  restrictions: z.string().default("")
+});
+
 export const SourceDocumentSchema = z.object({
   id: z.string(),
   title: z.string(),
   url: z.string().optional(),
-  sourceType: z.enum(["primary-doc", "website", "competitor", "prompt-library", "user-note"]),
+  sourceType: z.enum(["primary-doc", "website", "competitor", "search-result", "web-search", "prompt-library", "user-note"]),
   extractedText: z.string(),
   fetchedAt: z.string(),
   fetchStatus: z.enum(["fetched", "unfetched", "failed"]).default("unfetched"),
   wordCount: z.number().int().nonnegative().default(0),
   sourceQuality: z.enum(["strong", "limited", "none"]).default("none"),
   failureReason: z.string().optional()
+});
+
+export const BrandIdentitySchema = z.object({
+  sourceUrl: z.string(),
+  colorScheme: z.enum(["light", "dark"]).nullable(),
+  colors: z.array(z.object({
+    role: z.string(),
+    value: z.string()
+  })),
+  headingFont: z.string(),
+  bodyFont: z.string(),
+  fonts: z.array(z.string()),
+  logoUrl: z.string(),
+  personality: z.string()
 });
 
 export const BrandContextSchema = z.object({
@@ -354,15 +387,6 @@ export const ProductionPlanSchema = z.object({
   }))
 });
 
-export const ListingServiceSchema = z.object({
-  name: z.string(),
-  type: z.literal("A2A"),
-  fee: z.string(),
-  description: z.string(),
-  requiredInputs: z.array(z.string()),
-  deliverables: z.array(z.string())
-});
-
 export const PromptRouteSchema = z.object({
   pipelineStage: z.string(),
   selectedPromptId: z.string(),
@@ -402,7 +426,7 @@ export const GenerationMetadataSchema = z.object({
 });
 
 export const GenerationStageSchema = z.object({
-  stage: z.enum(["foundation", "architecture", "execution", "editorial", "governance"]),
+  stage: z.enum(["foundation", "architecture", "execution", "editorial", "governance", "verification"]),
   label: z.string(),
   status: z.literal("completed"),
   startedAt: z.string(),
@@ -414,6 +438,7 @@ export const GenerationStageSchema = z.object({
 export const DeliveryPackSchema = z.object({
   brief: ProjectBriefSchema,
   sources: z.array(SourceDocumentSchema),
+  brandIdentity: BrandIdentitySchema.nullable().default(null),
   brandContext: BrandContextSchema,
   contentLandscape: ContentLandscapeSchema,
   audienceSegments: z.array(AudienceSegmentSchema),
@@ -451,23 +476,16 @@ export const DeliveryPackSchema = z.object({
   promptModules: z.array(PromptModuleSchema).default([]),
   generation: GenerationMetadataSchema,
   generationStages: z.array(GenerationStageSchema).default([]),
-  productionPlan: ProductionPlanSchema,
-  listing: z.object({
-    aspName: z.string(),
-    description: z.string(),
-    services: z.array(ListingServiceSchema),
-    checklist: z.array(z.object({
-      label: z.string(),
-      complete: z.boolean()
-    }))
-  })
+  productionPlan: ProductionPlanSchema
 });
 
 export type ProjectBrief = z.infer<typeof ProjectBriefSchema>;
+export type BriefInput = z.infer<typeof BriefInputSchema>;
 export type EditorialProfile = z.infer<typeof EditorialProfileSchema>;
 export type EditorialMode = z.infer<typeof EditorialModeSchema>;
 export type ContentFormat = z.infer<typeof ContentFormatSchema>;
 export type SourceDocument = z.infer<typeof SourceDocumentSchema>;
+export type BrandIdentity = z.infer<typeof BrandIdentitySchema>;
 export type BrandContext = z.infer<typeof BrandContextSchema>;
 export type ContentGap = z.infer<typeof ContentGapSchema>;
 export type ContentLandscape = z.infer<typeof ContentLandscapeSchema>;

@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node --experimental-strip-types tests/a2a-quote.test.mjs && node tests/a2a-guard.test.mjs && node --experimental-strip-types tests/a2a-recovery-policy.test.mjs && node --experimental-strip-types tests/campaign-scope.test.mjs && node --experimental-strip-types tests/editorial-policy.test.mjs && node --experimental-strip-types tests/exports.test.mjs && node --experimental-strip-types tests/prompt-library.test.mjs && node tests/a2a-runtime-readiness.test.mjs && node tests/openclaw-engine-tool.test.mjs && node tests/openclaw-marketplace-tool.test.mjs",
+    "test": "node --experimental-strip-types --import ./tests/resolve-ts.mjs --test tests/brand-identity.test.mjs tests/campaign-scope.test.mjs tests/discovery-helpers.test.mjs tests/editorial-policy.test.mjs tests/exports.test.mjs tests/firecrawl.test.mjs tests/prompt-library.test.mjs tests/web-verification.test.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
   },

@@ -43,11 +43,21 @@ export async function generateVisualImage(
       "Use only supplied facts and data. Do not invent metrics, labels, logos, product interfaces, partnerships, or capabilities.",
       "Prioritize explanatory clarity over decoration. Keep typography sparse and legible.",
       "Do not add a watermark. Do not imitate a named living artist.",
-      "For charts and comparisons, faithfully represent only the supplied data points."
+      "For charts and comparisons, faithfully represent only the supplied data points.",
+      "When brandIdentity is supplied, use its colors as the dominant palette and echo the mood of its typography. Do not draw logos, wordmarks, or trademarked marks."
     ].join("\n"),
     input: JSON.stringify({
       brand: pack.brief.brand,
       industry: pack.brief.industry,
+      brandIdentity: pack.brandIdentity
+        ? {
+            colorScheme: pack.brandIdentity.colorScheme,
+            colors: pack.brandIdentity.colors,
+            headingFont: pack.brandIdentity.headingFont,
+            bodyFont: pack.brandIdentity.bodyFont,
+            personality: pack.brandIdentity.personality
+          }
+        : null,
       visualBrief: brief,
       evidence
     }),

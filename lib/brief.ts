@@ -1,15 +1,16 @@
-import { ProjectBriefSchema, type ProjectBrief } from "./schemas";
+import { BriefInputSchema, type BriefInput } from "./schemas";
+import { normalizeWebsite } from "./discovery-helpers";
 
-export const emptyBrief: ProjectBrief = {
+export const emptyBrief: BriefInput = {
+  website: "",
+  goal: "",
   brand: "",
   industry: "",
-  website: "",
-  docs: "",
-  goal: "",
   audience: "",
+  tone: "",
+  docs: "",
   competitors: [],
   platforms: ["X", "LinkedIn"],
-  tone: "",
   editorialProfile: "balanced",
   durationDays: 30,
   postsPerWeek: 5,
@@ -18,9 +19,12 @@ export const emptyBrief: ProjectBrief = {
   restrictions: ""
 };
 
-export function normalizeBrief(input: unknown): ProjectBrief {
+export function normalizeBrief(input: unknown): BriefInput {
   const record = typeof input === "object" && input ? { ...(input as Record<string, unknown>) } : {};
 
+  if (typeof record.website === "string") {
+    record.website = normalizeWebsite(record.website);
+  }
   if (typeof record.competitors === "string") {
     record.competitors = record.competitors.split(",").map((item) => item.trim()).filter(Boolean);
   }
@@ -28,5 +32,5 @@ export function normalizeBrief(input: unknown): ProjectBrief {
     record.platforms = record.platforms.split(",").map((item) => item.trim()).filter(Boolean);
   }
 
-  return ProjectBriefSchema.parse(record);
+  return BriefInputSchema.parse(record);
 }

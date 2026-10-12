@@ -29,24 +29,22 @@ if (major < 22 || (major === 22 && minor < 16)) {
   console.error("Node.js >= 22.16.0 is required. Found " + process.versions.node + ".");
   process.exit(1);
 }
-if (major < 24) {
-  console.warn("Node.js 24 is recommended for the OKX Agent runtime. Found " + process.versions.node + ".");
-}
 '
 
 if ! getent group "$APP_GROUP" >/dev/null 2>&1; then
   groupadd --system "$APP_GROUP"
 fi
 if ! id "$APP_USER" >/dev/null 2>&1; then
-  useradd --system --create-home --home-dir "$APP_HOME"     --shell /bin/bash --gid "$APP_GROUP" "$APP_USER"
+  useradd --system --create-home --home-dir "$APP_HOME" \
+    --shell /bin/bash --gid "$APP_GROUP" "$APP_USER"
 fi
-loginctl enable-linger "$APP_USER"
 
 install -d -o root -g "$APP_GROUP" -m 0750 "$CONFIG_DIR"
 if [[ ! -f "$ENV_FILE" ]]; then
-  install -o root -g "$APP_GROUP" -m 0640     "$APP_DIR/deploy/env.production.example" "$ENV_FILE"
+  install -o root -g "$APP_GROUP" -m 0640 \
+    "$APP_DIR/deploy/env.production.example" "$ENV_FILE"
   echo "Created $ENV_FILE."
-  echo "Fill in OPENAI_API_KEY, A2A_INTERNAL_API_KEY, and DATABASE_URL, then run this installer again."
+  echo "Fill in OPENAI_API_KEY, FIRECRAWL_API_KEY, and DATABASE_URL, then run this installer again."
   exit 2
 fi
 
@@ -57,9 +55,8 @@ set +a
 
 for name in \
   OPENAI_API_KEY \
-  A2A_INTERNAL_API_KEY \
-  DATABASE_URL \
-  CONTENT_ENGINE_URL; do
+  FIRECRAWL_API_KEY \
+  DATABASE_URL; do
   if [[ -z "${!name:-}" ]]; then
     echo "$name is missing from $ENV_FILE." >&2
     exit 1
@@ -71,25 +68,18 @@ chown -R "$APP_USER:$APP_GROUP" "$APP_DIR"
 runuser -u "$APP_USER" -- npm --prefix "$APP_DIR" ci
 runuser -u "$APP_USER" -- npm --prefix "$APP_DIR" run build
 
-install -o root -g root -m 0644   "$APP_DIR/deploy/systemd/flusso-engine.service"   /etc/systemd/system/flusso-engine.service
-install -o root -g root -m 0644   "$APP_DIR/deploy/systemd/flusso-a2a.service"   /etc/systemd/system/flusso-a2a.service
-install -o root -g root -m 0644   "$APP_DIR/deploy/systemd/flusso-a2a-health.service"   /etc/systemd/system/flusso-a2a-health.service
-install -o root -g root -m 0644   "$APP_DIR/deploy/systemd/flusso-a2a-health.timer"   /etc/systemd/system/flusso-a2a-health.timer
-install -o root -g root -m 0644   "$APP_DIR/deploy/systemd/flusso-recovery.service"   /etc/systemd/system/flusso-recovery.service
-install -o root -g root -m 0644   "$APP_DIR/deploy/systemd/flusso-recovery.timer"   /etc/systemd/system/flusso-recovery.timer
+install -o root -g root -m 0644 \
+  "$APP_DIR/deploy/systemd/flusso-engine.service" \
+  /etc/systemd/system/flusso-engine.service
 
-install -d -o "$APP_USER" -g "$APP_GROUP" -m 0750 "$APP_HOME/.agents/skills"
-ln -sfn   "$APP_DIR/agent-skills/flusso-content-engineering"   "$APP_HOME/.agents/skills/flusso-content-engineering"
-chown -h "$APP_USER:$APP_GROUP" "$APP_HOME/.agents/skills/flusso-content-engineering"
-
-chmod 0755   "$APP_DIR/deploy/install-vps.sh"   "$APP_DIR/deploy/update-vps.sh"   "$APP_DIR/deploy/smoke-test.sh"   "$APP_DIR/deploy/configure-openclaw.sh"
+chmod 0755 \
+  "$APP_DIR/deploy/install-vps.sh" \
+  "$APP_DIR/deploy/update-vps.sh" \
+  "$APP_DIR/deploy/smoke-test.sh"
 
 systemctl daemon-reload
 systemctl enable --now flusso-engine.service
-systemctl enable --now flusso-recovery.timer
 
-APP_DIR="$APP_DIR" APP_USER="$APP_USER" APP_HOME="$APP_HOME" bash "$APP_DIR/deploy/configure-openclaw.sh"
 APP_DIR="$APP_DIR" ENV_FILE="$ENV_FILE" bash "$APP_DIR/deploy/smoke-test.sh"
 
-echo "Content engine is running on http://127.0.0.1:3107."
-echo "Complete the provider runtime and Agentic Wallet setup before enabling flusso-a2a.service."
+echo "Flusso is running on http://127.0.0.1:3107."

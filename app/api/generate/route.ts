@@ -1,6 +1,9 @@
+import { z } from "zod";
 import { normalizeBrief } from "@/lib/brief";
 import { saveCampaign } from "@/lib/campaign-store";
 import { ensureCampaignSchema } from "@/lib/db";
+import { discoverBrief } from "@/lib/discovery";
+import { isFirecrawlConfigured } from "@/lib/firecrawl";
 import { createContentGenerationProvider } from "@/lib/provider";
 import { getPerformanceContextForBrand } from "@/lib/performance-store";
 import { routePromptLibrary } from "@/lib/prompt-library";
@@ -11,11 +14,19 @@ function encodeEvent(event: string, data: unknown) {
   return new TextEncoder().encode("event: " + event + "\ndata: " + JSON.stringify(data) + "\n\n");
 }
 
+function inputErrorMessage(error: z.ZodError) {
+  const field = String(error.issues[0]?.path[0] ?? "");
+  if (field === "website") return "Enter a valid website URL.";
+  if (field === "goal") return "Describe the campaign goal in at least five characters.";
+  return error.issues[0]?.message ?? "Invalid campaign brief.";
+}
+
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const brief = normalizeBrief(body);
-    const promptRouting = routePromptLibrary(brief);
+    const input = normalizeBrief(await request.json());
+    if (!isFirecrawlConfigured()) {
+      throw new Error("FIRECRAWL_API_KEY is missing. Add it to .env.local and restart the server.");
+    }
     const provider = createContentGenerationProvider();
     let cancelled = false;
 
@@ -30,16 +41,24 @@ export async function POST(request: Request) {
           }
         };
 
-        send("ready", { stages: ["foundation", "architecture", "execution", "editorial", "governance"] });
+        send("ready", { stages: ["discovery", "foundation", "architecture", "execution", "editorial", "governance", "verification"] });
 
         void (async () => {
           try {
             await ensureCampaignSchema();
-            const performanceContext = await getPerformanceContextForBrand(brief.brand);
+            const discovery = await discoverBrief(input, provider);
+            send("discovery", {
+              brief: discovery.brief,
+              inferredFields: discovery.inferredFields,
+              sourceCount: discovery.sources.filter((source) => source.fetchStatus === "fetched").length
+            });
+            const promptRouting = routePromptLibrary(discovery.brief);
+            const performanceContext = await getPerformanceContextForBrand(discovery.brief.brand);
             const pack = await provider.generateCampaignPack(
-              brief,
+              discovery.brief,
               promptRouting,
               performanceContext,
+              discovery,
               (stage) => send("stage", stage)
             );
             const campaign = await saveCampaign(pack);
@@ -66,6 +85,9 @@ export async function POST(request: Request) {
       }
     });
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return Response.json({ error: inputErrorMessage(error) }, { status: 400 });
+    }
     const message = error instanceof Error ? error.message : "Unable to generate campaign pack.";
     return Response.json({ error: message }, { status: 500 });
   }

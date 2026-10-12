@@ -3,30 +3,28 @@
 This bundle deploys the GitHub repository to one Linux VPS.
 
 ~~~text
-OKX.AI task network
+Your browser
         |
+        | SSH tunnel to localhost
         v
-Provider Agent runtime + OKX A2A daemon
-        |
-        | Bearer-authenticated localhost HTTP
-        v
-Next.js content engine on 127.0.0.1:3107
+Next.js app on 127.0.0.1:3107
         |
         +-- Neon PostgreSQL
         +-- OpenAI API
+        +-- Firecrawl API
 ~~~
 
-A2A does not require a public content-engine endpoint. Keep port 3107 bound to localhost. The provider Agent handles negotiation and the OKX task lifecycle; the private engine handles generation and exports.
+The app has no built-in user authentication. Keep port 3107 bound to localhost and reach it through an SSH tunnel.
 
 ## Assumptions
 
 - Ubuntu or another systemd-based Linux distribution
 - Git
-- system-wide Node.js 24 recommended, or Node.js 22.16.0 or newer
+- Node.js 22.16.0 or newer (Node.js 24 recommended)
 - a GitHub repository containing this project
 - a Neon pooled connection string
 - an OpenAI API key
-- OpenClaw, Hermes, or another OKX-supported Agent runtime
+- a Firecrawl API key
 
 The fixed production paths are:
 
@@ -39,182 +37,57 @@ The fixed production paths are:
 Before the first push, verify that local secrets and generated files are ignored:
 
 ~~~bash
-git init
 git check-ignore -v .env.local
-git status --short
-git add .
 git status --short
 ~~~
 
 The staged set must not include **.env.local**, **.next**, **node_modules**, logs, extracted video frames, the raw chat export, or downloaded HubSpot files.
 
-Commit and push to your GitHub repository:
-
-~~~bash
-git commit -m "Prepare Flusso for VPS deployment"
-git branch -M main
-git remote add origin https://github.com/KAMEVETRICS/Flusso.git
-git push -u origin main
-~~~
-
 Use a private repository or a public repository with no credentials or private customer material. For a private repository, configure a read-only GitHub deploy key on the VPS.
 
-## 2. Clone on the VPS
-
-Install Git and Node.js 24 (recommended), or Node.js 22.16.0 or newer, then clone:
+## 2. Install on the VPS
 
 ~~~bash
 sudo git clone https://github.com/KAMEVETRICS/Flusso.git /opt/flusso
 sudo bash /opt/flusso/deploy/install-vps.sh
 ~~~
 
-The first installer run creates the protected environment file and stops. Generate an internal bearer token:
-
-~~~bash
-openssl rand -hex 32
-~~~
-
-Edit the environment:
+The first installer run creates the protected environment file and stops. Edit it:
 
 ~~~bash
 sudo editor /etc/flusso/flusso.env
 ~~~
 
-Set **OPENAI_API_KEY**, **A2A_INTERNAL_API_KEY**, and **DATABASE_URL**. Leave the pricing floor and target blank for marketplace-negotiated pricing. Quote the database URL if it contains **&** or other shell-sensitive characters.
-
-Run the installer again:
+Set **OPENAI_API_KEY**, **FIRECRAWL_API_KEY**, and **DATABASE_URL**. Quote the database URL if it contains **&** or other shell-sensitive characters. Then run the installer again:
 
 ~~~bash
 sudo bash /opt/flusso/deploy/install-vps.sh
 ~~~
 
-It will:
+It creates the service account, installs locked npm dependencies, builds the app, starts **flusso-engine.service** on localhost, and runs a smoke test. It does not generate content or spend model or crawl credits.
 
-- create the dedicated Linux account
-- install locked npm dependencies
-- build the Next.js production application
-- install the systemd units
-- link the Flusso Content Engineering skill into the Agent skill directory
-- start the localhost-only content engine
-- start the one-minute recovery timer for interrupted generation jobs and safely replayable A2A turns
-- run a read-only configuration smoke test
-
-It does not generate content or spend model credits.
-
-## 3. Prepare the provider Agent
-
-Install and initialize one supported Agent runtime under the **flusso** account. The runtime setup is interactive because it requires a model provider and Agentic Wallet login.
-
-Install the official OKX capability pack through the selected Agent, then register the A2A ASP using the fields in **deploy/LISTING.md**.
-
-The communication runtime requires Node.js 22.16.0 or newer; Node.js 24 is recommended. Install its daemon package:
-
-~~~bash
-sudo npm install -g @okxweb3/a2a-node@latest
-~~~
-
-Run the readiness flow as **flusso**:
-
-~~~bash
-sudo -iu flusso
-okx-a2a daemon start
-okx-a2a switch-runtime --json
-okx-a2a agent refresh --json
-okx-a2a setup --json
-exit
-~~~
-
-Every JSON result must report a ready or successful state before continuing. Complete Agentic Wallet login and A2A ASP registration through the Agent conversation.
-
-After OpenClaw runtime setup succeeds, install the Flusso guard and restart the user gateway:
-
-~~~bash
-sudo bash /opt/flusso/deploy/configure-openclaw.sh
-sudo -iu flusso openclaw plugins inspect flusso-a2a-guard --runtime --json
-~~~
-
-Then enable boot startup for the communication daemon:
-
-~~~bash
-sudo systemctl enable --now flusso-a2a.service
-sudo systemctl enable --now flusso-a2a-health.timer
-sudo systemctl start flusso-a2a-health.service
-~~~
-
-The health timer runs the official runtime switch, agent refresh, and final setup checks every five minutes. It requires at least one registered communication identity and one active client, and it verifies that the OpenClaw gateway accepts authenticated RPC calls. OpenClaw still runs through its official user gateway. The Flusso plugin adds durable turn tracking, bounded binding recovery, session-bound marketplace actions, and an optional operator-configured pricing guard.
-
-## 4. Verify production
-
-Run the non-billable verifier:
+## 3. Verify
 
 ~~~bash
 sudo bash /opt/flusso/deploy/smoke-test.sh
-~~~
-
-Expected pricing output:
-
-~~~json
-{
-  "floor": null,
-  "target": null,
-  "openingOffer": null,
-  "floorEnforced": false,
-  "mode": "negotiable"
-}
-~~~
-
-Confirm that the engine is not publicly bound:
-
-~~~bash
 sudo ss -ltnp | grep 3107
-~~~
-
-The listener must be **127.0.0.1:3107**, not **0.0.0.0:3107** or **[::]:3107**.
-
-Check services and logs:
-
-~~~bash
 sudo systemctl status flusso-engine.service
-sudo systemctl status flusso-a2a.service
-sudo systemctl status flusso-a2a-health.timer
-sudo systemctl status flusso-a2a-health.service
-sudo systemctl status flusso-recovery.timer
 sudo journalctl -u flusso-engine.service -n 100 --no-pager
-sudo journalctl -u flusso-a2a.service -n 100 --no-pager
-sudo journalctl -u flusso-a2a-health.service -n 100 --no-pager
-sudo journalctl -u flusso-recovery.service -n 100 --no-pager
 ~~~
 
-Run one non-content response probe before marketplace review. This makes a small model call through the configured OpenClaw gateway and requires an exact response token:
+The smoke test calls **/api/health**, which checks that the OpenAI and Firecrawl keys are set and that Neon is reachable. The listener must be **127.0.0.1:3107**, not **0.0.0.0:3107** or **[::]:3107**.
+
+## 4. Open the app
+
+From your own machine:
 
 ~~~bash
-sudo -iu flusso node /opt/flusso/scripts/probe-a2a-agent.mjs
+ssh -L 3107:127.0.0.1:3107 your-user@your-vps
 ~~~
 
-Expected output:
+Then open http://localhost:3107.
 
-~~~json
-{"status":"ready","agent":"main","response":"FLUSSO_A2A_READY"}
-~~~
-
-This local probe proves the gateway and model can answer unattended. It does not replace OKX's required marketplace test: use a separate OKX.AI User identity to request Agent **#5782**, confirm Flusso replies, and only then resubmit the listing.
-
-## 5. Recovery behavior
-
-Accepted jobs run with a renewable database lease. A failed generation attempt is retried after 60 seconds, then 120 seconds, up to three total attempts. The recovery timer also reclaims work left in **accepted** or stale **running** state after an engine restart.
-
-Inbound A2A turns are persisted before the model starts. If OpenClaw reports the exact **Codex binding generation was retired** startup failure before any model or tool call, the timer resets that session and replays the turn with a stable idempotency key. It retries at most twice. Failures after model or tool execution are recorded but never automatically replayed, preventing duplicate protocol or payment side effects.
-
-Generation defaults use **A2A_MAX_GENERATION_ATTEMPTS**, **A2A_JOB_LEASE_SECONDS**, and **A2A_RETRY_BASE_SECONDS**. Conversation recovery uses **A2A_MAX_CONVERSATION_RECOVERY_ATTEMPTS** and **A2A_CONVERSATION_RETRY_BASE_SECONDS**. After the final attempt, the record remains **failed** and the reason is written to the recovery journal. OKX protocol or escrow command failures still follow the OKX pending-decision flow and are not blindly retried.
-
-Run a non-generating recovery sweep manually:
-
-~~~bash
-sudo systemctl start flusso-recovery.service
-sudo journalctl -u flusso-recovery.service -n 20 --no-pager
-~~~
-
-## 6. Deploy later GitHub updates
+## 5. Deploy later GitHub updates
 
 Push reviewed changes to the current upstream branch, then run:
 
@@ -222,19 +95,18 @@ Push reviewed changes to the current upstream branch, then run:
 sudo bash /opt/flusso/deploy/update-vps.sh
 ~~~
 
-The updater refuses to run over local VPS changes, pulls only with fast-forward semantics, rebuilds, restarts the engine, and reruns the smoke test.
+The updater refuses to run over local VPS changes, pulls only with fast-forward semantics, rebuilds, reinstalls the engine unit, restarts the engine, and reruns the smoke test.
 
-## 7. Beta launch gate
+## Retiring the OKX marketplace setup
 
-Before listing activation:
+Earlier versions ran an OKX.AI marketplace agent next to the engine. Before the first update after this change, add **FIRECRAWL_API_KEY** to **/etc/flusso/flusso.env**; the smoke test fails without it.
 
-1. Verify the Agent can read the private service policy.
-2. Simulate a low-budget request and confirm the Agent follows the marketplace workload rubric instead of imposing a hidden floor.
-3. Confirm a fair offered price is preserved exactly, while an unfair offer receives a justified counter rather than an arbitrary minimum.
-4. Confirm generation does not start before the accepted event.
-5. Run one full accepted-job lifecycle with a test brief.
-6. Inspect the proof report and all three exports.
-7. Restart **flusso-engine.service** during a test generation and confirm the recovery timer resumes it without creating a second campaign record.
-8. Activate the marketplace listing only after the delivery passes review.
+That first **update-vps.sh** run disables and removes the old systemd units (**flusso-a2a**, **flusso-a2a-health**, **flusso-recovery**). Finish the cleanup once by hand:
 
-The first four setup checks are non-billable. The full generation lifecycle calls the configured model and should be triggered deliberately.
+1. Stop the OKX communication daemon: `sudo -iu flusso okx-a2a daemon stop`
+2. Disable or uninstall the **flusso-a2a-guard** plugin in OpenClaw. Its linked source directory no longer exists in the repository.
+3. Delete **/home/flusso/.config/systemd/user/openclaw-gateway.service.d/flusso.conf**, which loaded the Flusso secrets into the OpenClaw gateway.
+4. Delete the old skill copies: **/home/flusso/.agents/skills/flusso-content-engineering** and **/home/flusso/.openclaw/workspace/skills/flusso-content-engineering**.
+5. Remove the **A2A_*** and **CONTENT_ENGINE_URL** entries from **/etc/flusso/flusso.env**.
+
+The Neon tables **a2a_content_jobs** and **a2a_inbox_turns** are no longer used. They are left in place; drop them manually once you no longer need their history.

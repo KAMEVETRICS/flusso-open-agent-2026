@@ -11,7 +11,7 @@ Use this file as the concise project brief. Use `raw gpt chat.txt` when the full
 
 ## Product Thesis
 
-Build Flusso for the OKX hackathon / OKX AI marketplace as an AI Content Engineer, not a generic AI writer.
+Build Flusso as an AI Content Engineer, not a generic AI writer.
 
 The core pitch:
 
@@ -19,11 +19,9 @@ The core pitch:
 
 The user-facing promise is "legit content": content that is brand-aware, audience-specific, source-backed, platform-native, and production-realistic.
 
-## Why This Fits OKX.AI
+## Positioning
 
-This should be framed as an A2A-style service agent with auditable deliverables.
-
-The concept fits marketplace work because customers need customized strategy, scoped deliverables, reviewable outputs, and clear quality standards. It is more valuable than a simple per-call text-generation tool because it produces a complete content system.
+Flusso produces auditable deliverables. Customers need customized strategy, scoped deliverables, reviewable outputs, and clear quality standards. It is more valuable than a simple per-call text-generation tool because it produces a complete content system.
 
 ## Content Engineering Pipeline
 
@@ -42,25 +40,28 @@ The concept fits marketplace work because customers need customized strategy, sc
 
 ## Input Schema
 
-Expected user parameters:
+Required from the user:
+
+- Website
+- Campaign goal
+
+Inferred from the website and web search unless the user overrides them:
 
 - Brand or project name
 - Industry or category
-- Website
-- Documentation links
-- Product description
-- Campaign goal
-- Target platforms
 - Existing audience
-- Competitors
 - Preferred tone
+- Competitors
+
+Optional, with defaults:
+
+- Documentation links
+- Target platforms
 - Campaign duration
 - Publishing frequency
 - Team size
 - Available production hours
-- Geographic focus
 - Content restrictions
-- Source materials such as docs, PDFs, articles, whitepapers, brand guidelines, interviews, or existing social content
 
 ## Internal Brand Context Object
 
@@ -104,7 +105,7 @@ Delivery should include a factual QA report, such as:
 
 ## MVP Demo Flow
 
-The hackathon MVP should focus on one convincing end-to-end path:
+The MVP should focus on one convincing end-to-end path:
 
 1. Project input
 2. Document ingestion
@@ -118,7 +119,7 @@ The hackathon MVP should focus on one convincing end-to-end path:
 10. Verify claims
 11. Deliver strategy, content, source report, and production plan
 
-## Suggested Marketplace Services
+## Service Modules
 
 ### Content Strategy Audit
 
@@ -185,7 +186,7 @@ The agent should produce:
 
 ## Build Direction
 
-Start with A2A-style deliverables. Later, expose smaller MCP-style paid tools such as:
+Start with complete campaign deliverables. Later, expose smaller MCP-style tools such as:
 
 - `verify_content`
 - `generate_hooks`

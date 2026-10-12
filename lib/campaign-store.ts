@@ -51,7 +51,8 @@ const stagePositions: Record<GenerationStage["stage"], number> = {
   architecture: 2,
   execution: 3,
   editorial: 4,
-  governance: 5
+  governance: 5,
+  verification: 6
 };
 
 function parseJson<T>(value: unknown): T {
@@ -117,6 +118,10 @@ function buildStageArtifacts(pack: DeliveryPack) {
         claimIds: asset.linkedClaims
       })),
       productionPlan: pack.productionPlan
+    },
+    verification: {
+      webVerifiedClaims: pack.proofReport.claims.filter((claim) => claim.sourceType === "web-search"),
+      webSources: pack.sources.filter((source) => source.sourceType === "web-search")
     }
   };
 
