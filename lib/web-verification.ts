@@ -1,20 +1,34 @@
 /* global URL */
 import type { Claim, DeliveryPack, SourceDocument } from "./schemas";
-import { asRecord, asText, countWords } from "./json-values";
+import { firecrawlSearch } from "./firecrawl";
+import { countWords } from "./json-values";
 
 export type WebVerdict = "supported" | "contradicted" | "not-found";
 
 export type WebVerificationResult = {
   claimId: string;
   verdict: WebVerdict;
-  evidenceUrl: string | null;
-  evidenceTitle: string | null;
+  evidenceDocumentId: string | null;
   evidenceExcerpt: string | null;
   confidence: number;
   note: string;
 };
 
-export const MAX_WEB_VERIFIED_CLAIMS = 15;
+// A web page Firecrawl returned for one claim's search; the judge may cite only these.
+export type EvidenceDocument = {
+  id: string;
+  claimId: string;
+  url: string;
+  title: string;
+  text: string;
+};
+
+export const MAX_WEB_VERIFIED_CLAIMS = 10;
+export const SEARCH_RESULTS_PER_CLAIM = 3;
+const SEARCH_CONCURRENCY = 3;
+const MAX_QUERY_CHARS = 400;
+const MAX_DOCUMENT_CHARS = 6000;
+const MIN_EXCERPT_CHARS = 20;
 // Web pages are secondary evidence; never rank them above a supplied primary source.
 const MAX_WEB_CONFIDENCE = 90;
 const MAX_EXCERPT_CHARS = 1200;
@@ -50,40 +64,66 @@ export function webVerificationTargets(pack: DeliveryPack): Claim[] {
     .slice(0, MAX_WEB_VERIFIED_CLAIMS);
 }
 
-// Every URL the model actually consulted: search sources, opened pages, and inline citations.
-export function consultedUrls(output: unknown[]): Set<string> {
-  const urls = new Set<string>();
-  const add = (value: unknown) => {
-    const key = urlKey(asText(value));
-    if (key) urls.add(key);
-  };
+export function claimSearchQuery(claim: Pick<Claim, "text">, brand: string) {
+  const text = claim.text.trim();
+  const query = brand && !text.toLowerCase().includes(brand.toLowerCase()) ? brand + " " + text : text;
+  return query.slice(0, MAX_QUERY_CHARS);
+}
 
-  for (const entry of output) {
-    const item = asRecord(entry);
-    if (item.type === "web_search_call") {
-      const action = asRecord(item.action);
-      add(action.url);
-      if (Array.isArray(action.sources)) {
-        action.sources.forEach((source) => add(asRecord(source).url));
-      }
-    }
-    if (item.type === "message" && Array.isArray(item.content)) {
-      for (const part of item.content) {
-        const annotations = asRecord(part).annotations;
-        if (Array.isArray(annotations)) {
-          annotations.forEach((annotation) => add(asRecord(annotation).url));
-        }
+// Reduces markdown and typography differences so a copied quote matches its page text.
+export function normalizeForMatch(value: string) {
+  return value
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/[‘’]/g, "'")
+    .replace(/[“”]/g, "\"")
+    .replace(/[–—]/g, "-")
+    .replace(/[*_`#>|]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+export function excerptAppearsIn(excerpt: string, text: string) {
+  const needle = normalizeForMatch(excerpt);
+  return needle.length >= MIN_EXCERPT_CHARS && normalizeForMatch(text).includes(needle);
+}
+
+export async function gatherClaimEvidence(claims: Claim[], brand: string): Promise<EvidenceDocument[]> {
+  const documents: EvidenceDocument[] = [];
+  let next = 0;
+
+  async function worker() {
+    while (next < claims.length) {
+      const claim = claims[next];
+      next += 1;
+      try {
+        const results = await firecrawlSearch(claimSearchQuery(claim, brand), SEARCH_RESULTS_PER_CLAIM);
+        results.slice(0, SEARCH_RESULTS_PER_CLAIM).forEach((result, index) => {
+          const text = (result.markdown || result.description).slice(0, MAX_DOCUMENT_CHARS);
+          if (!text.trim() || !cleanUrl(result.url)) return;
+          documents.push({
+            id: claim.id + "-doc-" + (index + 1),
+            claimId: claim.id,
+            url: cleanUrl(result.url),
+            title: result.title || new URL(result.url).hostname,
+            text
+          });
+        });
+      } catch {
+        // A failed search leaves only that claim without evidence.
       }
     }
   }
 
-  return urls;
+  await Promise.all(Array.from({ length: Math.min(SEARCH_CONCURRENCY, claims.length) }, worker));
+  return documents;
 }
 
 export function applyWebVerification(
   pack: DeliveryPack,
   results: WebVerificationResult[],
-  consulted: Set<string>,
+  documents: EvidenceDocument[],
   verifiedAt: string
 ): { pack: DeliveryPack; supported: number; contradicted: number } {
   const targetIds = new Set(webVerificationTargets(pack).map((claim) => claim.id));
@@ -92,6 +132,7 @@ export function applyWebVerification(
       .filter((result) => targetIds.has(result.claimId))
       .map((result) => [result.claimId, result])
   );
+  const documentById = new Map(documents.map((document) => [document.id, document]));
   const sources: SourceDocument[] = [...pack.sources];
   const webSourceByKey = new Map<string, SourceDocument>();
   let webSourceCount = sources.filter((source) => source.sourceType === "web-search").length;
@@ -102,23 +143,28 @@ export function applyWebVerification(
     const result = resultByClaim.get(claim.id);
     if (!result) return claim;
 
-    const evidenceUrl = cleanUrl(result.evidenceUrl ?? "");
-    const evidenceKey = urlKey(evidenceUrl);
+    const document = result.evidenceDocumentId ? documentById.get(result.evidenceDocumentId) : undefined;
     const excerpt = (result.evidenceExcerpt ?? "").trim().slice(0, MAX_EXCERPT_CHARS);
-    if (result.verdict === "not-found" || !evidenceKey || !consulted.has(evidenceKey) || !excerpt) {
+    if (
+      result.verdict === "not-found" ||
+      !document ||
+      document.claimId !== claim.id ||
+      !excerptAppearsIn(excerpt, document.text)
+    ) {
       return {
         ...claim,
         recommendation: "Web search found no reliable source for this claim. Remove it or supply a primary source."
       };
     }
 
-    let source = webSourceByKey.get(evidenceKey);
+    const key = urlKey(document.url);
+    let source = webSourceByKey.get(key);
     if (!source) {
       webSourceCount += 1;
       source = {
         id: "src-web-" + webSourceCount,
-        title: result.evidenceTitle?.trim() || new URL(evidenceUrl).hostname,
-        url: evidenceUrl,
+        title: document.title,
+        url: document.url,
         sourceType: "web-search",
         extractedText: excerpt,
         fetchedAt: verifiedAt,
@@ -126,7 +172,7 @@ export function applyWebVerification(
         wordCount: countWords(excerpt),
         sourceQuality: "limited"
       };
-      webSourceByKey.set(evidenceKey, source);
+      webSourceByKey.set(key, source);
       sources.push(source);
     } else if (!source.extractedText.includes(excerpt)) {
       source.extractedText += "\n\n" + excerpt;

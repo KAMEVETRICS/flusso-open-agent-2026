@@ -494,7 +494,7 @@ function Workbench({
           <div className="empty-workspace">
             <FileText size={30} weight="duotone" />
             <h2>No campaign generated</h2>
-            <p>Results will appear here after OpenAI returns a validated delivery pack.</p>
+            <p>Results will appear here after the model returns a validated delivery pack.</p>
           </div>
         )}
       </section>

@@ -1,13 +1,13 @@
-import process from "node:process";
 import { ensureCampaignSchema, isDatabaseConfigured } from "@/lib/db";
 import { isFirecrawlConfigured } from "@/lib/firecrawl";
+import { isOpenRouterConfigured } from "@/lib/openrouter";
 
 export const dynamic = "force-dynamic";
 
 // Reports configuration readiness without spending model or crawl credits.
 export async function GET() {
   const checks = {
-    openai: Boolean(process.env.OPENAI_API_KEY?.trim()),
+    openrouter: isOpenRouterConfigured(),
     firecrawl: isFirecrawlConfigured(),
     database: isDatabaseConfigured()
   };

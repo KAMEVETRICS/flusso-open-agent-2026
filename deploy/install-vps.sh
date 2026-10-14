@@ -44,7 +44,7 @@ if [[ ! -f "$ENV_FILE" ]]; then
   install -o root -g "$APP_GROUP" -m 0640 \
     "$APP_DIR/deploy/env.production.example" "$ENV_FILE"
   echo "Created $ENV_FILE."
-  echo "Fill in OPENAI_API_KEY, FIRECRAWL_API_KEY, and DATABASE_URL, then run this installer again."
+  echo "Fill in OPENROUTER_API_KEY, FIRECRAWL_API_KEY, and DATABASE_URL, then run this installer again."
   exit 2
 fi
 
@@ -54,7 +54,7 @@ source "$ENV_FILE"
 set +a
 
 for name in \
-  OPENAI_API_KEY \
+  OPENROUTER_API_KEY \
   FIRECRAWL_API_KEY \
   DATABASE_URL; do
   if [[ -z "${!name:-}" ]]; then

@@ -16,7 +16,7 @@ Every inferred field can be overridden under **Optional details** in the intake 
 ## Local development
 
 1. Copy **.env.example** to **.env.local**.
-2. Set **OPENAI_API_KEY**, **FIRECRAWL_API_KEY**, and **DATABASE_URL** (a Neon pooled connection string).
+2. Set **OPENROUTER_API_KEY**, **FIRECRAWL_API_KEY**, and **DATABASE_URL** (a Neon pooled connection string).
 3. Install and run:
 
 ~~~bash
@@ -40,8 +40,12 @@ All fetching happens through Firecrawl, so the engine never requests user-suppli
 
 The extracted brand identity steers visual briefs and generated images toward the brand's palette and typography. Logos are shown for reference only and are never reproduced in generated images.
 
+## Models
+
+All model calls go through [OpenRouter](https://openrouter.ai) using its OpenAI-compatible Chat Completions API with strict JSON schemas. **OPENROUTER_MODEL** picks the text model and must support structured outputs; requests only route to providers that honor the schema. **OPENROUTER_IMAGE_MODEL** picks the image model for visuals.
+
 ## Web verification
 
-After governance marks claims against the fetched sources, a final stage uses OpenAI web search on up to 15 claims that still have no source. A claim becomes supported or conflicting only when the model cites a page it actually consulted during the search; anything else stays unsupported. Web pages count as secondary evidence, so their confidence is capped at 90%. If web search is unavailable for the configured model, the stage is skipped and the campaign still completes.
+After governance marks claims against the fetched sources, a final stage checks up to 10 claims that still have no source. Firecrawl searches the web for each claim, then the model judges the claim against those pages only. A claim becomes supported or conflicting only when the model cites one of the fetched pages and its quoted passage actually appears in that page's text; anything else stays unsupported. Web pages count as secondary evidence, so their confidence is capped at 90%. If verification fails, the stage is marked unavailable and the campaign still completes.
 
 See [deploy/README.md](deploy/README.md) for the GitHub-to-VPS production workflow.

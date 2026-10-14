@@ -10,7 +10,7 @@ Your browser
 Next.js app on 127.0.0.1:3107
         |
         +-- Neon PostgreSQL
-        +-- OpenAI API
+        +-- OpenRouter API
         +-- Firecrawl API
 ~~~
 
@@ -23,7 +23,7 @@ The app has no built-in user authentication. Keep port 3107 bound to localhost a
 - Node.js 22.16.0 or newer (Node.js 24 recommended)
 - a GitHub repository containing this project
 - a Neon pooled connection string
-- an OpenAI API key
+- an OpenRouter API key
 - a Firecrawl API key
 
 The fixed production paths are:
@@ -58,7 +58,7 @@ The first installer run creates the protected environment file and stops. Edit i
 sudo editor /etc/flusso/flusso.env
 ~~~
 
-Set **OPENAI_API_KEY**, **FIRECRAWL_API_KEY**, and **DATABASE_URL**. Quote the database URL if it contains **&** or other shell-sensitive characters. Then run the installer again:
+Set **OPENROUTER_API_KEY**, **FIRECRAWL_API_KEY**, and **DATABASE_URL**. Quote the database URL if it contains **&** or other shell-sensitive characters. Then run the installer again:
 
 ~~~bash
 sudo bash /opt/flusso/deploy/install-vps.sh
@@ -75,7 +75,7 @@ sudo systemctl status flusso-engine.service
 sudo journalctl -u flusso-engine.service -n 100 --no-pager
 ~~~
 
-The smoke test calls **/api/health**, which checks that the OpenAI and Firecrawl keys are set and that Neon is reachable. The listener must be **127.0.0.1:3107**, not **0.0.0.0:3107** or **[::]:3107**.
+The smoke test calls **/api/health**, which checks that the OpenRouter and Firecrawl keys are set and that Neon is reachable. The listener must be **127.0.0.1:3107**, not **0.0.0.0:3107** or **[::]:3107**.
 
 ## 4. Open the app
 
@@ -99,7 +99,7 @@ The updater refuses to run over local VPS changes, pulls only with fast-forward 
 
 ## Retiring the OKX marketplace setup
 
-Earlier versions ran an OKX.AI marketplace agent next to the engine. Before the first update after this change, add **FIRECRAWL_API_KEY** to **/etc/flusso/flusso.env**; the smoke test fails without it.
+Earlier versions ran an OKX.AI marketplace agent next to the engine and called OpenAI directly. Before the first update after this change, add **OPENROUTER_API_KEY** and **FIRECRAWL_API_KEY** to **/etc/flusso/flusso.env** (see **deploy/env.production.example** for the full set); the smoke test fails without them.
 
 That first **update-vps.sh** run disables and removes the old systemd units (**flusso-a2a**, **flusso-a2a-health**, **flusso-recovery**). Finish the cleanup once by hand:
 
@@ -107,6 +107,6 @@ That first **update-vps.sh** run disables and removes the old systemd units (**f
 2. Disable or uninstall the **flusso-a2a-guard** plugin in OpenClaw. Its linked source directory no longer exists in the repository.
 3. Delete **/home/flusso/.config/systemd/user/openclaw-gateway.service.d/flusso.conf**, which loaded the Flusso secrets into the OpenClaw gateway.
 4. Delete the old skill copies: **/home/flusso/.agents/skills/flusso-content-engineering** and **/home/flusso/.openclaw/workspace/skills/flusso-content-engineering**.
-5. Remove the **A2A_*** and **CONTENT_ENGINE_URL** entries from **/etc/flusso/flusso.env**.
+5. Remove the **A2A_***, **CONTENT_ENGINE_URL**, **LLM_PROVIDER**, and **OPENAI_*** entries from **/etc/flusso/flusso.env**.
 
 The Neon tables **a2a_content_jobs** and **a2a_inbox_turns** are no longer used. They are left in place; drop them manually once you no longer need their history.

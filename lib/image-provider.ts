@@ -1,83 +1,86 @@
+/* global AbortSignal */
 import process from "node:process";
-import OpenAI from "openai";
 import type { DeliveryPack, VisualBrief } from "./schemas";
+import { asRecord, asText } from "./json-values";
+import { OPENROUTER_BASE_URL, appHeaders, imageModel, openRouterApiKey } from "./openrouter";
 
 export type GeneratedVisualImage = {
   base64: string;
-  mimeType: "image/webp";
+  mimeType: string;
   model: string;
 };
 
-function imageSize(aspectRatio: VisualBrief["aspectRatio"]) {
-  if (aspectRatio === "16:9") return "1536x1024";
-  if (aspectRatio === "4:5") return "1024x1536";
-  return "1024x1024";
+// 4:5 is not offered by every image model; 3:4 is the nearest widely supported portrait ratio.
+const aspectRatios: Record<VisualBrief["aspectRatio"], string> = {
+  "1:1": "1:1",
+  "16:9": "16:9",
+  "4:5": "3:4"
+};
+
+function imagePrompt(pack: DeliveryPack, brief: VisualBrief) {
+  const evidence = brief.sourceIds
+    .map((sourceId) => pack.sources.find((item) => item.id === sourceId))
+    .filter((source) => source !== undefined)
+    .map((source) => source.title + ": " + source.extractedText.slice(0, 600).replace(/\s+/g, " "));
+  const identity = pack.brandIdentity;
+
+  return [
+    "Create one polished editorial " + brief.visualType.replace(/-/g, " ") + " for " + pack.brief.brand + " (" + pack.brief.industry + ").",
+    "Purpose: " + brief.purpose,
+    "Key message: " + brief.keyMessage,
+    "Art direction: " + brief.prompt,
+    brief.dataPoints.length ? "Represent only these data points, faithfully: " + brief.dataPoints.join("; ") : "",
+    evidence.length ? "Supporting facts (use only these): " + evidence.join(" | ") : "",
+    identity?.colors.length
+      ? "Use this brand palette as the dominant colors: " + identity.colors.map((color) => color.role + " " + color.value).join(", ") + "."
+      : "",
+    identity?.headingFont ? "Echo the mood of the " + identity.headingFont + " typeface in any typography." : "",
+    identity?.colorScheme ? "Overall scheme: " + identity.colorScheme + "." : "",
+    "Prioritize explanatory clarity over decoration. Keep typography sparse and legible.",
+    "Do not invent metrics, labels, logos, product interfaces, partnerships, or capabilities.",
+    "Do not draw logos, wordmarks, or trademarked marks. No watermark. Do not imitate a named living artist."
+  ].filter(Boolean).join("\n");
 }
 
 export async function generateVisualImage(
   pack: DeliveryPack,
   brief: VisualBrief
 ): Promise<GeneratedVisualImage> {
-  const apiKey = process.env.OPENAI_API_KEY?.trim();
-  if (!apiKey) throw new Error("OPENAI_API_KEY is missing. Add it to .env.local and restart the server.");
-
-  const model = process.env.OPENAI_MODEL || "gpt-5.6-luna";
-  const imageModel = process.env.OPENAI_IMAGE_MODEL || "gpt-image-2";
-  const client = new OpenAI({
-    apiKey,
-    timeout: Number(process.env.OPENAI_IMAGE_TIMEOUT_MS || 180000)
-  });
-  const evidence = brief.sourceIds.map((sourceId) => {
-    const source = pack.sources.find((item) => item.id === sourceId);
-    return source ? {
-      id: source.id,
-      title: source.title,
-      excerpt: source.extractedText.slice(0, 1600)
-    } : { id: sourceId, title: "Unresolved source", excerpt: "" };
-  });
-
-  const response = await client.responses.create({
-    model,
-    instructions: [
-      "Create exactly one polished editorial visual for the supplied content asset.",
-      "Use only supplied facts and data. Do not invent metrics, labels, logos, product interfaces, partnerships, or capabilities.",
-      "Prioritize explanatory clarity over decoration. Keep typography sparse and legible.",
-      "Do not add a watermark. Do not imitate a named living artist.",
-      "For charts and comparisons, faithfully represent only the supplied data points.",
-      "When brandIdentity is supplied, use its colors as the dominant palette and echo the mood of its typography. Do not draw logos, wordmarks, or trademarked marks."
-    ].join("\n"),
-    input: JSON.stringify({
-      brand: pack.brief.brand,
-      industry: pack.brief.industry,
-      brandIdentity: pack.brandIdentity
-        ? {
-            colorScheme: pack.brandIdentity.colorScheme,
-            colors: pack.brandIdentity.colors,
-            headingFont: pack.brandIdentity.headingFont,
-            bodyFont: pack.brandIdentity.bodyFont,
-            personality: pack.brandIdentity.personality
-          }
-        : null,
-      visualBrief: brief,
-      evidence
+  const model = imageModel();
+  const response = await fetch(OPENROUTER_BASE_URL + "/images", {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + openRouterApiKey(),
+      "Content-Type": "application/json",
+      ...appHeaders()
+    },
+    body: JSON.stringify({
+      model,
+      prompt: imagePrompt(pack, brief),
+      aspect_ratio: aspectRatios[brief.aspectRatio]
     }),
-    tools: [{
-      type: "image_generation",
-      model: imageModel,
-      quality: "medium",
-      output_format: "webp",
-      size: imageSize(brief.aspectRatio)
-    }]
+    signal: AbortSignal.timeout(Number(process.env.OPENROUTER_IMAGE_TIMEOUT_MS || 180000))
   });
 
-  const imageCall = response.output.find((item) => item.type === "image_generation_call");
-  if (!imageCall || !imageCall.result) {
-    throw new Error("OpenAI returned no generated image.");
+  let payload = {};
+  try {
+    payload = JSON.parse(await response.text());
+  } catch {
+    // Non-JSON error bodies fall through to the status-based message.
+  }
+  const body = asRecord(payload);
+  if (!response.ok) {
+    const detail = asText(asRecord(body.error).message) || asText(body.error) || "HTTP " + response.status;
+    throw new Error("Image generation failed: " + detail);
   }
 
+  const image = asRecord(Array.isArray(body.data) ? body.data[0] : null);
+  const base64 = asText(image.b64_json);
+  if (!base64) throw new Error("Image generation returned no image.");
+
   return {
-    base64: imageCall.result,
-    mimeType: "image/webp",
-    model: imageModel
+    base64,
+    mimeType: asText(image.media_type) || "image/png",
+    model
   };
 }
