@@ -1,8 +1,26 @@
 import process from "node:process";
-import { neon } from "@neondatabase/serverless";
+import { neon, neonConfig } from "@neondatabase/serverless";
+
+const NETWORK_RETRIES = 2;
+const RETRY_DELAY_MS = 750;
 
 let database: ReturnType<typeof neon> | null = null;
 let schemaPromise: Promise<void> | null = null;
+
+// Neon serves queries over HTTPS. Retry connection-level failures, such as a compute waking from
+// scale-to-zero; Flusso writes are upserts, so a retried request does not duplicate rows.
+async function fetchWithRetry(input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) {
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      return await fetch(input, init);
+    } catch (error) {
+      if (attempt >= NETWORK_RETRIES || !(error instanceof TypeError)) throw error;
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS * (attempt + 1)));
+    }
+  }
+}
+
+neonConfig.fetchFunction = fetchWithRetry;
 
 export function isDatabaseConfigured() {
   return Boolean(process.env.DATABASE_URL?.trim());
@@ -204,7 +222,11 @@ export function ensureCampaignSchema() {
       WHERE stage_data.value->>'stage' IN ('foundation', 'architecture', 'execution', 'editorial', 'governance')
       ON CONFLICT (campaign_id, stage) DO NOTHING
     `;
-  })();
+  })().catch((error) => {
+    // Let the next request retry instead of failing every request until restart.
+    schemaPromise = null;
+    throw error;
+  });
 
   return schemaPromise;
 }

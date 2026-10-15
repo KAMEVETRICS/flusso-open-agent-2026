@@ -30,7 +30,8 @@ import { buildPromptModules, type PromptRoutingResult } from "./prompt-library";
 import {
   EDITORIAL_POLICY,
   editorialMixFor,
-  inspectEditorialAssets
+  inspectEditorialAssets,
+  matchAssetsToDrafts
 } from "./editorial-policy";
 import { noteSource } from "./source-ingestion";
 import { campaignProductionScope } from "./campaign-scope";
@@ -1242,6 +1243,63 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
       outputKeys: ["assets", "editorialReport", "visualBriefs"],
       maxOutputTokens: Math.max(16000, assetTarget * 1800)
     });
+    const rewritePass = matchAssetsToDrafts(editorialResult.output.assets, execution.assets);
+    let editorialAssets = rewritePass.matched;
+    if (rewritePass.renamed.size || rewritePass.missing.length) {
+      console.warn(
+        "Flusso editorial reconciliation: renamed " +
+        (Array.from(rewritePass.renamed, ([from, to]) => from + "->" + to).join(", ") || "none") +
+        "; missing " + (rewritePass.missing.map((draft) => draft.id).join(", ") || "none") +
+        "; returned " + editorialResult.output.assets.length + " of " + execution.assets.length + "."
+      );
+    }
+    if (rewritePass.missing.length) {
+      const completionResult = await this.runStage("editorial", EditorialAssetRepairSchema, {
+        label: "Editorial completion",
+        input: {
+          projectBrief: brief,
+          editorialPolicy: EDITORIAL_POLICY,
+          evidenceSources: sources,
+          draftAssets: rewritePass.missing
+        },
+        instructions: commonInstructions + "\n" + EDITORIAL_POLICY + "\n" + [
+          "These draft assets were missing from the editorial pass. Rewrite every supplied draft once.",
+          "Return exactly one asset repair per supplied draft, reusing its exact asset ID.",
+          "Preserve platform, calendarItemId, seriesId, segment, territory, hookId, and CTA intent.",
+          "A thread must contain three to twelve nonempty threadPosts of at most 280 characters each.",
+          "Explicitly return threadPosts, article, editorialMode, contentFormat, and visualBriefId for every asset."
+        ].join("\n"),
+        outputKeys: ["assetRepairs"],
+        maxOutputTokens: Math.max(8000, rewritePass.missing.length * 1800)
+      });
+      const completionPass = matchAssetsToDrafts(completionResult.output.assetRepairs, rewritePass.missing);
+      if (completionPass.missing.length) {
+        throw new Error(
+          "Editorial stage omitted " + completionPass.missing.map((draft) => draft.id).join(", ") +
+          " even after a completion pass."
+        );
+      }
+      editorialAssets = [...editorialAssets, ...completionPass.matched];
+      editorialResult = {
+        ...editorialResult,
+        metadata: {
+          ...editorialResult.metadata,
+          completedAt: completionResult.metadata.completedAt,
+          durationMs: editorialResult.metadata.durationMs + completionResult.metadata.durationMs
+        }
+      };
+    }
+    const draftIds = new Set(execution.assets.map((draft) => draft.id));
+    editorialResult = {
+      ...editorialResult,
+      output: {
+        ...editorialResult.output,
+        assets: editorialAssets,
+        visualBriefs: editorialResult.output.visualBriefs
+          .map((visual) => ({ ...visual, assetId: rewritePass.renamed.get(visual.assetId) ?? visual.assetId }))
+          .filter((visual) => draftIds.has(visual.assetId))
+      }
+    };
     let editorial: EditorialStageOutput;
     try {
       editorial = normalizeEditorialStage(editorialResult.output, execution, sources, brief);

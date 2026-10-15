@@ -68,6 +68,41 @@ export function editorialMixFor(profile: EditorialProfile): EditorialMixItem[] {
   }));
 }
 
+type DraftLineage = { id: string; calendarItemId: string };
+
+// Models sometimes rename, drop, or add assets while rewriting. Match each candidate to a draft by
+// exact ID first, then by its preserved calendar item (unique per draft); unmatched extras are dropped.
+export function matchAssetsToDrafts<T extends DraftLineage, D extends DraftLineage>(
+  candidates: T[],
+  drafts: D[]
+): { matched: T[]; renamed: Map<string, string>; missing: D[] } {
+  const unclaimed = new Map(drafts.map((draft) => [draft.id, draft]));
+  const renamed = new Map<string, string>();
+  const matched: T[] = [];
+  const leftovers: T[] = [];
+
+  for (const candidate of candidates) {
+    if (unclaimed.has(candidate.id)) {
+      unclaimed.delete(candidate.id);
+      matched.push(candidate);
+    } else {
+      leftovers.push(candidate);
+    }
+  }
+
+  for (const candidate of leftovers) {
+    const draft = Array.from(unclaimed.values()).find(
+      (item) => item.calendarItemId !== "" && item.calendarItemId === candidate.calendarItemId
+    );
+    if (!draft) continue;
+    unclaimed.delete(draft.id);
+    renamed.set(candidate.id, draft.id);
+    matched.push({ ...candidate, id: draft.id });
+  }
+
+  return { matched, renamed, missing: Array.from(unclaimed.values()) };
+}
+
 export type EditorialIssue = {
   assetId: string;
   code: "slop" | "short-post-length" | "thread-structure" | "thread-post-length" | "article-structure" | "article-depth" | "medium-format" | "format-mix" | "duplicate-opening";
