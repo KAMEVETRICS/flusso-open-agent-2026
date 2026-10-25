@@ -77,7 +77,7 @@ export async function discoverBrief(input: BriefInput, inferrer: BriefInferrer):
     scrapeSiteIndex(input.website, fetchedAt),
     siteLinks(input.website),
     searchCompetitors
-      ? searchSourceDocuments(competitorSearchQuery(input.website), SEARCH_RESULT_LIMIT, fetchedAt)
+      ? searchSourceDocuments(competitorSearchQuery(input.website), input.website, SEARCH_RESULT_LIMIT, fetchedAt)
       : Promise.resolve<SourceDocument[]>([])
   ]);
   const pageUrls = pickKeyPages(links, input.website, MAX_KEY_PAGES, siteIndex?.links ?? [], docUrls);

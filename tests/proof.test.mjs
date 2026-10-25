@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { confidencePercent } from "../lib/schemas.ts";
-import { isEvidenceSource, normalizeGeneratedClaims, summarizeProof } from "../lib/proof.ts";
+import { excerptAppearsIn, isEvidenceSource, normalizeGeneratedClaims, summarizeProof } from "../lib/proof.ts";
 
 const docsText = "## Protocol\nDoma documentation states that tokenized domains remain **DNS-compliant** and work like traditional domains. Doma supports Base, Solana, Avalanche, and Ethereum.";
 
@@ -101,6 +101,13 @@ test("keeps a claim supported only when its quote appears in the cited source", 
   assert.equal(conflict.evidence[0].stance, "conflicts");
 
   assert.match(missingSource.recommendation, /No supplied source supports/);
+});
+
+test("matches quotes from app-screen markdown with escaped line breaks and joined cells", () => {
+  const appScreen = "[![gochujang.com avatar](https://cdn.doma.xyz/a.png)\\\\\n\\\\\ng...\\\\\n\\\\\nToken FDV $311.8K0.39%\\\\\n\\\\\nBuyout price$750KPotential2.4x\\\\\n\\\\\nLive](https://app.doma.xyz/domain/gochujang.com)";
+  assert.equal(excerptAppearsIn("Token FDV $311.8K 0.39% Buyout price $750K Potential 2.4x", appScreen), true);
+  assert.equal(excerptAppearsIn("Token FDV $311.8K0.39%\nBuyout price$750KPotential2.4x", appScreen), true);
+  assert.equal(excerptAppearsIn("Token FDV $311.8K 0.39% Buyout price $900K", appScreen), false);
 });
 
 test("summarizes the proof report, counting editorial framing separately", () => {

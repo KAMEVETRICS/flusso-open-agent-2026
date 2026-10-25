@@ -38,15 +38,21 @@ export function normalizeForMatch(value: string) {
     .replace(/[‘’]/g, "'")
     .replace(/[“”]/g, "\"")
     .replace(/[–—]/g, "-")
-    .replace(/[*_`#>|]/g, " ")
+    .replace(/[*_`#>|\\]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
     .toLowerCase();
 }
 
+// App screens and tables often lose the space between cells ("$750KPotential2.4x"), so the
+// final comparison ignores whitespace.
+function withoutWhitespace(value: string) {
+  return value.replace(/\s/g, "");
+}
+
 export function excerptAppearsIn(excerpt: string, text: string) {
   const needle = normalizeForMatch(excerpt);
-  return needle.length >= MIN_EXCERPT_CHARS && normalizeForMatch(text).includes(needle);
+  return needle.length >= MIN_EXCERPT_CHARS && withoutWhitespace(normalizeForMatch(text)).includes(withoutWhitespace(needle));
 }
 
 export function summarizeProof(claims: Claim[]): ProofReport {

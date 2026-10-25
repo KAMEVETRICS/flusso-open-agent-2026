@@ -2,7 +2,7 @@
 import { createHash } from "node:crypto";
 import type { BrandIdentity, SourceAuthority, SourceDocument } from "./schemas";
 import { normalizeBranding } from "./brand-identity";
-import { extractStructuredData, parseSiteIndexLinks, stripAgentInstructions } from "./discovery-helpers";
+import { extractStructuredData, isSameSiteFamily, parseSiteIndexLinks, stripAgentInstructions } from "./discovery-helpers";
 import { firecrawlScrape, firecrawlSearch, type FirecrawlPage, type FirecrawlScrape } from "./firecrawl";
 import { countWords } from "./json-values";
 
@@ -162,6 +162,7 @@ export async function scrapeSiteIndex(
 
 export async function searchSourceDocuments(
   query: string,
+  website: string,
   limit: number,
   fetchedAt: string
 ): Promise<SourceDocument[]> {
@@ -180,7 +181,7 @@ export async function searchSourceDocuments(
         fetchStatus: wordCount ? "fetched" as const : "failed" as const,
         wordCount,
         completeness: wordCount ? captured.completeness : "failed" as const,
-        authority: "third-party" as const,
+        authority: isSameSiteFamily(result.url, website) ? "first-party" as const : "third-party" as const,
         contentHash: captured.contentHash,
         ...(wordCount ? {} : { failureReason: "No readable text extracted" })
       };
