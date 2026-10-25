@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { DeliveryPackSchema, type DeliveryPack, type GenerationStage } from "./schemas";
 import { ensureCampaignSchema, getDatabase } from "./db";
+import { isEvidenceSource } from "./proof";
+import { plainText, splitIntoSections } from "./sections";
 
 export type CampaignSummary = {
   id: string;
@@ -179,6 +181,33 @@ function buildStageQueries(
   });
 }
 
+// Replaces the campaign's searchable sections with those of its current sources.
+function buildSectionQueries(
+  sql: ReturnType<typeof getDatabase>,
+  campaignId: string,
+  pack: DeliveryPack
+) {
+  const sectionsJson = JSON.stringify(
+    pack.sources.filter(isEvidenceSource).flatMap(splitIntoSections).map((section) => ({
+      section_id: section.id,
+      source_id: section.sourceId,
+      heading: section.heading,
+      body: section.text,
+      plain_text: plainText(section.text),
+      position: section.position
+    }))
+  );
+  return [
+    sql`DELETE FROM source_sections WHERE campaign_id = ${campaignId}`,
+    sql`
+      INSERT INTO source_sections (campaign_id, section_id, source_id, heading, body, plain_text, position)
+      SELECT ${campaignId}, section_id, source_id, heading, body, plain_text, position
+      FROM jsonb_to_recordset(${sectionsJson}::jsonb)
+        AS section(section_id text, source_id text, heading text, body text, plain_text text, position integer)
+    `
+  ];
+}
+
 export async function saveCampaign(pack: DeliveryPack, id: string = randomUUID()) {
   await ensureCampaignSchema();
   const sql = getDatabase();
@@ -206,7 +235,11 @@ export async function saveCampaign(pack: DeliveryPack, id: string = randomUUID()
     RETURNING id, brand, goal, provider, model, created_at
   `;
 
-  const results = await sql.transaction([campaignQuery, ...buildStageQueries(sql, id, pack)]);
+  const results = await sql.transaction([
+    campaignQuery,
+    ...buildStageQueries(sql, id, pack),
+    ...buildSectionQueries(sql, id, pack)
+  ]);
   const rows = results[0] as CampaignRow[];
   if (!rows[0]) throw new Error("Campaign save returned no database row.");
 
@@ -231,7 +264,11 @@ export async function updateCampaignPack(id: string, pack: DeliveryPack) {
     RETURNING id, brand, goal, provider, model, created_at
   `;
 
-  const results = await sql.transaction([campaignQuery, ...buildStageQueries(sql, id, pack)]);
+  const results = await sql.transaction([
+    campaignQuery,
+    ...buildStageQueries(sql, id, pack),
+    ...buildSectionQueries(sql, id, pack)
+  ]);
   const rows = results[0] as CampaignRow[];
   if (!rows[0]) throw new Error("Campaign not found.");
 
@@ -294,4 +331,57 @@ export async function getCampaign(id: string) {
     pack,
     stageArtifacts
   };
+}
+
+export type SectionSearchResult = {
+  sectionId: string;
+  sourceId: string;
+  heading: string;
+  snippet: string;
+  rank: number;
+};
+
+type SectionSearchRow = { section_id: string; source_id: string; heading: string; snippet: string; rank: number };
+
+// Full-text search over one campaign's source sections. Campaigns saved before sections were
+// stored are indexed on their first search.
+export async function searchCampaignSections(campaignId: string, pack: DeliveryPack, query: string, limit = 10) {
+  await ensureCampaignSchema();
+  const sql = getDatabase();
+  const [{ count }] = await sql`
+    SELECT count(*)::int AS count FROM source_sections WHERE campaign_id = ${campaignId}
+  ` as Array<{ count: number }>;
+  if (!count) await sql.transaction(buildSectionQueries(sql, campaignId, pack));
+
+  // Pages often repeat the same block (navigation, app screens); show each passage once.
+  const rows = await sql`
+    SELECT section_id, source_id, heading, snippet, rank
+    FROM (
+      SELECT DISTINCT ON (md5(plain_text))
+        section_id,
+        source_id,
+        heading,
+        ts_headline(
+          'english',
+          plain_text,
+          websearch_to_tsquery('english', ${query}),
+          'StartSel=«, StopSel=», MaxWords=45, MinWords=15, MaxFragments=2, FragmentDelimiter=" … "'
+        ) AS snippet,
+        ts_rank(search_vector, websearch_to_tsquery('english', ${query})) AS rank
+      FROM source_sections
+      WHERE campaign_id = ${campaignId}
+        AND search_vector @@ websearch_to_tsquery('english', ${query})
+      ORDER BY md5(plain_text), section_id
+    ) AS distinct_sections
+    ORDER BY rank DESC, section_id
+    LIMIT ${Math.max(1, Math.min(limit, 25))}
+  ` as SectionSearchRow[];
+
+  return rows.map((row): SectionSearchResult => ({
+    sectionId: row.section_id,
+    sourceId: row.source_id,
+    heading: row.heading,
+    snippet: row.snippet,
+    rank: Number(row.rank)
+  }));
 }

@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { confidencePercent } from "../lib/schemas.ts";
-import { excerptAppearsIn, isEvidenceSource, normalizeGeneratedClaims, summarizeProof } from "../lib/proof.ts";
+import { isEvidenceSource, normalizeGeneratedClaims, summarizeProof } from "../lib/proof.ts";
+import { excerptAppearsIn } from "../lib/text-match.ts";
 
 const docsText = "## Protocol\nDoma documentation states that tokenized domains remain **DNS-compliant** and work like traditional domains. Doma supports Base, Solana, Avalanche, and Ethereum.";
 
@@ -80,6 +81,7 @@ test("keeps a claim supported only when its quote appears in the cited source", 
   assert.equal(supported.checkedAt, "2026-10-25T12:00:00.000Z");
   assert.deepEqual(supported.evidence, [{
     sourceId: "src-project-docs",
+    sectionId: "src-project-docs#protocol",
     quote: "tokenized domains remain DNS-compliant and work like traditional domains",
     locator: "https://docs.doma.xyz",
     stance: "supports"

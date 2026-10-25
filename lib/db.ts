@@ -148,6 +148,27 @@ export function ensureCampaignSchema() {
       CREATE INDEX IF NOT EXISTS campaign_visual_assets_campaign_idx
       ON campaign_visual_assets (campaign_id, created_at DESC)
     `;
+    // Heading-delimited source sections, searchable with Postgres full-text search. body keeps the
+    // original markdown for quote checks; plain_text drops images and link targets for search.
+    await sql`
+      CREATE TABLE IF NOT EXISTS source_sections (
+        campaign_id text NOT NULL REFERENCES campaign_runs(id) ON DELETE CASCADE,
+        section_id text NOT NULL,
+        source_id text NOT NULL,
+        heading text NOT NULL,
+        body text NOT NULL,
+        plain_text text NOT NULL,
+        position integer NOT NULL,
+        search_vector tsvector GENERATED ALWAYS AS (
+          setweight(to_tsvector('english', heading), 'A') || setweight(to_tsvector('english', plain_text), 'B')
+        ) STORED,
+        PRIMARY KEY (campaign_id, section_id)
+      )
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS source_sections_search_idx
+      ON source_sections USING gin (search_vector)
+    `;
     await sql`
       INSERT INTO campaign_stage_artifacts (
         campaign_id,

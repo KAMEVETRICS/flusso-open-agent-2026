@@ -3,13 +3,14 @@ import assert from "node:assert/strict";
 import process from "node:process";
 import test, { afterEach } from "node:test";
 import {
-  applyWebVerification,
+  applyVerification,
   claimSearchQuery,
   gatherClaimEvidence,
+  localClaimEvidence,
   urlKey,
-  webVerificationTargets
+  verificationTargets
 } from "../lib/web-verification.ts";
-import { excerptAppearsIn } from "../lib/proof.ts";
+import { excerptAppearsIn } from "../lib/text-match.ts";
 
 const originalFetch = globalThis.fetch;
 
@@ -118,12 +119,12 @@ test("matches quotes through markdown, typography, and whitespace differences", 
 });
 
 test("targets only unresolved unsupported claims", () => {
-  const targets = webVerificationTargets(pack([
+  const targets = verificationTargets(pack([
     claim("claim-1", "unsupported"),
     claim("claim-2", "supported"),
     claim("claim-3", "unsupported", { resolutionStatus: "repaired" }),
     claim("claim-4", "time-sensitive")
-  ]));
+  ]), 10);
   assert.deepEqual(targets.map((item) => item.id), ["claim-1"]);
 });
 
@@ -153,7 +154,7 @@ test("gathers evidence per claim through Firecrawl search and tolerates failures
 });
 
 test("accepts only quotes that appear in that claim's own fetched documents", () => {
-  const { pack: verified, supported, contradicted } = applyWebVerification(
+  const { pack: verified, supported, contradicted } = applyVerification(
     pack([
       claim("claim-1", "unsupported"),
       claim("claim-2", "unsupported"),
@@ -204,6 +205,7 @@ test("accepts only quotes that appear in that claim's own fetched documents", ()
   assert.equal(webSources[0].completeness, "truncated");
   assert.deepEqual(byId.get("claim-1").evidence, [{
     sourceId: "src-web-1",
+    sectionId: "",
     quote: "Arc settles merchant payments in USDC within seconds.",
     locator: "https://docs.arc.house/settlement",
     stance: "supports"
@@ -222,8 +224,57 @@ test("accepts only quotes that appear in that claim's own fetched documents", ()
   );
 });
 
+test("checks claims against the best-matching captured sections first", () => {
+  const docs = {
+    id: "src-project-docs",
+    title: "Arc docs",
+    url: "https://docs.arc.house",
+    sourceType: "primary-doc",
+    extractedText: "## Refunds\nRefunds return to the original wallet within one business day.\n\n## Settlement\nArc settles merchant payments in USDC within seconds of confirmation.",
+    fetchedAt: "2026-10-11T00:00:00.000Z",
+    fetchStatus: "fetched",
+    wordCount: 22,
+    completeness: "full",
+    authority: "first-party",
+    contentHash: ""
+  };
+  const base = pack([
+    claim("claim-1", "unsupported", { text: "Arc settles merchant payments in USDC" }),
+    claim("claim-2", "unsupported", { text: "Arc is audited by three firms" })
+  ]);
+  base.sources.push(docs);
+
+  const local = localClaimEvidence(base.proofReport.claims, base.sources);
+  const forClaim1 = local.filter((document) => document.claimId === "claim-1");
+  assert.equal(forClaim1[0].sectionId, "src-project-docs#settlement");
+  assert.equal(forClaim1[0].sourceId, "src-project-docs");
+  assert.equal(forClaim1[0].title, "Arc docs > Settlement");
+
+  const { pack: verified, supported } = applyVerification(
+    base,
+    [
+      result("claim-1", "supported", forClaim1[0].id, { evidenceExcerpt: "Arc settles merchant payments in USDC within seconds of confirmation." }),
+      result("claim-2", "not-found", null)
+    ],
+    local,
+    "2026-10-14T12:00:00.000Z",
+    null
+  );
+  const [first, second] = verified.proofReport.claims;
+  assert.equal(supported, 1);
+  assert.equal(first.status, "supported");
+  assert.equal(first.sourceId, "src-project-docs");
+  assert.equal(first.sourceType, "primary-doc");
+  assert.equal(first.confidence, 95);
+  assert.equal(first.evidence[0].sectionId, "src-project-docs#settlement");
+  assert.match(first.recommendation, /captured source/);
+  assert.equal(verified.sources.length, 2, "no web source is created for a captured section");
+  assert.equal(second.status, "unsupported");
+  assert.equal(second.recommendation, base.proofReport.claims[1].recommendation, "left for the web round");
+});
+
 test("rejects a supported verdict whose quote is not on the cited page", () => {
-  const { pack: verified } = applyWebVerification(
+  const { pack: verified } = applyVerification(
     pack([claim("claim-1", "unsupported")]),
     [result("claim-1", "supported", "claim-1-doc-1", { evidenceExcerpt: "Arc is the fastest settlement network in the world." })],
     documents,

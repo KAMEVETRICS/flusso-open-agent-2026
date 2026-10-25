@@ -3,7 +3,9 @@ import { confidencePercent, type Claim, type DeliveryPack, type SourceDocument }
 import { isSameSiteFamily } from "./discovery-helpers";
 import { firecrawlSearch } from "./firecrawl";
 import { countWords } from "./json-values";
-import { excerptAppearsIn, summarizeProof } from "./proof";
+import { isEvidenceSource, summarizeProof } from "./proof";
+import { createSectionIndex, splitIntoSections } from "./sections";
+import { excerptAppearsIn } from "./text-match";
 
 export type WebVerdict = "supported" | "contradicted" | "not-found";
 
@@ -16,15 +18,20 @@ export type WebVerificationResult = {
   note: string;
 };
 
-// A web page Firecrawl returned for one claim's search; the judge may cite only these.
+// A candidate passage for one claim; the judge may cite only these. Local documents are sections
+// of a captured source (sourceId and sectionId set); the rest are pages Firecrawl search returned.
 export type EvidenceDocument = {
   id: string;
   claimId: string;
   url: string;
   title: string;
   text: string;
+  sourceId?: string;
+  sectionId?: string;
 };
 
+export const MAX_LOCAL_VERIFIED_CLAIMS = 20;
+export const LOCAL_SECTIONS_PER_CLAIM = 3;
 export const MAX_WEB_VERIFIED_CLAIMS = 10;
 export const SEARCH_RESULTS_PER_CLAIM = 3;
 const SEARCH_CONCURRENCY = 3;
@@ -32,6 +39,8 @@ const MAX_QUERY_CHARS = 400;
 const MAX_DOCUMENT_CHARS = 6000;
 // Web pages are secondary evidence; never rank them above a supplied primary source.
 const MAX_WEB_CONFIDENCE = 90;
+const MAX_LOCAL_CONFIDENCE = 95;
+export const WEB_NOT_FOUND = "Web search found no reliable source for this claim. Remove it or supply a primary source.";
 const MAX_EXCERPT_CHARS = 1200;
 
 function parseHttpUrl(value: string) {
@@ -59,10 +68,33 @@ export function urlKey(value: string) {
   return url.hostname.toLowerCase().replace(/^www\./, "") + url.pathname.replace(/\/+$/, "") + url.search;
 }
 
-export function webVerificationTargets(pack: DeliveryPack): Claim[] {
-  return pack.proofReport.claims
-    .filter((claim) => claim.resolutionStatus === "unresolved" && claim.status === "unsupported")
-    .slice(0, MAX_WEB_VERIFIED_CLAIMS);
+function isVerificationTarget(claim: Claim) {
+  return claim.resolutionStatus === "unresolved" && claim.status === "unsupported";
+}
+
+export function verificationTargets(pack: DeliveryPack, limit: number): Claim[] {
+  return pack.proofReport.claims.filter(isVerificationTarget).slice(0, limit);
+}
+
+// The captured sections that best match each claim. Checking these is free; web search is not.
+export function localClaimEvidence(claims: Claim[], sources: SourceDocument[]): EvidenceDocument[] {
+  const evidenceSources = sources.filter(isEvidenceSource);
+  const sourceById = new Map(evidenceSources.map((source) => [source.id, source]));
+  const index = createSectionIndex(evidenceSources.flatMap(splitIntoSections));
+  return claims.flatMap((claim) =>
+    index.search(claim.text, LOCAL_SECTIONS_PER_CLAIM).map(({ section }, position) => {
+      const source = sourceById.get(section.sourceId) as SourceDocument;
+      return {
+        id: claim.id + "-local-" + (position + 1),
+        claimId: claim.id,
+        url: source.url ?? "",
+        title: source.title + (section.heading ? " > " + section.heading : ""),
+        text: section.text,
+        sourceId: source.id,
+        sectionId: section.id
+      };
+    })
+  );
 }
 
 export function claimSearchQuery(claim: Pick<Claim, "text">, brand: string) {
@@ -104,13 +136,16 @@ export async function gatherClaimEvidence(claims: Claim[], brand: string): Promi
   return documents;
 }
 
-export function applyWebVerification(
+// Applies the judge's verdicts. notFoundRecommendation replaces the recommendation of a claim
+// that stays unsupported; null leaves it for a later round.
+export function applyVerification(
   pack: DeliveryPack,
   results: WebVerificationResult[],
   documents: EvidenceDocument[],
-  verifiedAt: string
+  verifiedAt: string,
+  notFoundRecommendation: string | null = WEB_NOT_FOUND
 ): { pack: DeliveryPack; supported: number; contradicted: number } {
-  const targetIds = new Set(webVerificationTargets(pack).map((claim) => claim.id));
+  const targetIds = new Set(pack.proofReport.claims.filter(isVerificationTarget).map((claim) => claim.id));
   const resultByClaim = new Map(
     results
       .filter((result) => targetIds.has(result.claimId))
@@ -135,14 +170,15 @@ export function applyWebVerification(
       document.claimId !== claim.id ||
       !excerptAppearsIn(excerpt, document.text)
     ) {
-      return {
-        ...claim,
-        recommendation: "Web search found no reliable source for this claim. Remove it or supply a primary source."
-      };
+      return notFoundRecommendation === null ? claim : { ...claim, recommendation: notFoundRecommendation };
     }
 
+    const local = document.sourceId ? sources.find((candidate) => candidate.id === document.sourceId) : undefined;
+    if (document.sourceId && !local) {
+      return notFoundRecommendation === null ? claim : { ...claim, recommendation: notFoundRecommendation };
+    }
     const key = urlKey(document.url);
-    let source = webSourceByKey.get(key);
+    let source = local ?? webSourceByKey.get(key);
     if (!source) {
       webSourceCount += 1;
       source = {
@@ -161,7 +197,7 @@ export function applyWebVerification(
       };
       webSourceByKey.set(key, source);
       sources.push(source);
-    } else if (!source.extractedText.includes(excerpt)) {
+    } else if (!local && !source.extractedText.includes(excerpt)) {
       source.extractedText += "\n\n" + excerpt;
       source.wordCount = countWords(source.extractedText);
     }
@@ -170,29 +206,33 @@ export function applyWebVerification(
       ...claim,
       sourceId: source.id,
       sourceTitle: source.title,
-      sourceType: "web-search",
+      sourceType: source.sourceType,
       evidence: [{
         sourceId: source.id,
+        sectionId: document.sectionId ?? "",
         quote: excerpt,
         locator: document.url,
         stance: result.verdict === "supported" ? "supports" as const : "conflicts" as const
       }],
       checkedAt: verifiedAt,
-      confidence: Math.min(confidencePercent(Math.max(result.confidence, 0)), MAX_WEB_CONFIDENCE)
+      confidence: Math.min(confidencePercent(Math.max(result.confidence, 0)), local ? MAX_LOCAL_CONFIDENCE : MAX_WEB_CONFIDENCE)
     };
     if (result.verdict === "supported") {
       supported += 1;
       return {
         ...verified,
         status: "supported",
-        recommendation: "Verified by web search. Review the cited page before publishing."
+        recommendation: local
+          ? "Found in a captured source during the evidence check. Review the passage before publishing."
+          : "Verified by web search. Review the cited page before publishing."
       };
     }
     contradicted += 1;
     return {
       ...verified,
       status: "conflict",
-      recommendation: "Web evidence contradicts this claim" + (result.note.trim() ? ": " + result.note.trim() : ".")
+      recommendation: (local ? "A captured source contradicts this claim" : "Web evidence contradicts this claim") +
+        (result.note.trim() ? ": " + result.note.trim() : ".")
     };
   });
 

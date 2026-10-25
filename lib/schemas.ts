@@ -381,6 +381,8 @@ export const PerformanceContextSchema = z.object({
 
 export const ClaimEvidenceSchema = z.object({
   sourceId: z.string(),
+  // The heading-delimited section holding the quote, such as "src-project-docs#protocol".
+  sectionId: z.string().default(""),
   // Exact passage from the source; code confirms it appears in the source text.
   quote: z.string(),
   locator: z.string().default(""),

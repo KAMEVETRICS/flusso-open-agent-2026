@@ -1,4 +1,6 @@
 import { confidencePercent, type Claim, type ClaimKind, type ProofReport, type SourceDocument } from "./schemas";
+import { sectionContaining, splitIntoSections } from "./sections";
+import { excerptAppearsIn } from "./text-match";
 
 export type GeneratedClaim = {
   id: string;
@@ -13,7 +15,6 @@ export type GeneratedClaim = {
 };
 
 const NON_FACTUAL_KINDS = new Set<ClaimKind>(["framing", "opinion"]);
-const MIN_EXCERPT_CHARS = 20;
 const UNSUPPORTED_CONFIDENCE_CAP = 49;
 
 export function isFactualClaimKind(kind: ClaimKind) {
@@ -28,31 +29,6 @@ export function isEvidenceSource(source: SourceDocument) {
     source.authority !== "internal" &&
     source.sourceType !== "prompt-library"
   );
-}
-
-// Reduces markdown and typography differences so a copied quote matches its page text.
-export function normalizeForMatch(value: string) {
-  return value
-    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
-    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(/[‘’]/g, "'")
-    .replace(/[“”]/g, "\"")
-    .replace(/[–—]/g, "-")
-    .replace(/[*_`#>|\\]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .toLowerCase();
-}
-
-// App screens and tables often lose the space between cells ("$750KPotential2.4x"), so the
-// final comparison ignores whitespace.
-function withoutWhitespace(value: string) {
-  return value.replace(/\s/g, "");
-}
-
-export function excerptAppearsIn(excerpt: string, text: string) {
-  const needle = normalizeForMatch(excerpt);
-  return needle.length >= MIN_EXCERPT_CHARS && withoutWhitespace(normalizeForMatch(text)).includes(withoutWhitespace(needle));
 }
 
 export function summarizeProof(claims: Claim[]): ProofReport {
@@ -128,6 +104,7 @@ export function normalizeGeneratedClaims(
       sourceType: source.sourceType,
       evidence: [{
         sourceId: source.id,
+        sectionId: sectionContaining(splitIntoSections(source), quote)?.id ?? "",
         quote,
         locator: source.url ?? "",
         stance: claim.status === "conflict" ? "conflicts" : "supports"
