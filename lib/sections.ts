@@ -16,7 +16,7 @@ const HEADING_LINE = /^(#{1,6})\s+(.+?)\s*#*\s*$/;
 const FENCE_LINE = /^\s*(```|~~~)/;
 
 // Docs sites append permalink anchors to headings, such as "[Direct link to heading](#intro)".
-const PERMALINK = /\[(?:direct link to [^\]]*|permalink[^\]]*|link to this (?:heading|section)|#|¶|\s*|​)\]\([^)]*\)/gi;
+const PERMALINK = /\[(?:direct link to [^\]]*|permalink[^\]]*|link to this (?:heading|section)|#|¶|\s*|\u200b)\]\([^)]*\)/gi;
 
 function cleanHeading(value: string) {
   return value
