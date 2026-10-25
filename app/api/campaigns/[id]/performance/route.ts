@@ -21,7 +21,7 @@ export async function GET(
 
     const [records, summary] = await Promise.all([
       getCampaignPerformance(id),
-      getPerformanceContextForBrand(campaign.pack.brief.brand)
+      getPerformanceContextForBrand(campaign.pack.brief.brand, campaign.pack.brief.goal)
     ]);
     return NextResponse.json({ records, summary });
   } catch (error) {
@@ -50,7 +50,7 @@ export async function POST(
     const record = await savePerformanceRecord(id, asset, input);
     const [records, summary] = await Promise.all([
       getCampaignPerformance(id),
-      getPerformanceContextForBrand(campaign.pack.brief.brand)
+      getPerformanceContextForBrand(campaign.pack.brief.brand, campaign.pack.brief.goal)
     ]);
     return NextResponse.json({ record, records, summary });
   } catch (error) {

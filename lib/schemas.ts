@@ -339,8 +339,12 @@ export const PerformancePatternSchema = z.object({
   conversionRate: z.number().nonnegative()
 });
 
+// Which outcome ranks winners, derived from the campaign goal.
+export const PerformanceObjectiveSchema = z.enum(["conversion", "traffic", "engagement"]);
+
 export const PerformanceContextSchema = z.object({
   brand: z.string(),
+  objective: PerformanceObjectiveSchema.default("engagement"),
   recordCount: z.number().int().nonnegative(),
   campaignCount: z.number().int().nonnegative(),
   totals: z.object({
@@ -556,6 +560,7 @@ export type VisualBrief = z.infer<typeof VisualBriefSchema>;
 export type PerformanceInput = z.infer<typeof PerformanceInputSchema>;
 export type PerformanceRecord = z.infer<typeof PerformanceRecordSchema>;
 export type PerformancePattern = z.infer<typeof PerformancePatternSchema>;
+export type PerformanceObjective = z.infer<typeof PerformanceObjectiveSchema>;
 export type PerformanceContext = z.infer<typeof PerformanceContextSchema>;
 export type Claim = z.infer<typeof ClaimSchema>;
 export type ProofReport = z.infer<typeof ProofReportSchema>;

@@ -77,8 +77,10 @@ const GeneratedClaimSchema = z.object({
   recommendation: z.string()
 });
 
+const MAX_ASSUMPTIONS = 5;
+
 const FoundationStageSchema = z.object({
-  brandContext: BrandContextSchema,
+  brandContext: BrandContextSchema.extend({ assumptions: z.array(z.string()).max(MAX_ASSUMPTIONS) }),
   contentLandscape: ContentLandscapeSchema,
   audienceSegments: z.array(AudienceSegmentSchema).min(3).max(6),
   territories: z.array(ContentTerritorySchema).min(3).max(6)
@@ -1119,7 +1121,7 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
         "Make audience segments operational with positioning, emotional tone, proof needs, taboo topics, formats, cadence, and timing.",
         "Create three to six territories tied to a named gap, audience segments, and a proof angle.",
         "Use sequential segment IDs segment-1, segment-2, and territory IDs territory-1, territory-2, and so on.",
-        "Put every caveat, unconfirmed inference, and question for the brand team in brandContext.assumptions. Positioning and voice must read as finished client copy."
+        "Put caveats, unconfirmed inferences, and questions for the brand team in brandContext.assumptions: at most " + MAX_ASSUMPTIONS + ", one sentence each, keeping only those that would change the campaign if wrong. Positioning and voice must read as finished client copy."
       ].join("\n"),
       outputKeys: ["brandContext", "contentLandscape", "audienceSegments", "territories"],
       maxOutputTokens: 7000

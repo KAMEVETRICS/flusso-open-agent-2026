@@ -160,7 +160,7 @@ export async function savePerformanceRecord(
   return toRecord(rows[0]);
 }
 
-export async function getPerformanceContextForBrand(brand: string): Promise<PerformanceContext> {
+export async function getPerformanceContextForBrand(brand: string, goal: string): Promise<PerformanceContext> {
   await ensureCampaignSchema();
   const sql = getDatabase();
   const rows = await sql`
@@ -187,5 +187,5 @@ export async function getPerformanceContextForBrand(brand: string): Promise<Perf
     ORDER BY p.updated_at DESC
   ` as PerformanceRow[];
 
-  return summarizePerformance(rows.map(toRecord), brand);
+  return summarizePerformance(rows.map(toRecord), brand, goal);
 }

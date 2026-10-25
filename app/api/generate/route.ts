@@ -53,7 +53,7 @@ export async function POST(request: Request) {
               sourceCount: discovery.sources.filter((source) => source.fetchStatus === "fetched").length
             });
             const promptRouting = routePromptLibrary(discovery.brief);
-            const performanceContext = await getPerformanceContextForBrand(discovery.brief.brand);
+            const performanceContext = await getPerformanceContextForBrand(discovery.brief.brand, discovery.brief.goal);
             const pack = await provider.generateCampaignPack(
               discovery.brief,
               promptRouting,
