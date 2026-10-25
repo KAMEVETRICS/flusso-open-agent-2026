@@ -102,6 +102,15 @@ export function buildStrategyMarkdown(pack: DeliveryPack) {
   addBullets(lines, pack.brandContext.voice);
   lines.push("", "### Content Goals", "");
   addBullets(lines, pack.brandContext.contentGoals);
+  const inferredFields = pack.inferredFields ?? [];
+  const assumptions = pack.brandContext.assumptions ?? [];
+  if (inferredFields.length || assumptions.length) {
+    lines.push("", "### Assumptions to Confirm", "");
+    if (inferredFields.length) {
+      lines.push("- Inferred from the website rather than supplied: " + inferredFields.join(", ") + ".");
+    }
+    assumptions.forEach((assumption) => lines.push("- " + cleanLine(assumption)));
+  }
   lines.push("");
 
   lines.push("## Content Landscape", "", cleanLine(pack.contentLandscape.summary), "");
@@ -259,18 +268,32 @@ export function buildStrategyMarkdown(pack: DeliveryPack) {
   lines.push("- **Unsupported:** " + pack.proofReport.unsupported);
   lines.push("- **Conflicts:** " + pack.proofReport.conflicts);
   lines.push("- **Time-sensitive:** " + pack.proofReport.timeSensitive);
+  lines.push("- **Editorial framing (reviewed for tone, not fact-checked):** " + pack.proofReport.editorial);
   lines.push("- **Repaired:** " + repairedClaims);
   lines.push("");
 
   const sourcesById = new Map(pack.sources.map((source) => [source.id, source]));
-  const webClaims = pack.proofReport.claims.filter((claim) => claim.sourceType === "web-search");
-  if (webClaims.length) {
-    lines.push("### Web Evidence", "");
-    webClaims.forEach((claim) => {
-      const source = claim.sourceId ? sourcesById.get(claim.sourceId) : undefined;
-      const citation = source?.url ? "[" + cleanLine(source.title) + "](" + source.url + ")" : "source unavailable";
-      lines.push("- **" + claim.status + ":** " + cleanLine(claim.text) + " (" + citation + ")");
+  const evidenced = pack.proofReport.claims.filter((claim) => claim.evidence.length);
+  if (evidenced.length) {
+    lines.push("### Evidence", "");
+    evidenced.forEach((claim) => {
+      const [first] = claim.evidence;
+      const source = sourcesById.get(first.sourceId);
+      const url = source?.url || first.locator;
+      const citation = url ? "[" + cleanLine(source?.title ?? url) + "](" + url + ")" : cleanLine(source?.title ?? first.sourceId);
+      lines.push(
+        "- **" + claim.status + " · " + claim.claimKind + ":** " + cleanLine(claim.text) +
+        " — \"" + cleanLine(first.quote).slice(0, 240) + "\" (" + citation + ")"
+      );
     });
+    lines.push("");
+  }
+  const needsSource = pack.proofReport.claims.filter(
+    (claim) => claim.status === "unsupported" && claim.resolutionStatus === "unresolved"
+  );
+  if (needsSource.length) {
+    lines.push("### Needs a Source Before Publishing", "");
+    needsSource.forEach((claim) => lines.push("- " + cleanLine(claim.text)));
     lines.push("");
   }
 
@@ -286,22 +309,6 @@ export function buildStrategyMarkdown(pack: DeliveryPack) {
     );
   });
   lines.push("");
-
-  lines.push("## Generation Lineage", "");
-  pack.generationStages.forEach((stage) => {
-    lines.push(
-      "- **" + stage.label + ":** " + stage.status +
-      " in " + stage.durationMs + " ms; outputs: " + stage.outputKeys.join(", ")
-    );
-  });
-  lines.push("");
-  lines.push("### Prompt Routes", "");
-  pack.promptRoutes.forEach((route) => {
-    lines.push(
-      "- **" + cleanLine(route.pipelineStage) + ":** " +
-      cleanLine(route.selectedPromptName) + " (score " + route.matchScore + ")"
-    );
-  });
 
   return lines.join("\n").trim() + "\n";
 }
@@ -351,8 +358,140 @@ export function buildCalendarCsv(pack: DeliveryPack) {
     .join("\r\n") + "\r\n";
 }
 
+// The client-facing projection of a campaign. Fields are listed explicitly so internal reasoning,
+// raw source text, and run metadata never reach the client.
+export function buildClientContentPack(pack: DeliveryPack) {
+  const sourcesById = new Map(pack.sources.map((source) => [source.id, source]));
+  return {
+    format: "flusso-content-pack",
+    version: 2,
+    generatedAt: pack.generation.generatedAt,
+    brand: {
+      name: pack.brief.brand,
+      website: pack.brief.website,
+      industry: pack.brief.industry,
+      audience: pack.brief.audience,
+      tone: pack.brief.tone,
+      inferredFields: pack.inferredFields ?? []
+    },
+    campaign: {
+      goal: pack.brief.goal,
+      platforms: pack.brief.platforms,
+      durationDays: pack.brief.durationDays,
+      postsPerWeek: pack.brief.postsPerWeek,
+      restrictions: pack.brief.restrictions
+    },
+    strategy: {
+      positioning: pack.brandContext.positioning,
+      voice: pack.brandContext.voice,
+      contentGoals: pack.brandContext.contentGoals,
+      prohibitedClaims: pack.brandContext.prohibitedClaims,
+      assumptions: pack.brandContext.assumptions ?? [],
+      audienceSegments: pack.audienceSegments.map((segment) => ({
+        id: segment.id,
+        name: segment.name,
+        awarenessLevel: segment.awarenessLevel,
+        needs: segment.needs,
+        objections: segment.objections,
+        messagePositioning: segment.messagePositioning,
+        cta: segment.cta
+      })),
+      territories: pack.territories.map((territory) => ({
+        id: territory.id,
+        name: territory.name,
+        rationale: territory.rationale,
+        sampleAngles: territory.sampleAngles,
+        proofAngle: territory.proofAngle
+      })),
+      series: pack.contentSeries.map((series) => ({
+        id: series.id,
+        title: series.title,
+        territory: series.territory,
+        targetSegment: series.targetSegment,
+        narrativeArc: series.narrativeArc
+      }))
+    },
+    calendar: pack.calendar.map((item) => ({
+      id: item.id,
+      day: item.day,
+      platform: item.platform,
+      format: item.format,
+      audienceSegment: item.audienceSegment,
+      territory: item.territory,
+      hook: item.hook,
+      goal: item.goal,
+      cta: item.cta
+    })),
+    assets: pack.assets.map((asset) => ({
+      id: asset.id,
+      calendarItemId: asset.calendarItemId,
+      platform: asset.platform,
+      contentFormat: asset.contentFormat,
+      title: asset.title,
+      copy: asset.copy,
+      threadPosts: asset.threadPosts,
+      article: asset.article,
+      cta: asset.cta,
+      visualBriefId: asset.visualBriefId,
+      claimIds: asset.linkedClaims
+    })),
+    visualBriefs: pack.visualBriefs.map((visual) => ({
+      id: visual.id,
+      assetId: visual.assetId,
+      visualType: visual.visualType,
+      purpose: visual.purpose,
+      keyMessage: visual.keyMessage,
+      aspectRatio: visual.aspectRatio,
+      altText: visual.altText,
+      prompt: visual.prompt,
+      status: visual.status
+    })),
+    brandIdentity: pack.brandIdentity ?? null,
+    proof: {
+      summary: {
+        checkedClaims: pack.proofReport.checkedClaims,
+        supported: pack.proofReport.supported,
+        unsupported: pack.proofReport.unsupported,
+        conflicts: pack.proofReport.conflicts,
+        timeSensitive: pack.proofReport.timeSensitive,
+        editorial: pack.proofReport.editorial ?? 0
+      },
+      claims: pack.proofReport.claims.map((claim) => ({
+        id: claim.id,
+        text: claim.text,
+        kind: claim.claimKind,
+        status: claim.status,
+        confidence: claim.confidence,
+        checkedAt: claim.checkedAt,
+        usedIn: claim.contentUsedIn,
+        recommendation: claim.recommendation,
+        evidence: (claim.evidence ?? []).map((item) => {
+          const source = sourcesById.get(item.sourceId);
+          return {
+            quote: item.quote,
+            stance: item.stance,
+            source: source?.title ?? item.sourceId,
+            url: source?.url || item.locator || null
+          };
+        })
+      }))
+    },
+    sources: pack.sources
+      .filter((source) => source.authority !== "internal" && source.sourceType !== "prompt-library")
+      .map((source) => ({
+        id: source.id,
+        title: source.title,
+        url: source.url ?? null,
+        sourceType: source.sourceType,
+        authority: source.authority,
+        fetchedAt: source.fetchedAt,
+        fetchStatus: source.fetchStatus
+      }))
+  };
+}
+
 export function buildContentPackJson(pack: DeliveryPack) {
-  return JSON.stringify(pack, null, 2) + "\n";
+  return JSON.stringify(buildClientContentPack(pack), null, 2) + "\n";
 }
 
 export function buildCampaignExport(

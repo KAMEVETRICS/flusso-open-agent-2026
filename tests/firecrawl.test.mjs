@@ -42,6 +42,8 @@ test("scrapes markdown through the v2 API with bearer auth", async () => {
     title: "Arc House",
     description: "Rails",
     markdown: "# Arc House\nStablecoin rails.",
+    contentType: "",
+    rawHtml: "",
     branding: null
   });
 });

@@ -1,7 +1,9 @@
 /* global URL */
-import type { Claim, DeliveryPack, SourceDocument } from "./schemas";
+import { confidencePercent, type Claim, type DeliveryPack, type SourceDocument } from "./schemas";
+import { isSameSiteFamily } from "./discovery-helpers";
 import { firecrawlSearch } from "./firecrawl";
 import { countWords } from "./json-values";
+import { excerptAppearsIn, summarizeProof } from "./proof";
 
 export type WebVerdict = "supported" | "contradicted" | "not-found";
 
@@ -28,7 +30,6 @@ export const SEARCH_RESULTS_PER_CLAIM = 3;
 const SEARCH_CONCURRENCY = 3;
 const MAX_QUERY_CHARS = 400;
 const MAX_DOCUMENT_CHARS = 6000;
-const MIN_EXCERPT_CHARS = 20;
 // Web pages are secondary evidence; never rank them above a supplied primary source.
 const MAX_WEB_CONFIDENCE = 90;
 const MAX_EXCERPT_CHARS = 1200;
@@ -70,25 +71,6 @@ export function claimSearchQuery(claim: Pick<Claim, "text">, brand: string) {
   return query.slice(0, MAX_QUERY_CHARS);
 }
 
-// Reduces markdown and typography differences so a copied quote matches its page text.
-export function normalizeForMatch(value: string) {
-  return value
-    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
-    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(/[‘’]/g, "'")
-    .replace(/[“”]/g, "\"")
-    .replace(/[–—]/g, "-")
-    .replace(/[*_`#>|]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .toLowerCase();
-}
-
-export function excerptAppearsIn(excerpt: string, text: string) {
-  const needle = normalizeForMatch(excerpt);
-  return needle.length >= MIN_EXCERPT_CHARS && normalizeForMatch(text).includes(needle);
-}
-
 export async function gatherClaimEvidence(claims: Claim[], brand: string): Promise<EvidenceDocument[]> {
   const documents: EvidenceDocument[] = [];
   let next = 0;
@@ -110,8 +92,10 @@ export async function gatherClaimEvidence(claims: Claim[], brand: string): Promi
             text
           });
         });
-      } catch {
+      } catch (error) {
         // A failed search leaves only that claim without evidence.
+        const message = error instanceof Error ? error.message : String(error);
+        console.warn("Flusso claim evidence search failed for " + claim.id + ": " + message);
       }
     }
   }
@@ -170,7 +154,10 @@ export function applyWebVerification(
         fetchedAt: verifiedAt,
         fetchStatus: "fetched",
         wordCount: countWords(excerpt),
-        sourceQuality: "limited"
+        // Only the quoted passage is stored, not the whole page.
+        completeness: "truncated",
+        authority: isSameSiteFamily(document.url, pack.brief.website) ? "first-party" : "third-party",
+        contentHash: ""
       };
       webSourceByKey.set(key, source);
       sources.push(source);
@@ -184,7 +171,14 @@ export function applyWebVerification(
       sourceId: source.id,
       sourceTitle: source.title,
       sourceType: "web-search",
-      confidence: Math.min(Math.max(result.confidence, 0), MAX_WEB_CONFIDENCE)
+      evidence: [{
+        sourceId: source.id,
+        quote: excerpt,
+        locator: document.url,
+        stance: result.verdict === "supported" ? "supports" as const : "conflicts" as const
+      }],
+      checkedAt: verifiedAt,
+      confidence: Math.min(confidencePercent(Math.max(result.confidence, 0)), MAX_WEB_CONFIDENCE)
     };
     if (result.verdict === "supported") {
       supported += 1;
@@ -202,20 +196,8 @@ export function applyWebVerification(
     };
   });
 
-  const unresolved = claims.filter((claim) => claim.resolutionStatus === "unresolved");
   return {
-    pack: {
-      ...pack,
-      sources,
-      proofReport: {
-        checkedClaims: claims.length,
-        supported: claims.filter((claim) => claim.status === "supported").length,
-        unsupported: unresolved.filter((claim) => claim.status === "unsupported").length,
-        conflicts: unresolved.filter((claim) => claim.status === "conflict").length,
-        timeSensitive: unresolved.filter((claim) => claim.status === "time-sensitive").length,
-        claims
-      }
-    },
+    pack: { ...pack, sources, proofReport: summarizeProof(claims) },
     supported,
     contradicted
   };

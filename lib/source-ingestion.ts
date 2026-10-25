@@ -1,22 +1,30 @@
-import type { BrandIdentity, SourceDocument } from "./schemas";
+/* global URL */
+import { createHash } from "node:crypto";
+import type { BrandIdentity, SourceAuthority, SourceDocument } from "./schemas";
 import { normalizeBranding } from "./brand-identity";
-import { firecrawlScrape, firecrawlSearch, type FirecrawlPage } from "./firecrawl";
+import { extractStructuredData, parseSiteIndexLinks, stripAgentInstructions } from "./discovery-helpers";
+import { firecrawlScrape, firecrawlSearch, type FirecrawlPage, type FirecrawlScrape } from "./firecrawl";
 import { countWords } from "./json-values";
 
-const maxSourceChars = 12000;
+// Whole pages are kept so later evidence stays findable; the cap only stops pathological pages.
+// Prompts apply their own, smaller budget.
+const MAX_STORED_CHARS = 100_000;
+const MAX_SITE_INDEX_CHARS = 30_000;
 
 function normalizeText(value: string) {
   return value
     .replace(/[ \t]+/g, " ")
     .replace(/\n{3,}/g, "\n\n")
-    .trim()
-    .slice(0, maxSourceChars);
+    .trim();
 }
 
-function sourceQuality(wordCount: number): SourceDocument["sourceQuality"] {
-  if (wordCount >= 250) return "strong";
-  if (wordCount >= 40) return "limited";
-  return "none";
+function capture(raw: string, maxChars = MAX_STORED_CHARS) {
+  const text = normalizeText(raw);
+  return {
+    text: text.slice(0, maxChars),
+    completeness: text.length > maxChars ? "truncated" as const : "full" as const,
+    contentHash: text ? createHash("sha256").update(text).digest("hex") : ""
+  };
 }
 
 export type ScrapeSourceInput = {
@@ -24,6 +32,7 @@ export type ScrapeSourceInput = {
   title?: string;
   url: string;
   sourceType: SourceDocument["sourceType"];
+  authority: SourceAuthority;
 };
 
 function failedSource(input: ScrapeSourceInput, fetchedAt: string, reason: string): SourceDocument {
@@ -36,14 +45,16 @@ function failedSource(input: ScrapeSourceInput, fetchedAt: string, reason: strin
     fetchedAt,
     fetchStatus: "failed",
     wordCount: 0,
-    sourceQuality: "none",
+    completeness: "failed",
+    authority: input.authority,
+    contentHash: "",
     failureReason: reason
   };
 }
 
 function pageSource(input: ScrapeSourceInput, page: FirecrawlPage, fetchedAt: string): SourceDocument {
-  const extractedText = normalizeText(page.markdown);
-  const wordCount = countWords(extractedText);
+  const captured = capture(page.markdown);
+  const wordCount = countWords(captured.text);
   const titled = { ...input, title: input.title || page.title || input.url };
 
   if (!wordCount) {
@@ -55,11 +66,13 @@ function pageSource(input: ScrapeSourceInput, page: FirecrawlPage, fetchedAt: st
     title: titled.title,
     url: input.url,
     sourceType: input.sourceType,
-    extractedText,
+    extractedText: captured.text,
     fetchedAt,
     fetchStatus: "fetched",
     wordCount,
-    sourceQuality: sourceQuality(wordCount)
+    completeness: captured.completeness,
+    authority: input.authority,
+    contentHash: captured.contentHash
   };
 }
 
@@ -72,20 +85,79 @@ export async function scrapeSourceDocument(input: ScrapeSourceInput, fetchedAt: 
   }
 }
 
+function structuredDataSource(rawHtml: string, url: string, fetchedAt: string): SourceDocument | null {
+  const entities = extractStructuredData(rawHtml);
+  if (!entities.length) return null;
+  const captured = capture(JSON.stringify(entities, null, 2));
+  return {
+    id: "src-structured-data",
+    title: "Structured data published on " + new URL(url).hostname,
+    url,
+    sourceType: "structured-data",
+    extractedText: captured.text,
+    fetchedAt,
+    fetchStatus: "fetched",
+    wordCount: countWords(captured.text),
+    completeness: captured.completeness,
+    authority: "first-party",
+    contentHash: captured.contentHash
+  };
+}
+
 export async function scrapeBrandSite(
   input: ScrapeSourceInput,
   fetchedAt: string
-): Promise<{ source: SourceDocument; brandIdentity: BrandIdentity | null }> {
+): Promise<{ source: SourceDocument; brandIdentity: BrandIdentity | null; structuredData: SourceDocument | null }> {
   try {
-    const page = await firecrawlScrape(input.url, { branding: true });
+    const page = await firecrawlScrape(input.url, { branding: true, rawHtml: true });
     return {
       source: pageSource(input, page, fetchedAt),
-      brandIdentity: normalizeBranding(page.branding, page.url || input.url)
+      brandIdentity: normalizeBranding(page.branding, page.url || input.url),
+      structuredData: structuredDataSource(page.rawHtml, page.url || input.url, fetchedAt)
     };
-  } catch {
-    // Branding is an enhancement; never lose the homepage text because of it.
-    return { source: await scrapeSourceDocument(input, fetchedAt), brandIdentity: null };
+  } catch (error) {
+    // Branding and structured data are enhancements; never lose the homepage text because of them.
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn("Flusso homepage branding scrape failed, retrying plain: " + message);
+    return { source: await scrapeSourceDocument(input, fetchedAt), brandIdentity: null, structuredData: null };
   }
+}
+
+// Reads the brand's /llms.txt, a list of pages the brand itself considers important.
+export async function scrapeSiteIndex(
+  website: string,
+  fetchedAt: string
+): Promise<{ source: SourceDocument; links: string[] } | null> {
+  const url = new URL("/llms.txt", website).href;
+  let page: FirecrawlScrape;
+  try {
+    page = await firecrawlScrape(url);
+  } catch {
+    // Most sites have no llms.txt, so a missing file is the normal case.
+    return null;
+  }
+  // Some sites answer every path with an HTML page instead of a 404.
+  if (/text\/html/i.test(page.contentType)) return null;
+  const cleaned = stripAgentInstructions(page.markdown);
+  if (!cleaned.trim()) return null;
+
+  const captured = capture(cleaned, MAX_SITE_INDEX_CHARS);
+  return {
+    source: {
+      id: "src-site-index",
+      title: "llms.txt index for " + new URL(website).hostname,
+      url,
+      sourceType: "site-index",
+      extractedText: captured.text,
+      fetchedAt,
+      fetchStatus: "fetched",
+      wordCount: countWords(captured.text),
+      completeness: captured.completeness,
+      authority: "first-party",
+      contentHash: captured.contentHash
+    },
+    links: parseSiteIndexLinks(cleaned, website)
+  };
 }
 
 export async function searchSourceDocuments(
@@ -96,23 +168,27 @@ export async function searchSourceDocuments(
   try {
     const results = await firecrawlSearch(query, limit);
     return results.slice(0, limit).map((result, index) => {
-      const extractedText = normalizeText(result.markdown || result.description);
-      const wordCount = countWords(extractedText);
+      const captured = capture(result.markdown || result.description);
+      const wordCount = countWords(captured.text);
       return {
         id: `src-search-${index + 1}`,
         title: result.title || result.url,
         url: result.url,
         sourceType: "search-result" as const,
-        extractedText,
+        extractedText: captured.text,
         fetchedAt,
         fetchStatus: wordCount ? "fetched" as const : "failed" as const,
         wordCount,
-        sourceQuality: sourceQuality(wordCount),
+        completeness: wordCount ? captured.completeness : "failed" as const,
+        authority: "third-party" as const,
+        contentHash: captured.contentHash,
         ...(wordCount ? {} : { failureReason: "No readable text extracted" })
       };
     });
-  } catch {
+  } catch (error) {
     // Competitor search enriches discovery; the campaign can proceed without it.
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn("Flusso competitor search failed: " + message);
     return [];
   }
 }
@@ -123,17 +199,19 @@ export function noteSource(
   sourceType: SourceDocument["sourceType"],
   extractedText: string,
   fetchedAt: string,
-  qualityOverride?: SourceDocument["sourceQuality"]
+  authority: SourceAuthority
 ): SourceDocument {
-  const wordCount = countWords(extractedText);
+  const captured = capture(extractedText);
   return {
     id,
     title,
     sourceType,
-    extractedText,
+    extractedText: captured.text,
     fetchedAt,
     fetchStatus: "fetched",
-    wordCount,
-    sourceQuality: qualityOverride ?? sourceQuality(wordCount)
+    wordCount: countWords(captured.text),
+    completeness: captured.completeness,
+    authority,
+    contentHash: captured.contentHash
   };
 }

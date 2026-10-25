@@ -15,6 +15,8 @@ export type FirecrawlPage = {
 };
 
 export type FirecrawlScrape = FirecrawlPage & {
+  contentType: string;
+  rawHtml: string;
   branding: JsonRecord | null;
 };
 
@@ -63,11 +65,15 @@ async function post(endpoint: string, body: JsonRecord, timeoutMs: number): Prom
 
 export async function firecrawlScrape(
   url: string,
-  options: { branding?: boolean } = {}
+  options: { branding?: boolean; rawHtml?: boolean } = {}
 ): Promise<FirecrawlScrape> {
+  const formats = ["markdown"];
+  if (options.branding) formats.push("branding");
+  // Raw HTML keeps <head>, where sites publish their JSON-LD structured data.
+  if (options.rawHtml) formats.push("rawHtml");
   const payload = await post("/scrape", {
     url,
-    formats: options.branding ? ["markdown", "branding"] : ["markdown"],
+    formats,
     onlyMainContent: true,
     timeout: SCRAPE_TIMEOUT_MS
   }, REQUEST_TIMEOUT_MS);
@@ -84,6 +90,8 @@ export async function firecrawlScrape(
     title: asText(metadata.title),
     description: asText(metadata.description),
     markdown: asText(data.markdown),
+    contentType: asText(metadata.contentType),
+    rawHtml: typeof data.rawHtml === "string" ? data.rawHtml : "",
     branding: Object.keys(branding).length ? branding : null
   };
 }

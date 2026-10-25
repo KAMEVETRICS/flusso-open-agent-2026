@@ -25,7 +25,7 @@ import {
 import { emptyBrief } from "@/lib/brief";
 import { pipelineStageNames } from "@/lib/pipeline-stages";
 import type { CampaignSummary } from "@/lib/campaign-store";
-import type { CampaignExportFormat } from "@/lib/exports";
+import { buildClientContentPack, type CampaignExportFormat } from "@/lib/exports";
 import type {
   BriefInput,
   Claim,
@@ -81,6 +81,7 @@ const proofFilters: Array<{ id: ProofFilter; label: string }> = [
   { id: "unsupported", label: "Unsupported" },
   { id: "conflict", label: "Conflicts" },
   { id: "time-sensitive", label: "Time-Sensitive" },
+  { id: "editorial", label: "Editorial" },
   { id: "repaired", label: "Repaired" }
 ];
 
@@ -110,6 +111,9 @@ function statusMeta(status: Claim["status"]) {
   if (status === "conflict") {
     return { className: "status-pill st-red", icon: <XCircle size={13} weight="bold" />, label: "Conflict" };
   }
+  if (status === "editorial") {
+    return { className: "status-pill st-gray", icon: <FileText size={13} weight="bold" />, label: "Editorial" };
+  }
   return { className: "status-pill st-blue", icon: <FlagCheckered size={13} weight="bold" />, label: "Time-Sensitive" };
 }
 function claimStatusMeta(claim: Claim) {
@@ -118,12 +122,13 @@ function claimStatusMeta(claim: Claim) {
   }
   return statusMeta(claim.status);
 }
+// The bar shows how much of the source was captured; credibility is shown separately as authority.
 function sourceMeta(source: DeliveryPack["sources"][number]) {
-  if (source.fetchStatus === "fetched" && source.sourceQuality === "strong") {
+  if (source.fetchStatus === "fetched" && source.completeness !== "truncated") {
     return { className: "badge bg-green", label: `${source.wordCount} words`, width: "100%" };
   }
   if (source.fetchStatus === "fetched") {
-    return { className: "badge bg-amber", label: `${source.wordCount} words`, width: "62%" };
+    return { className: "badge bg-amber", label: `${source.wordCount} words, partial`, width: "62%" };
   }
   if (source.fetchStatus === "failed") {
     return { className: "badge bg-amber", label: "fetch failed", width: "20%" };
@@ -284,7 +289,7 @@ function ProofSummary({ pack }: { pack: DeliveryPack }) {
       </div>
       <div className="divider" />
       {proofReport.claims
-        .filter((claim) => claim.status !== "supported")
+        .filter((claim) => claim.resolutionStatus === "unresolved" && claim.status !== "supported" && claim.status !== "editorial")
         .map((claim) => (
           <div key={claim.id} className="warning-card">
             <strong>{statusMeta(claim.status).label}</strong>
@@ -611,7 +616,7 @@ function ResultsView({
           </div>
         </div>
         <div className="btn-group">
-          <button className="btn btn-outline" onClick={() => copyText(JSON.stringify(pack, null, 2))}><DownloadSimple size={15} /> JSON</button>
+          <button className="btn btn-outline" onClick={() => copyText(JSON.stringify(buildClientContentPack(pack), null, 2))}><DownloadSimple size={15} /> JSON</button>
           <button className="btn btn-outline" onClick={() => copyText(pack.assets.map((asset) => asset.copy).join("\n\n"))}><Copy size={15} /> Copy</button>
           <button className="btn btn-outline"><ShareFat size={15} /> Share</button>
         </div>
@@ -646,7 +651,7 @@ function ResultsView({
               <div className="source-card" key={source.id} title={source.failureReason ?? source.url ?? source.title}>
                 <div className="src-title">{source.title}</div>
                 <div className="src-domain">{source.sourceType}</div>
-                <span className={meta.className}>{source.sourceQuality} / {meta.label}</span>
+                <span className={meta.className}>{source.authority} / {meta.label}</span>
                 <div className="conf-bar"><div className="conf-fill" style={{ width: meta.width }} /></div>
                 <div className="src-date">{new Date(source.fetchedAt).toLocaleDateString()}</div>
               </div>
@@ -1285,6 +1290,14 @@ function ProofTable({ pack, compact = false }: { pack: DeliveryPack; compact?: b
               </strong>
             </div>
             <div className="divider" />
+            {selected.evidence.length ? (
+              <>
+                <div className="section-label">Evidence</div>
+                {selected.evidence.map((item) => (
+                  <blockquote className="evidence-quote" key={item.sourceId + item.quote.slice(0, 24)}>{item.quote}</blockquote>
+                ))}
+              </>
+            ) : null}
             <div className="section-label">{selected.resolutionStatus === "repaired" ? "Repair Note" : "Recommendation"}</div>
             <div className="reco-box">{selected.resolutionStatus === "repaired" ? selected.repairNote : selected.recommendation}</div>
             <button className="btn btn-primary full" onClick={() => copyText(selected.text)}><Copy size={15} /> Copy claim</button>

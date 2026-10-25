@@ -5,17 +5,23 @@ import {
   type ProjectBrief,
   type SourceDocument
 } from "./schemas";
-import { firecrawlMap } from "./firecrawl";
+import { firecrawlMap, type FirecrawlLink } from "./firecrawl";
 import {
   competitorSearchQuery,
   isLikelyUrl,
+  isSameSiteFamily,
   mergeInferredBrief,
   missingBriefFields,
   pickKeyPages,
   splitSourceUrls,
   type BriefInference
 } from "./discovery-helpers";
-import { scrapeBrandSite, scrapeSourceDocument, searchSourceDocuments } from "./source-ingestion";
+import {
+  scrapeBrandSite,
+  scrapeSiteIndex,
+  scrapeSourceDocument,
+  searchSourceDocuments
+} from "./source-ingestion";
 
 const MAP_LINK_LIMIT = 200;
 const MAX_KEY_PAGES = 3;
@@ -43,12 +49,13 @@ const fieldLabels: Record<string, string> = {
   website: "website"
 };
 
-async function keyPageUrls(website: string) {
+async function siteLinks(website: string): Promise<FirecrawlLink[]> {
   try {
-    const links = await firecrawlMap(website, MAP_LINK_LIMIT);
-    return pickKeyPages(links.map((link) => link.url), website, MAX_KEY_PAGES);
-  } catch {
-    // The homepage alone is still usable when the site cannot be mapped.
+    return await firecrawlMap(website, MAP_LINK_LIMIT);
+  } catch (error) {
+    // The homepage and llms.txt are still usable when the site cannot be mapped.
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn("Flusso site map failed: " + message);
     return [];
   }
 }
@@ -59,38 +66,52 @@ export async function discoverBrief(input: BriefInput, inferrer: BriefInferrer):
   const docUrls = splitSourceUrls(input.docs).slice(0, MAX_DOC_URLS);
   const competitorUrls = input.competitors.filter(isLikelyUrl).slice(0, MAX_COMPETITOR_URLS);
 
-  const [{ source: site, brandIdentity }, pageUrls, searchSources] = await Promise.all([
+  const [homepage, siteIndex, links, searchSources] = await Promise.all([
     scrapeBrandSite({
       id: "src-brand-site",
       title: input.brand ? `${input.brand} website` : undefined,
       url: input.website,
-      sourceType: "website"
+      sourceType: "website",
+      authority: "first-party"
     }, fetchedAt),
-    keyPageUrls(input.website),
+    scrapeSiteIndex(input.website, fetchedAt),
+    siteLinks(input.website),
     searchCompetitors
       ? searchSourceDocuments(competitorSearchQuery(input.website), SEARCH_RESULT_LIMIT, fetchedAt)
       : Promise.resolve<SourceDocument[]>([])
   ]);
+  const pageUrls = pickKeyPages(links, input.website, MAX_KEY_PAGES, siteIndex?.links ?? [], docUrls);
 
   const linkedSources = await Promise.all([
     ...pageUrls.map((url, index) => scrapeSourceDocument({
       id: `src-site-page-${index + 1}`,
       url,
-      sourceType: "website"
+      sourceType: "website",
+      authority: "first-party"
     }, fetchedAt)),
     ...docUrls.map((url, index) => scrapeSourceDocument({
       id: index === 0 ? "src-project-docs" : `src-project-docs-${index + 1}`,
       url,
-      sourceType: "primary-doc"
+      sourceType: "primary-doc",
+      authority: isSameSiteFamily(url, input.website) ? "first-party" : "user-supplied"
     }, fetchedAt)),
     ...competitorUrls.map((url, index) => scrapeSourceDocument({
       id: `src-competitor-${index + 1}`,
       title: `Competitor source ${index + 1}`,
       url,
-      sourceType: "competitor"
+      sourceType: "competitor",
+      authority: "third-party"
     }, fetchedAt))
   ]);
-  const sources = [site, ...linkedSources, ...searchSources];
+  const sources = [
+    homepage.source,
+    ...(homepage.structuredData ? [homepage.structuredData] : []),
+    ...(siteIndex ? [siteIndex.source] : []),
+    ...linkedSources,
+    ...searchSources
+  ];
+  const site = homepage.source;
+  const brandIdentity = homepage.brandIdentity;
   const evidence = sources.filter((source) => source.fetchStatus === "fetched");
 
   const missing = missingBriefFields(input);

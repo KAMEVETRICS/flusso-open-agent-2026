@@ -103,9 +103,70 @@ export function matchAssetsToDrafts<T extends DraftLineage, D extends DraftLinea
   return { matched, renamed, missing: Array.from(unclaimed.values()) };
 }
 
+// Hooks this similar (Jaccard overlap of their words) read as the same hook to an audience.
+const REPEATED_HOOK_SIMILARITY = 0.6;
+
+function hookTokens(value: string) {
+  return new Set(
+    value
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter((token) => token.length > 1)
+  );
+}
+
+export function hookSimilarity(left: string, right: string) {
+  const a = hookTokens(left);
+  const b = hookTokens(right);
+  if (!a.size || !b.size) return 0;
+  const shared = Array.from(a).filter((token) => b.has(token)).length;
+  return shared / (a.size + b.size - shared);
+}
+
+// Items whose hook repeats an earlier one. Of each repeated pair, the item not in `keep`
+// (for example, one with a drafted asset) is the one returned for rewriting.
+export function findRepeatedHooks(items: Array<{ id: string; hook: string }>, keep: Set<string> = new Set()) {
+  const rewrite = new Set<string>();
+  for (let left = 0; left < items.length; left += 1) {
+    for (let right = left + 1; right < items.length; right += 1) {
+      const a = items[left];
+      const b = items[right];
+      if (rewrite.has(a.id) || rewrite.has(b.id)) continue;
+      if (hookSimilarity(a.hook, b.hook) < REPEATED_HOOK_SIMILARITY) continue;
+      if (!keep.has(b.id)) rewrite.add(b.id);
+      else if (!keep.has(a.id)) rewrite.add(a.id);
+    }
+  }
+  return Array.from(rewrite);
+}
+
+const internalNotePatterns: Array<[RegExp, string]> = [
+  [/\b(?:working assumptions?|should be (?:validated|confirmed)|to be (?:validated|confirmed)|needs? (?:verification|validation)|validate (?:this )?with the (?:brand|client|team))\b/i, "an internal caveat"],
+  [/\b(?:TODO|TBD|FIXME)\b|lorem ipsum/i, "a placeholder marker"],
+  [/\[(?:insert|placeholder|brand|todo|tbd|link|source|citation)[^\]]*\]/i, "a bracketed placeholder"],
+  [/(?:^|\n)\s*(?:internal note|editor'?s note|note to (?:self|editor|client))\s*:/i, "an editor's note"],
+  [/\b(?:src|asset|claim|cal|hook|series|territory|visual|segment)-\d+\b/, "an internal ID"]
+];
+
+// Signs that internal working text leaked into client-facing copy.
+export function findInternalNotes(text: string) {
+  return internalNotePatterns.filter(([pattern]) => pattern.test(text)).map(([, label]) => label);
+}
+
 export type EditorialIssue = {
   assetId: string;
-  code: "slop" | "short-post-length" | "thread-structure" | "thread-post-length" | "article-structure" | "article-depth" | "medium-format" | "format-mix" | "duplicate-opening";
+  code:
+    | "slop"
+    | "internal-note"
+    | "short-post-length"
+    | "thread-structure"
+    | "thread-post-length"
+    | "article-structure"
+    | "article-depth"
+    | "medium-format"
+    | "format-mix"
+    | "duplicate-opening";
   message: string;
 };
 
@@ -169,6 +230,9 @@ export function inspectEditorialAssets(
       if (pattern.test(text)) {
         issues.push({ assetId: asset.id, code: "slop", message: "Remove " + label + "." });
       }
+    }
+    for (const label of findInternalNotes(text + "\n" + asset.cta)) {
+      issues.push({ assetId: asset.id, code: "internal-note", message: "Remove " + label + " from client-facing copy." });
     }
 
     if (asset.platform === "X" && asset.contentFormat === "short-post" && asset.copy.length > 280) {

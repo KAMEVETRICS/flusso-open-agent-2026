@@ -1399,6 +1399,21 @@ tr.selected td {
   border: 1px solid #bfdbfe;
 }
 
+.st-gray {
+  background: var(--surface);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.evidence-quote {
+  border-left: 3px solid var(--green-border);
+  color: var(--body);
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  padding-left: 10px;
+}
+
 .mobile-preview {
   display: none;
 }

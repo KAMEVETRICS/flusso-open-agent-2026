@@ -5,11 +5,11 @@ import test, { afterEach } from "node:test";
 import {
   applyWebVerification,
   claimSearchQuery,
-  excerptAppearsIn,
   gatherClaimEvidence,
   urlKey,
   webVerificationTargets
 } from "../lib/web-verification.ts";
+import { excerptAppearsIn } from "../lib/proof.ts";
 
 const originalFetch = globalThis.fetch;
 
@@ -35,6 +35,7 @@ function claim(id, status, extra = {}) {
 
 function pack(claims) {
   return {
+    brief: { website: "https://arc.house" },
     sources: [{
       id: "src-brand-site",
       title: "Arc House",
@@ -44,7 +45,9 @@ function pack(claims) {
       fetchedAt: "2026-10-11T00:00:00.000Z",
       fetchStatus: "fetched",
       wordCount: 1,
-      sourceQuality: "limited"
+      completeness: "full",
+      authority: "first-party",
+      contentHash: ""
     }],
     proofReport: {
       checkedClaims: claims.length,
@@ -196,7 +199,17 @@ test("accepts only quotes that appear in that claim's own fetched documents", ()
   const webSources = verified.sources.filter((source) => source.sourceType === "web-search");
   assert.equal(webSources.length, 2);
   assert.match(webSources[0].extractedText, /USDC within seconds[\s\S]*original wallet/);
-  assert.equal(webSources[0].sourceQuality, "limited");
+  assert.equal(webSources[0].authority, "first-party", "docs.arc.house belongs to the brand");
+  assert.equal(webSources[1].authority, "third-party");
+  assert.equal(webSources[0].completeness, "truncated");
+  assert.deepEqual(byId.get("claim-1").evidence, [{
+    sourceId: "src-web-1",
+    quote: "Arc settles merchant payments in USDC within seconds.",
+    locator: "https://docs.arc.house/settlement",
+    stance: "supports"
+  }]);
+  assert.equal(byId.get("claim-2").evidence[0].stance, "conflicts");
+  assert.equal(byId.get("claim-1").checkedAt, "2026-10-14T12:00:00.000Z");
 
   assert.deepEqual(
     {

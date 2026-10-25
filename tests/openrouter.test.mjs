@@ -78,3 +78,13 @@ test("requires an OpenRouter key", () => {
   delete process.env.OPENROUTER_API_KEY;
   assert.throws(() => createOpenRouterClient(), /OPENROUTER_API_KEY is missing/);
 });
+
+test("puts shared context first so stages share a cacheable prefix", async () => {
+  const calls = stubFetch(completion(JSON.stringify({ brand: "Arc", competitors: [] })));
+  await completeStructured(createOpenRouterClient(), { ...request, context: "Shared sources" });
+  assert.deepEqual(calls[0].body.messages.map((message) => [message.role, message.content.slice(0, 14)]), [
+    ["system", "Shared sources"],
+    ["system", "Infer the brie"],
+    ["user", "{\"website\":\"ht"]
+  ]);
+});

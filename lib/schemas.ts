@@ -1,7 +1,24 @@
 import { z } from "zod";
 
 export const PlatformSchema = z.enum(["X", "LinkedIn", "Newsletter", "Discord", "Mirror", "Medium"]);
-export const ClaimStatusSchema = z.enum(["supported", "unsupported", "conflict", "time-sensitive"]);
+// "editorial" marks framing or opinion: reviewed for tone, never fact-checked.
+export const ClaimStatusSchema = z.enum(["supported", "unsupported", "conflict", "time-sensitive", "editorial"]);
+export const ClaimKindSchema = z.enum([
+  "statistic",
+  "capability",
+  "comparison",
+  "attribution",
+  "time-bound",
+  "framing",
+  "opinion",
+  "unclassified"
+]);
+export const SourceAuthoritySchema = z.enum(["first-party", "third-party", "user-supplied", "internal", "unknown"]);
+
+// Models sometimes score confidence on a 0-1 scale; store every confidence as a 0-100 percentage.
+export function confidencePercent(value: number) {
+  return Math.round(value > 0 && value <= 1 ? value * 100 : value);
+}
 export const EditorialProfileSchema = z.enum(["balanced", "technical-authority", "founder-led", "direct-growth"]);
 export const EditorialModeSchema = z.enum([
   "direct-practical",
@@ -62,12 +79,26 @@ export const SourceDocumentSchema = z.object({
   id: z.string(),
   title: z.string(),
   url: z.string().optional(),
-  sourceType: z.enum(["primary-doc", "website", "competitor", "search-result", "web-search", "prompt-library", "user-note"]),
+  sourceType: z.enum([
+    "primary-doc",
+    "website",
+    "site-index",
+    "structured-data",
+    "competitor",
+    "search-result",
+    "web-search",
+    "prompt-library",
+    "user-note"
+  ]),
   extractedText: z.string(),
   fetchedAt: z.string(),
   fetchStatus: z.enum(["fetched", "unfetched", "failed"]).default("unfetched"),
   wordCount: z.number().int().nonnegative().default(0),
-  sourceQuality: z.enum(["strong", "limited", "none"]).default("none"),
+  // How much of the source was captured. This says nothing about whether the source is credible.
+  completeness: z.enum(["full", "truncated", "failed", "unknown"]).default("unknown"),
+  // Who published it: brand-owned pages are self-asserted, third-party pages are independent.
+  authority: SourceAuthoritySchema.default("unknown"),
+  contentHash: z.string().default(""),
   failureReason: z.string().optional()
 });
 
@@ -90,7 +121,9 @@ export const BrandContextSchema = z.object({
   voice: z.array(z.string()),
   verifiedClaims: z.array(z.string()),
   prohibitedClaims: z.array(z.string()),
-  contentGoals: z.array(z.string())
+  contentGoals: z.array(z.string()),
+  // Caveats and unconfirmed inferences for the client to review; never mixed into positioning or copy.
+  assumptions: z.array(z.string()).default([])
 });
 
 export const ContentGapSchema = z.object({
@@ -125,6 +158,7 @@ export const ContentLandscapeSchema = z.object({
 });
 
 export const AudienceSegmentSchema = z.object({
+  id: z.string().default(""),
   name: z.string(),
   awarenessLevel: z.string(),
   needs: z.array(z.string()),
@@ -341,14 +375,28 @@ export const PerformanceContextSchema = z.object({
   learnings: z.array(z.string())
 });
 
+export const ClaimEvidenceSchema = z.object({
+  sourceId: z.string(),
+  // Exact passage from the source; code confirms it appears in the source text.
+  quote: z.string(),
+  locator: z.string().default(""),
+  stance: z.enum(["supports", "conflicts"]).default("supports")
+});
+
 export const ClaimSchema = z.object({
   id: z.string(),
   text: z.string(),
   contentUsedIn: z.string(),
+  claimKind: ClaimKindSchema.default("unclassified"),
   sourceId: z.string().optional(),
   sourceTitle: z.string().optional(),
   sourceType: z.string().optional(),
-  confidence: z.number().min(0).max(100),
+  evidence: z.array(ClaimEvidenceSchema).default([]),
+  checkedAt: z.string().default(""),
+  confidence: z.preprocess(
+    (value) => (typeof value === "number" ? confidencePercent(value) : value),
+    z.number().min(0).max(100)
+  ),
   status: ClaimStatusSchema,
   recommendation: z.string(),
   resolutionStatus: z.enum(["unresolved", "repaired"]).default("unresolved"),
@@ -363,6 +411,7 @@ export const ProofReportSchema = z.object({
   unsupported: z.number(),
   conflicts: z.number(),
   timeSensitive: z.number(),
+  editorial: z.number().default(0),
   claims: z.array(ClaimSchema)
 });
 
@@ -439,6 +488,8 @@ export const DeliveryPackSchema = z.object({
   brief: ProjectBriefSchema,
   sources: z.array(SourceDocumentSchema),
   brandIdentity: BrandIdentitySchema.nullable().default(null),
+  // Brief fields inferred from the website rather than stated by the user.
+  inferredFields: z.array(z.string()).default([]),
   brandContext: BrandContextSchema,
   contentLandscape: ContentLandscapeSchema,
   audienceSegments: z.array(AudienceSegmentSchema),
@@ -485,6 +536,9 @@ export type EditorialProfile = z.infer<typeof EditorialProfileSchema>;
 export type EditorialMode = z.infer<typeof EditorialModeSchema>;
 export type ContentFormat = z.infer<typeof ContentFormatSchema>;
 export type SourceDocument = z.infer<typeof SourceDocumentSchema>;
+export type SourceAuthority = z.infer<typeof SourceAuthoritySchema>;
+export type ClaimKind = z.infer<typeof ClaimKindSchema>;
+export type ClaimEvidence = z.infer<typeof ClaimEvidenceSchema>;
 export type BrandIdentity = z.infer<typeof BrandIdentitySchema>;
 export type BrandContext = z.infer<typeof BrandContextSchema>;
 export type ContentGap = z.infer<typeof ContentGapSchema>;

@@ -51,12 +51,15 @@ export async function completeStructured<T extends z.ZodTypeAny>(
     model: string;
     schema: T;
     name: string;
+    // Identical leading context across calls; placed first so the provider can cache it.
+    context?: string;
     instructions: string;
     input: unknown;
     maxTokens: number;
   }
 ): Promise<z.infer<T>> {
   const messages: ChatCompletionMessageParam[] = [
+    ...(options.context ? [{ role: "system" as const, content: options.context }] : []),
     { role: "system", content: options.instructions },
     { role: "user", content: typeof options.input === "string" ? options.input : JSON.stringify(options.input) }
   ];

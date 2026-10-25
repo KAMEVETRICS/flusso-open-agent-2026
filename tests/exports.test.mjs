@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { buildStrategyMarkdown, sourceLinksForAsset } from "../lib/exports.ts";
+import { buildClientContentPack, buildStrategyMarkdown, sourceLinksForAsset } from "../lib/exports.ts";
 
 const asset = {
   id: "asset-1",
@@ -139,4 +139,55 @@ test("adds human-visible source links to each publish-ready asset", () => {
   assert.match(markdown, /#### Sources/);
   assert.match(markdown, /\[Primary documentation\]\(https:\/\/example\.com\/docs\)/);
   assert.doesNotMatch(markdown, /Internal note/);
+});
+
+test("exports only client-facing fields in the content pack", () => {
+  const withProof = {
+    ...pack,
+    inferredFields: ["audience"],
+    brandContext: { ...pack.brandContext, prohibitedClaims: [], assumptions: ["Confirm the launch date."] },
+    calendar: [{ ...pack.calendar[0], platformFitReason: "Internal planning rationale" }],
+    sources: [...pack.sources, {
+      id: "src-prompt-library",
+      title: "Prompt library",
+      sourceType: "prompt-library",
+      extractedText: "internal",
+      fetchedAt: "2026-07-19T00:00:00.000Z",
+      fetchStatus: "fetched",
+      authority: "internal"
+    }],
+    proofReport: {
+      ...pack.proofReport,
+      checkedClaims: 1,
+      supported: 1,
+      claims: [{
+        id: "claim-1",
+        text: "Docs are published.",
+        claimKind: "capability",
+        status: "supported",
+        confidence: 90,
+        checkedAt: "2026-07-19T00:00:00.000Z",
+        contentUsedIn: "asset-1",
+        recommendation: "Keep.",
+        evidence: [{ sourceId: "source-1", quote: "Documentation", locator: "", stance: "supports" }]
+      }]
+    },
+    promptRoutes: [{ pipelineStage: "Foundation", selectedPromptName: "secret routing" }]
+  };
+
+  const client = buildClientContentPack(withProof);
+  const serialized = JSON.stringify(client);
+  for (const internal of ["extractedText", "platformFitReason", "promptRoutes", "generationStages", "secret routing", "draftAssets"]) {
+    assert.doesNotMatch(serialized, new RegExp(internal), internal + " must not reach the client");
+  }
+  assert.deepEqual(client.brand.inferredFields, ["audience"]);
+  assert.deepEqual(client.strategy.assumptions, ["Confirm the launch date."]);
+  assert.equal(client.assets[0].title, "A sourced article");
+  assert.deepEqual(client.sources.map((source) => source.id), ["source-1", "source-without-url"]);
+  assert.deepEqual(client.proof.claims[0].evidence, [{
+    quote: "Documentation",
+    stance: "supports",
+    source: "Primary documentation",
+    url: "https://example.com/docs"
+  }]);
 });
