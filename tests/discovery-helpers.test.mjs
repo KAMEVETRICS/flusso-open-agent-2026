@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
-  competitorSearchQuery,
   extractStructuredData,
   isSameSiteFamily,
   mergeInferredBrief,
@@ -52,10 +51,6 @@ test("splits only http(s) URLs out of free-text docs", () => {
     splitSourceUrls("https://docs.arc.house, notes ftp://x.y\nhttp://arc.house/spec"),
     ["https://docs.arc.house", "http://arc.house/spec"]
   );
-});
-
-test("builds the competitor query from the bare host", () => {
-  assert.equal(competitorSearchQuery("https://www.arc.house/pricing"), "arc.house competitors and alternatives");
 });
 
 test("picks one same-site key page per group in priority order", () => {

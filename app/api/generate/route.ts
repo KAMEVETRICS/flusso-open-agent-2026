@@ -50,7 +50,9 @@ export async function POST(request: Request) {
             send("discovery", {
               brief: discovery.brief,
               inferredFields: discovery.inferredFields,
-              sourceCount: discovery.sources.filter((source) => source.fetchStatus === "fetched").length
+              sourceCount: discovery.sources.filter((source) => source.fetchStatus === "fetched").length,
+              factCount: discovery.factSheet.facts.length,
+              factGaps: discovery.factSheet.gaps
             });
             const promptRouting = routePromptLibrary(discovery.brief);
             const performanceContext = await getPerformanceContextForBrand(discovery.brief.brand, discovery.brief.goal);

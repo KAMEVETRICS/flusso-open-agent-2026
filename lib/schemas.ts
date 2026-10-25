@@ -116,6 +116,43 @@ export const BrandIdentitySchema = z.object({
   personality: z.string()
 });
 
+export const FactCategorySchema = z.enum(["product", "audience", "proof", "pricing", "competitor", "company"]);
+
+// One citable fact about the brand, extracted once from a source section. The quote is checked
+// against the section text before the fact is kept.
+export const BrandFactSchema = z.object({
+  id: z.string(),
+  category: FactCategorySchema,
+  statement: z.string(),
+  // The company or product a competitor or proof fact names, such as a rival or a partner.
+  entity: z.string().default(""),
+  sourceId: z.string(),
+  sectionId: z.string(),
+  quote: z.string(),
+  authority: SourceAuthoritySchema,
+  timeSensitive: z.boolean().default(false)
+});
+
+// A follow-up fetch discovery made to fill a missing fact category.
+export const DiscoveryStepSchema = z.object({
+  reason: z.string(),
+  method: z.enum(["site-page", "web-search"]),
+  target: z.string(),
+  sourceIds: z.array(z.string()).default([]),
+  factsAdded: z.number().int().nonnegative().default(0),
+  outcome: z.string()
+});
+
+export const FactSheetSchema = z.object({
+  facts: z.array(BrandFactSchema).default([]),
+  // Required categories that still have no verified fact after discovery.
+  gaps: z.array(FactCategorySchema).default([]),
+  discoverySteps: z.array(DiscoveryStepSchema).default([]),
+  // Facts the model proposed whose quotes were not found in the cited source.
+  rejectedFacts: z.number().int().nonnegative().default(0),
+  extractionErrors: z.array(z.object({ sourceId: z.string(), reason: z.string() })).default([])
+});
+
 export const BrandContextSchema = z.object({
   positioning: z.string(),
   voice: z.array(z.string()),
@@ -496,6 +533,7 @@ export const DeliveryPackSchema = z.object({
   brandIdentity: BrandIdentitySchema.nullable().default(null),
   // Brief fields inferred from the website rather than stated by the user.
   inferredFields: z.array(z.string()).default([]),
+  factSheet: FactSheetSchema.default({ facts: [], gaps: [], discoverySteps: [], rejectedFacts: 0, extractionErrors: [] }),
   brandContext: BrandContextSchema,
   contentLandscape: ContentLandscapeSchema,
   audienceSegments: z.array(AudienceSegmentSchema),
@@ -546,6 +584,10 @@ export type SourceAuthority = z.infer<typeof SourceAuthoritySchema>;
 export type ClaimKind = z.infer<typeof ClaimKindSchema>;
 export type ClaimEvidence = z.infer<typeof ClaimEvidenceSchema>;
 export type BrandIdentity = z.infer<typeof BrandIdentitySchema>;
+export type FactCategory = z.infer<typeof FactCategorySchema>;
+export type BrandFact = z.infer<typeof BrandFactSchema>;
+export type DiscoveryStep = z.infer<typeof DiscoveryStepSchema>;
+export type FactSheet = z.infer<typeof FactSheetSchema>;
 export type BrandContext = z.infer<typeof BrandContextSchema>;
 export type ContentGap = z.infer<typeof ContentGapSchema>;
 export type ContentLandscape = z.infer<typeof ContentLandscapeSchema>;

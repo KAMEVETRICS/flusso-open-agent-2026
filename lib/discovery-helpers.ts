@@ -71,10 +71,6 @@ function hostKey(hostname: string) {
   return hostname.toLowerCase().replace(/^www\./, "");
 }
 
-export function competitorSearchQuery(website: string) {
-  return hostKey(new URL(website).hostname) + " competitors and alternatives";
-}
-
 // True for the website's own host and its subdomains (docs.example.com for example.com).
 export function isSameSiteFamily(url: string, website: string) {
   try {

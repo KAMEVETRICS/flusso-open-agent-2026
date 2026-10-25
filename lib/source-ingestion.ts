@@ -160,38 +160,34 @@ export async function scrapeSiteIndex(
   };
 }
 
+// Search results as sources numbered from firstIndex (src-search-<n>). Throws when the search fails,
+// so the caller can record why.
 export async function searchSourceDocuments(
   query: string,
   website: string,
   limit: number,
-  fetchedAt: string
+  fetchedAt: string,
+  firstIndex = 1
 ): Promise<SourceDocument[]> {
-  try {
-    const results = await firecrawlSearch(query, limit);
-    return results.slice(0, limit).map((result, index) => {
-      const captured = capture(result.markdown || result.description);
-      const wordCount = countWords(captured.text);
-      return {
-        id: `src-search-${index + 1}`,
-        title: result.title || result.url,
-        url: result.url,
-        sourceType: "search-result" as const,
-        extractedText: captured.text,
-        fetchedAt,
-        fetchStatus: wordCount ? "fetched" as const : "failed" as const,
-        wordCount,
-        completeness: wordCount ? captured.completeness : "failed" as const,
-        authority: isSameSiteFamily(result.url, website) ? "first-party" as const : "third-party" as const,
-        contentHash: captured.contentHash,
-        ...(wordCount ? {} : { failureReason: "No readable text extracted" })
-      };
-    });
-  } catch (error) {
-    // Competitor search enriches discovery; the campaign can proceed without it.
-    const message = error instanceof Error ? error.message : String(error);
-    console.warn("Flusso competitor search failed: " + message);
-    return [];
-  }
+  const results = await firecrawlSearch(query, limit);
+  return results.slice(0, limit).map((result, index) => {
+    const captured = capture(result.markdown || result.description);
+    const wordCount = countWords(captured.text);
+    return {
+      id: `src-search-${firstIndex + index}`,
+      title: result.title || result.url,
+      url: result.url,
+      sourceType: "search-result" as const,
+      extractedText: captured.text,
+      fetchedAt,
+      fetchStatus: wordCount ? "fetched" as const : "failed" as const,
+      wordCount,
+      completeness: wordCount ? captured.completeness : "failed" as const,
+      authority: isSameSiteFamily(result.url, website) ? "first-party" as const : "third-party" as const,
+      contentHash: captured.contentHash,
+      ...(wordCount ? {} : { failureReason: "No readable text extracted" })
+    };
+  });
 }
 
 export function noteSource(
