@@ -9,6 +9,7 @@ import {
   ClaimKindSchema,
   ContentAssetSchema,
   ContentFormatSchema,
+  ContentItemSchema,
   ContentLandscapeSchema,
   ContentSeriesSchema,
   ContentTerritorySchema,
@@ -57,6 +58,7 @@ import {
 } from "./web-verification";
 import { completeStructured, createOpenRouterClient, textModel } from "./openrouter";
 import { applyHookReview, MAX_STRATEGY_WORDS, normalizeStrategy } from "./strategy";
+import { normalizeContentItems, unrenderedItems } from "./content-items";
 
 const BriefInferenceSchema = z.object({
   brand: z.string(),
@@ -119,6 +121,7 @@ const ArchitectureStageSchema = z.object({
   // Strategy fit is scored by a separate review, not by the writer.
   hooks: z.array(HookSchema.omit({ strategyFit: true, strategyFitReason: true })).min(5).max(12),
   contentSeries: z.array(ContentSeriesSchema).min(1).max(6),
+  contentItems: z.array(ContentItemSchema).min(3).max(12),
   platformAdaptations: z.array(PlatformAdaptationSchema).min(1).max(6)
 });
 
@@ -431,6 +434,7 @@ function normalizeArchitectureStage(
   const hookIdMap = new Map(stage.hooks.map((hook, index) => [hook.id, "hook-" + (index + 1)]));
   const hooks = stage.hooks.map((hook, index) => ({ ...hook, id: "hook-" + (index + 1) }));
   const hookIds = new Set(hooks.map((hook) => hook.id));
+  const seriesIdMap = new Map(stage.contentSeries.map((series, index) => [series.id, "series-" + (index + 1)]));
   const contentSeries = stage.contentSeries.map((series, index) => {
     const id = "series-" + (index + 1);
     return {
@@ -447,6 +451,11 @@ function normalizeArchitectureStage(
     ...stage,
     hooks,
     contentSeries,
+    contentItems: stage.contentItems.map((item) => ({
+      ...item,
+      hookId: hookIdMap.get(item.hookId) ?? item.hookId,
+      seriesId: seriesIdMap.get(item.seriesId) ?? item.seriesId
+    })),
     platformAdaptations: stage.platformAdaptations.map((adaptation) => ({
       ...adaptation,
       strongestHookIds: adaptation.strongestHookIds
@@ -473,6 +482,7 @@ function normalizeExecutionStage(
   const sourceIds = new Set(sources.map((source) => source.id));
   const hookIds = new Set(architecture.hooks.map((hook) => hook.id));
   const seriesIds = new Set(architecture.contentSeries.map((series) => series.id));
+  const contentItemIds = new Set(architecture.contentItems.map((item) => item.id));
   const calendarIdMap = new Map(stage.calendar.map((item, index) => [item.id, "cal-" + (index + 1)]));
   const calendar = stage.calendar.map((item, index) => {
     const matchedHook = architecture.hooks.find((hook) => hook.id === item.hookId || hook.text === item.hook);
@@ -484,6 +494,7 @@ function normalizeExecutionStage(
       day: index + 1,
       hookId: matchedHook?.id ?? (hookIds.has(item.hookId) ? item.hookId : ""),
       series: matchedSeries?.id ?? (seriesIds.has(item.series) ? item.series : ""),
+      contentItemId: contentItemIds.has(item.contentItemId) ? item.contentItemId : "",
       sourcePack: item.sourcePack.filter((sourceId) => sourceIds.has(sourceId))
     };
   });
@@ -499,6 +510,7 @@ function normalizeExecutionStage(
         ...asset,
         id: "asset-" + (index + 1),
         platform: calendarItem?.platform ?? asset.platform,
+        contentItemId: contentItemIds.has(asset.contentItemId) ? asset.contentItemId : calendarItem?.contentItemId ?? "",
         calendarItemId: calendarIds.has(calendarItemId) ? calendarItemId : "",
         seriesId: seriesIds.has(asset.seriesId) ? asset.seriesId : "",
         hookId: hookIds.has(asset.hookId) ? asset.hookId : ""
@@ -548,6 +560,7 @@ function normalizeEditorialStage(
       segment: draft.segment,
       territory: draft.territory,
       hookId: draft.hookId,
+      contentItemId: draft.contentItemId,
       visualBriefId: visualIdByAsset.get(draft.id) ?? ""
     };
   });
@@ -668,6 +681,7 @@ function mergeGeneratedPatch(
     territories,
     hooks,
     droppedHooks: patch.droppedHooks,
+    contentItems: patch.contentItems,
     contentSeries,
     platformAdaptations,
     editorialMix: patch.editorialMix,
@@ -1282,13 +1296,17 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
       label: "Architecture",
       input: {
         projectBrief: brief,
+        assetTarget,
         historicalPerformance: performanceContext,
         foundation,
         routedPromptLibrary: promptsFor(["Hook Engineering", "Campaign Architecture", "Performance Optimization"]),
         promptModules
       },
       instructions: [
-        "Generate only hooks, contentSeries, and platformAdaptations from the supplied foundation.",
+        "Generate only hooks, contentSeries, contentItems, and platformAdaptations from the supplied foundation.",
+        "contentItems define each piece of content once. coreMessage is the single point it makes, in one or two sentences, grounded in the fact-sheet facts listed in factIds. No two items may make the same point.",
+        "Give each content item an existing segmentId, territoryId, seriesId, and hookId, and list in platforms the selected platforms it will be written for, at most once each. Across all items the planned platforms must add up to exactly assetTarget renditions.",
+        "Use sequential content item IDs item-1, item-2, and so on.",
         "Write 8 to 12 hook candidates that serve foundation.strategy, most of them for its priority segment. A separate review keeps only the hooks that fit the strategy.",
         "Every hook must map to an existing audience segment and territory and include a test hypothesis and platform-fit reason.",
         "Express winning hook mechanisms with materially new language and sentence structure; never repeat or lightly edit a historical top-asset title.",
@@ -1296,8 +1314,8 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
         "Use sequential series IDs series-1, series-2, and so on, with episode IDs nested under the series ID.",
         "Platform adaptations must reference exact hook IDs and explain the role of each selected platform."
       ].join("\n"),
-      outputKeys: ["hooks", "contentSeries", "platformAdaptations"],
-      maxOutputTokens: 6500
+      outputKeys: ["hooks", "contentSeries", "contentItems", "platformAdaptations"],
+      maxOutputTokens: 9000
     });
     const draftArchitecture = normalizeArchitectureStage(architectureResult.output, brief);
     assertNovelPerformanceVariation(
@@ -1311,6 +1329,7 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
       hooks: draftArchitecture.hooks.map((hook) => ({ ...hook, strategyFit: 0, strategyFitReason: "" }))
     };
     let droppedHooks: Hook[] = [];
+    let hookIdMap = new Map(draftArchitecture.hooks.map((hook) => [hook.id, hook.id]));
     let architectureMetadata = architectureResult.metadata;
     try {
       const reviewResult = await runSharedStage("architecture", HookReviewSchema, {
@@ -1347,6 +1366,7 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
         }))
       };
       droppedHooks = reviewed.dropped;
+      hookIdMap = reviewed.idMap;
       architectureMetadata = {
         ...architectureMetadata,
         completedAt: reviewResult.metadata.completedAt,
@@ -1358,6 +1378,17 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
       console.error("Flusso hook review failed: " + message);
       architectureMetadata = { ...architectureMetadata, label: "Architecture (hook review unavailable)" };
     }
+    const contentItemCheck = normalizeContentItems(draftArchitecture.contentItems, {
+      platforms: brief.platforms,
+      segmentIds: new Set(foundation.audienceSegments.map((segment) => segment.id)),
+      territoryIds: new Set(foundation.territories.map((territory) => territory.id)),
+      seriesIds: new Set(draftArchitecture.contentSeries.map((series) => series.id)),
+      factIds: new Set(discovery.factSheet.facts.map((fact) => fact.id)),
+      hookIdMap,
+      assetTarget
+    });
+    for (const warning of contentItemCheck.warnings) console.warn("Flusso content items: " + warning);
+    architecture = { ...architecture, contentItems: contentItemCheck.items };
     generationStages.push(architectureMetadata);
     await onStageComplete?.(architectureMetadata);
 
@@ -1381,7 +1412,9 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
         "Every calendar item's hook text must be materially different from every other item's. A hook ID may be reused, but only with new wording.",
         "Return exactly " + assetTarget + " publishable assets, matching the requested cadence.",
         "Map every asset to a different calendar item. When assetTarget equals campaignDays, produce one asset for every calendar day.",
-        "Each asset must reference an exact calendar item, series, hook, segment, and territory.",
+        "Every asset is a rendition of one architecture content item: set contentItemId, carry that item's core message and facts, and write it natively for the asset's platform. Follow each item's planned platforms. Renditions of the same item must open differently.",
+        "Set each calendar item's contentItemId to the content item it publishes, previews, or follows up.",
+        "Each asset must reference an exact calendar item, content item, series, hook, segment, and territory.",
         "Assign one editorialMode from the supplied editorial mix and one contentFormat: short-post, thread, article, newsletter, or community-post.",
         "For X with three or more X assets, include at least one short-post, one thread, and one article.",
         "For X threads, populate threadPosts with three to twelve ordered posts and keep copy as a concise thread summary.",
@@ -1405,6 +1438,8 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
     if (coveredCalendarIds.has("") || coveredCalendarIds.size !== execution.assets.length) {
       throw new Error("Execution must map every publishable asset to a different calendar item.");
     }
+    const unrendered = unrenderedItems(architecture.contentItems, execution.assets);
+    if (unrendered.length) console.warn("Flusso content items without an asset: " + unrendered.join(", ") + ".");
     // Rewrite repeated hooks only on days without a drafted asset, whose wording can change safely.
     let executionMetadata = executionResult.metadata;
     const repeatedHookItemIds = findRepeatedHooks(execution.calendar, coveredCalendarIds);

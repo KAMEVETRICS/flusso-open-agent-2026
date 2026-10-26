@@ -274,6 +274,20 @@ export const ContentSeriesSchema = z.object({
   amplificationPlan: z.array(z.string()).default([])
 });
 
+// One piece of content defined once: the single point it makes and the facts behind it.
+// Each asset is a rendition of an item, written natively for one platform.
+export const ContentItemSchema = z.object({
+  id: z.string(),
+  coreMessage: z.string(),
+  segmentId: z.string(),
+  territoryId: z.string(),
+  seriesId: z.string().default(""),
+  hookId: z.string().default(""),
+  factIds: z.array(z.string()).default([]),
+  // Planned renditions, one per platform.
+  platforms: z.array(PlatformSchema)
+});
+
 export const PlatformAdaptationSchema = z.object({
   platform: PlatformSchema,
   role: z.string(),
@@ -298,7 +312,8 @@ export const CalendarItemSchema = z.object({
   hookId: z.string().default(""),
   platformFitReason: z.string().default(""),
   cta: z.string().default(""),
-  productionTaskId: z.string().default("")
+  productionTaskId: z.string().default(""),
+  contentItemId: z.string().default("")
 });
 
 export const ArticleSectionSchema = z.object({
@@ -323,6 +338,7 @@ export const ContentAssetSchema = z.object({
   cta: z.string(),
   linkedClaims: z.array(z.string()),
   calendarItemId: z.string().default(""),
+  contentItemId: z.string().default(""),
   seriesId: z.string().default(""),
   segment: z.string().default(""),
   territory: z.string().default(""),
@@ -566,6 +582,7 @@ export const DeliveryPackSchema = z.object({
   // Hook candidates the strategy review scored too low to use.
   droppedHooks: z.array(HookSchema).default([]),
   contentSeries: z.array(ContentSeriesSchema).default([]),
+  contentItems: z.array(ContentItemSchema).default([]),
   platformAdaptations: z.array(PlatformAdaptationSchema).default([]),
   editorialMix: z.array(EditorialMixItemSchema).default([]),
   calendar: z.array(CalendarItemSchema),
@@ -600,6 +617,7 @@ export const DeliveryPackSchema = z.object({
   productionPlan: ProductionPlanSchema
 });
 
+export type Platform = z.infer<typeof PlatformSchema>;
 export type ProjectBrief = z.infer<typeof ProjectBriefSchema>;
 export type BriefInput = z.infer<typeof BriefInputSchema>;
 export type EditorialProfile = z.infer<typeof EditorialProfileSchema>;
@@ -623,6 +641,7 @@ export type AudienceSegment = z.infer<typeof AudienceSegmentSchema>;
 export type ContentTerritory = z.infer<typeof ContentTerritorySchema>;
 export type Hook = z.infer<typeof HookSchema>;
 export type ContentSeries = z.infer<typeof ContentSeriesSchema>;
+export type ContentItem = z.infer<typeof ContentItemSchema>;
 export type PlatformAdaptation = z.infer<typeof PlatformAdaptationSchema>;
 export type CalendarItem = z.infer<typeof CalendarItemSchema>;
 export type ContentAsset = z.infer<typeof ContentAssetSchema>;

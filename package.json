@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node --experimental-strip-types --import ./tests/resolve-ts.mjs --test tests/brand-identity.test.mjs tests/campaign-scope.test.mjs tests/discovery-helpers.test.mjs tests/editorial-policy.test.mjs tests/exports.test.mjs tests/fact-sheet.test.mjs tests/firecrawl.test.mjs tests/openrouter.test.mjs tests/performance.test.mjs tests/prompt-library.test.mjs tests/proof.test.mjs tests/sections.test.mjs tests/source-ingestion.test.mjs tests/strategy.test.mjs tests/web-verification.test.mjs",
+    "test": "node --experimental-strip-types --import ./tests/resolve-ts.mjs --test tests/brand-identity.test.mjs tests/campaign-scope.test.mjs tests/content-items.test.mjs tests/discovery-helpers.test.mjs tests/editorial-policy.test.mjs tests/exports.test.mjs tests/fact-sheet.test.mjs tests/firecrawl.test.mjs tests/openrouter.test.mjs tests/performance.test.mjs tests/prompt-library.test.mjs tests/proof.test.mjs tests/sections.test.mjs tests/source-ingestion.test.mjs tests/strategy.test.mjs tests/web-verification.test.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "metrics": "node --experimental-strip-types --no-warnings --import ./tests/resolve-ts.mjs scripts/campaign-metrics.mjs"

@@ -102,6 +102,7 @@ function buildStageArtifacts(pack: DeliveryPack) {
     architecture: {
       hooks: pack.hooks,
       droppedHooks: pack.droppedHooks,
+      contentItems: pack.contentItems,
       contentSeries: pack.contentSeries,
       platformAdaptations: pack.platformAdaptations
     },
