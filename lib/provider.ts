@@ -5,6 +5,7 @@ import {
   AudienceSegmentSchema,
   BrandContextSchema,
   CalendarItemSchema,
+  CampaignStrategySchema,
   ClaimKindSchema,
   ContentAssetSchema,
   ContentFormatSchema,
@@ -23,6 +24,7 @@ import {
   type Claim,
   type DeliveryPack,
   type GenerationStage,
+  type Hook,
   type PerformanceContext,
   type ProjectBrief,
   type PromptModule,
@@ -54,6 +56,7 @@ import {
   type EvidenceDocument
 } from "./web-verification";
 import { completeStructured, createOpenRouterClient, textModel } from "./openrouter";
+import { applyHookReview, MAX_STRATEGY_WORDS, normalizeStrategy } from "./strategy";
 
 const BriefInferenceSchema = z.object({
   brand: z.string(),
@@ -103,13 +106,18 @@ const MAX_ASSUMPTIONS = 5;
 
 const FoundationStageSchema = z.object({
   brandContext: BrandContextSchema.extend({ assumptions: z.array(z.string()).max(MAX_ASSUMPTIONS) }),
+  strategy: CampaignStrategySchema.extend({
+    outOfScope: z.array(z.string()).max(5),
+    successCriteria: CampaignStrategySchema.shape.successCriteria.min(1).max(4)
+  }),
   contentLandscape: ContentLandscapeSchema,
   audienceSegments: z.array(AudienceSegmentSchema).min(3).max(6),
   territories: z.array(ContentTerritorySchema).min(3).max(6)
 });
 
 const ArchitectureStageSchema = z.object({
-  hooks: z.array(HookSchema).min(5).max(12),
+  // Strategy fit is scored by a separate review, not by the writer.
+  hooks: z.array(HookSchema.omit({ strategyFit: true, strategyFitReason: true })).min(5).max(12),
   contentSeries: z.array(ContentSeriesSchema).min(1).max(6),
   platformAdaptations: z.array(PlatformAdaptationSchema).min(1).max(6)
 });
@@ -131,6 +139,14 @@ const EditorialStageSchema = z.object({
   assets: z.array(GeneratedAssetSchema).min(5).max(30),
   visualBriefs: z.array(VisualBriefSchema).min(2).max(4),
   editorialReport: EditorialReportSchema
+});
+
+const HookReviewSchema = z.object({
+  reviews: z.array(z.object({
+    hookId: z.string(),
+    strategyFit: z.number().int().min(1).max(5),
+    reason: z.string()
+  }))
 });
 
 const CalendarHookRepairSchema = z.object({
@@ -192,7 +208,9 @@ type ArchitectureStageOutput = z.infer<typeof ArchitectureStageSchema>;
 type ExecutionStageOutput = z.infer<typeof ExecutionStageSchema>;
 type EditorialStageOutput = z.infer<typeof EditorialStageSchema>;
 type GovernanceStageOutput = z.infer<typeof GovernanceStageSchema>;
-type GenerationPatch = FoundationStageOutput & ArchitectureStageOutput & {
+type ReviewedArchitecture = Omit<ArchitectureStageOutput, "hooks"> & { hooks: Hook[] };
+type GenerationPatch = FoundationStageOutput & ReviewedArchitecture & {
+  droppedHooks: Hook[];
   editorialMix: ReturnType<typeof editorialMixFor>;
   calendar: ExecutionStageOutput["calendar"];
   draftAssets: Array<ExecutionStageOutput["assets"][number] & { linkedClaims: string[] }>;
@@ -644,10 +662,12 @@ function mergeGeneratedPatch(
     inferredFields: discovery.inferredFields,
     factSheet: discovery.factSheet,
     brandContext: patch.brandContext,
+    strategy: patch.strategy,
     contentLandscape: patch.contentLandscape,
     audienceSegments: patch.audienceSegments,
     territories,
     hooks,
+    droppedHooks: patch.droppedHooks,
     contentSeries,
     platformAdaptations,
     editorialMix: patch.editorialMix,
@@ -1231,7 +1251,11 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
         promptModules
       },
       instructions: [
-        "Generate only the campaign foundation: brandContext, contentLandscape, audienceSegments, and territories.",
+        "Generate only the campaign foundation: brandContext, strategy, contentLandscape, audienceSegments, and territories.",
+        "strategy.statement: one sentence of at most " + MAX_STRATEGY_WORDS + " words naming the goal, the priority segment, and the need the campaign meets for it.",
+        "strategy.prioritySegmentId: the ID of the segment the campaign serves first. strategy.audienceNeed: the task or problem that segment needs solved.",
+        "strategy.outOfScope: up to five topics, audiences, or claims the campaign deliberately leaves out.",
+        "strategy.successCriteria: one to four measurable criteria for the goal, each with outcome, metric, targetRange (a proposed range to agree with the client, not a forecast), baseline ('unknown' unless historical performance gives one), and measurement (where it is counted and against what denominator).",
         "Brief fields listed in inferredBriefFields were inferred from the website, not stated by the user; treat them as working assumptions, not verified facts.",
         "Ground positioning, proof points, and territory proof angles in fact-sheet facts. When the campaign depends on a fact-sheet gap, such as pricing, say so in brandContext.assumptions.",
         "Separate saturated narratives, opportunity gaps, format gaps, tone gaps, and platform insights.",
@@ -1240,10 +1264,17 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
         "Use sequential segment IDs segment-1, segment-2, and territory IDs territory-1, territory-2, and so on.",
         "Put caveats, unconfirmed inferences, and questions for the brand team in brandContext.assumptions: at most " + MAX_ASSUMPTIONS + ", one sentence each, keeping only those that would change the campaign if wrong. Positioning and voice must read as finished client copy."
       ].join("\n"),
-      outputKeys: ["brandContext", "contentLandscape", "audienceSegments", "territories"],
-      maxOutputTokens: 7000
+      outputKeys: ["brandContext", "strategy", "contentLandscape", "audienceSegments", "territories"],
+      maxOutputTokens: 8000
     });
-    const foundation = normalizeFoundationStage(foundationResult.output);
+    const normalizedFoundation = normalizeFoundationStage(foundationResult.output);
+    const strategyCheck = normalizeStrategy(
+      normalizedFoundation.strategy,
+      normalizedFoundation.audienceSegments,
+      performanceContext.recordCount > 0
+    );
+    for (const warning of strategyCheck.warnings) console.warn("Flusso strategy: " + warning);
+    const foundation = { ...normalizedFoundation, strategy: strategyCheck.strategy };
     generationStages.push(foundationResult.metadata);
     await onStageComplete?.(foundationResult.metadata);
 
@@ -1258,6 +1289,7 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
       },
       instructions: [
         "Generate only hooks, contentSeries, and platformAdaptations from the supplied foundation.",
+        "Write 8 to 12 hook candidates that serve foundation.strategy, most of them for its priority segment. A separate review keeps only the hooks that fit the strategy.",
         "Every hook must map to an existing audience segment and territory and include a test hypothesis and platform-fit reason.",
         "Express winning hook mechanisms with materially new language and sentence structure; never repeat or lightly edit a historical top-asset title.",
         "Use sequential hook IDs hook-1, hook-2, and so on.",
@@ -1267,14 +1299,67 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
       outputKeys: ["hooks", "contentSeries", "platformAdaptations"],
       maxOutputTokens: 6500
     });
-    const architecture = normalizeArchitectureStage(architectureResult.output, brief);
+    const draftArchitecture = normalizeArchitectureStage(architectureResult.output, brief);
     assertNovelPerformanceVariation(
-      architecture.hooks.map((hook) => hook.text),
+      draftArchitecture.hooks.map((hook) => hook.text),
       performanceContext,
       "Architecture"
     );
-    generationStages.push(architectureResult.metadata);
-    await onStageComplete?.(architectureResult.metadata);
+    // A separate call scores each hook against the strategy, so the writer does not grade itself.
+    let architecture: ReviewedArchitecture = {
+      ...draftArchitecture,
+      hooks: draftArchitecture.hooks.map((hook) => ({ ...hook, strategyFit: 0, strategyFitReason: "" }))
+    };
+    let droppedHooks: Hook[] = [];
+    let architectureMetadata = architectureResult.metadata;
+    try {
+      const reviewResult = await runSharedStage("architecture", HookReviewSchema, {
+        label: "Hook review",
+        input: {
+          strategy: foundation.strategy,
+          audienceSegments: foundation.audienceSegments.map((segment) => ({ id: segment.id, name: segment.name, needs: segment.needs })),
+          territories: foundation.territories.map((territory) => ({ id: territory.id, name: territory.name })),
+          hooks: draftArchitecture.hooks.map((hook) => ({
+            id: hook.id,
+            text: hook.text,
+            platform: hook.platform,
+            audienceSegment: hook.audienceSegment,
+            contentTerritory: hook.contentTerritory
+          }))
+        },
+        instructions: [
+          "You review campaign hooks against the campaign strategy. Return one review per hook, using its exact hookId.",
+          "strategyFit 5: moves the priority segment toward the goal through the stated need, and is specific to this brand.",
+          "4: on strategy, but could be sharper. 3: relevant to the goal but generic, or aimed at a secondary segment.",
+          "2: weak link to the goal or need. 1: off strategy, covers an outOfScope topic, or asserts something the fact sheet does not support.",
+          "Be strict: a hook any competitor could post unchanged scores at most 3. reason is one sentence."
+        ].join("\n"),
+        outputKeys: ["reviews"],
+        maxOutputTokens: 2500
+      });
+      const reviewed = applyHookReview(draftArchitecture.hooks, reviewResult.output.reviews);
+      architecture = {
+        ...draftArchitecture,
+        hooks: reviewed.kept,
+        platformAdaptations: draftArchitecture.platformAdaptations.map((adaptation) => ({
+          ...adaptation,
+          strongestHookIds: adaptation.strongestHookIds.flatMap((hookId) => reviewed.idMap.get(hookId) ?? [])
+        }))
+      };
+      droppedHooks = reviewed.dropped;
+      architectureMetadata = {
+        ...architectureMetadata,
+        completedAt: reviewResult.metadata.completedAt,
+        durationMs: architectureMetadata.durationMs + reviewResult.metadata.durationMs
+      };
+    } catch (error) {
+      // Unreviewed hooks are still usable; they keep a strategyFit of 0 so the gap is visible.
+      const message = error instanceof Error ? error.message : "unknown review error";
+      console.error("Flusso hook review failed: " + message);
+      architectureMetadata = { ...architectureMetadata, label: "Architecture (hook review unavailable)" };
+    }
+    generationStages.push(architectureMetadata);
+    await onStageComplete?.(architectureMetadata);
 
     const executionResult = await runSharedStage("execution", ExecutionStageSchema, {
       label: "Execution",
@@ -1290,6 +1375,7 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
       },
       instructions: [
         "Generate only calendar and assets from the approved foundation and architecture.",
+        "Every calendar item and asset must serve foundation.strategy. Never cover a topic listed in foundation.strategy.outOfScope.",
         "Return exactly " + campaignDays + " calendar items in day order.",
         "Each calendar item must preserve an existing hook ID and series ID when applicable, plus territory, audience segment, episode, CTA, platform-fit reason, and valid source IDs.",
         "Every calendar item's hook text must be materially different from every other item's. A hook ID may be reused, but only with new wording.",
@@ -1626,6 +1712,7 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
     const patch: GenerationPatch = {
       ...foundation,
       ...architecture,
+      droppedHooks,
       editorialMix,
       calendar: execution.calendar,
       draftAssets: execution.assets.map((asset) => ({

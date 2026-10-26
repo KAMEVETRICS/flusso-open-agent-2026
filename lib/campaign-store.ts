@@ -94,12 +94,14 @@ function buildStageArtifacts(pack: DeliveryPack) {
   const artifacts: Record<GenerationStage["stage"], unknown> = {
     foundation: {
       brandContext: pack.brandContext,
+      strategy: pack.strategy,
       contentLandscape: pack.contentLandscape,
       audienceSegments: pack.audienceSegments,
       territories: pack.territories
     },
     architecture: {
       hooks: pack.hooks,
+      droppedHooks: pack.droppedHooks,
       contentSeries: pack.contentSeries,
       platformAdaptations: pack.platformAdaptations
     },

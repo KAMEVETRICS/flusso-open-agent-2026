@@ -163,6 +163,26 @@ export const BrandContextSchema = z.object({
   assumptions: z.array(z.string()).default([])
 });
 
+export const SuccessCriterionSchema = z.object({
+  outcome: z.string(),
+  metric: z.string(),
+  // A proposed range to agree with the client, not a forecast.
+  targetRange: z.string(),
+  // "unknown" until measured performance gives a starting point.
+  baseline: z.string(),
+  measurement: z.string()
+});
+
+// The decision every later stage is checked against: whom the campaign serves first, the need it
+// meets, what it leaves out, and how success is measured.
+export const CampaignStrategySchema = z.object({
+  statement: z.string(),
+  prioritySegmentId: z.string(),
+  audienceNeed: z.string(),
+  outOfScope: z.array(z.string()),
+  successCriteria: z.array(SuccessCriterionSchema)
+});
+
 export const ContentGapSchema = z.object({
   id: z.string(),
   type: z.enum(["topic", "audience", "format", "tone", "saturated-narrative"]),
@@ -232,7 +252,10 @@ export const HookSchema = z.object({
   contentTerritory: z.string().default(""),
   formatPairing: z.string().default(""),
   testHypothesis: z.string().default(""),
-  platformFitReason: z.string().default("")
+  platformFitReason: z.string().default(""),
+  // 1-5 fit with the campaign strategy, scored by a separate review; 0 means not scored.
+  strategyFit: z.number().int().min(0).max(5).default(0),
+  strategyFitReason: z.string().default("")
 });
 
 export const ContentSeriesSchema = z.object({
@@ -535,10 +558,13 @@ export const DeliveryPackSchema = z.object({
   inferredFields: z.array(z.string()).default([]),
   factSheet: FactSheetSchema.default({ facts: [], gaps: [], discoverySteps: [], rejectedFacts: 0, extractionErrors: [] }),
   brandContext: BrandContextSchema,
+  strategy: CampaignStrategySchema.nullable().default(null),
   contentLandscape: ContentLandscapeSchema,
   audienceSegments: z.array(AudienceSegmentSchema),
   territories: z.array(ContentTerritorySchema),
   hooks: z.array(HookSchema),
+  // Hook candidates the strategy review scored too low to use.
+  droppedHooks: z.array(HookSchema).default([]),
   contentSeries: z.array(ContentSeriesSchema).default([]),
   platformAdaptations: z.array(PlatformAdaptationSchema).default([]),
   editorialMix: z.array(EditorialMixItemSchema).default([]),
@@ -589,6 +615,8 @@ export type BrandFact = z.infer<typeof BrandFactSchema>;
 export type DiscoveryStep = z.infer<typeof DiscoveryStepSchema>;
 export type FactSheet = z.infer<typeof FactSheetSchema>;
 export type BrandContext = z.infer<typeof BrandContextSchema>;
+export type SuccessCriterion = z.infer<typeof SuccessCriterionSchema>;
+export type CampaignStrategy = z.infer<typeof CampaignStrategySchema>;
 export type ContentGap = z.infer<typeof ContentGapSchema>;
 export type ContentLandscape = z.infer<typeof ContentLandscapeSchema>;
 export type AudienceSegment = z.infer<typeof AudienceSegmentSchema>;
