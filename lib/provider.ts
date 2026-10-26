@@ -59,6 +59,7 @@ import {
 import { completeStructured, createOpenRouterClient, textModel } from "./openrouter";
 import { applyHookReview, MAX_STRATEGY_WORDS, normalizeStrategy } from "./strategy";
 import { normalizeContentItems, unrenderedItems } from "./content-items";
+import { assignAssetsToDays } from "./calendar-mapping";
 
 const BriefInferenceSchema = z.object({
   brand: z.string(),
@@ -1435,6 +1436,11 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
         "Execution returned " + execution.assets.length +
         " publishable assets; the campaign requires exactly " + assetTarget + "."
       );
+    }
+    const mapping = assignAssetsToDays(execution.assets, execution.calendar);
+    if (mapping.moved.length) {
+      console.warn("Flusso moved assets to free calendar days: " + mapping.moved.join(", ") + ".");
+      execution = { calendar: mapping.days, assets: mapping.assets };
     }
     const coveredCalendarIds = new Set(execution.assets.map((asset) => asset.calendarItemId));
     if (coveredCalendarIds.has("") || coveredCalendarIds.size !== execution.assets.length) {
