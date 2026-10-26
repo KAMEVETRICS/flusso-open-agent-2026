@@ -102,3 +102,23 @@ test("refuses to call Firecrawl without an API key", async () => {
   stubFetch(200, { success: true });
   await assert.rejects(firecrawlScrape("https://arc.house"), /FIRECRAWL_API_KEY is missing/);
 });
+
+test("retries a request whose connection fails, but not an HTTP error", async () => {
+  let attempts = 0;
+  globalThis.fetch = async () => {
+    attempts += 1;
+    if (attempts === 1) throw new TypeError("fetch failed");
+    return new Response(JSON.stringify({ success: true, data: { markdown: "Home", metadata: { statusCode: 200 } } }), { status: 200 });
+  };
+  const page = await firecrawlScrape("https://doma.xyz");
+  assert.equal(page.markdown, "Home");
+  assert.equal(attempts, 2);
+
+  attempts = 0;
+  globalThis.fetch = async () => {
+    attempts += 1;
+    return new Response(JSON.stringify({ success: false, error: "Payment required" }), { status: 402 });
+  };
+  await assert.rejects(firecrawlScrape("https://doma.xyz"), /Payment required/);
+  assert.equal(attempts, 1);
+});

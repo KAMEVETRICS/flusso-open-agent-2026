@@ -1304,7 +1304,7 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
       },
       instructions: [
         "Generate only hooks, contentSeries, contentItems, and platformAdaptations from the supplied foundation.",
-        "contentItems define each piece of content once. coreMessage is the single point it makes, in one or two sentences, grounded in the fact-sheet facts listed in factIds. No two items may make the same point.",
+        "contentItems define each piece of content once. coreMessage is the single point it makes, in one or two sentences, grounded in the fact-sheet facts listed in factIds. It is client-facing: never put source, fact, or other IDs in it. No two items may make the same point.",
         "Give each content item an existing segmentId, territoryId, seriesId, and hookId, and list in platforms the selected platforms it will be written for, at most once each. Across all items the planned platforms must add up to exactly assetTarget renditions.",
         "Use sequential content item IDs item-1, item-2, and so on.",
         "Write 8 to 12 hook candidates that serve foundation.strategy, most of them for its priority segment. A separate review keeps only the hooks that fit the strategy.",

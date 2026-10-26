@@ -3,6 +3,9 @@ import { hookSimilarity } from "./editorial-policy";
 
 // Core messages this similar make the same point twice.
 const REPEATED_MESSAGE_SIMILARITY = 0.6;
+// A bracketed reference such as "[src-project-docs]" or "(fact-3)". Facts are linked through
+// factIds; the core message is client-facing.
+const INTERNAL_REFERENCE = /\s*[[(](?:src|fact|claim|item|hook|segment|territory|series)-[^\])]*[\])]/g;
 
 export type ContentItemContext = {
   platforms: Platform[];
@@ -22,9 +25,14 @@ export function normalizeContentItems(
   context: ContentItemContext
 ): { items: ContentItem[]; warnings: string[] } {
   const selected = new Set<Platform>(context.platforms);
+  const warnings: string[] = [];
   const normalized = items.map((item, index): ContentItem => ({
     id: "item-" + (index + 1),
-    coreMessage: item.coreMessage.trim(),
+    coreMessage: (() => {
+      const cleaned = item.coreMessage.replace(INTERNAL_REFERENCE, "").trim();
+      if (cleaned !== item.coreMessage.trim()) warnings.push("item-" + (index + 1) + " cited internal IDs in its core message; they were removed.");
+      return cleaned;
+    })(),
     segmentId: context.segmentIds.has(item.segmentId) ? item.segmentId : "",
     territoryId: context.territoryIds.has(item.territoryId) ? item.territoryId : "",
     seriesId: context.seriesIds.has(item.seriesId) ? item.seriesId : "",
@@ -33,7 +41,6 @@ export function normalizeContentItems(
     platforms: Array.from(new Set(item.platforms.filter((platform) => selected.has(platform))))
   }));
 
-  const warnings: string[] = [];
   normalized.forEach((item, index) => {
     const earlier = normalized.slice(0, index).find(
       (other) => hookSimilarity(other.coreMessage, item.coreMessage) > REPEATED_MESSAGE_SIMILARITY

@@ -43,6 +43,8 @@ const factual = claims.filter((claim) => claim.status !== "editorial");
 const clientText = [
   pack.brandContext.positioning,
   ...pack.brandContext.voice,
+  pack.strategy?.statement ?? "",
+  ...pack.contentItems.map((item) => item.coreMessage),
   ...pack.calendar.map((item) => item.hook),
   ...pack.assets.flatMap((asset) => [
     asset.title,

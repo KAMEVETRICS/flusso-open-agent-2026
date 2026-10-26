@@ -48,6 +48,7 @@ const MAX_COMPETITOR_URLS = 5;
 // Pages and search results read beyond the homepage, docs, and site index before facts are trusted.
 const MIN_CONTENT_SOURCES = 4;
 const MAX_GAP_SEARCHES = 3;
+const SEARCH_PRIORITY: FactCategory[] = ["competitor", "proof", "pricing", "audience", "product"];
 const COMPETITOR_SEARCH_RESULTS = 3;
 const GAP_SEARCH_RESULTS = 2;
 const FACT_EXTRACTION_CONCURRENCY = 6;
@@ -160,12 +161,14 @@ async function fetchForGaps(
     );
   };
 
+  const needsSearch = new Set<FactCategory>();
   for (const category of gaps) {
     const page = category === "competitor" ? null : gapPage(category, links, context.website, taken);
-    if (page) {
-      fetchPage(category + " gap", page);
-      continue;
-    }
+    if (page) fetchPage(category + " gap", page);
+    else needsSearch.add(category);
+  }
+  // The search budget goes first to what the brand's own site rarely answers.
+  for (const category of SEARCH_PRIORITY.filter((item) => needsSearch.has(item))) {
     const query = gapSearchQuery(category, context);
     if (!query || !searchesLeft) continue;
     searchesLeft -= 1;
@@ -196,7 +199,18 @@ async function fetchForGaps(
   const extraPages = pickKeyPages(links, context.website, Math.max(0, MIN_CONTENT_SOURCES - contentSources - fetches.length), [], takenUrls);
   for (const url of extraPages) fetchPage("source minimum", url);
 
-  return Promise.all(fetches);
+  // Searches run in parallel and can return the same page; keep its first appearance.
+  const seenResults = new Set<string>();
+  return (await Promise.all(fetches)).map((fetch) => fetch.method !== "web-search" ? fetch : {
+    ...fetch,
+    sources: fetch.sources.filter((source) => {
+      const key = source.url ? pageKey(source.url) : "";
+      if (!key) return true;
+      if (seenResults.has(key)) return false;
+      seenResults.add(key);
+      return true;
+    })
+  });
 }
 
 function stepOutcome(fetch: GapFetch, factsAdded: number) {

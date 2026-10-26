@@ -188,3 +188,48 @@ test("discovery fills fact gaps with a site page and a web search, and records e
   assert.ok(result.inferredFields.includes("competitors"));
   assert.ok(result.sources.some((item) => item.id === "src-search-1" && item.authority === "third-party"));
 });
+
+test("discovery keeps one copy of a page that several gap searches return", async () => {
+  process.env.FIRECRAWL_API_KEY = "fc-test";
+  const searches = [];
+  globalThis.fetch = async (url, init) => {
+    const body = JSON.parse(init.body);
+    const endpoint = String(url).split("/v2/")[1];
+    const json = (data, status = 200) => new Response(JSON.stringify(data), { status });
+    if (endpoint === "map") return json({ success: true, links: [] });
+    if (endpoint === "search") {
+      searches.push(body.query);
+      return json({ success: true, data: { web: [
+        { url: "https://www.halborn.com/case-studies/doma", title: "Halborn", markdown: "## Audit\nHalborn reviewed the Doma architecture before its mainnet launch in 2025." }
+      ] } });
+    }
+    if (body.url === "https://doma.xyz") {
+      return json({ success: true, data: { markdown: "## Protocol\nDoma tokenizes DNS domains so they can be traded onchain while staying DNS-compliant.", metadata: { statusCode: 200 } } });
+    }
+    return json({ success: false, error: "not found" }, 404);
+  };
+  const model = {
+    async inferBrief() {
+      return { brand: "Doma", industry: "DomainFi", audience: "Domain investors", tone: "Direct", competitors: [] };
+    },
+    async extractFacts(_context, src) {
+      return src.id === "src-brand-site" ? [generated({ sectionId: "src-brand-site#protocol" })] : [];
+    }
+  };
+
+  const result = await discoverBrief({
+    website: "https://doma.xyz",
+    goal: "Onboard domain flippers onchain",
+    brand: "", industry: "", audience: "", tone: "", docs: "", competitors: [],
+    platforms: ["X"], editorialProfile: "balanced", durationDays: 30, postsPerWeek: 5, teamSize: 1, hoursPerWeek: 8, restrictions: ""
+  }, model);
+
+  assert.deepEqual(searches, [
+    "Doma DomainFi competitors and alternatives",
+    "Doma DomainFi partners customers announcement",
+    "Doma pricing fees"
+  ], "competitor, proof and pricing get the three searches; audience waits");
+  const halborn = result.sources.filter((source) => source.url === "https://www.halborn.com/case-studies/doma");
+  assert.equal(halborn.length, 1);
+  assert.deepEqual(result.factSheet.discoverySteps.map((step) => step.sourceIds.length), [1, 0, 0]);
+});

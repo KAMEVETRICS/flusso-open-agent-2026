@@ -57,6 +57,21 @@ test("flags items that make the same point and items with no platform", () => {
   assert.deepEqual(warnings, ["item-2 repeats the point of item-1.", "item-2 has no planned platform."]);
 });
 
+test("removes internal IDs from client-facing core messages", () => {
+  const { items, warnings } = normalizeContentItems([
+    item({ coreMessage: "Tokenized domains stay DNS-compliant. [src-project-docs]" }),
+    item({ coreMessage: "Halborn reviewed the architecture (fact-12) before mainnet.", hookId: "hook-3" })
+  ], context);
+  assert.deepEqual(items.map((entry) => entry.coreMessage), [
+    "Tokenized domains stay DNS-compliant.",
+    "Halborn reviewed the architecture before mainnet."
+  ]);
+  assert.deepEqual(warnings, [
+    "item-1 cited internal IDs in its core message; they were removed.",
+    "item-2 cited internal IDs in its core message; they were removed."
+  ]);
+});
+
 test("lists content items no asset renders", () => {
   const items = [{ id: "item-1" }, { id: "item-2" }, { id: "item-3" }];
   assert.deepEqual(unrenderedItems(items, [{ contentItemId: "item-1" }, { contentItemId: "item-3" }]), ["item-2"]);

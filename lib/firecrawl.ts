@@ -38,8 +38,24 @@ function apiKey() {
   return key;
 }
 
+const NETWORK_RETRIES = 2;
+const RETRY_DELAY_MS = 750;
+
+// fetch rejects with a TypeError when the connection itself fails ("fetch failed"). Retry those;
+// HTTP errors and timeouts are not retried, because they are answers or already slow.
+async function fetchWithRetry(url: string, init: RequestInit) {
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      return await fetch(url, init);
+    } catch (error) {
+      if (attempt >= NETWORK_RETRIES || !(error instanceof TypeError)) throw error;
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS * (attempt + 1)));
+    }
+  }
+}
+
 async function post(endpoint: string, body: JsonRecord, timeoutMs: number): Promise<JsonRecord> {
-  const response = await fetch(FIRECRAWL_API_URL + endpoint, {
+  const response = await fetchWithRetry(FIRECRAWL_API_URL + endpoint, {
     method: "POST",
     headers: {
       Authorization: "Bearer " + apiKey(),
