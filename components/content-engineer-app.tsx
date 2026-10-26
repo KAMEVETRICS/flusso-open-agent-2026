@@ -40,6 +40,7 @@ import type {
 
 type ViewName = "workbench" | "history" | "pipeline" | "results" | "performance" | "proof" | "exports";
 type DiscoveredBrief = { brief: ProjectBrief; inferredFields: string[]; sourceCount: number; factCount?: number; factGaps?: string[] };
+type VisualProgress = { total: number; rendered: number; failed: number };
 type ResultsTab = "strategy" | "facts" | "landscape" | "audience" | "hooks" | "platform" | "lineage" | "calendar" | "content" | "visuals" | "proof" | "prompt-os" | "capacity";
 type ProofFilter = "all" | "repaired" | Claim["status"];
 
@@ -146,8 +147,10 @@ function websiteLabel(website: string) {
 async function readGenerationStream(
   response: Response,
   onDiscovery: (discovered: DiscoveredBrief) => void,
-  onStage: (stage: GenerationStage) => void
+  onStage: (stage: GenerationStage) => void,
+  onVisuals: (progress: VisualProgress) => void
 ): Promise<{ pack: DeliveryPack; campaignId: string }> {
+  let progress: VisualProgress = { total: 0, rendered: 0, failed: 0 };
   const reader = response.body?.getReader();
   if (!reader) throw new Error("Generation stream was unavailable.");
 
@@ -175,6 +178,17 @@ async function readGenerationStream(
           onDiscovery(payload as DiscoveredBrief);
         } else if (event === "stage") {
           onStage(payload as GenerationStage);
+        } else if (event === "visuals") {
+          progress = { total: (payload as { total: number }).total, rendered: 0, failed: 0 };
+          onVisuals(progress);
+        } else if (event === "visual") {
+          const status = (payload as { status: string }).status;
+          progress = {
+            ...progress,
+            rendered: progress.rendered + (status === "generated" ? 1 : 0),
+            failed: progress.failed + (status === "generated" ? 0 : 1)
+          };
+          onVisuals(progress);
         } else if (event === "complete") {
           return payload as { pack: DeliveryPack; campaignId: string };
         } else if (event === "error") {
@@ -513,11 +527,13 @@ function Workbench({
 function PipelineView({
   brief,
   discovered,
-  stages
+  stages,
+  visuals
 }: {
   brief: BriefInput;
   discovered: DiscoveredBrief | null;
   stages: GenerationStage[];
+  visuals: VisualProgress | null;
 }) {
   const activeStage = discovered ? generationStageLabels[stages.length] : null;
   const summary = discovered?.brief ?? brief;
@@ -580,6 +596,21 @@ function PipelineView({
               </div>
             );
           })}
+          <div className={visuals && visuals.rendered + visuals.failed >= visuals.total ? "stage-card complete" : visuals ? "stage-card running" : "stage-card queued"}>
+            <div className="stage-circle">{visuals && visuals.rendered + visuals.failed >= visuals.total ? <Check size={13} weight="bold" /> : null}</div>
+            <span className="st-num">{String(generationStageLabels.length + 1).padStart(2, "0")}</span>
+            <div className="st-name-wrap">
+              <div className="st-name">Images</div>
+              <div className="st-note">
+                {visuals
+                  ? visuals.rendered + " of " + visuals.total + " rendered" + (visuals.failed ? ", " + visuals.failed + " not rendered" : "")
+                  : "Renders each planned visual in the brand palette"}
+              </div>
+            </div>
+            <div className="st-meta">
+              <span className={visuals ? "badge bg-green" : "pill pill-gray"}>{visuals ? (visuals.rendered + visuals.failed >= visuals.total ? "done" : "running") : "queued"}</span>
+            </div>
+          </div>
         </div>
       </section>
       <aside className="col-right">
@@ -1327,7 +1358,6 @@ function VisualsTab({
   const [generatingId, setGeneratingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [revision, setRevision] = useState(0);
-  const proofReady = pack.proofReport.unsupported === 0 && pack.proofReport.conflicts === 0;
 
   async function generateVisual(visualId: string) {
     if (!campaignId) {
@@ -1364,7 +1394,6 @@ function VisualsTab({
   return (
     <div className="visuals-stack">
       <BrandIdentityPanel identity={pack.brandIdentity} />
-      {!proofReady ? <div className="error-box">Repair unsupported or conflicting claims before generating visuals.</div> : null}
       {error ? <div className="error-box">{error}</div> : null}
       <div className="visual-grid">
         {pack.visualBriefs.map((brief) => {
@@ -1388,15 +1417,16 @@ function VisualsTab({
                 <div className="card-topline"><span className="format-badge">{brief.aspectRatio}</span><span>{brief.status}</span></div>
                 <h3>{brief.keyMessage}</h3>
                 <p>{brief.purpose}</p>
+                {brief.statusNote ? <p className="amber-text">{brief.statusNote}</p> : null}
                 <div className="visual-actions">
                   <span>{brief.sourceIds.length} sources</span>
                   <button
                     className="btn btn-primary"
                     onClick={() => generateVisual(brief.id)}
-                    disabled={!proofReady || !campaignId || Boolean(generatingId) || brief.status === "generated"}
+                    disabled={!campaignId || Boolean(generatingId) || brief.status === "generated"}
                   >
                     <Sparkle size={15} />
-                    {generatingId === brief.id ? "Generating..." : brief.status === "generated" ? "Generated" : "Generate"}
+                    {generatingId === brief.id ? "Generating..." : brief.status === "generated" ? "Generated" : brief.status === "failed" ? "Retry" : "Generate"}
                   </button>
                 </div>
               </div>
@@ -2086,6 +2116,7 @@ export function ContentEngineerApp() {
   const [pack, setPack] = useState<DeliveryPack | null>(null);
   const [campaignId, setCampaignId] = useState<string | null>(null);
   const [discovered, setDiscovered] = useState<DiscoveredBrief | null>(null);
+  const [visualProgress, setVisualProgress] = useState<VisualProgress | null>(null);
   const [liveStages, setLiveStages] = useState<GenerationStage[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -2113,6 +2144,7 @@ export function ContentEngineerApp() {
     setCampaignId(null);
     setRepairError(null);
     setDiscovered(null);
+    setVisualProgress(null);
     setLiveStages([]);
     setView("pipeline");
     try {
@@ -2132,7 +2164,7 @@ export function ContentEngineerApp() {
           ...current.filter((item) => item.stage !== stage.stage),
           stage
         ]);
-      });
+      }, setVisualProgress);
       setLiveStages(generationResult.pack.generationStages);
       setCampaignId(generationResult.campaignId);
       setPack(generationResult.pack);
@@ -2175,7 +2207,7 @@ export function ContentEngineerApp() {
       <TopNav view={view} setView={setView} hasPack={Boolean(pack)} loading={loading} />
       {view === "workbench" ? <Workbench brief={brief} setBrief={setBrief} pack={pack} onGenerate={generatePack} loading={loading} error={error} /> : null}
       {view === "history" ? <HistoryView onOpen={openSavedCampaign} /> : null}
-      {view === "pipeline" ? <PipelineView brief={brief} discovered={discovered} stages={liveStages} /> : null}
+      {view === "pipeline" ? <PipelineView brief={brief} discovered={discovered} stages={liveStages} visuals={visualProgress} /> : null}
       {view === "results" && pack ? <ResultsView pack={pack} campaignId={campaignId} onPackChange={setPack} /> : null}
       {view === "performance" && pack ? <PerformanceView pack={pack} campaignId={campaignId} /> : null}
       {view === "proof" && pack ? <ProofView pack={pack} canRepair={Boolean(campaignId) && proofIssueCount > 0} repairing={repairing} repairError={repairError} onRepair={repairClaims} /> : null}

@@ -1,12 +1,13 @@
 import { z } from "zod";
 import { normalizeBrief } from "@/lib/brief";
-import { saveCampaign } from "@/lib/campaign-store";
+import { saveCampaign, updateCampaignPack } from "@/lib/campaign-store";
 import { ensureCampaignSchema } from "@/lib/db";
 import { discoverBrief } from "@/lib/discovery";
 import { isFirecrawlConfigured } from "@/lib/firecrawl";
 import { createContentGenerationProvider } from "@/lib/provider";
 import { getPerformanceContextForBrand } from "@/lib/performance-store";
 import { routePromptLibrary } from "@/lib/prompt-library";
+import { renderCampaignVisuals } from "@/lib/visual-rendering";
 
 export const maxDuration = 300;
 
@@ -41,7 +42,7 @@ export async function POST(request: Request) {
           }
         };
 
-        send("ready", { stages: ["discovery", "foundation", "architecture", "execution", "editorial", "governance", "verification"] });
+        send("ready", { stages: ["discovery", "foundation", "architecture", "execution", "editorial", "governance", "verification", "visuals"] });
 
         void (async () => {
           try {
@@ -64,7 +65,11 @@ export async function POST(request: Request) {
               (stage) => send("stage", stage)
             );
             const campaign = await saveCampaign(pack);
-            send("complete", { pack, campaignId: campaign.id });
+            // Images are stored against the saved campaign, so they render after the save.
+            send("visuals", { total: pack.visualBriefs.length });
+            const rendered = await renderCampaignVisuals(campaign.id, pack, (outcome) => send("visual", outcome));
+            await updateCampaignPack(campaign.id, rendered.pack);
+            send("complete", { pack: rendered.pack, campaignId: campaign.id });
           } catch (error) {
             const message = error instanceof Error ? error.message : "Unable to generate campaign pack.";
             send("error", { message });

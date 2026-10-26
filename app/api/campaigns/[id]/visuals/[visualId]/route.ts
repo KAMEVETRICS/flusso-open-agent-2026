@@ -4,6 +4,7 @@ import { getCampaign, updateCampaignPack } from "@/lib/campaign-store";
 import { generateVisualImage } from "@/lib/image-provider";
 import { DeliveryPackSchema, type DeliveryPack } from "@/lib/schemas";
 import { getCampaignVisual, saveCampaignVisual } from "@/lib/visual-store";
+import { blockingClaims } from "@/lib/visual-rendering";
 
 export const maxDuration = 300;
 
@@ -13,7 +14,7 @@ function markVisualGenerated(pack: DeliveryPack, visualId: string) {
   return DeliveryPackSchema.parse({
     ...pack,
     visualBriefs: pack.visualBriefs.map((brief) =>
-      brief.id === visualId ? { ...brief, status: "generated" as const } : brief
+      brief.id === visualId ? { ...brief, status: "generated" as const, statusNote: "" } : brief
     )
   });
 }
@@ -47,14 +48,10 @@ export async function POST(_request: Request, context: RouteContext) {
     const brief = campaign.pack.visualBriefs.find((item) => item.id === visualId);
     if (!brief) return NextResponse.json({ error: "Visual brief not found." }, { status: 404 });
 
-    const unresolvedProofIssues = campaign.pack.proofReport.claims.filter(
-      (claim) =>
-        claim.resolutionStatus === "unresolved" &&
-        (claim.status === "unsupported" || claim.status === "conflict")
-    );
-    if (unresolvedProofIssues.length) {
+    const blockers = blockingClaims(campaign.pack, brief);
+    if (blockers.length) {
       return NextResponse.json(
-        { error: "Repair unsupported or conflicting claims before generating visuals." },
+        { error: "Repair " + blockers.map((claim) => claim.id).join(", ") + " before generating this visual; its post still makes that claim." },
         { status: 409 }
       );
     }

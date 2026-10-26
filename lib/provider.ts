@@ -140,7 +140,7 @@ const ExecutionStageSchema = z.object({
 
 const EditorialStageSchema = z.object({
   assets: z.array(GeneratedAssetSchema).min(5).max(30),
-  visualBriefs: z.array(VisualBriefSchema).min(2).max(4),
+  visualBriefs: z.array(VisualBriefSchema.omit({ status: true, statusNote: true })).min(2).max(4),
   editorialReport: EditorialReportSchema
 });
 
@@ -542,7 +542,8 @@ function normalizeEditorialStage(
     ...visual,
     id: "visual-" + (index + 1),
     sourceIds: visual.sourceIds.filter((sourceId) => sourceIds.has(sourceId)),
-    status: "planned" as const
+    status: "planned" as const,
+    statusNote: ""
   }));
   const visualIdByAsset = new Map(
     visualBriefs.map((visual) => [visual.assetId, visual.id])
@@ -581,7 +582,8 @@ function normalizeEditorialStage(
     visualBriefs,
     editorialReport: {
       ...stage.editorialReport,
-      score: Math.max(stage.editorialReport.score, 80),
+      // The score is the model's own judgement; passing the code gate does not raise it.
+      score: stage.editorialReport.score,
       passed: true,
       issueCount: 0
     }

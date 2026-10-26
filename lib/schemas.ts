@@ -375,7 +375,9 @@ export const VisualBriefSchema = z.object({
   aspectRatio: z.enum(["1:1", "16:9", "4:5"]),
   altText: z.string(),
   sourceIds: z.array(z.string()),
-  status: z.enum(["planned", "generated", "failed"]).default("planned")
+  status: z.enum(["planned", "generated", "failed"]).default("planned"),
+  // Why a visual was not rendered: the failure, or the claim it is waiting on.
+  statusNote: z.string().default("")
 });
 
 const PerformanceMetricSchema = z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER);
