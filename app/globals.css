@@ -2430,3 +2430,129 @@ tr.selected td {
     grid-template-columns: 1fr;
   }
 }
+.strategy-statement {
+  color: var(--charcoal);
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 1.45;
+  margin-bottom: 14px;
+}
+
+.evidence-section {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+  overflow-wrap: anywhere;
+}
+
+.fact-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.fact-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
+  padding: 14px;
+}
+
+.fact-statement {
+  color: var(--charcoal);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.chip-amber {
+  background: var(--amber-bg);
+  border-color: var(--amber-border);
+  color: var(--amber);
+}
+
+a.chip {
+  text-decoration: none;
+}
+
+.section-search {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.section-search input {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-results {
+  display: grid;
+  gap: 10px;
+}
+
+.search-result {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  padding: 12px 14px;
+}
+
+.search-result-title {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.search-result-title code {
+  color: var(--muted);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.search-result p {
+  white-space: pre-line;
+}
+
+.search-result mark {
+  background: var(--amber-bg);
+  color: var(--charcoal);
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+.content-item-group {
+  margin-bottom: 24px;
+}
+
+.core-message {
+  border-left: 3px solid var(--green);
+  margin-bottom: 12px;
+  padding: 2px 0 2px 12px;
+}
+
+.core-message p {
+  color: var(--charcoal);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 4px 0;
+}
+
+.muted-table td {
+  color: var(--muted);
+}
+
+.wrap-anywhere {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+  .section-search {
+    flex-direction: column;
+  }
+}

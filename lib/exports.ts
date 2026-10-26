@@ -80,6 +80,27 @@ export function buildStrategyMarkdown(pack: DeliveryPack) {
   lines.push("- **Publishing cadence:** " + pack.brief.postsPerWeek + " posts per week");
   lines.push("");
 
+  if (pack.strategy) {
+    const priority = pack.audienceSegments.find((segment) => segment.id === pack.strategy?.prioritySegmentId);
+    lines.push("## Campaign Strategy", "", "> " + cleanLine(pack.strategy.statement), "");
+    lines.push("- **Priority segment:** " + (priority ? cleanLine(priority.name) : "Not resolved"));
+    lines.push("- **Audience need:** " + cleanLine(pack.strategy.audienceNeed));
+    lines.push("", "### Out of Scope", "");
+    addBullets(lines, pack.strategy.outOfScope.map(cleanLine));
+    lines.push("", "### Success Criteria", "");
+    lines.push("Target ranges are proposals to agree with the client, not forecasts.", "");
+    lines.push("| Outcome | Metric | Target range | Baseline | Measurement |");
+    lines.push("| --- | --- | --- | --- | --- |");
+    pack.strategy.successCriteria.forEach((criterion) => {
+      lines.push(
+        "| " + markdownCell(criterion.outcome) + " | " + markdownCell(criterion.metric) +
+        " | " + markdownCell(criterion.targetRange) + " | " + markdownCell(criterion.baseline) +
+        " | " + markdownCell(criterion.measurement) + " |"
+      );
+    });
+    lines.push("");
+  }
+
   lines.push("## Historical Performance", "");
   if (pack.performanceContext.recordCount) {
     lines.push("- **Records:** " + pack.performanceContext.recordCount);
@@ -112,6 +133,36 @@ export function buildStrategyMarkdown(pack: DeliveryPack) {
     assumptions.forEach((assumption) => lines.push("- " + cleanLine(assumption)));
   }
   lines.push("");
+
+  const factSheet = pack.factSheet ?? { facts: [], gaps: [], discoverySteps: [] };
+  if (factSheet.facts.length || factSheet.discoverySteps.length) {
+    const sourceTitle = (sourceId: string) => pack.sources.find((source) => source.id === sourceId)?.title ?? sourceId;
+    lines.push("## Brand Fact Sheet", "");
+    lines.push("Each fact's quote was checked against the source section it came from.", "");
+    for (const category of ["product", "audience", "proof", "pricing", "competitor", "company"] as const) {
+      const facts = factSheet.facts.filter((fact) => fact.category === category);
+      if (!facts.length) continue;
+      lines.push("### " + category[0].toUpperCase() + category.slice(1), "");
+      facts.forEach((fact) => {
+        lines.push(
+          "- " + cleanLine(fact.statement) + (fact.timeSensitive ? " _(time-sensitive)_" : "") +
+          " — \"" + cleanLine(fact.quote).slice(0, 240) + "\" (" + cleanLine(sourceTitle(fact.sourceId)) + ", " + fact.authority + ")"
+        );
+      });
+      lines.push("");
+    }
+    if (factSheet.gaps.length) {
+      lines.push("### No Evidence Found", "");
+      lines.push("Discovery found no verified fact for: " + factSheet.gaps.join(", ") + ". Supply a source before making claims about these.", "");
+    }
+    if (factSheet.discoverySteps.length) {
+      lines.push("### Follow-up Research", "");
+      factSheet.discoverySteps.forEach((step) => {
+        lines.push("- **" + cleanLine(step.reason) + " (" + step.method + "):** " + cleanLine(step.target) + " — " + cleanLine(step.outcome));
+      });
+      lines.push("");
+    }
+  }
 
   lines.push("## Content Landscape", "", cleanLine(pack.contentLandscape.summary), "");
   lines.push("### Opportunity Gaps", "");
@@ -187,6 +238,20 @@ export function buildStrategyMarkdown(pack: DeliveryPack) {
     lines.push("- **" + item.mode + " (" + item.percentage + "%):** " + cleanLine(item.rationale));
   });
   lines.push("");
+
+  if ((pack.contentItems ?? []).length) {
+    lines.push("## Core Messages", "");
+    lines.push("Each core message is defined once and written natively for each platform.", "");
+    pack.contentItems.forEach((item) => {
+      const renditions = pack.assets.filter((asset) => asset.contentItemId === item.id);
+      lines.push("- **" + item.id + ":** " + cleanLine(item.coreMessage));
+      lines.push(
+        "  - Renditions: " +
+        (renditions.length ? renditions.map((asset) => asset.platform + " " + asset.contentFormat).join(", ") : "none drafted")
+      );
+    });
+    lines.push("");
+  }
 
   lines.push("## Publish-Ready Content", "");
   pack.assets.forEach((asset) => {
@@ -281,9 +346,10 @@ export function buildStrategyMarkdown(pack: DeliveryPack) {
       const source = sourcesById.get(first.sourceId);
       const url = source?.url || first.locator;
       const citation = url ? "[" + cleanLine(source?.title ?? url) + "](" + url + ")" : cleanLine(source?.title ?? first.sourceId);
+      const section = first.sectionId ? ", section " + first.sectionId : "";
       lines.push(
         "- **" + claim.status + " · " + claim.claimKind + ":** " + cleanLine(claim.text) +
-        " — \"" + cleanLine(first.quote).slice(0, 240) + "\" (" + citation + ")"
+        " — \"" + cleanLine(first.quote).slice(0, 240) + "\" (" + citation + section + ")"
       );
     });
     lines.push("");
@@ -364,7 +430,7 @@ export function buildClientContentPack(pack: DeliveryPack) {
   const sourcesById = new Map(pack.sources.map((source) => [source.id, source]));
   return {
     format: "flusso-content-pack",
-    version: 2,
+    version: 3,
     generatedAt: pack.generation.generatedAt,
     brand: {
       name: pack.brief.brand,
@@ -382,6 +448,11 @@ export function buildClientContentPack(pack: DeliveryPack) {
       restrictions: pack.brief.restrictions
     },
     strategy: {
+      statement: pack.strategy?.statement ?? "",
+      prioritySegmentId: pack.strategy?.prioritySegmentId ?? "",
+      audienceNeed: pack.strategy?.audienceNeed ?? "",
+      outOfScope: pack.strategy?.outOfScope ?? [],
+      successCriteria: pack.strategy?.successCriteria ?? [],
       positioning: pack.brandContext.positioning,
       voice: pack.brandContext.voice,
       contentGoals: pack.brandContext.contentGoals,
@@ -411,6 +482,31 @@ export function buildClientContentPack(pack: DeliveryPack) {
         narrativeArc: series.narrativeArc
       }))
     },
+    factSheet: {
+      facts: (pack.factSheet?.facts ?? []).map((fact) => {
+        const source = sourcesById.get(fact.sourceId);
+        return {
+          id: fact.id,
+          category: fact.category,
+          statement: fact.statement,
+          entity: fact.entity,
+          quote: fact.quote,
+          timeSensitive: fact.timeSensitive,
+          authority: fact.authority,
+          source: source?.title ?? fact.sourceId,
+          url: source?.url ?? null
+        };
+      }),
+      missingEvidence: pack.factSheet?.gaps ?? []
+    },
+    contentItems: (pack.contentItems ?? []).map((item) => ({
+      id: item.id,
+      coreMessage: item.coreMessage,
+      segmentId: item.segmentId,
+      territoryId: item.territoryId,
+      factIds: item.factIds,
+      assetIds: pack.assets.filter((asset) => asset.contentItemId === item.id).map((asset) => asset.id)
+    })),
     calendar: pack.calendar.map((item) => ({
       id: item.id,
       day: item.day,
@@ -425,6 +521,7 @@ export function buildClientContentPack(pack: DeliveryPack) {
     assets: pack.assets.map((asset) => ({
       id: asset.id,
       calendarItemId: asset.calendarItemId,
+      contentItemId: asset.contentItemId,
       platform: asset.platform,
       contentFormat: asset.contentFormat,
       title: asset.title,

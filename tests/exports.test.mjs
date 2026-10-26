@@ -191,3 +191,54 @@ test("exports only client-facing fields in the content pack", () => {
     url: "https://example.com/docs"
   }]);
 });
+
+test("exports the strategy, fact sheet, and core messages", () => {
+  const planned = {
+    ...pack,
+    audienceSegments: [{ id: "segment-1", name: "Builders", awarenessLevel: "Aware", messagePositioning: "", emotionalTone: "", primaryPlatform: "Medium", cta: "Try it", needs: [], objections: [] }],
+    strategy: {
+      statement: "Help builders ship sourced campaigns by showing every claim's evidence.",
+      prioritySegmentId: "segment-1",
+      audienceNeed: "Credible claims without a research team.",
+      outOfScope: ["Pricing promises"],
+      successCriteria: [{ outcome: "Trials", metric: "Trial sign-ups", targetRange: "20-40", baseline: "unknown", measurement: "Signup form, campaign links" }]
+    },
+    factSheet: {
+      facts: [{
+        id: "fact-1",
+        category: "product",
+        statement: "Arc House checks every claim against a source.",
+        entity: "",
+        sourceId: "source-1",
+        sectionId: "source-1#intro",
+        quote: "Every claim is checked against the passage that supports it.",
+        authority: "first-party",
+        timeSensitive: false
+      }],
+      gaps: ["pricing"],
+      discoverySteps: [{ reason: "pricing gap", method: "web-search", target: "Arc House pricing fees", sourceIds: [], factsAdded: 0, outcome: "No readable results" }],
+      rejectedFacts: 0,
+      extractionErrors: []
+    },
+    contentItems: [{ id: "item-1", coreMessage: "Evidence beats volume.", segmentId: "segment-1", territoryId: "", seriesId: "", hookId: "", factIds: ["fact-1"], platforms: ["Medium"] }],
+    assets: [{ ...asset, contentItemId: "item-1" }]
+  };
+
+  const markdown = buildStrategyMarkdown(planned);
+  assert.match(markdown, /## Campaign Strategy\n\n> Help builders ship sourced campaigns/);
+  assert.match(markdown, /\*\*Priority segment:\*\* Builders/);
+  assert.match(markdown, /\| Trials \| Trial sign-ups \| 20-40 \| unknown \|/);
+  assert.match(markdown, /### Product\n\n- Arc House checks every claim against a source\. — "Every claim is checked/);
+  assert.match(markdown, /Discovery found no verified fact for: pricing\./);
+  assert.match(markdown, /\*\*pricing gap \(web-search\):\*\* Arc House pricing fees — No readable results/);
+  assert.match(markdown, /\*\*item-1:\*\* Evidence beats volume\.\n {2}- Renditions: Medium article/);
+
+  const content = buildClientContentPack(planned);
+  assert.equal(content.version, 3);
+  assert.equal(content.strategy.statement, planned.strategy.statement);
+  assert.deepEqual(content.factSheet.missingEvidence, ["pricing"]);
+  assert.equal(content.factSheet.facts[0].url, "https://example.com/docs");
+  assert.deepEqual(content.contentItems[0].assetIds, ["asset-1"]);
+  assert.equal(content.assets[0].contentItemId, "item-1");
+  assert.equal("sectionId" in content.factSheet.facts[0], false, "section IDs are internal");
+});

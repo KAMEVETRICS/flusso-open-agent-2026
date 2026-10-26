@@ -30,6 +30,7 @@ import type {
   BriefInput,
   Claim,
   DeliveryPack,
+  FactCategory,
   GenerationStage,
   PerformanceContext,
   PerformanceInput,
@@ -38,8 +39,8 @@ import type {
 } from "@/lib/schemas";
 
 type ViewName = "workbench" | "history" | "pipeline" | "results" | "performance" | "proof" | "exports";
-type DiscoveredBrief = { brief: ProjectBrief; inferredFields: string[]; sourceCount: number };
-type ResultsTab = "strategy" | "landscape" | "audience" | "hooks" | "platform" | "lineage" | "calendar" | "content" | "visuals" | "proof" | "prompt-os" | "capacity";
+type DiscoveredBrief = { brief: ProjectBrief; inferredFields: string[]; sourceCount: number; factCount?: number; factGaps?: string[] };
+type ResultsTab = "strategy" | "facts" | "landscape" | "audience" | "hooks" | "platform" | "lineage" | "calendar" | "content" | "visuals" | "proof" | "prompt-os" | "capacity";
 type ProofFilter = "all" | "repaired" | Claim["status"];
 
 const viewLabels: Record<ViewName, string> = {
@@ -54,6 +55,7 @@ const viewLabels: Record<ViewName, string> = {
 
 const resultsTabs: Array<{ id: ResultsTab; label: string }> = [
   { id: "strategy", label: "Strategy" },
+  { id: "facts", label: "Fact Sheet" },
   { id: "landscape", label: "Landscape" },
   { id: "audience", label: "Audience" },
   { id: "hooks", label: "Hooks" },
@@ -68,12 +70,12 @@ const resultsTabs: Array<{ id: ResultsTab; label: string }> = [
 ];
 
 const generationStageLabels: Array<{ id: GenerationStage["stage"]; label: string; note: string }> = [
-  { id: "foundation", label: "Foundation", note: "Brand, landscape, audience, and territories" },
-  { id: "architecture", label: "Architecture", note: "Hooks, series, and platform adaptations" },
+  { id: "foundation", label: "Foundation", note: "Brand, strategy, landscape, audience, and territories" },
+  { id: "architecture", label: "Architecture", note: "Hooks with a strategy review, core messages, series, and platform roles" },
   { id: "execution", label: "Execution", note: "Calendar and first-draft assets" },
   { id: "editorial", label: "Editorial", note: "Anti-slop rewrite, platform formats, and visual briefs" },
   { id: "governance", label: "Governance", note: "Claims, proof links, and production capacity" },
-  { id: "verification", label: "Web verification", note: "Live web search for claims without a supplied source" }
+  { id: "verification", label: "Verification", note: "Captured source sections first, then web search for claims still unsupported" }
 ];
 const proofFilters: Array<{ id: ProofFilter; label: string }> = [
   { id: "all", label: "All" },
@@ -546,7 +548,11 @@ function PipelineView({
             <div className="st-name-wrap">
               <div className="st-name">Discovery</div>
               <div className="st-note">
-                {discovered ? discovered.sourceCount + " sources read" : "Reading the website and inferring the brief"}
+                {discovered
+                  ? discovered.sourceCount + " sources read" +
+                    (discovered.factCount === undefined ? "" : ", " + discovered.factCount + " facts verified") +
+                    (discovered.factGaps?.length ? "; no evidence for " + discovered.factGaps.join(", ") : "")
+                  : "Reading the website, verifying facts, and filling gaps"}
               </div>
             </div>
             <div className="st-meta">
@@ -631,6 +637,7 @@ function ResultsView({
       <div className="main-area">
         <section className="content-area">
           {tab === "strategy" ? <StrategyTab pack={pack} /> : null}
+          {tab === "facts" ? <FactsTab pack={pack} campaignId={campaignId} /> : null}
           {tab === "landscape" ? <LandscapeTab pack={pack} /> : null}
           {tab === "audience" ? <AudienceTab pack={pack} /> : null}
           {tab === "hooks" ? <HooksTab pack={pack} /> : null}
@@ -853,9 +860,49 @@ function CapacityTab({ pack }: { pack: DeliveryPack }) {
   );
 }
 
+function CampaignStrategyPanel({ pack }: { pack: DeliveryPack }) {
+  const { strategy } = pack;
+  if (!strategy) return null;
+  const priority = pack.audienceSegments.find((segment) => segment.id === strategy.prioritySegmentId);
+  return (
+    <>
+      <div className="section-title">Campaign Strategy</div>
+      <div className="panel">
+        <p className="strategy-statement">{strategy.statement}</p>
+        <div className="kv-row"><span>Priority segment</span><strong>{priority?.name ?? "Not resolved"}</strong></div>
+        <div className="kv-row"><span>Audience need</span><strong>{strategy.audienceNeed}</strong></div>
+        {strategy.outOfScope.length ? (
+          <>
+            <div className="mini-heading">Out of scope</div>
+            <ul className="clean-list warning-list">{strategy.outOfScope.map((item) => <li key={item}>{item}</li>)}</ul>
+          </>
+        ) : null}
+        <div className="mini-heading">Success criteria</div>
+        <p className="muted">Target ranges are proposals to agree with the client, not forecasts.</p>
+        <table>
+          <thead><tr><th>Outcome</th><th>Metric</th><th>Target range</th><th>Baseline</th><th>Measurement</th></tr></thead>
+          <tbody>
+            {strategy.successCriteria.map((criterion) => (
+              <tr key={criterion.outcome + criterion.metric}>
+                <td>{criterion.outcome}</td>
+                <td>{criterion.metric}</td>
+                <td>{criterion.targetRange}</td>
+                <td>{criterion.baseline}</td>
+                <td>{criterion.measurement}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+}
+
 function StrategyTab({ pack }: { pack: DeliveryPack }) {
+  const assumptions = pack.brandContext.assumptions ?? [];
   return (
     <div>
+      <CampaignStrategyPanel pack={pack} />
       <div className="section-title">Strategic Positioning</div>
       <div className="panel">
         <p>{pack.brandContext.positioning}</p>
@@ -870,6 +917,13 @@ function StrategyTab({ pack }: { pack: DeliveryPack }) {
             <ul className="clean-list warning-list">{pack.brandContext.prohibitedClaims.map((item) => <li key={item}>{item}</li>)}</ul>
           </div>
         </div>
+        {assumptions.length ? (
+          <>
+            <div className="divider" />
+            <h3>Assumptions to confirm with the brand</h3>
+            <ul className="clean-list warning-list">{assumptions.map((item) => <li key={item}>{item}</li>)}</ul>
+          </>
+        ) : null}
       </div>
       <div className="section-title">Content Territories</div>
       <div className="territory-grid">
@@ -881,6 +935,151 @@ function StrategyTab({ pack }: { pack: DeliveryPack }) {
           </article>
         ))}
       </div>
+    </div>
+  );
+}
+
+const factCategories: Array<{ id: FactCategory; label: string }> = [
+  { id: "product", label: "Product" },
+  { id: "audience", label: "Audience" },
+  { id: "proof", label: "Proof" },
+  { id: "pricing", label: "Pricing" },
+  { id: "competitor", label: "Competitors" },
+  { id: "company", label: "Company" }
+];
+
+type SectionSearchResult = { sectionId: string; sourceId: string; heading: string; snippet: string; rank: number };
+
+// Search snippets mark matches with « and »; render them as highlights without injecting HTML.
+function HighlightedSnippet({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/«([^»]*)»/).map((part, index) => (index % 2 ? <mark key={index}>{part}</mark> : part))}
+    </>
+  );
+}
+
+function SectionSearch({ campaignId, pack }: { campaignId: string; pack: DeliveryPack }) {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<SectionSearchResult[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [searching, setSearching] = useState(false);
+  const sourceTitle = (sourceId: string) => pack.sources.find((source) => source.id === sourceId)?.title ?? sourceId;
+
+  async function search(event: React.FormEvent) {
+    event.preventDefault();
+    if (query.trim().length < 2) return;
+    setSearching(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/campaigns/" + campaignId + "/sections?q=" + encodeURIComponent(query.trim()));
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error ?? "Search failed.");
+      setResults(payload.results);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Search failed.");
+    } finally {
+      setSearching(false);
+    }
+  }
+
+  return (
+    <>
+      <div className="section-title">Search the sources</div>
+      <form className="section-search" onSubmit={search}>
+        <input
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Find the passage behind a claim, e.g. buyout price"
+          aria-label="Search source sections"
+        />
+        <button className="btn btn-outline" type="submit" disabled={searching || query.trim().length < 2}>
+          {searching ? "Searching..." : "Search"}
+        </button>
+      </form>
+      {error ? <div className="error-box">{error}</div> : null}
+      {results ? (
+        results.length ? (
+          <div className="search-results">
+            {results.map((result) => (
+              <article className="search-result" key={result.sectionId}>
+                <div className="search-result-title">
+                  <strong>{sourceTitle(result.sourceId)}{result.heading ? " / " + result.heading : ""}</strong>
+                  <code>{result.sectionId}</code>
+                </div>
+                <p><HighlightedSnippet text={result.snippet} /></p>
+              </article>
+            ))}
+          </div>
+        ) : <p className="muted">No passage matches that search.</p>
+      ) : null}
+    </>
+  );
+}
+
+function FactsTab({ pack, campaignId }: { pack: DeliveryPack; campaignId: string | null }) {
+  const { factSheet } = pack;
+  const sourceById = new Map(pack.sources.map((source) => [source.id, source]));
+  return (
+    <div>
+      {factSheet.gaps.length ? (
+        <div className="warning-card">
+          <strong><Warning size={14} /> No verified evidence for {factSheet.gaps.join(", ")}</strong>
+          <span>Discovery looked and found nothing it could quote. Supply a source before making claims about these.</span>
+        </div>
+      ) : null}
+      {!factSheet.facts.length ? <p className="muted">This campaign was generated before fact sheets were added.</p> : null}
+      {factCategories.map((category) => {
+        const facts = factSheet.facts.filter((fact) => fact.category === category.id);
+        if (!facts.length) return null;
+        return (
+          <section key={category.id}>
+            <div className="section-title">{category.label} <span className="pill-gray">{facts.length}</span></div>
+            <div className="fact-list">
+              {facts.map((fact) => {
+                const source = sourceById.get(fact.sourceId);
+                return (
+                  <article className="fact-card" key={fact.id}>
+                    <p className="fact-statement">{fact.statement}</p>
+                    <blockquote className="evidence-quote">{fact.quote}</blockquote>
+                    <div className="chip-row">
+                      {source?.url ? <a className="chip" href={source.url} target="_blank" rel="noreferrer">{source.title}</a> : <span className="chip">{source?.title ?? fact.sourceId}</span>}
+                      <span className="chip">{fact.authority}</span>
+                      {fact.entity ? <span className="chip">{fact.entity}</span> : null}
+                      {fact.timeSensitive ? <span className="chip chip-amber">time-sensitive</span> : null}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })}
+      {factSheet.discoverySteps.length ? (
+        <>
+          <div className="section-title">Follow-up research</div>
+          <table>
+            <thead><tr><th>Why</th><th>How</th><th>Target</th><th>Outcome</th></tr></thead>
+            <tbody>
+              {factSheet.discoverySteps.map((step) => (
+                <tr key={step.reason + step.target}>
+                  <td>{step.reason}</td>
+                  <td>{step.method}</td>
+                  <td className="wrap-anywhere">{step.target}</td>
+                  <td>{step.outcome}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      ) : null}
+      {factSheet.rejectedFacts || factSheet.extractionErrors.length ? (
+        <p className="muted">
+          {factSheet.rejectedFacts} proposed facts were dropped because their quotes were not found in the source.
+          {factSheet.extractionErrors.length ? " " + factSheet.extractionErrors.length + " sources could not be read for facts." : ""}
+        </p>
+      ) : null}
+      {campaignId ? <SectionSearch campaignId={campaignId} pack={pack} /> : null}
     </div>
   );
 }
@@ -909,24 +1108,47 @@ function AudienceTab({ pack }: { pack: DeliveryPack }) {
   );
 }
 
+function strategyFitLabel(score: number) {
+  return score ? score + "/5" : "Not reviewed";
+}
+
 function HooksTab({ pack }: { pack: DeliveryPack }) {
   return (
-    <table>
-      <thead><tr><th>Hook</th><th>Trigger</th><th>Driver</th><th>Platform</th><th>Territory</th><th>Format Pairing</th><th>Test</th></tr></thead>
-      <tbody>
-        {pack.hooks.map((hook) => (
-          <tr key={hook.id}>
-            <td>{hook.text}</td>
-            <td>{hook.triggerType}</td>
-            <td>{hook.emotionalDriver}</td>
-            <td><span className={platformClass(hook.platform)}>{hook.platform}</span></td>
-            <td>{hook.contentTerritory || hook.audienceSegment}</td>
-            <td>{hook.formatPairing}</td>
-            <td>{hook.testHypothesis || hook.goal}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div>
+      <table>
+        <thead><tr><th>Hook</th><th>Strategy fit</th><th>Trigger</th><th>Platform</th><th>Territory</th><th>Format Pairing</th><th>Test</th></tr></thead>
+        <tbody>
+          {pack.hooks.map((hook) => (
+            <tr key={hook.id}>
+              <td>{hook.text}</td>
+              <td title={hook.strategyFitReason}>{strategyFitLabel(hook.strategyFit)}</td>
+              <td>{hook.triggerType}</td>
+              <td><span className={platformClass(hook.platform)}>{hook.platform}</span></td>
+              <td>{hook.contentTerritory || hook.audienceSegment}</td>
+              <td>{hook.formatPairing}</td>
+              <td>{hook.testHypothesis || hook.goal}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {pack.droppedHooks.length ? (
+        <>
+          <div className="section-title">Dropped by the strategy review</div>
+          <table className="muted-table">
+            <thead><tr><th>Hook</th><th>Strategy fit</th><th>Why it was dropped</th></tr></thead>
+            <tbody>
+              {pack.droppedHooks.map((hook) => (
+                <tr key={hook.id + hook.text}>
+                  <td>{hook.text}</td>
+                  <td>{strategyFitLabel(hook.strategyFit)}</td>
+                  <td>{hook.strategyFitReason}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      ) : null}
+    </div>
   );
 }
 
@@ -978,10 +1200,42 @@ function assetBodyText(asset: DeliveryPack["assets"][number]) {
   return asset.copy;
 }
 
+// Groups renditions under the core message they carry; assets without one are listed last.
 function ContentTab({ pack }: { pack: DeliveryPack }) {
+  if (!pack.contentItems.length) return <AssetGrid assets={pack.assets} />;
+  const itemIds = new Set(pack.contentItems.map((item) => item.id));
+  const unassigned = pack.assets.filter((asset) => !itemIds.has(asset.contentItemId));
+  return (
+    <div>
+      {pack.contentItems.map((item) => {
+        const renditions = pack.assets.filter((asset) => asset.contentItemId === item.id);
+        return (
+          <section className="content-item-group" key={item.id}>
+            <div className="core-message">
+              <span className="mini-heading">Core message</span>
+              <p>{item.coreMessage}</p>
+              <span className="muted">
+                {renditions.length} rendition{renditions.length === 1 ? "" : "s"} · {item.factIds.length} supporting fact{item.factIds.length === 1 ? "" : "s"}
+              </span>
+            </div>
+            {renditions.length ? <AssetGrid assets={renditions} /> : <p className="muted">No asset was drafted for this message.</p>}
+          </section>
+        );
+      })}
+      {unassigned.length ? (
+        <section className="content-item-group">
+          <div className="core-message"><span className="mini-heading">Not linked to a core message</span></div>
+          <AssetGrid assets={unassigned} />
+        </section>
+      ) : null}
+    </div>
+  );
+}
+
+function AssetGrid({ assets }: { assets: DeliveryPack["assets"] }) {
   return (
     <div className="content-card-grid">
-      {pack.assets.map((asset) => (
+      {assets.map((asset) => (
         <article className="content-card" key={asset.id}>
           <div className="card-topline">
             <span className={platformClass(asset.platform)}>{asset.platform}</span>
@@ -1294,7 +1548,10 @@ function ProofTable({ pack, compact = false }: { pack: DeliveryPack; compact?: b
               <>
                 <div className="section-label">Evidence</div>
                 {selected.evidence.map((item) => (
-                  <blockquote className="evidence-quote" key={item.sourceId + item.quote.slice(0, 24)}>{item.quote}</blockquote>
+                  <blockquote className="evidence-quote" key={item.sourceId + item.quote.slice(0, 24)}>
+                    {item.quote}
+                    {item.sectionId ? <cite className="evidence-section">{item.sectionId}</cite> : null}
+                  </blockquote>
                 ))}
               </>
             ) : null}
