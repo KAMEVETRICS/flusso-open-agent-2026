@@ -62,6 +62,7 @@ import { completeStructured, createOpenRouterClient, OutputTruncatedError, textM
 import { applyHookReview, MAX_STRATEGY_WORDS, normalizeStrategy } from "./strategy";
 import { normalizeContentItems, unrenderedItems } from "./content-items";
 import { assignAssetsToDays } from "./calendar-mapping";
+import { buildRepairUnits, combinePostRepairs, type PostRepair, type PostRepairOutcome, type RepairUnit } from "./claim-repair";
 
 const BriefInferenceSchema = z.object({
   brand: z.string(),
@@ -185,16 +186,16 @@ const GovernanceStageSchema = z.object({
   productionPlan: ProductionPlanSchema
 });
 
-const ClaimRepairPatchSchema = z.object({
-  assetUpdates: z.array(z.object({
-    assetId: z.string(),
+// One post's repair; lib/claim-repair.ts combines the posts.
+const PostRepairSchema = z.object({
+  assetUpdate: z.object({
     copy: z.string(),
     threadPosts: z.array(z.string()),
     article: ArticleContentSchema.nullable(),
     slides: z.array(CarouselSlideSchema),
     videoScript: VideoScriptSchema.nullable(),
     linkedClaims: z.array(z.string())
-  })),
+  }),
   visualBriefUpdates: z.array(z.object({
     visualBriefId: z.string(),
     purpose: z.string(),
@@ -213,6 +214,7 @@ const ClaimRepairPatchSchema = z.object({
     confidence: z.number().min(0).max(100).nullable()
   }))
 });
+const REPAIR_CONCURRENCY = 3;
 type FoundationStageOutput = z.infer<typeof FoundationStageSchema>;
 type ArchitectureStageOutput = z.infer<typeof ArchitectureStageSchema>;
 type ExecutionStageOutput = z.infer<typeof ExecutionStageSchema>;
@@ -939,6 +941,41 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
     };
   }
 
+  private async repairPost(
+    pack: DeliveryPack,
+    unit: RepairUnit,
+    targetClaims: Claim[],
+    validSources: SourceDocument[]
+  ): Promise<PostRepair> {
+    const asset = pack.assets.find((item) => item.id === unit.assetId);
+    return completeStructured(this.client, {
+      model: this.model,
+      schema: PostRepairSchema,
+      name: "post_claim_repair",
+      instructions: [
+        "You repair unsupported or conflicting claims in one publish-ready post.",
+        "Use only the supplied fetched evidence sources. Never invent a source, metric, capability, partnership, or guarantee.",
+        "Return the post's complete visible body in assetUpdate: copy, threadPosts, article, slides, and videoScript. Preserve unused structures as [] or null.",
+        "Return one claimResolution for every target claim.",
+        "For action removed, rewrite the body so the assertion is gone and leave that claimId out of assetUpdate.linkedClaims.",
+        "For action replaced-with-supported, write a conservative replacement backed by an exact supplied sourceId, use it in the body, and keep that claimId in assetUpdate.linkedClaims.",
+        "Return a visualBriefUpdate for every supplied visual brief: rewrite purpose, keyMessage, dataPoints, prompt, and altText so the claim is removed or backed by the replacement source, and keep only supplied source IDs.",
+        "Keep every other linked claim ID. Preserve the post's voice, CTA, intent, format, and platform fit with the smallest necessary rewrite."
+      ].join("\n"),
+      input: {
+        brandContext: pack.brandContext,
+        restrictions: pack.brief.restrictions,
+        targetClaims: targetClaims.filter((claim) => unit.claimIds.includes(claim.id)),
+        post: asset,
+        visualBriefs: pack.visualBriefs.filter((visual) => unit.visualIds.includes(visual.id)),
+        evidenceSources: sourcesForPrompt(validSources)
+      },
+      maxTokens: 6000
+    });
+  }
+
+  // Repairs each affected post in its own call, three at a time, so one long or failed post does
+  // not block the rest. A claim is marked repaired only when every post carrying it agreed.
   async repairUnsupportedClaims(pack: DeliveryPack): Promise<DeliveryPack> {
     const targetClaims = pack.proofReport.claims.filter(
       (claim) =>
@@ -962,263 +999,106 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
       ));
     }
     const validSources = evidenceSources.filter(isEvidenceSource);
-    const targetClaimIds = new Set(targetClaims.map((claim) => claim.id));
-    const impactedAssets = pack.assets.filter((asset) =>
-      asset.linkedClaims.some((claimId) => targetClaimIds.has(claimId))
-    );
-    const targetContentIds = new Map(
-      targetClaims.map((claim) => [
-        claim.id,
-        new Set(claim.contentUsedIn.split(",").map((id) => id.trim()).filter(Boolean))
-      ])
-    );
-    const impactedVisualBriefs = pack.visualBriefs.filter((visual) =>
-      targetClaims.some((claim) => targetContentIds.get(claim.id)?.has(visual.id))
-    );
-    const linkedTargetClaimIds = new Set(
-      impactedAssets.flatMap((asset) =>
-        asset.linkedClaims.filter((claimId) => targetClaimIds.has(claimId))
-      )
-    );
-    targetClaims.forEach((claim) => {
-      if (impactedVisualBriefs.some((visual) => targetContentIds.get(claim.id)?.has(visual.id))) {
-        linkedTargetClaimIds.add(claim.id);
-      }
-    });
-    const unlinkedTargetClaimIds = new Set(
-      targetClaims
-        .filter((claim) => !linkedTargetClaimIds.has(claim.id))
-        .map((claim) => claim.id)
-    );
-    if (!impactedAssets.length && !impactedVisualBriefs.length) {
-      const repairedAt = new Date().toISOString();
-      const claims = pack.proofReport.claims.map((claim) =>
-        unlinkedTargetClaimIds.has(claim.id)
-          ? {
-              ...claim,
-              resolutionStatus: "repaired" as const,
-              repairAction: "removed" as const,
-              repairNote: "Claim is not linked to any publishable asset and is not present in content.",
-              repairedAt
-            }
-          : claim
-      );
+    const sourceById = new Map(validSources.map((source) => [source.id, source]));
+    const units = buildRepairUnits(targetClaims, pack.assets, pack.visualBriefs);
+    const carried = new Set(units.flatMap((unit) => unit.claimIds));
 
-      return DeliveryPackSchema.parse({
-        ...pack,
-        sources: evidenceSources,
-        proofReport: summarizeProof(claims)
-      });
+    const outcomes: PostRepairOutcome[] = [];
+    let next = 0;
+    const worker = async () => {
+      while (next < units.length) {
+        const unit = units[next];
+        next += 1;
+        try {
+          outcomes.push({ unit, repair: await this.repairPost(pack, unit, targetClaims, validSources) });
+        } catch (error) {
+          outcomes.push({ unit, error: error instanceof Error ? error.message : String(error) });
+        }
+      }
+    };
+    await Promise.all(Array.from({ length: Math.min(REPAIR_CONCURRENCY, units.length) }, worker));
+
+    const { appliedRepairs, resolutions, failures } = combinePostRepairs(targetClaims, outcomes, new Set(sourceById.keys()));
+    if (failures.length) console.warn("Flusso claim repair: " + failures.join(" | "));
+    const unlinked = targetClaims.filter((claim) => !carried.has(claim.id)).map((claim) => claim.id);
+    if (!resolutions.size && !unlinked.length) {
+      throw new Error("no post could be repaired (" + failures.slice(0, 3).join("; ") + ")");
     }
 
-    try {
-      const patch = await completeStructured(this.client, {
-        model: this.model,
-        schema: ClaimRepairPatchSchema,
-        name: "claim_repair",
-        instructions: [
-          "You repair unsupported or conflicting claims in publish-ready content.",
-          "Use only the supplied fetched evidence sources. Never invent a source, metric, capability, partnership, or guarantee.",
-          "Return an asset update for every supplied asset affected by a target claim.",
-          "Return a visual brief update for every supplied visual affected by a target claim.",
-          "For every asset update, return its complete visible body: copy, threadPosts, article, slides, and videoScript. Preserve unused structures as [] or null.",
-          "For every visual brief update, rewrite purpose, keyMessage, dataPoints, prompt, and altText so the unsupported assertion is removed or explicitly framed as an independent interpretation. Preserve only supplied source IDs.",
-          "For action removed, rewrite every visible body field so the factual assertion is gone and remove that claimId from linkedClaims.",
-          "For action replaced-with-supported, use a conservative replacement backed by an exact supplied sourceId in every affected asset and visual field and keep that claimId in linkedClaims.",
-          "Use only supplied asset IDs, visual brief IDs, claim IDs, and source IDs.",
-          "Preserve the asset's voice, CTA, intent, format, and platform fit while making the smallest necessary rewrite."
-        ].join("\n"),
-        input: {
-          brandContext: pack.brandContext,
-          restrictions: pack.brief.restrictions,
-          targetClaims,
-          impactedAssets,
-          impactedVisualBriefs,
-          evidenceSources: sourcesForPrompt(validSources)
-        },
-        maxTokens: 6000
-      });
-      const existingClaimIds = new Set(pack.proofReport.claims.map((claim) => claim.id));
-      const assetIds = new Set(pack.assets.map((asset) => asset.id));
-      const sourceById = new Map(validSources.map((source) => [source.id, source]));
-      const updateByAssetId = new Map(
-        patch.assetUpdates
-          .filter((update) => assetIds.has(update.assetId))
-          .map((update) => [
-            update.assetId,
-            {
-              ...update,
-              linkedClaims: update.linkedClaims.filter((claimId) => existingClaimIds.has(claimId))
-            }
-          ])
-      );
-      const visualBriefIds = new Set(pack.visualBriefs.map((visual) => visual.id));
-      const updateByVisualBriefId = new Map(
-        patch.visualBriefUpdates
-          .filter((update) => visualBriefIds.has(update.visualBriefId))
-          .map((update) => [
-            update.visualBriefId,
-            {
-              ...update,
-              sourceIds: update.sourceIds.filter((sourceId) => sourceById.has(sourceId))
-            }
-          ])
-      );
-      const candidateResolutions = new Map<string, (typeof patch.claimResolutions)[number]>();
-
-      for (const resolution of patch.claimResolutions) {
-        if (!targetClaimIds.has(resolution.claimId)) continue;
-        const affectedAssets = pack.assets.filter((asset) => asset.linkedClaims.includes(resolution.claimId));
-        const affectedVisuals = pack.visualBriefs.filter((visual) =>
-          targetContentIds.get(resolution.claimId)?.has(visual.id)
-        );
-        if (!affectedAssets.length && !affectedVisuals.length) continue;
-        const allVisualsUpdated = affectedVisuals.every((visual) =>
-          updateByVisualBriefId.has(visual.id)
-        );
-        if (!allVisualsUpdated) continue;
-
-        if (resolution.action === "removed") {
-          const allAssetsUpdated = affectedAssets.every((asset) => updateByAssetId.has(asset.id));
-          const removedFromEveryAsset =
-            allAssetsUpdated &&
-            affectedAssets.every(
-              (asset) => !updateByAssetId.get(asset.id)?.linkedClaims.includes(resolution.claimId)
-            );
-          if (removedFromEveryAsset) candidateResolutions.set(resolution.claimId, resolution);
-          continue;
-        }
-
-        const source = resolution.sourceId ? sourceById.get(resolution.sourceId) : undefined;
-        const replacementText = resolution.replacementText?.trim();
-        const suppliedUpdatesRetainClaim = affectedAssets
-          .filter((asset) => updateByAssetId.has(asset.id))
-          .every((asset) => updateByAssetId.get(asset.id)?.linkedClaims.includes(resolution.claimId));
-        const suppliedVisualsCiteSource = affectedVisuals.every((visual) =>
-          updateByVisualBriefId.get(visual.id)?.sourceIds.includes(resolution.sourceId as string)
-        );
-        if (
-          source &&
-          replacementText &&
-          resolution.confidence !== null &&
-          suppliedUpdatesRetainClaim &&
-          suppliedVisualsCiteSource
-        ) {
-          candidateResolutions.set(resolution.claimId, resolution);
-        }
-      }
-
-      const successfulResolutions = candidateResolutions;
-      if (!successfulResolutions.size && !unlinkedTargetClaimIds.size) {
-        throw new Error("produced no valid asset-linked repairs");
-      }
-
-      const repairedAt = new Date().toISOString();
-      const claims = pack.proofReport.claims.map((claim) => {
-        const resolution = successfulResolutions.get(claim.id);
-        if (!resolution) {
-          if (!unlinkedTargetClaimIds.has(claim.id)) return claim;
-          return {
-            ...claim,
-            resolutionStatus: "repaired" as const,
-            repairAction: "removed" as const,
-            repairNote: "Claim is not linked to any publishable asset and is not present in content.",
-            repairedAt
-          };
-        }
-
-        if (resolution.action === "removed") {
-          return {
-            ...claim,
-            resolutionStatus: "repaired" as const,
-            repairAction: "removed" as const,
-            repairNote: resolution.note,
-            repairedAt
-          };
-        }
-
-        const source = sourceById.get(resolution.sourceId as string);
+    const repairedAt = new Date().toISOString();
+    const existingClaimIds = new Set(pack.proofReport.claims.map((claim) => claim.id));
+    const claims = pack.proofReport.claims.map((claim) => {
+      if (unlinked.includes(claim.id)) {
         return {
           ...claim,
-          text: resolution.replacementText as string,
-          sourceId: source?.id,
-          sourceTitle: source?.title,
-          sourceType: source?.sourceType,
-          confidence: resolution.confidence as number,
-          status: "supported" as const,
-          recommendation: "Replacement verified against a supplied fetched source.",
           resolutionStatus: "repaired" as const,
-          repairAction: "replaced-with-supported" as const,
-          repairNote: resolution.note,
+          repairAction: "removed" as const,
+          repairNote: "Claim is not linked to any publishable asset and is not present in content.",
           repairedAt
         };
-      });
-      const assets = pack.assets.map((asset) => {
-        const update = updateByAssetId.get(asset.id);
-        const successfulAssetClaimIds = asset.linkedClaims.filter(
-          (claimId) => successfulResolutions.has(claimId)
-        );
-        if (!successfulAssetClaimIds.length) return asset;
-
-        const linkedClaims = new Set(asset.linkedClaims);
-        for (const claimId of successfulAssetClaimIds) {
-          const resolution = successfulResolutions.get(claimId);
-          if (resolution?.action === "removed") {
-            linkedClaims.delete(claimId);
-          }
-          if (resolution?.action === "replaced-with-supported") linkedClaims.add(claimId);
-        }
-
-        return {
-          ...asset,
-          copy: update?.copy.trim() || asset.copy,
-          threadPosts: update?.threadPosts ?? asset.threadPosts,
-          article: update ? update.article : asset.article,
-          slides: update ? update.slides : asset.slides,
-          videoScript: update ? update.videoScript : asset.videoScript,
-          linkedClaims: Array.from(linkedClaims)
-        };
-      });
-      const visualBriefs = pack.visualBriefs.map((visual) => {
-        const update = updateByVisualBriefId.get(visual.id);
-        const hasSuccessfulClaim = targetClaims.some(
-          (claim) =>
-            successfulResolutions.has(claim.id) &&
-            targetContentIds.get(claim.id)?.has(visual.id)
-        );
-        if (!update || !hasSuccessfulClaim) return visual;
-
-        return {
-          ...visual,
-          purpose: update.purpose.trim(),
-          keyMessage: update.keyMessage.trim(),
-          dataPoints: update.dataPoints,
-          prompt: update.prompt.trim(),
-          altText: update.altText.trim(),
-          sourceIds: update.sourceIds
-        };
-      });
-      return DeliveryPackSchema.parse({
-        ...pack,
-        sources: evidenceSources,
-        assets,
-        visualBriefs,
-        proofReport: summarizeProof(claims)
-      });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const issue = error.issues[0];
-        const path = issue?.path.length ? issue.path.join(".") : "root";
-        throw new Error(
-          "Model claim repair output did not match the schema at " +
-          path + ": " + (issue?.message ?? "validation failed")
-        );
       }
+      const resolution = resolutions.get(claim.id);
+      if (!resolution) return claim;
+      if (resolution.action === "removed") {
+        return { ...claim, resolutionStatus: "repaired" as const, repairAction: "removed" as const, repairNote: resolution.note, repairedAt };
+      }
+      const source = sourceById.get(resolution.sourceId as string);
+      return {
+        ...claim,
+        text: resolution.replacementText as string,
+        sourceId: source?.id,
+        sourceTitle: source?.title,
+        sourceType: source?.sourceType,
+        confidence: resolution.confidence as number,
+        status: "supported" as const,
+        recommendation: "Replacement verified against a supplied fetched source.",
+        resolutionStatus: "repaired" as const,
+        repairAction: "replaced-with-supported" as const,
+        repairNote: resolution.note,
+        repairedAt
+      };
+    });
 
-      const message = error instanceof Error ? error.message : "unknown repair error";
-      throw new Error("Model claim repair failed: " + message);
-    }
+    const assets = pack.assets.map((asset) => {
+      const repair = appliedRepairs.get(asset.id);
+      if (!repair) return asset;
+      const update = repair.assetUpdate;
+      return {
+        ...asset,
+        copy: update.copy.trim() || asset.copy,
+        threadPosts: update.threadPosts,
+        article: update.article,
+        slides: update.slides,
+        videoScript: update.videoScript,
+        linkedClaims: update.linkedClaims.filter((claimId) => existingClaimIds.has(claimId))
+      };
+    });
+    const visualUpdates = new Map(
+      Array.from(appliedRepairs.values()).flatMap((repair) => repair.visualBriefUpdates.map((update) => [update.visualBriefId, update] as const))
+    );
+    const visualBriefs = pack.visualBriefs.map((visual) => {
+      const update = visualUpdates.get(visual.id);
+      if (!update) return visual;
+      return {
+        ...visual,
+        purpose: update.purpose.trim(),
+        keyMessage: update.keyMessage.trim(),
+        dataPoints: update.dataPoints,
+        prompt: update.prompt.trim(),
+        altText: update.altText.trim(),
+        sourceIds: update.sourceIds.filter((sourceId) => sourceById.has(sourceId))
+      };
+    });
+
+    return DeliveryPackSchema.parse({
+      ...pack,
+      sources: evidenceSources,
+      assets,
+      visualBriefs,
+      proofReport: summarizeProof(claims)
+    });
   }
+
   async generateCampaignPack(
     brief: ProjectBrief,
     promptRouting: PromptRoutingResult,

@@ -6,7 +6,7 @@ import {
 } from "@/lib/campaign-store";
 import { createContentGenerationProvider } from "@/lib/provider";
 
-export const maxDuration = 180;
+export const maxDuration = 300;
 
 export async function POST(
   _request: Request,
