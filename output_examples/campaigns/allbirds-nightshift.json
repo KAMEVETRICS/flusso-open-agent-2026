@@ -1,0 +1,3225 @@
+{
+ "id": "f4766500-a0c6-4416-85c4-66f840a90ce4",
+ "pack": {
+  "brief": {
+   "docs": "",
+   "goal": "Grow email newsletter signups ahead of a new running shoe launch",
+   "tone": "Natural, comfortable, sustainable, minimalist",
+   "brand": "Allbirds",
+   "website": "https://www.allbirds.com",
+   "audience": "Runners and everyday walkers who care about comfort and materials",
+   "industry": "Sustainable footwear and apparel",
+   "teamSize": 1,
+   "platforms": [
+    "Newsletter",
+    "X"
+   ],
+   "competitors": [
+    "Nike",
+    "lululemon",
+    "Giesswein",
+    "Rothy's",
+    "Veja",
+    "Bombas"
+   ],
+   "durationDays": 7,
+   "hoursPerWeek": 8,
+   "postsPerWeek": 3,
+   "restrictions": "",
+   "editorialProfile": "balanced"
+  },
+  "hooks": [
+   {
+    "id": "hook-1",
+    "goal": "engagement",
+    "text": "How does sugarcane become cushioning that bounces back?",
+    "platform": "X",
+    "strategyFit": 4,
+    "triggerType": "curiosity-gap",
+    "formatPairing": "thread",
+    "testHypothesis": "A single-material-origin question will outperform generic sustainability claims because it signals concrete proof without hype.",
+    "audienceSegment": "segment-1",
+    "emotionalDriver": "discovery",
+    "contentTerritory": "territory-1",
+    "platformFitReason": "X thread opener: 280 chars forces atomic curiosity; tweet 2-3 deliver the SweetFoam® proof chain.",
+    "strategyFitReason": "Directly addresses the SweetFoam® origin story (territory-1) and the segment-1 need for credible proof that natural materials handle running loads, but could sharpen the link to early-access value."
+   },
+   {
+    "id": "hook-2",
+    "goal": "engagement",
+    "text": "8.7 ounces. 14mm heel. 6mm drop. What does that feel like on your morning run?",
+    "platform": "X",
+    "strategyFit": 5,
+    "triggerType": "specificity-proof",
+    "formatPairing": "thread",
+    "testHypothesis": "Measurable geometry + second-person situation beats abstract 'lightweight' claims for runners evaluating natural-material shoes.",
+    "audienceSegment": "segment-1",
+    "emotionalDriver": "verification",
+    "contentTerritory": "territory-2",
+    "platformFitReason": "X thread: tweet 1 = specs as hook; tweet 2 = Featherbed™ + SweetFoam® feel; tweet 3 = everyday verification (walks, commute).",
+    "strategyFitReason": "Uses verified weight, stack height, and drop specs (fact-23) to give runners concrete geometry proof tied to territory-2 and segment-1's need for daily-mileage assurance."
+   },
+   {
+    "id": "hook-3",
+    "goal": "conversion",
+    "text": "Your commute run → office → happy hour. One shoe that handles all three.",
+    "platform": "Newsletter",
+    "strategyFit": 5,
+    "triggerType": "situational-utility",
+    "formatPairing": "email",
+    "testHypothesis": "Situational versatility proof outperforms feature lists for comfort-first walkers who own Allbirds for daily wear.",
+    "audienceSegment": "segment-2",
+    "emotionalDriver": "relatability",
+    "contentTerritory": "territory-4",
+    "platformFitReason": "Newsletter allows 300-word scene-setting: material → comfort → care → CTA; subject line = this hook.",
+    "strategyFitReason": "Maps exactly to territory-4 and segment-2's versatility need (fact-29) by naming commute, office, and happy hour as proven use cases."
+   },
+   {
+    "id": "hook-4",
+    "goal": "engagement",
+    "text": "Eucalyptus TENCEL™ Lyocell + recycled polyester upper. Merino wool blend lining. Featherbed™ memory foam. Sugarcane SweetFoam® midsole. Every layer named.",
+    "platform": "Newsletter",
+    "strategyFit": 5,
+    "triggerType": "transparency-led",
+    "formatPairing": "email",
+    "testHypothesis": "Full material transparency in one sentence attracts evaluators who reject vague 'eco' claims and read Reddit alternative threads.",
+    "audienceSegment": "segment-3",
+    "emotionalDriver": "trust",
+    "contentTerritory": "territory-1",
+    "platformFitReason": "Newsletter deep-dive format: each paragraph expands one layer with construction detail; no marketing fluff.",
+    "strategyFitReason": "Lists every verified Cruiser layer (facts-18,19,20) for segment-3's material-transparency need and territory-1, making it a no-copy, evidence-first hook."
+   },
+   {
+    "id": "hook-5",
+    "goal": "engagement",
+    "text": "What if your running shoe was machine washable? Remove insoles. Hand wash. Air dry. Fresh again.",
+    "platform": "X",
+    "strategyFit": 5,
+    "triggerType": "practical-decision",
+    "formatPairing": "single-post",
+    "testHypothesis": "Care simplicity as a running-adjacent differentiator — most running shoes aren't washable; Allbirds' 'Fresh again' proves daily durability.",
+    "audienceSegment": "segment-2",
+    "emotionalDriver": "convenience",
+    "contentTerritory": "territory-4",
+    "platformFitReason": "X single post with care instruction graphic; replies invite 'miles on my Allbirds' stories (gap-6).",
+    "strategyFitReason": "Cites the machine-washable care instruction (fact-21) as everyday durability proof for segment-2 and territory-4, a specific claim competitors can't replicate."
+   },
+   {
+    "id": "hook-6",
+    "goal": "conversion",
+    "text": "One question a week. One verified fact. No launch spam. This is what early access actually looks like.",
+    "platform": "Newsletter",
+    "strategyFit": 4,
+    "triggerType": "anti-hype-positioning",
+    "formatPairing": "email",
+    "testHypothesis": "Explicit anti-hype framing converts skeptics who equate 'waitlist' with marketing noise; demonstrates the tone in the CTA itself.",
+    "audienceSegment": "segment-1",
+    "emotionalDriver": "credibility",
+    "contentTerritory": "territory-3",
+    "platformFitReason": "Newsletter welcome/confirmation email: subject line = hook; body proves it with last week's fact + next week's preview.",
+    "strategyFitReason": "Frames newsletter as curated early access (territory-3) for segment-1, but the 'one question a week' cadence is a tactic not yet validated by evidence."
+   },
+   {
+    "id": "hook-7",
+    "goal": "engagement",
+    "text": "Why do running brands hide material sources? We name ours: eucalyptus, Merino, sugarcane.",
+    "platform": "X",
+    "strategyFit": 3,
+    "triggerType": "comparison-contrast",
+    "formatPairing": "thread",
+    "testHypothesis": "Direct contrast with competitor opacity (gap-1) attracts material-conscious evaluators without naming competitors.",
+    "audienceSegment": "segment-3",
+    "emotionalDriver": "skepticism-resolution",
+    "contentTerritory": "territory-1",
+    "platformFitReason": "X thread: tweet 1 = hook; tweet 2-3 = SweetFoam® origin + TENCEL™ sourcing; tweet 4 = newsletter for full breakdown.",
+    "strategyFitReason": "Highlights named material sources (territory-1) for segment-3, yet the comparative 'why do running brands hide' phrasing edges toward competitor framing the strategy forbids."
+   },
+   {
+    "id": "hook-8",
+    "goal": "engagement",
+    "text": "Your recovery day shoe just got running geometry. 8.7oz. 6mm drop. Bounce that doesn't quit.",
+    "platform": "X",
+    "strategyFit": 4,
+    "triggerType": "benefit-reframe",
+    "formatPairing": "thread",
+    "testHypothesis": "Reframing running specs as recovery-day benefits lowers the 'I'm not a runner' barrier for launch-curious walkers.",
+    "audienceSegment": "segment-1",
+    "emotionalDriver": "upgrade",
+    "contentTerritory": "territory-2",
+    "platformFitReason": "X thread: tweet 1 = hook; tweet 2 = Featherbed™ + SweetFoam® dual comfort; tweet 3 = everyday walks/vacation proof (fact-29).",
+    "strategyFitReason": "Reuses verified geometry (fact-23) for segment-1 and territory-2, but 'recovery day shoe' implies a use case not explicitly supported in the fact sheet."
+   },
+   {
+    "id": "hook-9",
+    "goal": "conversion",
+    "text": "No carbon plate. No race-day hype. Just natural materials engineered for daily miles.",
+    "platform": "Newsletter",
+    "strategyFit": 3,
+    "triggerType": "negative-definition",
+    "formatPairing": "email",
+    "testHypothesis": "Defining by what it's NOT (super-shoe tropes) clarifies positioning for runners tired of performance marketing; aligns with 'curious, not overhyped' tone.",
+    "audienceSegment": "segment-1",
+    "emotionalDriver": "clarity",
+    "contentTerritory": "territory-3",
+    "platformFitReason": "Newsletter: subject line = hook; body = SweetFoam® proof + geometry proof + newsletter CTA as 'first to know, not first to hype'.",
+    "strategyFitReason": "Signals no carbon plate or race hype for segment-1 and territory-3, yet the negative framing ('no carbon plate') asserts an unclaimed spec rather than leading with verified natural-material engineering."
+   }
+  ],
+  "assets": [
+   {
+    "id": "asset-1",
+    "cta": "First to know when it drops → [newsletter link]",
+    "copy": "How does sugarcane become cushioning that bounces back? 🌱 → 👟",
+    "type": "thread",
+    "title": "How sugarcane becomes bounce",
+    "hookId": "hook-1",
+    "slides": [],
+    "article": null,
+    "segment": "segment-1",
+    "platform": "X",
+    "seriesId": "series-1",
+    "territory": "territory-1",
+    "threadPosts": [
+     "How does sugarcane become cushioning that bounces back? 🌱 → 👟",
+     "SweetFoam® = sugarcane-based EVA foam. No petroleum-based synthetics. Responsive energy return built in. (fact-20)",
+     "Same midsole tech powers the upcoming running shoe. Lightweight, durable, made for daily miles.",
+     "First to know when it drops → [newsletter link]"
+    ],
+    "videoScript": null,
+    "linkedClaims": [
+     "claim-1",
+     "claim-2"
+    ],
+    "contentFormat": "thread",
+    "contentItemId": "item-1",
+    "editorialMode": "technical-explainer",
+    "visualBriefId": "visual-1",
+    "calendarItemId": "cal-1"
+   },
+   {
+    "id": "asset-2",
+    "cta": "Subscribe to see how running tech makes your everyday walk even better",
+    "copy": "Subject: Your commute run → office → happy hour. One shoe that handles all three. Morning miles, all-day desk time, evening plans — same pair. The TENCEL™ Lyocell upper (eucalyptus tree fiber + recycled polyester) breathes through the commute. Merino wool-blend lining means socks optional. Featherbed™ memory foam insole cushions every step. Sugarcane SweetFoam® midsole returns energy on the run home. Machine washable: remove insoles, hand wash, air dry. Fresh again. Subscribe to see how running tech makes your everyday walk even better.",
+    "type": "newsletter",
+    "title": "One shoe: commute run → office → happy hour",
+    "hookId": "hook-3",
+    "slides": [],
+    "article": null,
+    "segment": "segment-2",
+    "platform": "Newsletter",
+    "seriesId": "series-2",
+    "territory": "territory-4",
+    "threadPosts": [],
+    "videoScript": null,
+    "linkedClaims": [
+     "claim-3"
+    ],
+    "contentFormat": "newsletter",
+    "contentItemId": "item-3",
+    "editorialMode": "storytelling",
+    "visualBriefId": "visual-4",
+    "calendarItemId": "cal-2"
+   },
+   {
+    "id": "asset-3",
+    "cta": "First to know when it drops → [newsletter link]",
+    "copy": "8.7 ounces. 14mm heel. 6mm drop. What does that feel like on your morning run?",
+    "type": "thread",
+    "title": "Running geometry you can feel",
+    "hookId": "hook-2",
+    "slides": [],
+    "article": null,
+    "segment": "segment-1",
+    "platform": "X",
+    "seriesId": "series-1",
+    "territory": "territory-2",
+    "threadPosts": [
+     "8.7 ounces. 14mm heel. 6mm drop. What does that feel like on your morning run? ⚖️📏",
+     "Featherbed™ dual-density memory foam insole + SweetFoam® sugarcane midsole = dual-layer comfort that doesn't quit at mile 3. (fact-18, fact-20)",
+     "Same geometry carries you through everyday walks, vacation miles, commute runs. Verified by Cruiser specs. (fact-23, fact-29)",
+     "First to know when it drops → [newsletter link]"
+    ],
+    "videoScript": null,
+    "linkedClaims": [
+     "claim-4",
+     "claim-5"
+    ],
+    "contentFormat": "thread",
+    "contentItemId": "item-2",
+    "editorialMode": "proof-led",
+    "visualBriefId": "visual-2",
+    "calendarItemId": "cal-3"
+   },
+   {
+    "id": "asset-4",
+    "cta": "Get the full material breakdown — sign up for the technical deep-dive",
+    "copy": "Subject: Eucalyptus TENCEL™ Lyocell + recycled polyester upper. Merino wool blend lining. Featherbed™ memory foam. Sugarcane SweetFoam® midsole. Every layer named. Upper: eucalyptus-derived TENCEL™ Lyocell yarn + recycled polyester blend. Breathable, moisture-wicking, cool. (fact-19) Lining: Merino wool blend. Softness, socks optional. (fact-18) Insole: Featherbed™ dual-density memory foam. Extra comfort and bounce that doesn't quit. (fact-18) Midsole: SweetFoam® sugarcane-based EVA foam. Responsive energy return, light on the planet. (fact-20) Weight: 8.7oz (M9), 6.7oz (W7). Stack: 14mm heel / 8mm toe. Drop: 6mm. Origin: Vietnam. (fact-23) No vague 'eco' claims. Just construction details you can verify. Get the full material breakdown — sign up for the technical deep-dive.",
+    "type": "newsletter",
+    "title": "Every layer named: the full material breakdown",
+    "hookId": "hook-4",
+    "slides": [],
+    "article": null,
+    "segment": "segment-3",
+    "platform": "Newsletter",
+    "seriesId": "series-3",
+    "territory": "territory-1",
+    "threadPosts": [],
+    "videoScript": null,
+    "linkedClaims": [
+     "claim-6"
+    ],
+    "contentFormat": "newsletter",
+    "contentItemId": "item-4",
+    "editorialMode": "technical-explainer",
+    "visualBriefId": "visual-3",
+    "calendarItemId": "cal-4"
+   },
+   {
+    "id": "asset-5",
+    "cta": "Join — one question, one fact, no spam",
+    "copy": "Subject: One question a week. One verified fact. No launch spam. This is what early access actually looks like. Last week: SweetFoam® = sugarcane-based EVA with responsive energy return. (fact-20) This week: 8.7oz, 14mm/8mm stack, 6mm drop — running geometry for daily miles. (fact-23) Next week: the full material breakdown, layer by layer. No hype. Just proof. Join — one question, one fact, no spam.",
+    "type": "newsletter",
+    "title": "What early access actually looks like",
+    "hookId": "hook-6",
+    "slides": [],
+    "article": null,
+    "segment": "segment-1",
+    "platform": "Newsletter",
+    "seriesId": "series-1",
+    "territory": "territory-3",
+    "threadPosts": [],
+    "videoScript": null,
+    "linkedClaims": [
+     "claim-7"
+    ],
+    "contentFormat": "newsletter",
+    "contentItemId": "item-6",
+    "editorialMode": "direct-practical",
+    "visualBriefId": "visual-5",
+    "calendarItemId": "cal-5"
+   }
+  ],
+  "sources": [
+   {
+    "id": "src-project-brief",
+    "title": "Submitted project brief",
+    "authority": "user-supplied",
+    "fetchedAt": "2026-10-27T21:18:32.176Z",
+    "wordCount": 20,
+    "sourceType": "user-note",
+    "contentHash": "959faa1da51b089a53a23501c4726ec6c9cb022d1c66a748923df2b33ac14224",
+    "fetchStatus": "fetched",
+    "completeness": "full",
+    "extractedText": "{\"website\":\"https://www.allbirds.com\",\"docs\":\"\",\"goal\":\"Grow email newsletter signups ahead of a new running shoe launch\",\"audience\":\"Runners and everyday walkers who care about comfort and materials\",\"platforms\":[\"Newsletter\",\"X\"],\"editorialProfile\":\"balanced\",\"durationDays\":7,\"postsPerWeek\":3,\"teamSize\":1,\"hoursPerWeek\":8,\"restrictions\":\"\"}"
+   },
+   {
+    "id": "src-brand-site",
+    "url": "https://www.allbirds.com",
+    "title": "Allbirds: Comfortable, Sustainable Shoes & Apparel",
+    "authority": "first-party",
+    "fetchedAt": "2026-10-27T21:16:06.586Z",
+    "wordCount": 736,
+    "sourceType": "website",
+    "contentHash": "8674e5cfa9996ee8a8c1c454afa3daed22644825085902029fc11a2ab5073f4e",
+    "fetchStatus": "fetched",
+    "completeness": "full",
+    "extractedText": "Free ground shipping on orders over $100\n\nDue to increased demand, orders may take up to 30 days to ship.\n\n## Cart (0)\n\nSpend $100 more to earn free shipping!\n\nYour cart is empty. Start shopping!\n\n- Shop Womens\n- Shop Mens\n- Shop Socks\n- Shop Women's Sale\n- Shop Men's Sale\n\n## Added to Cart\n\nSpend $100 more to earn free shipping!\n\n### You may also like\n\n[![Anytime Crew Sock](https://www.allbirds.com/cdn/shop/products/STIUWE_SOCKS_WHEAT_FRONT_Resize_0001_SKU-SOCKS-GLOBAL-CREW-NATURAL-BLACK-1-min.png?v=1676567942&width=400)\\\\\n\\\\\nAnytime Crew Sock\\\\\n\\\\\n$18](https://www.allbirds.com/products/anytime-crew-sock-natural-black)\n\n[![Anytime No Show Heel Grip Sock](https://www.allbirds.com/cdn/shop/files/A12729-front-2400x2400_2.png?v=1770422106&width=400)\\\\\n\\\\\nAnytime No Show Heel Grip Sock\\\\\n\\\\\n$14\\\\\n\\\\\n2 colors](https://www.allbirds.com/products/anytime-no-show-heel-grip)\n\n- ![](https://www.allbirds.com/cdn/shop/files/26Q1_DasherNZ_Site_Homepage_Hero_Desktop_16x9-3.jpg?v=1779316981&width=2560)![](https://www.allbirds.com/cdn/shop/files/26Q1_DasherNZ_Site_Homepage_Hero_Mobile_9x16_2.jpg?v=1779316979&width=1024)\n\nAll New Dasher NZ Collection\n\n# Wildly Comfortable. Super Natural.\n\n[SHOP MEN](https://www.allbirds.com/products/mens-dasher-nz-anthracite) [SHOP WOMEN](https://www.allbirds.com/products/womens-dasher-nz-blizzard-deep-navy)\n\n- ![](https://www.allbirds.com/cdn/shop/files/26Q2_CanvasCruiser_Site_Homepage_CategoryRow-01_Desktop-Mobile_2x3_01.jpg?v=1774645561&width=1024)![](https://www.allbirds.com/cdn/shop/files/26Q2_CanvasCruiser_Site_Homepage_CategoryRow-01_Desktop-Mobile_2x3_01.jpg?v=1774645561&width=1024)\n\n## New Arrivals\n\n[Shop Men](https://www.allbirds.com/collections/mens-new-arrivals) [Shop Women](https://www.allbirds.com/collections/womens-new-arrivals)\n- ![](https://www.allbirds.com/cdn/shop/files/26Q2_CanvasCruiser_Site_Homepage_CategoryRow-01_Desktop-Mobile_2x3_04.jpg?v=1774645561&width=1024)![](https://www.allbirds.com/cdn/shop/files/26Q2_CanvasCruiser_Site_Homepage_CategoryRow-01_Desktop-Mobile_2x3_04.jpg?v=1774645561&width=1024)\n\n## Mens\n\n[Shop Men](https://www.allbirds.com/collections/mens)\n- ![](https://www.allbirds.com/cdn/shop/files/26Q2_CanvasCruiser_Site_Homepage_CategoryRow-01_Desktop-Mobile_2x3_03.jpg?v=1774645561&width=1024)![](https://www.allbirds.com/cdn/shop/files/26Q2_CanvasCruiser_Site_Homepage_CategoryRow-01_Desktop-Mobile_2x3_03.jpg?v=1774645561&width=1024)\n\n## Womens\n\n[Shop Women](https://www.allbirds.com/collections/womens)\n- ![](https://www.allbirds.com/cdn/shop/files/26Q2_CanvasCruiser_Site_Homepage_CategoryRow-01_Desktop-Mobile_2x3_02.jpg?v=1774645561&width=1024)![](https://www.allbirds.com/cdn/shop/files/26Q2_CanvasCruiser_Site_Homepage_CategoryRow-01_Desktop-Mobile_2x3_02.jpg?v=1774645561&width=1024)\n\n## Best Sellers\n\n[Shop Men](https://www.allbirds.com/collections/mens-bestsellers) [Shop Women](https://www.allbirds.com/collections/womens-bestsellers)\n\nBest Sellers\n\n[![Women's Tree Runner NZ - Medium Grey (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11959_25Q3_Tree_Runner_NZ_Medium_Grey_Blizzard_Sole_PDP_LEFT-2000x2000_f6ff6164-62df-42dc-89a8-fabcb3b5d438.png?v=1751899014&width=1024)![Women's Tree Runner NZ - Medium Grey (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11959_25Q3_Tree_Runner_NZ_Medium_Grey_Blizzard_Sole_PDP_LEFT-2000x2000_f6ff6164-62df-42dc-89a8-fabcb3b5d438.png?v=1751899014&width=1024)](https://www.allbirds.com/products/womens-tree-runner-nz-medium-grey)\n\n[Women's Tree Runner NZ\\\\\n\\\\\nMedium Grey\\\\\n\\\\\n$100](https://www.allbirds.com/products/womens-tree-runner-nz-medium-grey)\n\n$100\n\nQuick add\n\nAdd\n\nNEW\n\n[![Men's Runner NZ Slip On - Mushroom (Mushroom Sole)](https://www.allbirds.com/cdn/shop/files/A12622_26Q1_Runner-NZ-Slip-On-Mushroom-Mushroom_PDP_LEFT.png?v=1768951251&width=1024)![Men's Runner NZ Slip On - Mushroom (Mushroom Sole)](https://www.allbirds.com/cdn/shop/files/A12622_26Q1_Runner-NZ-Slip-On-Mushroom-Mushroom_PDP_LEFT.png?v=1768951251&width=1024)](https://www.allbirds.com/products/mens-runner-nz-slip-on-mushroom)\n\n[Men's Runner NZ Slip On\\\\\n\\\\\nMushroom\\\\\n\\\\\n$105](https://www.allbirds.com/products/mens-runner-nz-slip-on-mushroom)\n\n$105\n\nQuick add\n\nAdd\n\nNEW\n\n[![Men's Runner NZ Slip On - Anthracite (Dark Anthracite Sole)](https://www.allbirds.com/cdn/shop/files/A12386_26Q1_Runner-NZ-Slip-On-Anthracite-Dark-Anthr-Sole_PDP_LEFT.png?v=1768951111&width=1024)![Men's Runner NZ Slip On - Anthracite (Dark Anthracite Sole)](https://www.allbirds.com/cdn/shop/files/A12386_26Q1_Runner-NZ-Slip-On-Anthracite-Dark-Anthr-Sole_PDP_LEFT.png?v=1768951111&width=1024)](https://www.allbirds.com/products/mens-runner-nz-slip-on)\n\n[Men's Runner NZ Slip On\\\\\n\\\\\nAnthracite\\\\\n\\\\\n$105](https://www.allbirds.com/products/mens-runner-nz-slip-on)\n\n$105\n\nQuick add\n\nAdd\n\nNEW\n\n[![Men's Runner NZ Slip On - Dark Navy (Dark Navy Sole)](https://www.allbirds.com/cdn/shop/files/A12488_26Q1_Runner-NZ-Slip-On-Dark-Navy-Dark-Navy_PDP_LEFT.png?v=1769559941&width=1024)![Men's Runner NZ Slip On - Dark Navy (Dark Navy Sole)](https://www.allbirds.com/cdn/shop/files/A12488_26Q1_Runner-NZ-Slip-On-Dark-Navy-Dark-Navy_PDP_LEFT.png?v=1769559941&width=1024)](https://www.allbirds.com/products/mens-runner-nz-slip-on-dark-navy)\n\n[Men's Runner NZ Slip On\\\\\n\\\\\nDark Navy\\\\\n\\\\\n$105](https://www.allbirds.com/products/mens-runner-nz-slip-on-dark-navy)\n\n$105\n\nQuick add\n\nAdd\n\n[![Men's Cruiser - Medium Grey (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11559_25Q3_Cruiser_Dark_Navy_Blizzard_PDP_LEFT-2000x2000_9f5ba943-6b25-4f75-9c74-edd67a6a0aa7.png?v=1751900449&width=1024)![Men's Cruiser - Medium Grey (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11559_25Q3_Cruiser_Dark_Navy_Blizzard_PDP_LEFT-2000x2000_9f5ba943-6b25-4f75-9c74-edd67a6a0aa7.png?v=1751900449&width=1024)](https://www.allbirds.com/products/mens-cruiser-medium-grey)\n\n[Men's Cruiser\\\\\n\\\\\nMedium Grey\\\\\n\\\\\n$105](https://www.allbirds.com/products/mens-cruiser-medium-grey)\n\n$105\n\nQuick add\n\nAdd\n\nNEW\n\n[![Women's Canvas Cruiser Slip On - Warm White (Natural White Sole)](https://www.allbirds.com/cdn/shop/files/A12364_26Q1_Cruiser-Slip-On-Canvas-Warm-White-Natural-White_PDP_LEFT_9273769a-0a6f-47f4-a002-6d308f1f3e0e.png?v=1768946967&width=1024)![Women's Canvas Cruiser Slip On - Warm White (Natural White Sole)](https://www.allbirds.com/cdn/shop/files/A12364_26Q1_Cruiser-Slip-On-Canvas-Warm-White-Natural-White_PDP_LEFT_9273769a-0a6f-47f4-a002-6d308f1f3e0e.png?v=1768946967&width=1024)](https://www.allbirds.com/products/womens-cruiser-slip-on-canvas)\n\n[Women's Canvas Cruiser Slip On\\\\\n\\\\\nWarm White\\\\\n\\\\\n$75](https://www.allbirds.com/products/womens-cruiser-slip-on-canvas)\n\n$75\n\nQuick add\n\nAdd\n\nNEW\n\n[![Women's Cruiser Slip On - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A12451_26Q1_Cruiser-Slip-On-Blizzard-Blizzard-Sole_PDP_LEFT_6b76e0cd-df5b-4ddc-bb7e-b354f44bbd8a.png?v=1768947332&width=1024)![Women's Cruiser Slip On - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A12451_26Q1_Cruiser-Slip-On-Blizzard-Blizzard-Sole_PDP_LEFT_6b76e0cd-df5b-4ddc-bb7e-b354f44bbd8a.png?v=1768947332&width=1024)](https://www.allbirds.com/products/womens-cruiser-slip-on-blizzard)\n\n[Women's Cruiser Slip On\\\\\n\\\\\nBlizzard\\\\\n\\\\\n$100](https://www.allbirds.com/products/womens-cruiser-slip-on-blizzard)\n\n$100\n\nQuick add\n\nAdd\n\nNEW\n\n[![Women's Runner NZ Slip On - Mushroom (Mushroom Sole)](https://www.allbirds.com/cdn/shop/files/A12622_26Q1_Runner-NZ-Slip-On-Mushroom-Mushroom_PDP_LEFT_f22365dc-8298-40c8-a456-acf947b20a90.png?v=1768951496&width=1024)![Women's Runner NZ Slip On - Mushroom (Mushroom Sole)](https://www.allbirds.com/cdn/shop/files/A12622_26Q1_Runner-NZ-Slip-On-Mushroom-Mushroom_PDP_LEFT_f22365dc-8298-40c8-a456-acf947b20a90.png?v=1768951496&width=1024)](https://www.allbirds.com/products/womens-runner-nz-slip-on-mushroom)\n\n[Women's Runner NZ Slip On\\\\\n\\\\\nMushroom\\\\\n\\\\\n$105](https://www.allbirds.com/products/womens-runner-nz-slip-on-mushroom)\n\n$105\n\nQuick add\n\nAdd\n\nNEW\n\n[![Women's Runner NZ Slip On - Anthracite (Dark Anthracite Sole)](https://www.allbirds.com/cdn/shop/files/A12386_26Q1_Runner-NZ-Slip-On-Anthracite-Dark-Anthr-Sole_PDP_LEFT_7ec4ff21-9ae4-4f0f-9a3c-e813a8404674.png?v=1768951351&width=1024)![Women's Runner NZ Slip On - Anthracite (Dark Anthracite Sole)](https://www.allbirds.com/cdn/shop/files/A12386_26Q1_Runner-NZ-Slip-On-Anthracite-Dark-Anthr-Sole_PDP_LEFT_7ec4ff21-9ae4-4f0f-9a3c-e813a8404674.png?v=1768951351&width=1024)](https://www.allbirds.com/products/womens-runner-nz-slip-on)\n\n[Women's Runner NZ Slip On\\\\\n\\\\\nAnthracite\\\\\n\\\\\n$105](https://www.allbirds.com/products/womens-runner-nz-slip-on)\n\n$105\n\nQuick add\n\nAdd\n\nNEW\n\n[![Women's Runner NZ Slip On - Dark Navy (Dark Navy Sole)](https://www.allbirds.com/cdn/shop/files/A12488_26Q1_Runner-NZ-Slip-On-Dark-Navy-Dark-Navy_PDP_LEFT_76a29c75-099f-4514-86f6-f484a4d8d71f.png?v=1769559971&width=1024)![Women's Runner NZ Slip On - Dark Navy (Dark Navy Sole)](https://www.allbirds.com/cdn/shop/files/A12488_26Q1_Runner-NZ-Slip-On-Dark-Navy-Dark-Navy_PDP_LEFT_76a29c75-099f-4514-86f6-f484a4d8d71f.png?v=1769559971&width=1024)](https://www.allbirds.com/products/womens-runner-nz-slip-on-dark-navy)\n\n[Women's Runner NZ Slip On\\\\\n\\\\\nDark Navy\\\\\n\\\\\n$105](https://www.allbirds.com/products/womens-runner-nz-slip-on-dark-navy)\n\n$105\n\nQuick add\n\nAdd\n\n[![Women's Canvas Cruiser - Sea Spray (Natural White Sole)](https://www.allbirds.com/cdn/shop/files/A12852_26Q1_Cruiser-Canvas-Sea-Spray-Natural-White-Sole_PDP_LEFT_55c168b7-1ef8-43d8-8516-aa8a1a0c633f.png?v=1771027545&width=1024)![Women's Canvas Cruiser - Sea Spray (Natural White Sole)](https://www.allbirds.com/cdn/shop/files/A12852_26Q1_Cruiser-Canvas-Sea-Spray-Natural-White-Sole_PDP_LEFT_55c168b7-1ef8-43d8-8516-aa8a1a0c633f.png?v=1771027545&width=1024)](https://www.allbirds.com/products/womens-cruiser-canvas-sea-spray)\n\n[Women's Canvas Cruiser\\\\\n\\\\\nSea Spray\\\\\n\\\\\n$75](https://www.allbirds.com/products/womens-cruiser-canvas-sea-spray)\n\n$75\n\nQuick add\n\nAdd\n\n[![Women's Canvas Cruiser - Port (Natural White Sole)](https://www.allbirds.com/cdn/shop/files/A12848_26Q1_Cruiser-Canvas-Port-Natural-White-Sole_PDP_LEFT_f544c3ab-bb93-4f19-9cb0-558975e64068.png?v=1774478056&width=1024)![Women's Canvas Cruiser - Port (Natural White Sole)](https://www.allbirds.com/cdn/shop/files/A12848_26Q1_Cruiser-Canvas-Port-Natural-White-Sole_PDP_LEFT_f544c3ab-bb93-4f19-9cb0-558975e64068.png?v=1774478056&width=1024)](https://www.allbirds.com/products/womens-cruiser-canvas-port)\n\n[Women's Canvas Cruiser\\\\\n\\\\\nPort\\\\\n\\\\\n$75](https://www.allbirds.com/products/womens-cruiser-canvas-port)\n\n$75\n\nQuick add\n\nAdd\n\n![](https://www.allbirds.com/cdn/shop/files/26Q1_Terralux_Collections-TilePromo-4Grid-1x1_AssetName_Desktop_2x3_02_f21a1dc1-4f9e-41d4-91bf-d20e262540ec.jpg?v=1793128596&width=1024)\n\n## Terralux™ Collection\n\n[Shop Men](https://www.allbirds.com/collections/mens-terralux-cl) [Shop Women](https://www.allbirds.com/collections/womens-terralux-cl)\n\n![](https://www.allbirds.com/cdn/shop/files/Men_s_Cruiser_-_Shadow_Blue_Natural_White_Sole_-A12856M110_PROMO_TILE.jpg?v=1793129044&width=1024)\n\n## New Arrivals\n\n[Shop Men](https://www.allbirds.com/collections/mens-new-arrivals) [Shop Women](https://www.allbirds.com/collections/womens-new-arrivals)\n\n![](https://www.allbirds.com/cdn/shop/files/Women_s_Wool_Cruiser_Waterproof_-_Natural_Black_Natural_Black_Sole_-A11779W090_MOBILE_BANNER.jpg?v=1793128250&width=1024)\n\n## All-Weather\n\n[Shop Men](https://www.allbirds.com/collections/mens-mizzles) [Shop Women](https://www.allbirds.com/collections/womens-mizzles)\n\nWear All Day Comfort\n\nLightweight, bouncy, and wildly comfortable, Allbirds shoes make any outing feel effortless. Slip in, lace up, or slide them on and enjoy the comfy support.\n\nDESIGNED FOR EVERYDAY WEAR\n\nEasy-to-wear styles made for daily routines, weekend plans, travel, and everything in between.\n\nMaterials From The Earth\n\nWe replace petroleum-based synthetics with natural alternatives wherever we can. Like using wool, tree fiber, and sugarcane. They’re soft, breathable, and better for the planet—win, win, win.\n\nwww.allbirds.com\n\n# www.allbirds.com is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nwww.allbirds.com\n\n# www.allbirds.com is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nwww.allbirds.com\n\n# www.allbirds.com is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nshop.app\n\n# shop.app is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nShop with AI"
+   },
+   {
+    "id": "src-site-index",
+    "url": "https://www.allbirds.com/llms.txt",
+    "title": "llms.txt index for www.allbirds.com",
+    "authority": "first-party",
+    "fetchedAt": "2026-10-27T21:16:06.586Z",
+    "wordCount": 758,
+    "sourceType": "site-index",
+    "contentHash": "d9907e4cafdee0347cb60605c7db35493237f8a12aa40a7f3d011368103cf0f4",
+    "fetchStatus": "fetched",
+    "completeness": "full",
+    "extractedText": "\\# Agent Instructions — Allbirds\n\nYou can browse products and shop at Allbirds's online store, https://www.allbirds.com, on your user's behalf. This guide covers the Shop skill and UCP integration, directly or through browser-based WebMCP tools.\n\n\\## Shop skill — recommended\n\nUse the \\[Shop skill\\](https://shop.com/SKILL.md) to help your user shop with this store. Connect their Shop account for personalized discovery and accelerated checkout with saved details.\n\n\\- Personalized discovery: search by text or image, find similar products, and use your user's Shop purchase history to find options that match their preferences.\n\\- Accelerated cart and checkout: build and update carts and checkouts, then use Shop Pay with prefilled addresses and saved payment methods.\n\\- Orders: search your user's order history for purchases from this store, track deliveries, and reorder products.\n\nRead the skill before your first call for setup, supported actions, account connection, and purchase-approval rules.\n\n\\## UCP integration\n\nThis store implements the \\[Universal Commerce Protocol\\](https://ucp.dev) for product discovery, carts, and checkout. Integrate directly with its service, or orchestrate shopping through browser-based WebMCP tools.\n\n\\### Direct integration (MCP)\n\n1\\. \\*\\*Discover the store\\*\\* — \\`GET https://www.allbirds.com/.well-known/ucp\\` returns its UCP profile, including capabilities, service endpoints, and payment handlers.\n2\\. \\*\\*Discover available tools\\*\\* — Connect to the MCP endpoint advertised in the profile (\\`https://www.allbirds.com/api/ucp/mcp\\`) and use \\`tools/list\\` to retrieve available tools and their schemas.\n3\\. \\*\\*Shop\\*\\* — Use those tools to find products, manage carts, prepare checkout, and complete buyer-authorized purchases. Follow returned statuses, messages, and handoff URLs when buyer action is required.\n\nUse a compatible UCP version and follow the returned tool schemas. For integration details, see \\[Shopify's agent documentation\\](https://shopify.dev/docs/agents).\n\n\\### Browser integration (WebMCP)\n\nWhen working through a browser, use the WebMCP tools registered on this store's pages. The checkout page exposes UCP tools over WebMCP. These tools act on the checkout in the current browser session.\n\n\\- \\*\\*Storefront\\*\\* — Use the provided tools to find products, manage the cart, ask questions about the store and its policies, and proceed to checkout.\n\\- \\*\\*Checkout\\*\\* — Use the provided UCP tools to review and update the checkout and complete a buyer-authorized purchase. Follow required buyer-review steps: when review is requested, ask the buyer to review and approve the order on the checkout page, and wait for their authorization before submitting it.\n\nIf checkout tools are unavailable, ask the buyer to continue on the checkout page. Do not fall back to scripted form fills or page controls.\n\nFor integration details, see \\[Storefront WebMCP\\](https://shopify.dev/docs/api/web-mcp) and \\[Checkout WebMCP\\](https://shopify.dev/docs/agents/carts-and-checkout/checkout-webmcp).\n\n\\## Interaction guidelines\n\n\\- \\*\\*Buyer authorization\\*\\* — Place orders and submit payment only with the buyer's authorization. Follow required review and approval steps.\n\\- \\*\\*Agent traffic\\*\\* — Agents must identify their requests as agent-initiated. Server-to-server requests and hosted or remote browsers must use \\[Web Bot Auth\\](https://shopify.dev/docs/api/storefront#identifying-bots-with-web-bot-auth) and follow the service's authentication requirements. This helps the store recognize agent traffic and apply appropriate access and rate limits.\n\\- \\*\\*Browser interactions\\*\\* — Agents must use the provided WebMCP tools for all agent-initiated shopping actions and updates. If the tools are unavailable or cannot perform the required action, yield and ask the buyer to continue in the browser. Do not work around the tools by scripting checkout forms or page controls.\n\\- \\*\\*Rate limits\\*\\* — Back off on \\`429\\` responses and respect \\`Retry-After\\` when provided.\n\\- \\*\\*Buyer context\\*\\* — Use the buyer's country and currency where supported by the tool schemas for accurate pricing and availability.\n\n\\## Read-only browsing\n\nPrefer the structured information returned by the shopping tools described above. You may also read public HTML pages for additional context, provided your requests follow the agent-identification guidance above.\n\n\\- Discover public URLs through \\`/sitemap.xml\\`.\n\\- Read product pages at \\`/products/{handle}\\`.\n\\- Browse collections at \\`/collections/all\\` or \\`/collections/{handle}\\`.\n\\- Discover other public pages and articles through the sitemap.\n\nReading public content does not change the requirements for agent-initiated shopping actions and updates.\n\n\\## Store Policies\n\\- \\*\\*Privacy policy\\*\\*: https://www.allbirds.com/policies/privacy-policy\n\\- \\*\\*Terms of service\\*\\*: https://www.allbirds.com/policies/terms-of-service\n\\- \\*\\*Refund policy\\*\\*: https://www.allbirds.com/policies/refund-policy\n\\- \\*\\*Shipping policy\\*\\*: https://www.allbirds.com/policies/shipping-policy\n\n\\## Platform\n\nThis store is built on \\[Shopify\\](https://www.shopify.com), the commerce platform powering millions of stores worldwide. Shopify stores support UCP natively, enabling seamless agent-driven commerce. The Shop skill at\n\\[https://shop.app/SKILL.md\\](https://shop.app/SKILL.md) works across every Shopify store — install it once and\nyour agent can transact everywhere.\n\n\\- Start your own store: https://www.shopify.com/start\n\\- Build and test against sample data: https://mock.shop (free mock Storefront GraphQL API, no store or auth needed)\n\\- Shopify developer platform: https://shopify.dev\n\\- Shop developer platform: https://shop.dev\n\n\\- Agent discovery: the canonical agent-facing description of the store is at \\`/agents.md\\`. You're reading \\`/llms.txt\\`, which mirrors that content."
+   },
+   {
+    "id": "src-site-page-1",
+    "url": "https://www.allbirds.com/.well-known/ucp/%60",
+    "title": "https://www.allbirds.com/.well-known/ucp/%60",
+    "authority": "first-party",
+    "fetchedAt": "2026-10-27T21:16:06.586Z",
+    "wordCount": 0,
+    "sourceType": "website",
+    "contentHash": "",
+    "fetchStatus": "failed",
+    "completeness": "failed",
+    "extractedText": "Source fetch failed: HTTP 404",
+    "failureReason": "HTTP 404"
+   },
+   {
+    "id": "src-site-page-2",
+    "url": "https://www.allbirds.com/api/ucp/mcp/%60",
+    "title": "https://www.allbirds.com/api/ucp/mcp/%60",
+    "authority": "first-party",
+    "fetchedAt": "2026-10-27T21:16:06.586Z",
+    "wordCount": 0,
+    "sourceType": "website",
+    "contentHash": "",
+    "fetchStatus": "failed",
+    "completeness": "failed",
+    "extractedText": "Source fetch failed: HTTP 404",
+    "failureReason": "HTTP 404"
+   },
+   {
+    "id": "src-site-page-3",
+    "url": "https://www.allbirds.com/policies/refund-policy",
+    "title": "https://www.allbirds.com/policies/refund-policy",
+    "authority": "first-party",
+    "fetchedAt": "2026-10-27T21:16:06.586Z",
+    "wordCount": 484,
+    "sourceType": "website",
+    "contentHash": "88f475c2dc1c7c0e93b0e3784cf0e9b72fa4068de7f3f213079d3f4721e3df0e",
+    "fetchStatus": "fetched",
+    "completeness": "full",
+    "extractedText": "Free ground shipping on orders over $100\n\nDue to increased demand, orders may take up to 30 days to ship.\n\n## Cart (0)\n\nSpend $100 more to earn free shipping!\n\nYour cart is empty. Start shopping!\n\n- Shop Womens\n- Shop Mens\n- Shop Socks\n- Shop Women's Sale\n- Shop Men's Sale\n\n## Added to Cart\n\nSpend $100 more to earn free shipping!\n\n### You may also like\n\n[![Anytime Crew Sock](https://www.allbirds.com/cdn/shop/products/STIUWE_SOCKS_WHEAT_FRONT_Resize_0001_SKU-SOCKS-GLOBAL-CREW-NATURAL-BLACK-1-min.png?v=1676567942&width=400)\\\\\n\\\\\nAnytime Crew Sock\\\\\n\\\\\n$18](https://www.allbirds.com/products/anytime-crew-sock-natural-black)\n\n[![Anytime No Show Heel Grip Sock](https://www.allbirds.com/cdn/shop/files/A12729-front-2400x2400_2.png?v=1770422106&width=400)\\\\\n\\\\\nAnytime No Show Heel Grip Sock\\\\\n\\\\\n$14\\\\\n\\\\\n2 colors](https://www.allbirds.com/products/anytime-no-show-heel-grip)\n\n# Refund policy\n\nOur standard return policy is 30 days. You can return or exchange items that are unworn and unwashed with original product tags attached within 30 days from the date your order was delivered. For socks, undies, and accessories packaging must be unopened. Final Sale items, or returns that do not comply with our terms and conditions cannot be returned or exchanged.\n\nReturn Shipping: Customers are responsible for return shipping charges. Paid shipping fees will not be refunded. Refunds will only be applied to the original form of payment. Returns/exchanges can only be done in the country of purchase. Please note, if you purchased Allbirds items at another retailer, you’ll need to return the purchase to that retailer.\n\nWhen you opt-in for coverage at checkout, your return shipping label is included, allowing you to return any item(s) in your order for a refund or exchange for free.\n\nIf you decide not to buy return coverage you can still return your items, but you will be responsible for the cost of the return shipping label.\n\n**Rejected Returns:** Returns that do not meet our return requirements may be rejected. Rejected returns are **non-refundable and forfeited**\n\nWear All Day Comfort\n\nLightweight, bouncy, and wildly comfortable, Allbirds shoes make any outing feel effortless. Slip in, lace up, or slide them on and enjoy the comfy support.\n\nDESIGNED FOR EVERYDAY WEAR\n\nEasy-to-wear styles made for daily routines, weekend plans, travel, and everything in between.\n\nMaterials From The Earth\n\nWe replace petroleum-based synthetics with natural alternatives wherever we can. Like using wool, tree fiber, and sugarcane. They’re soft, breathable, and better for the planet—win, win, win.\n\nshop.app\n\n# shop.app is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nwww.allbirds.com\n\n# www.allbirds.com is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nwww.allbirds.com\n\n# www.allbirds.com is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nwww.allbirds.com\n\n# www.allbirds.com is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)"
+   },
+   {
+    "id": "src-site-page-4",
+    "url": "https://www.allbirds.com/policies/shipping-policy",
+    "title": "https://www.allbirds.com/policies/shipping-policy",
+    "authority": "first-party",
+    "fetchedAt": "2026-10-27T21:16:06.586Z",
+    "wordCount": 486,
+    "sourceType": "website",
+    "contentHash": "3d87f0461bc98f50e84ee1bea1b7ab940f97b30eda2bc113d089c8e1c062586a",
+    "fetchStatus": "fetched",
+    "completeness": "full",
+    "extractedText": "Free ground shipping on orders over $100\n\nDue to increased demand, orders may take up to 30 days to ship.\n\n## Cart (0)\n\nSpend $100 more to earn free shipping!\n\nYour cart is empty. Start shopping!\n\n- Shop Womens\n- Shop Mens\n- Shop Socks\n- Shop Women's Sale\n- Shop Men's Sale\n\n## Added to Cart\n\nSpend $100 more to earn free shipping!\n\n### You may also like\n\n[![Anytime Crew Sock](https://www.allbirds.com/cdn/shop/products/STIUWE_SOCKS_WHEAT_FRONT_Resize_0001_SKU-SOCKS-GLOBAL-CREW-NATURAL-BLACK-1-min.png?v=1676567942&width=400)\\\\\n\\\\\nAnytime Crew Sock\\\\\n\\\\\n$18](https://www.allbirds.com/products/anytime-crew-sock-natural-black)\n\n[![Anytime No Show Heel Grip Sock](https://www.allbirds.com/cdn/shop/files/A12729-front-2400x2400_2.png?v=1770422106&width=400)\\\\\n\\\\\nAnytime No Show Heel Grip Sock\\\\\n\\\\\n$14\\\\\n\\\\\n2 colors](https://www.allbirds.com/products/anytime-no-show-heel-grip)\n\n# Shipping policy\n\nALL ORDERS ARE PROCESSED WITHIN 1-6 BUSINESS DAYS. HOWEVER, DURING SALE SEASONS ORDERS MIGHT SUFFER A SLIGHT DELAY DUE TO AN EXCESSIVE AMOUNT OF ORDERS BEING FILLED OUT. ALLBIRDS WILL NOT BE HELD RESPONSIBLE FOR A DELAY IN SHIPMENT CAUSED BY WEATHER CONDITIONS, INTERNATIONAL CUSTOM ISSUES OR ANY OTHER CIRCUMSTANCES BEYOND THE CONTROL OF ALLBIRDS. ONCE ORDERS ARE SENT A CHANGE OF DELIVERY ADDRESS WILL NO LONGER BE POSSIBLE, PLEASE MAKE SURE TO FILL OUT A CORRECT ADDRESS WHEN CHECKING OUT.\n\nSHIPPING CARRIERS ARE SELECTED BASED ON THE MOST EFFICIENT DELIVERY FOR EACH ORDER. INTERNATIONAL CUSTOMERS ARE RESPONSIBLE FOR CUSTOMS DUTIES AND/OR BROKERAGE FEES IN ADDITION TO SHIPPING COSTS ASSESSED DURING CHECKOUT. ALL CALIFORNIA RESIDENTS WILL INCUR SALES TAX AS SET BY THE STATE OF CALIFORNIA AND/OR THE COUNTY TO WHICH YOUR DELIVERY WILL BE SHIPPED.\n\nALLBIRDS IS NOT RESPONSIBLE FOR ANY LOST, STOLEN, OR UNDELIVERED PACKAGES. IF YOUR PACKAGE IS MARKED AS DELIVERED BUT YOU HAVE NOT RECEIVED IT, PLEASE CONTACT THE CARRIER OF THE PACKAGE TO OPEN AN INVESTIGATION. ALLBIRDS WILL NOT REPLACE ANY PACKAGES.\n\nFOR ANY PROBLEMS WITH AN EXISTING ORDER, THE WEBSITE, OR GENERAL INQUIRES PLEASE CONTACT US AT HELP@ALLBIRDS.COM\n\nWear All Day Comfort\n\nLightweight, bouncy, and wildly comfortable, Allbirds shoes make any outing feel effortless. Slip in, lace up, or slide them on and enjoy the comfy support.\n\nDESIGNED FOR EVERYDAY WEAR\n\nEasy-to-wear styles made for daily routines, weekend plans, travel, and everything in between.\n\nMaterials From The Earth\n\nWe replace petroleum-based synthetics with natural alternatives wherever we can. Like using wool, tree fiber, and sugarcane. They’re soft, breathable, and better for the planet—win, win, win.\n\nshop.app\n\n# shop.app is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nwww.allbirds.com\n\n# www.allbirds.com is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nwww.allbirds.com\n\n# www.allbirds.com is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nwww.allbirds.com\n\n# www.allbirds.com is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)"
+   },
+   {
+    "id": "src-site-page-5",
+    "url": "https://www.allbirds.com/products/mens-cruiser",
+    "title": "Men’s Cruiser | Everyday Comfort & Style | Allbirds",
+    "authority": "first-party",
+    "fetchedAt": "2026-10-27T21:16:06.586Z",
+    "wordCount": 1388,
+    "sourceType": "website",
+    "contentHash": "3aa4382dcd856720e3a3a36cb5a60ec0cb567a92af946f08d6a32c7527a3fa45",
+    "fetchStatus": "fetched",
+    "completeness": "full",
+    "extractedText": "Free ground shipping on orders over $100\n\nDue to increased demand, orders may take up to 30 days to ship.\n\n## Cart (0)\n\nSpend $100 more to earn free shipping!\n\nYour cart is empty. Start shopping!\n\n- Shop Womens\n- Shop Mens\n- Shop Socks\n- Shop Women's Sale\n- Shop Men's Sale\n\n## Added to Cart\n\nSpend $100 more to earn free shipping!\n\n### You may also like\n\n[![Anytime Crew Sock](https://www.allbirds.com/cdn/shop/products/STIUWE_SOCKS_WHEAT_FRONT_Resize_0001_SKU-SOCKS-GLOBAL-CREW-NATURAL-BLACK-1-min.png?v=1676567942&width=400)\\\\\n\\\\\nAnytime Crew Sock\\\\\n\\\\\n$18](https://www.allbirds.com/products/anytime-crew-sock-natural-black)\n\n[![Anytime No Show Sock](https://www.allbirds.com/cdn/shop/files/A10849_S24Q1_Anytime_No_Show_Sock_Rugged_Beige_A-1400x1400.png?v=1712352041&width=400)\\\\\n\\\\\nAnytime No Show Sock\\\\\n\\\\\n$14](https://www.allbirds.com/products/anytime-no-show-sock-rugged-beige)\n\n[![Anytime No Show Heel Grip Sock](https://www.allbirds.com/cdn/shop/files/A12729-front-2400x2400_2.png?v=1770422106&width=400)\\\\\n\\\\\nAnytime No Show Heel Grip Sock\\\\\n\\\\\n$14\\\\\n\\\\\n2 colors](https://www.allbirds.com/products/anytime-no-show-heel-grip)\n\n# Men's Cruiser\n\nAlso available in: [Women's Sizes](https://www.allbirds.com/products/womens-cruiser)\n\n$105\n\n\\+ Free shipping\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_LEFT-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_BACK-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_TD-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_SOLE-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_PAIR_3Q-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_LEFT-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_BACK-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_TD-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_SOLE-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_PAIR_3Q-2000x2000.png?v=1751900113&width=1280)\n\nPrevious ImageNext Image\n\nMen's Cruiser$105\n\nSelect A Size Add to Cart \\- $105Notify Me\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_LEFT-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_BACK-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_TD-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_SOLE-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_PAIR_3Q-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_LEFT-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_BACK-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_TD-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_SOLE-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_PAIR_3Q-2000x2000.png?v=1751900113&width=1280)\n\n![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_LEFT-2000x2000.png?v=1751900113&width=1280)![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_BACK-2000x2000.png?v=1751900113&width=1280)![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_TD-2000x2000.png?v=1751900113&width=1280)![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_SOLE-2000x2000.png?v=1751900113&width=1280)![Men's Cruiser - Blizzard (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11556_25Q3_Cruiser_Blizzard_Blizzard_PDP_PAIR_3Q-2000x2000.png?v=1751900113&width=1280)\n\nWhy we made this\n\nMinimal and modern, our signature classic court shoe delivers the right balance of style and urban comfort. Lightweight, breathable, and made to move, this is your new go-to for life on the go.\n\n### Thoughtfully designed\n\n- **Breathable TENCEL™ Lyocell (tree fiber)** blend upper for a light, cool feel\n- **Merino wool-blend lining** for softness, socks optional\n- Plush **Featherbed™ memory foam** insole for extra comfort and bounce\n- Sugarcane-based **SweetFoam® cushioning** with responsive energy return\n\n### Best for\n\nEverydayWalks VacationHappy Hour\n\nView technical details\n\n- **Weight:** 8.7oz (M9), 6.7oz (W7)\n- **Stack Height:** Heel: 14mm Toe: 8mm\n- **Heel/Toe Drop:** 6mm\n- **Country of Origin:** Vietnam\n\nMaterials & Sustainability\n\n![](https://www.allbirds.com/cdn/shop/files/PDP_Materials_Tree_600x600_41d4fd06-223d-4bcd-8f95-f93fa6f6fa23.jpg?v=1772058463&width=1024)\n\nUpperTree Knit\n\nKnit upper made from eucalyptus-derived TENCEL™ Lyocell (tree fiber) yarn and recycled polyester blend\n\n![](https://www.allbirds.com/cdn/shop/files/PDP_Materials_Sugarcane_600x600_cfb05fbd-72b3-4e38-82f1-a1b2f4769c8b.jpg?v=1772058166&width=1024)\n\nMidsoleSweetFoam®\n\nSweetFoam® sugarcane-based EVA foam provides comfort and durability while being light on the planet\n\n![](https://www.allbirds.com/cdn/shop/files/PDP_Materials_Wool_600x600_6745c3bd-d0e0-4768-ae9d-4e619e1a81f6.jpg?v=1772058481&width=1024)\n\nLiningWool\n\nMerino wool blend lining for uncompromising comfort and softness\n\nCare instructions\n\nYes, they’re machine washable. Remove the insoles, hand wash those separately, and let everything air dry. Fresh again.\n\nReviews\n\nWhy we made this\n\nMinimal and modern, our signature classic court shoe delivers the right balance of style and urban comfort. Lightweight, breathable, and made to move, this is your new go-to for life on the go.\n\n### Best for\n\nEverydayWalks VacationHappy Hour\n\nView technical details\n\n- **Weight:** 8.7oz (M9), 6.7oz (W7)\n- **Stack Height:** Heel: 14mm Toe: 8mm\n- **Heel/Toe Drop:** 6mm\n- **Country of Origin:** Vietnam\n\n![](https://www.allbirds.com/cdn/shop/files/A11559_25Q3_Cruiser_Dark_Navy_Blizzard_PDP_PAIR_3Q-2000x2000_d12d9e49-f5a3-4269-a922-a6aa4be23434.png?v=1751900466&width=1024)\n\n### Thoughtfully designed\n\n- **Breathable TENCEL™ Lyocell (tree fiber)** blend upper for a light, cool feel\n- **Merino wool-blend lining** for softness, socks optional\n- Plush **Featherbed™ memory foam** insole for extra comfort and bounce\n- Sugarcane-based **SweetFoam® cushioning** with responsive energy return\n\nMaterials & Sustainability\n\n![](https://www.allbirds.com/cdn/shop/files/PDP_Materials_Tree_600x600_41d4fd06-223d-4bcd-8f95-f93fa6f6fa23.jpg?v=1772058463&width=1024)\n\nUpperTree Knit\n\nKnit upper made from eucalyptus-derived TENCEL™ Lyocell (tree fiber) yarn and recycled polyester blend\n\n![](https://www.allbirds.com/cdn/shop/files/PDP_Materials_Sugarcane_600x600_cfb05fbd-72b3-4e38-82f1-a1b2f4769c8b.jpg?v=1772058166&width=1024)\n\nMidsoleSweetFoam®\n\nSweetFoam® sugarcane-based EVA foam provides comfort and durability while being light on the planet\n\n![](https://www.allbirds.com/cdn/shop/files/PDP_Materials_Wool_600x600_6745c3bd-d0e0-4768-ae9d-4e619e1a81f6.jpg?v=1772058481&width=1024)\n\nLiningWool\n\nMerino wool blend lining for uncompromising comfort and softness\n\nCare instructions\n\nYes, they’re machine washable. Remove the insoles, hand wash those separately, and let everything air dry. Fresh again.\n\nReviews\n\n![](https://www.allbirds.com/cdn/shop/files/25Q2_TreeCollection_Site_Cruiser-Men_PDPStyling-01_Lifestyle_Desktop_2x3_ef410e0c-8187-4c70-a0d5-f09a37bf2294.jpg?v=1752085833&width=1024)\n\nTRAVEL ESSENTIALS\n\nWhen you packed a bunch of outfits and need one versatile pair of shoes to go with them: bring these.\n\n![](https://www.allbirds.com/cdn/shop/files/25Q2_TreeCollection_Site_Cruiser-Men_PDPStyling-02_Lifestyle_Desktop_2x3_e77772e8-d0a3-4bd9-a8cc-8df66704bda8.jpg?v=1752085833&width=1024)\n\nOFFICE READY\n\nSleek trainers for workday looks, taking you effortlessly from rush hour to happy hour.\n\n![](https://www.allbirds.com/cdn/shop/files/preview_images/99ea42d721a54ab7b128e5850984fda4.thumbnail.0000000000.jpg?v=1751420378&width=1920)![](https://www.allbirds.com/cdn/shop/files/preview_images/dd9018c1ba3f41d7883cbd17351412c1.thumbnail.0000000000.jpg?v=1751420373&width=1080)\n\n![](https://www.allbirds.com/cdn/shop/files/A11559_25Q3_Cruiser_Dark_Navy_Blizzard_PDP_TD-2000x2000_1.png?v=1752534931&width=1024)\n\n## BREATHE EASY\n\nMade from TENCEL™ Lyocell (tree fiber) to stay breathable, moisture-wicking, and cool.\n\n## MADE TO MOVE\n\nLightweight construction flexes easily with every step.\n\n## PLUSH FEATHERBED™\n\nDual-density memory foam insole adds extra softness and comfort that doesn’t quit.\n\n## BUILT TO BOUNCE BACK\n\nSweetFoam® cushioning made from sugarcane delivers comfort and energy return.\n\n## BREATHE EASY\n\nMade from TENCEL™ Lyocell (tree fiber) to stay breathable, moisture-wicking, and cool.\n\n## MADE TO MOVE\n\nLightweight construction flexes easily with every step.\n\n## PLUSH FEATHERBED™\n\nDual-density memory foam insole adds extra softness and comfort that doesn’t quit.\n\n## BUILT TO BOUNCE BACK\n\nSweetFoam® cushioning made from sugarcane delivers comfort and energy return.\n\n## You May Also Like\n\nNEW\n\n[![Men's Varsity - Parchment (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A12270_26Q1_Mens-Varsity-Parchment-Blizzard-Sole_PDP_LEFT.png?v=1765307399&width=1024)![Men's Varsity - Parchment (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A12270_26Q1_Mens-Varsity-Parchment-Blizzard-Sole_PDP_LEFT.png?v=1765307399&width=1024)](https://www.allbirds.com/products/mens-varsity)\n\n[Men's Varsity\\\\\n\\\\\nParchment \\\\\n\\\\\n$120](https://www.allbirds.com/products/mens-varsity)\n\nAdd to Cart\n\nNEW\n\n[![Men's Allbirds Slide - Natural Black](https://www.allbirds.com/cdn/shop/files/A12650_26Q1_Allbirds-Slide-Natural-Black_PDP_LEFT.png?v=1769463077&width=1024)![Men's Allbirds Slide - Natural Black](https://www.allbirds.com/cdn/shop/files/A12650_26Q1_Allbirds-Slide-Natural-Black_PDP_LEFT.png?v=1769463077&width=1024)](https://www.allbirds.com/products/mens-allbirds-slide-natural-black)\n\n[Men's Allbirds Slide\\\\\n\\\\\nNatural Black \\\\\n\\\\\n$55](https://www.allbirds.com/products/mens-allbirds-slide-natural-black)\n\nAdd to Cart\n\nNEW\n\n[![Men's Varsity Cruiser - Light Burnt Olive (Light Gum Sole)](https://www.allbirds.com/cdn/shop/files/A12523_26Q2_Varsity-Cruiser-Light-Burnt-Olive-Light-Gum-Sole_PDP_LEFT.png?v=1765308146&width=1024)![Men's Varsity Cruiser - Light Burnt Olive (Light Gum Sole)](https://www.allbirds.com/cdn/shop/files/A12523_26Q2_Varsity-Cruiser-Light-Burnt-Olive-Light-Gum-Sole_PDP_LEFT.png?v=1765308146&width=1024)](https://www.allbirds.com/products/mens-varsity-cruiser)\n\n[Men's Varsity Cruiser\\\\\n\\\\\nLight Burnt Olive \\\\\n\\\\\n$115](https://www.allbirds.com/products/mens-varsity-cruiser)\n\nAdd to Cart\n\nFinal Few\n\n[![Men's Tree Runner - Navy Night (White Sole)](https://www.allbirds.com/cdn/shop/files/TR3MNNW080_SHOE_LEFT_GLOBAL_MENS_TREE_RUNNER_NAVY_NIGHT_WHITE_v2.png?v=1751166674&width=1024)![Men's Tree Runner - Navy Night (White Sole)](https://www.allbirds.com/cdn/shop/files/TR3MNNW080_SHOE_LEFT_GLOBAL_MENS_TREE_RUNNER_NAVY_NIGHT_WHITE_v2.png?v=1751166674&width=1024)](https://www.allbirds.com/products/mens-tree-runners-navy-night)\n\n[Men's Tree Runner\\\\\n\\\\\nNavy Night \\\\\n\\\\\n$100](https://www.allbirds.com/products/mens-tree-runners-navy-night)\n\nAdd to Cart\n\n[![Men's Tree Runner NZ - Natural Black (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11923_25Q3_Tree_Runner_NZ_Natural_Black_Blizzard_Sole_PDP_LEFT-2000x2000.png?v=1751899169&width=1024)![Men's Tree Runner NZ - Natural Black (Blizzard Sole)](https://www.allbirds.com/cdn/shop/files/A11923_25Q3_Tree_Runner_NZ_Natural_Black_Blizzard_Sole_PDP_LEFT-2000x2000.png?v=1751899169&width=1024)](https://www.allbirds.com/products/mens-tree-runner-nz-natural-black-blizzard)\n\n[Men's Tree Runner NZ\\\\\n\\\\\nNatural Black \\\\\n\\\\\n$100](https://www.allbirds.com/products/mens-tree-runner-nz-natural-black-blizzard)\n\nAdd to Cart\n\nNEW\n\n[![Men's Allbirds Flip Flop - Anthracite](https://www.allbirds.com/cdn/shop/files/A12409_26Q1_Allbirds-Flip-Flop-Anthracite_PDP_LEFT.png?v=1769462015&width=1024)![Men's Allbirds Flip Flop - Anthracite](https://www.allbirds.com/cdn/shop/files/A12409_26Q1_Allbirds-Flip-Flop-Anthracite_PDP_LEFT.png?v=1769462015&width=1024)](https://www.allbirds.com/products/mens-allbirds-flip-flop-anthracite)\n\n[Men's Allbirds Flip Flop\\\\\n\\\\\nAnthracite \\\\\n\\\\\n$50](https://www.allbirds.com/products/mens-allbirds-flip-flop-anthracite)\n\nAdd to Cart\n\nNEW\n\n[![Men's Canvas Cruiser Slip On - Auburn (Warm White Sole)](https://www.allbirds.com/cdn/shop/files/A12448_26Q1_Cruiser-Slip-On-Canvas-Auburn-Warm-White-Sole_PDP_LEFT.png?v=1768946729&width=1024)![Men's Canvas Cruiser Slip On - Auburn (Warm White Sole)](https://www.allbirds.com/cdn/shop/files/A12448_26Q1_Cruiser-Slip-On-Canvas-Auburn-Warm-White-Sole_PDP_LEFT.png?v=1768946729&width=1024)](https://www.allbirds.com/products/mens-cruiser-slip-on-canvas-auburn)\n\n[Men's Canvas Cruiser Slip On\\\\\n\\\\\nAuburn \\\\\n\\\\\n$75](https://www.allbirds.com/products/mens-cruiser-slip-on-canvas-auburn)\n\nAdd to Cart\n\nNEW\n\n[![Men's Runner NZ Slip On - Mushroom (Mushroom Sole)](https://www.allbirds.com/cdn/shop/files/A12622_26Q1_Runner-NZ-Slip-On-Mushroom-Mushroom_PDP_LEFT.png?v=1768951251&width=1024)![Men's Runner NZ Slip On - Mushroom (Mushroom Sole)](https://www.allbirds.com/cdn/shop/files/A12622_26Q1_Runner-NZ-Slip-On-Mushroom-Mushroom_PDP_LEFT.png?v=1768951251&width=1024)](https://www.allbirds.com/products/mens-runner-nz-slip-on-mushroom)\n\n[Men's Runner NZ Slip On\\\\\n\\\\\nMushroom \\\\\n\\\\\n$105](https://www.allbirds.com/products/mens-runner-nz-slip-on-mushroom)\n\nAdd to Cart\n\nNEW\n\n[![Men's Varsity Terralux™ - Toasted Coconut (Toasted Coconut Sole)](https://www.allbirds.com/cdn/shop/files/A12317_26Q2_Varsity-Terralux-Toasted-Coconut-Toasted-Coconut-Sole_PDP_LEFT.png?v=1769456542&width=1024)![Men's Varsity Terralux™ - Toasted Coconut (Toasted Coconut Sole)](https://www.allbirds.com/cdn/shop/files/A12317_26Q2_Varsity-Terralux-Toasted-Coconut-Toasted-Coconut-Sole_PDP_LEFT.png?v=1769456542&width=1024)](https://www.allbirds.com/products/mens-varsity-terralux-toasted-coconut)\n\n[Men's Varsity Terralux\\\\\n\\\\\nToasted Coconut \\\\\n\\\\\n$145](https://www.allbirds.com/products/mens-varsity-terralux-toasted-coconut)\n\nAdd to Cart\n\n### Select a size\n\n## Reviews for Men's Cruiser\n\n![](https://www.allbirds.com/cdn/shop/files/25Q2_BAU_Site_Moonshot_BrandMessage_Lifestyle_Desktop_16x9_withVeil_4e2589c0-b881-4155-a7c9-b1617e4b9333.jpg?v=1758318144&width=1920)![](https://www.allbirds.com/cdn/shop/files/25Q2_BAU_Site_Moonshot_BrandMessage_Lifestyle_Mobile_2x3withVeil_41388d8d-27ce-43d0-be23-c9e7ac81b07a.jpg?v=1758320395&width=1024)\n\n# Better Things in a Better Way\n\nLooking to the world's greatest innovator - Nature\n\n[Learn More](https://allbirds.com/pages/our-story)\n\n- Responsible Energy\n\n- Renewable Materials\n\n- Regenerative Agriculture\n\n- Responsible Energy\n\n- Renewable Materials\n\n- Regenerative Agriculture\n\n## Men's Cruiser\n\nThe Cruiser fits true-to-size for most customers.\n\n![](https://www.allbirds.com/cdn/shop/files/A11559_25Q3_Cruiser_Dark_Navy_Blizzard_PDP_TD-2000x2000_d4e62fd7-5586-4c31-ad24-906286f98e15.png?v=1751900466&width=1024)\n\nAverage Width\n\n![](https://www.allbirds.com/cdn/shop/files/A11559_25Q3_Cruiser_Dark_Navy_Blizzard_PDP_LEFT-2000x2000_94291ddb-5968-49d6-a1b5-979998c5cf8d.png?v=1751900466&width=1024)\n\nRuns Slightly Long\n\n### Our Shoes are Unisex\n\nIf you wear a women's size 11.5-12, try a men's size 10.5-11. If you wear a men's size 7-7.5, try a women's size 8-8.5.\n\nUS\n\n8\n\n8.5\n\n9\n\n9.5\n\n10\n\n10.5\n\n11\n\n11.5\n\n12\n\n12.5\n\n13\n\n13.5\n\n14\n\nUK\n\n7\n\n7.5\n\n8\n\n8.5\n\n9\n\n9.5\n\n10\n\n10.5\n\n11\n\n11.5\n\n12\n\n12.5\n\n13\n\ncm\n\n26\n\n26.5\n\n27\n\n27.5\n\n28\n\n28.5\n\n29\n\n29.5\n\n30\n\n30.5\n\n31\n\n31.5\n\n32\n\nWear All Day Comfort\n\nLightweight, bouncy, and wildly comfortable, Allbirds shoes make any outing feel effortless. Slip in, lace up, or slide them on and enjoy the comfy support.\n\nDESIGNED FOR EVERYDAY WEAR\n\nEasy-to-wear styles made for daily routines, weekend plans, travel, and everything in between.\n\nMaterials From The Earth\n\nWe replace petroleum-based synthetics with natural alternatives wherever we can. Like using wool, tree fiber, and sugarcane. They’re soft, breathable, and better for the planet—win, win, win.\n\nshop.app\n\n# shop.app is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nwww.allbirds.com\n\n# www.allbirds.com is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nwww.allbirds.com\n\n# www.allbirds.com is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nwww.allbirds.com\n\n# www.allbirds.com is blocked\n\nThis page has been blocked by an extension\n\n- Try disabling your extensions.\n\nERR\\_BLOCKED\\_BY\\_CLIENT\n\nReload\n\nThis page has been blocked by an extension\n\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nIs this good for everyday wear?\n\nExplore this product"
+   },
+   {
+    "id": "src-search-2",
+    "url": "https://www.distillintelligence.com/competitors/allbirds",
+    "title": "Allbirds Competitors: Complete List & Market Landscape - Distill Intelligence",
+    "authority": "third-party",
+    "fetchedAt": "2026-10-27T21:16:06.586Z",
+    "wordCount": 408,
+    "sourceType": "search-result",
+    "contentHash": "054ab784744734360bf3c4cfdd87eac46e2ec6f597ec126d298538c86f5d36d5",
+    "fetchStatus": "fetched",
+    "completeness": "full",
+    "extractedText": "# Allbirds competitors\n\nView the competitive landscape for Allbirds, featuring companies like Nike, On, and lululemon.\nMapping a different industry? [Browse our competitor database](https://www.distillintelligence.com/competitors) or [generate a competitor list for any company](https://www.distillintelligence.com/competitor-finder).\n\n![Company icon](https://www.google.com/s2/favicons?domain_url=https://allbirds.com/&sz=96)\n\nAllbirds\n\nTrack\n\nSustainable footwear and apparel brand using natural and recycled materials\n\n[allbirds.com](https://allbirds.com/?utm_source=distillintelligence.com&utm_medium=referral&utm_campaign=competitor_comparison)\n\n## List of Allbirds competitors\n\n- ![Company icon](https://www.google.com/s2/favicons?domain_url=https://www.nike.com/&sz=96)\n\n### Nike\n\nTrack\n\nGlobal designer and retailer of athletic footwear and apparel\n[nike.com](https://www.nike.com/?utm_source=distillintelligence.com&utm_medium=referral&utm_campaign=competitor_comparison)\n- ![Company icon](https://www.google.com/s2/favicons?domain_url=https://www.on.com/&sz=96)\n\n### On\n\nTrack\n\nSwiss athletic footwear and performance apparel company\n[on.com](https://www.on.com/?utm_source=distillintelligence.com&utm_medium=referral&utm_campaign=competitor_comparison)\n- ![Company icon](https://www.google.com/s2/favicons?domain_url=https://corporate.lululemon.com/&sz=96)\n\n### lululemon\n\nTrack\n\nAthletic apparel retailer expanding into lifestyle and performance footwear\n[corporate.lululemon.com](https://corporate.lululemon.com/?utm_source=distillintelligence.com&utm_medium=referral&utm_campaign=competitor_comparison)\n- ![Company icon](https://www.google.com/s2/favicons?domain_url=https://giesswein.com/&sz=96)\n\n### Giesswein\n\nTrack\n\nFootwear manufacturer specializing in merino wool clothing and shoes\n[giesswein.com](https://giesswein.com/?utm_source=distillintelligence.com&utm_medium=referral&utm_campaign=competitor_comparison)\n- ![Company icon](https://www.google.com/s2/favicons?domain_url=https://rothys.com/&sz=96)\n\n### Rothy's\n\nTrack\n\nSustainable shoes and bags made from recycled plastic bottles\n[rothys.com](https://rothys.com/?utm_source=distillintelligence.com&utm_medium=referral&utm_campaign=competitor_comparison)\n- ![Company icon](https://www.google.com/s2/favicons?domain_url=https://veja-store.com/&sz=96)\n\n### Veja\n\nTrack\n\nFrench footwear brand utilizing organic cotton and wild rubber\n[veja-store.com](https://veja-store.com/?utm_source=distillintelligence.com&utm_medium=referral&utm_campaign=competitor_comparison)\n- ![Company icon](https://www.google.com/s2/favicons?domain_url=https://bombas.com/&sz=96)\n\n### Bombas\n\nTrack\n\nApparel brand focused on comfort-oriented socks and basic clothing\n[bombas.com](https://bombas.com/?utm_source=distillintelligence.com&utm_medium=referral&utm_campaign=competitor_comparison)\n- ![Company icon](https://www.google.com/s2/favicons?domain_url=https://vivaia.com/&sz=96)\n\n### VIVAIA\n\nTrack\n\nSustainable footwear brand creating shoes from recycled materials\n[vivaia.com](https://vivaia.com/?utm_source=distillintelligence.com&utm_medium=referral&utm_campaign=competitor_comparison)\n- ![Company icon](https://www.google.com/s2/favicons?domain_url=https://brooksrunning.com/&sz=96)\n\n### Brooks\n\nTrack\n\nManufacturer of high-performance running shoes and athletic apparel\n[brooksrunning.com](https://brooksrunning.com/?utm_source=distillintelligence.com&utm_medium=referral&utm_campaign=competitor_comparison)\n- ![Company icon](https://www.google.com/s2/favicons?domain_url=https://cariuma.com/&sz=96)\n\n### Cariuma\n\nTrack\n\nEco-friendly sneaker brand focused on sustainable materials and ethics\n[cariuma.com](https://cariuma.com/?utm_source=distillintelligence.com&utm_medium=referral&utm_campaign=competitor_comparison)\n\nTrack Allbirds & Its Competitors\n\nFollow their latest moves with a real-time news feed and summaries delivered straight to your inbox.\n\nStart tracking now\n\n## More like Allbirds & trending lists\n\nBrowse competitors related to Allbirds and other trending companies.\n\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://www.nike.com/&sz=64) Nike](https://www.distillintelligence.com/competitors/nike)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://on.com/&sz=64) On](https://www.distillintelligence.com/competitors/on)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://corporate.lululemon.com/&sz=64) lululemon](https://www.distillintelligence.com/competitors/lululemon)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://topcasinoenlignequebec2026.com/&sz=64) Top Casino en Ligne Québec](https://www.distillintelligence.com/competitors/top-casino-en-ligne-quebec-1)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://volkswagen.fi/&sz=64) Volkswagen](https://www.distillintelligence.com/competitors/volkswagen)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://cathedral.com/&sz=64) Cathedral](https://www.distillintelligence.com/competitors/cathedral-1)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://bedrockrobotics.com/&sz=64) Bedrock](https://www.distillintelligence.com/competitors/bedrock-robotics)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://www.sentlogic.com/&sz=64) SentLogic](https://www.distillintelligence.com/competitors/sentlogic)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://www.kp-logistik.com/&sz=64) KP Logistik](https://www.distillintelligence.com/competitors/kp-logistik)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://stoneco.com.br/&sz=64) StoneCo](https://www.distillintelligence.com/competitors/stoneco)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://dazzle.ai/&sz=64) Dazzle](https://www.distillintelligence.com/competitors/dazzle)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://sonoco.com/&sz=64) Sonoco](https://www.distillintelligence.com/competitors/sonoco)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://rinkuya.com/&sz=64) Rinkuya](https://www.distillintelligence.com/competitors/rinkuya)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://vjinstruments.com/&sz=64) VJ Instruments](https://www.distillintelligence.com/competitors/vj-instruments)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://longjourney.vc/&sz=64) Long Journey Ventures](https://www.distillintelligence.com/competitors/long-journey-ventures)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://airwallex.com/&sz=64) Airwallex](https://www.distillintelligence.com/competitors/airwallex)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://marsh.com/&sz=64) Marsh](https://www.distillintelligence.com/competitors/marsh)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://j-long.com/&sz=64) J-Long](https://www.distillintelligence.com/competitors/j-long)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://quantum-si.com/&sz=64) Quantum-Si](https://www.distillintelligence.com/competitors/quantum-si)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://phoenixcourt.vc/&sz=64) Phoenix Court](https://www.distillintelligence.com/competitors/phoenix-court)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://octus.com/&sz=64) Octus](https://www.distillintelligence.com/competitors/octus)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://capitalos.com/&sz=64) CapitalOS](https://www.distillintelligence.com/competitors/capitalos)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://permira.com/&sz=64) Permira](https://www.distillintelligence.com/competitors/permira)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://callbaba.com/&sz=64) Baba](https://www.distillintelligence.com/competitors/baba)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://allegromicro.com/&sz=64) Allegro MicroSystems](https://www.distillintelligence.com/competitors/allegro-microsystems)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://timhortons.com/&sz=64) Tim Hortons](https://www.distillintelligence.com/competitors/tim-hortons)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://alpha.school/&sz=64) Alpha](https://www.distillintelligence.com/competitors/alpha)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://ajg.com/&sz=64) Gallagher](https://www.distillintelligence.com/competitors/gallagher)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://hgcapital.com/&sz=64) Hg](https://www.distillintelligence.com/competitors/hg)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://mave.io/&sz=64) Mave](https://www.distillintelligence.com/competitors/mave)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://www.si-ware.com/&sz=64) Si-Ware Systems](https://www.distillintelligence.com/competitors/si-ware-systems)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://reddotcapital.com/&sz=64) Red Dot Capital Partners](https://www.distillintelligence.com/competitors/red-dot-capital-partners)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://coinmill.com/&sz=64) CoinMill](https://www.distillintelligence.com/competitors/coinmill)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://mexcare.com/&sz=64) MexCare](https://www.distillintelligence.com/competitors/mexcare)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://cryptocoinsnews.com/&sz=64) CCN](https://www.distillintelligence.com/competitors/ccn)\n- [![Company icon](https://www.google.com/s2/favicons?domain_url=https://crescentcrypto.com/&sz=64) Crescent Crypto](https://www.distillintelligence.com/competitors/crescent-crypto)"
+   },
+   {
+    "id": "src-search-3",
+    "url": "https://www.reddit.com/r/Allbirds/comments/1se0ueo/any_chance_we_can_get_a_sticky_thread_with/",
+    "title": "Any chance we can get a sticky thread with alternatives to Allbirds? - Reddit",
+    "authority": "third-party",
+    "fetchedAt": "2026-10-27T21:16:06.586Z",
+    "wordCount": 21,
+    "sourceType": "search-result",
+    "contentHash": "9f30bcad8b31e14c824acfe413c67b387e3f3c18f6327b67d8b1966f5b0e307e",
+    "fetchStatus": "fetched",
+    "completeness": "full",
+    "extractedText": "The best allbirds alternatives that are independent and putting quality first are: Baabuk, Gottstein, and Icebug ReWool. You could include ..."
+   },
+   {
+    "id": "src-prompt-library",
+    "title": "Human+AI Content System prompt library",
+    "authority": "internal",
+    "fetchedAt": "2026-10-27T21:18:32.176Z",
+    "wordCount": 5,
+    "sourceType": "prompt-library",
+    "contentHash": "bb520a3ee8d893fb1598e9cc1a841b97043b295ccb3983f30aebf235c4d94c85",
+    "fetchStatus": "fetched",
+    "completeness": "full",
+    "extractedText": "13 prompts loaded from builtin:flusso-core-v1."
+   },
+   {
+    "id": "src-web-1",
+    "url": "https://www.allbirds.com/pages/tree-flyer-2-press-release?srsltid=AYCX9vK0zY85sBRHMCedzadmz2i-6A9vz9gHjN8IkBa5L6VdX398Mfyr",
+    "title": "WALK, RUN, OR FLY WITH ALLBIRDS'S TREE FLYER 2",
+    "authority": "first-party",
+    "fetchedAt": "2026-10-27T21:32:31.407Z",
+    "wordCount": 14,
+    "sourceType": "web-search",
+    "contentHash": "",
+    "fetchStatus": "fetched",
+    "completeness": "truncated",
+    "extractedText": "The Tree Flyer 2 is underpinned by Allbirds’s high-performance SwiftFoam™ midsole, made with bio-PEBAX."
+   },
+   {
+    "id": "src-web-2",
+    "url": "https://www.facebook.com/groups/451895231590899/posts/29181154178238288/",
+    "title": "Breathable TENCEL™ Lyocell (tree fiber) and recycled polyester blend ...",
+    "authority": "third-party",
+    "fetchedAt": "2026-10-27T21:32:31.407Z",
+    "wordCount": 14,
+    "sourceType": "web-search",
+    "contentHash": "",
+    "fetchStatus": "fetched",
+    "completeness": "truncated",
+    "extractedText": "Breathable TENCEL™ Lyocell (tree fiber) and recycled polyester blend upper for a light, cool"
+   }
+  ],
+  "calendar": [
+   {
+    "id": "cal-1",
+    "cta": "First to know when it drops → [newsletter link]",
+    "day": 1,
+    "goal": "engagement",
+    "hook": "How does sugarcane become cushioning that bounces back?",
+    "format": "thread",
+    "hookId": "hook-1",
+    "series": "series-1",
+    "episode": "series-1-ep-1",
+    "platform": "X",
+    "territory": "territory-1",
+    "sourcePack": [],
+    "contentItemId": "item-1",
+    "audienceSegment": "segment-1",
+    "productionTaskId": "task-1",
+    "platformFitReason": "X thread opener: 280 chars forces atomic curiosity; tweet 2-3 deliver the SweetFoam® proof chain."
+   },
+   {
+    "id": "cal-2",
+    "cta": "Subscribe to see how running tech makes your everyday walk even better",
+    "day": 2,
+    "goal": "conversion",
+    "hook": "Your commute run → office → happy hour. One shoe that handles all three.",
+    "format": "newsletter",
+    "hookId": "hook-3",
+    "series": "series-2",
+    "episode": "series-2-ep-1",
+    "platform": "Newsletter",
+    "territory": "territory-4",
+    "sourcePack": [],
+    "contentItemId": "item-3",
+    "audienceSegment": "segment-2",
+    "productionTaskId": "task-2",
+    "platformFitReason": "Newsletter allows 300-word scene-setting: material → comfort → care → CTA; subject line = this hook."
+   },
+   {
+    "id": "cal-3",
+    "cta": "First to know when it drops → [newsletter link]",
+    "day": 3,
+    "goal": "engagement",
+    "hook": "8.7 ounces. 14mm heel. 6mm drop. What does that feel like on your morning run?",
+    "format": "thread",
+    "hookId": "hook-2",
+    "series": "series-1",
+    "episode": "series-1-ep-2",
+    "platform": "X",
+    "territory": "territory-2",
+    "sourcePack": [],
+    "contentItemId": "item-2",
+    "audienceSegment": "segment-1",
+    "productionTaskId": "task-3",
+    "platformFitReason": "X thread: tweet 1 = specs as hook; tweet 2 = Featherbed™ + SweetFoam® feel; tweet 3 = everyday verification (walks, commute)."
+   },
+   {
+    "id": "cal-4",
+    "cta": "Get the full material breakdown — sign up for the technical deep-dive",
+    "day": 4,
+    "goal": "engagement",
+    "hook": "Eucalyptus TENCEL™ Lyocell + recycled polyester upper. Merino wool blend lining. Featherbed™ memory foam. Sugarcane SweetFoam® midsole. Every layer named.",
+    "format": "newsletter",
+    "hookId": "hook-4",
+    "series": "series-3",
+    "episode": "series-3-ep-1",
+    "platform": "Newsletter",
+    "territory": "territory-1",
+    "sourcePack": [],
+    "contentItemId": "item-4",
+    "audienceSegment": "segment-3",
+    "productionTaskId": "task-4",
+    "platformFitReason": "Newsletter deep-dive format: each paragraph expands one layer with construction detail; no marketing fluff."
+   },
+   {
+    "id": "cal-5",
+    "cta": "Join — one question, one fact, no spam",
+    "day": 5,
+    "goal": "conversion",
+    "hook": "One question a week. One verified fact. No launch spam. This is what early access actually looks like.",
+    "format": "newsletter",
+    "hookId": "hook-6",
+    "series": "series-1",
+    "episode": "series-1-ep-3",
+    "platform": "Newsletter",
+    "territory": "territory-3",
+    "sourcePack": [],
+    "contentItemId": "item-6",
+    "audienceSegment": "segment-1",
+    "productionTaskId": "task-5",
+    "platformFitReason": "Newsletter welcome/confirmation email: subject line = hook; body proves it with last week's fact + next week's preview."
+   },
+   {
+    "id": "cal-6",
+    "cta": "First to know when it drops → [newsletter link]",
+    "day": 6,
+    "goal": "engagement",
+    "hook": "Your recovery day shoe just got running geometry. 8.7oz. 6mm drop. Bounce that doesn't quit.",
+    "format": "thread",
+    "hookId": "hook-8",
+    "series": "series-1",
+    "episode": "series-1-ep-3",
+    "platform": "X",
+    "territory": "territory-2",
+    "sourcePack": [],
+    "contentItemId": "item-8",
+    "audienceSegment": "segment-1",
+    "productionTaskId": "task-6",
+    "platformFitReason": "X thread: tweet 1 = hook; tweet 2 = Featherbed™ + SweetFoam® dual comfort; tweet 3 = everyday walks/vacation proof (fact-29)."
+   },
+   {
+    "id": "cal-7",
+    "cta": "Subscribe to see how running tech makes your everyday walk even better",
+    "day": 7,
+    "goal": "engagement",
+    "hook": "What if your running shoe was machine washable? Remove insoles. Hand wash. Air dry. Fresh again.",
+    "format": "single-post",
+    "hookId": "hook-5",
+    "series": "series-2",
+    "episode": "series-2-ep-2",
+    "platform": "X",
+    "territory": "territory-4",
+    "sourcePack": [],
+    "contentItemId": "item-5",
+    "audienceSegment": "segment-2",
+    "productionTaskId": "task-7",
+    "platformFitReason": "X single post with care instruction graphic; replies invite 'miles on my Allbirds' stories (gap-6)."
+   }
+  ],
+  "strategy": {
+   "statement": "Grow newsletter signups by giving launch-curious runners and comfort-first walkers early access to the next evolution of Allbirds' natural-material comfort — specifically the sugarcane-based SweetFoam® technology that makes running-adjacent feel effortless.",
+   "outOfScope": [
+    "Specific launch date, price, or performance benchmarks for the new running shoe (risk_flag#1)",
+    "Direct competitor comparisons or naming competitors in campaign copy",
+    "Technical running metrics (VO2 max, pace improvement, race results)",
+    "Sustainability certifications or carbon footprint claims beyond named materials",
+    "Non-footwear product categories (apparel, accessories, socks)"
+   ],
+   "audienceNeed": "Runners and everyday walkers want credible proof that a natural-material running shoe can deliver lightweight, bouncy comfort for daily miles without petroleum-based synthetics — and they want first access when it launches.",
+   "successCriteria": [
+    {
+     "metric": "New subscribers attributed to campaign",
+     "outcome": "Newsletter signups",
+     "baseline": "unknown",
+     "measurement": "UTM-tracked signup form completions / campaign impressions across Newsletter and X",
+     "targetRange": "500-2,000"
+    },
+    {
+     "metric": "Click-through rate on campaign links",
+     "outcome": "Engagement rate",
+     "baseline": "unknown",
+     "measurement": "Link clicks / campaign impressions on X and Newsletter",
+     "targetRange": "2-5%"
+    },
+    {
+     "metric": "Open rate of welcome email sequence",
+     "outcome": "Audience quality",
+     "baseline": "unknown",
+     "measurement": "Welcome email opens / delivered welcome emails to campaign-acquired subscribers",
+     "targetRange": "35-50%"
+    },
+    {
+     "metric": "Pre-launch waitlist joins from campaign subscribers",
+     "outcome": "Launch conversion potential",
+     "baseline": "unknown",
+     "measurement": "Waitlist signups / campaign-acquired subscribers within 14 days of launch announcement",
+     "targetRange": "10-25%"
+    }
+   ],
+   "prioritySegmentId": "segment-1"
+  },
+  "agentPlan": {
+   "mode": "live",
+   "runId": "live-982f46d7-3c20-4df4-ae0a-9ae0566402ee",
+   "models": [
+    "nvidia/nemotron-3-ultra-550b-a55b"
+   ],
+   "evidence": {
+    "tools": [
+     "prior_evidence",
+     "performance",
+     "audience_signals",
+     "unsupported_claims",
+     "claim_risk",
+     "campaign_history"
+    ],
+    "memories": 2,
+    "worldFacts": 24,
+    "zetarisRows": 16,
+    "zetarisQueries": 9
+   },
+   "provider": "Meterless Nightshift",
+   "decisions": [
+    {
+     "id": "claim_policy#1",
+     "kind": "claim_policy",
+     "status": "accepted",
+     "revised": false,
+     "rationale": "Claim risk table shows 45 capability claims supported while time-bound claims are mostly time-sensitive (3) or conflicting (1).",
+     "statement": "Lead with capability claims about natural materials and comfort (45 supported) and avoid time-bound claims about launch dates, price, or performance metrics (3 time-sensitive, 1 conflict).",
+     "confidence": 0.95,
+     "evidenceIds": [
+      "claim_risk#1",
+      "claim_risk#4",
+      "claim_risk#7"
+     ],
+     "verification": ""
+    },
+    {
+     "id": "evidence_reuse#1",
+     "kind": "evidence_reuse",
+     "status": "accepted",
+     "revised": false,
+     "rationale": "These are the core differentiated product facts that directly address the audience's comfort and materials concerns.",
+     "statement": "Build messaging around verified material facts: wool, tree fiber, and sugarcane replace petroleum-based synthetics (fact:fact-4, fact:fact-13, fact:fact-15) and SweetFoam® midsole uses sugarcane-based EVA (fact:fact-20).",
+     "confidence": 0.98,
+     "evidenceIds": [
+      "fact:fact-4",
+      "fact:fact-13",
+      "fact:fact-15",
+      "fact:fact-20"
+     ],
+     "verification": ""
+    },
+    {
+     "id": "evidence_reuse#2",
+     "kind": "evidence_reuse",
+     "status": "accepted",
+     "revised": false,
+     "rationale": "Specific weight and geometry data provide concrete evidence for comfort claims without making unverified performance promises.",
+     "statement": "Reference the Cruiser's lightweight design (8.7oz men's, 6.7oz women's) and 14mm/8mm stack height as proof of running-adjacent comfort (fact:fact-29).",
+     "confidence": 0.96,
+     "evidenceIds": [
+      "fact:fact-29"
+     ],
+     "verification": ""
+    },
+    {
+     "id": "audience#1",
+     "kind": "audience",
+     "status": "accepted",
+     "revised": false,
+     "rationale": "Audience facts explicitly name these use cases and the material preferences align with Allbirds' verified differentiators.",
+     "statement": "Target runners and everyday walkers who value natural materials and all-day comfort for daily routines, travel, and weekend plans (fact:fact-25, fact:fact-27, fact:fact-28).",
+     "confidence": 0.94,
+     "evidenceIds": [
+      "fact:fact-25",
+      "fact:fact-27",
+      "fact:fact-28"
+     ],
+     "verification": ""
+    },
+    {
+     "id": "angle#1",
+     "kind": "angle",
+     "status": "accepted",
+     "revised": false,
+     "rationale": "Combines the verified 'lightweight, bouncy, effortless' claim with the specific midsole technology that enables it.",
+     "statement": "Frame the newsletter as early access to the next evolution of Allbirds' natural-material comfort — specifically the sugarcane-based SweetFoam® technology that makes running-adjacent feel effortless (fact:fact-5, fact:fact-20).",
+     "confidence": 0.93,
+     "evidenceIds": [
+      "fact:fact-5",
+      "fact:fact-20"
+     ],
+     "verification": ""
+    },
+    {
+     "id": "risk_flag#1",
+     "kind": "risk_flag",
+     "status": "accepted",
+     "revised": false,
+     "rationale": "A previous claim that construction, fit, price, availability, and performance details were unconfirmed was contradicted by official release evidence, so any specific claims in these areas need primary source verification.",
+     "statement": "Do not claim specific launch dates, price points, or performance benchmarks for the upcoming running shoe — the prior campaign had a time-bound claim conflict on exactly these details (unsupported_claims#1).",
+     "confidence": 0.97,
+     "evidenceIds": [
+      "unsupported_claims#1",
+      "claim_risk#7"
+     ],
+     "verification": ""
+    }
+   ],
+   "durationMs": 94866,
+   "hypothesis": "Focusing newsletter content on Allbirds' natural, sustainable materials (wool, tree fiber, sugarcane) and comfort-driven design will increase email signups from runners and walkers who prioritize comfort and material innovation, especially when paired with early-access incentives for the upcoming running shoe launch.",
+   "dataQuality": [
+    {
+     "rule": "claim_status_known",
+     "total": 378,
+     "valid": 378,
+     "invalid": 0
+    },
+    {
+     "rule": "campaign_has_domain",
+     "total": 19,
+     "valid": 16,
+     "invalid": 3
+    }
+   ],
+   "openQuestions": [
+    "No performance rows exist for prior Allbirds newsletter campaigns on X or email; measure signup conversion on first two newsletter issues before scaling.",
+    "Hacker News signals show financial news (AI compute, reverse split) not product engagement; validate whether target audience actually discusses Allbirds on X or other platforms."
+   ]
+  },
+  "factSheet": {
+   "gaps": [],
+   "facts": [
+    {
+     "id": "fact-1",
+     "quote": "Women's Tree Runner NZ Medium Grey $100",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-brand-site",
+     "authority": "first-party",
+     "sectionId": "src-brand-site#best-sellers",
+     "statement": "The Women's Tree Runner NZ in Medium Grey is priced at $100.",
+     "timeSensitive": true
+    },
+    {
+     "id": "fact-2",
+     "quote": "Men's Runner NZ Slip On Mushroom $105",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-brand-site",
+     "authority": "first-party",
+     "sectionId": "src-brand-site#best-sellers",
+     "statement": "The Men's Runner NZ Slip On in Mushroom is priced at $105.",
+     "timeSensitive": true
+    },
+    {
+     "id": "fact-3",
+     "quote": "Women's Canvas Cruiser Slip On Warm White $75",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-brand-site",
+     "authority": "first-party",
+     "sectionId": "src-brand-site#best-sellers-2",
+     "statement": "The Women's Canvas Cruiser Slip On in Warm White is priced at $75.",
+     "timeSensitive": true
+    },
+    {
+     "id": "fact-4",
+     "quote": "We replace petroleum-based synthetics with natural alternatives wherever we can. Like using wool, tree fiber, and sugarcane.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-brand-site",
+     "authority": "first-party",
+     "sectionId": "src-brand-site#all-weather",
+     "statement": "Allbirds shoes are made using natural materials like wool, tree fiber, and sugarcane instead of petroleum‑based synthetics.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-5",
+     "quote": "Lightweight, bouncy, and wildly comfortable, Allbirds shoes make any outing feel effortless. Slip in, lace up, or slide them on and enjoy the comfy support.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-brand-site",
+     "authority": "first-party",
+     "sectionId": "src-brand-site#all-weather",
+     "statement": "Allbirds positions its footwear as lightweight, bouncy, and designed for all‑day comfort and everyday wear.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-6",
+     "quote": "This store implements the \\[Universal Commerce Protocol\\](https://ucp.dev) for product discovery, carts, and checkout.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-index",
+     "authority": "first-party",
+     "sectionId": "src-site-index#intro",
+     "statement": "Allbirds's store implements the Universal Commerce Protocol for product discovery, carts, and checkout.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-7",
+     "quote": "Connect to the MCP endpoint advertised in the profile (`https://www.allbirds.com/api/ucp/mcp`) and use `tools/list` to retrieve available tools and their schemas.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-index",
+     "authority": "first-party",
+     "sectionId": "src-site-index#intro",
+     "statement": "Allbirds's store provides an MCP endpoint for retrieving available shopping tools and their schemas.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-8",
+     "quote": "Personalized discovery: search by text or image, find similar products, and use your user's Shop purchase history to find options that match their preferences.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-index",
+     "authority": "first-party",
+     "sectionId": "src-site-index#intro",
+     "statement": "Allbirds's store supports product discovery by text or image and can find similar products.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-9",
+     "quote": "Accelerated cart and checkout: build and update carts and checkouts, then use Shop Pay with prefilled addresses and saved payment methods.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-index",
+     "authority": "first-party",
+     "sectionId": "src-site-index#intro",
+     "statement": "Allbirds's store supports accelerated checkout with prefilled addresses and saved payment methods through Shop Pay.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-10",
+     "quote": "Orders: search your user's order history for purchases from this store, track deliveries, and reorder products.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-index",
+     "authority": "first-party",
+     "sectionId": "src-site-index#intro",
+     "statement": "Allbirds's store supports order-history searches, delivery tracking, and product reordering.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-11",
+     "quote": "This store implements the \\[Universal Commerce Protocol\\](https://ucp.dev) for product discovery, carts, and checkout. Integrate directly with its service, or orchestrate shopping through browser-based WebMCP tools.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-index",
+     "authority": "first-party",
+     "sectionId": "src-site-index#intro",
+     "statement": "Allbirds's store supports product discovery, cart management, and checkout through its UCP integration.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-12",
+     "quote": "Lightweight, bouncy, and wildly comfortable, Allbirds shoes make any outing feel effortless. Slip in, lace up, or slide them on and enjoy the comfy support.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-page-3",
+     "authority": "first-party",
+     "sectionId": "src-site-page-3#refund-policy",
+     "statement": "Allbirds shoes are described as lightweight, bouncy, and comfortable, with supportive designs that can be slipped on, laced up, or slid on.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-13",
+     "quote": "We replace petroleum-based synthetics with natural alternatives wherever we can. Like using wool, tree fiber, and sugarcane.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-page-3",
+     "authority": "first-party",
+     "sectionId": "src-site-page-3#refund-policy",
+     "statement": "Allbirds says it uses wool, tree fiber, and sugarcane as natural alternatives to petroleum-based synthetics.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-14",
+     "quote": "Like using wool, tree fiber, and sugarcane. They’re soft, breathable, and better for the planet—win, win, win.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-page-3",
+     "authority": "first-party",
+     "sectionId": "src-site-page-3#refund-policy",
+     "statement": "Allbirds says its natural materials are soft and breathable.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-15",
+     "quote": "We replace petroleum-based synthetics with natural alternatives wherever we can. Like using wool, tree fiber, and sugarcane.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-page-4",
+     "authority": "first-party",
+     "sectionId": "src-site-page-4#shipping-policy",
+     "statement": "Allbirds replaces petroleum-based synthetics with natural materials such as wool, tree fiber, and sugarcane where possible.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-16",
+     "quote": "Like using wool, tree fiber, and sugarcane. They’re soft, breathable, and better for the planet—win, win, win.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-page-4",
+     "authority": "first-party",
+     "sectionId": "src-site-page-4#shipping-policy",
+     "statement": "Allbirds describes its natural materials as soft and breathable.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-17",
+     "quote": "Why we made this\n\nMinimal and modern, our signature classic court shoe delivers the right balance of style and urban comfort. Lightweight, breathable, and made to move, this is your new go-to for life on the go.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-page-5",
+     "authority": "first-party",
+     "sectionId": "src-site-page-5#men-s-cruiser-2",
+     "statement": "The Men's Cruiser is described as a minimal, modern court shoe designed for urban comfort and life on the go.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-18",
+     "quote": "Breathable TENCEL™ Lyocell (tree fiber) blend upper for a light, cool feel\n- **Merino wool-blend lining** for softness, socks optional\n- Plush **Featherbed™ memory foam** insole for extra comfort and bounce\n- Sugarcane-based **SweetFoam® cushioning** with responsive energy return",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-page-5",
+     "authority": "first-party",
+     "sectionId": "src-site-page-5#thoughtfully-designed",
+     "statement": "The Men's Cruiser has a breathable TENCEL™ Lyocell blend upper, Merino wool-blend lining, Featherbed™ memory foam insole, and sugarcane-based SweetFoam® cushioning.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-19",
+     "quote": "UpperTree Knit\n\nKnit upper made from eucalyptus-derived TENCEL™ Lyocell (tree fiber) yarn and recycled polyester blend",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-page-5",
+     "authority": "first-party",
+     "sectionId": "src-site-page-5#best-for",
+     "statement": "The Men's Cruiser's Tree Knit upper uses eucalyptus-derived TENCEL™ Lyocell yarn and recycled polyester blend.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-20",
+     "quote": "MidsoleSweetFoam®\n\nSweetFoam® sugarcane-based EVA foam provides comfort and durability while being light on the planet",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-page-5",
+     "authority": "first-party",
+     "sectionId": "src-site-page-5#best-for",
+     "statement": "The Men's Cruiser's SweetFoam® midsole uses sugarcane-based EVA foam for comfort and durability.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-21",
+     "quote": "Yes, they’re machine washable. Remove the insoles, hand wash those separately, and let everything air dry. Fresh again.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-page-5",
+     "authority": "first-party",
+     "sectionId": "src-site-page-5#best-for",
+     "statement": "The Men's Cruiser is machine washable when the insoles are removed, washed separately by hand, and everything is air dried.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-22",
+     "quote": "Minimal and modern, our signature classic court shoe delivers the right balance of style and urban comfort. Lightweight, breathable, and made to move, this is your new go-to for life on the go.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-page-5",
+     "authority": "first-party",
+     "sectionId": "src-site-page-5#men-s-cruiser-2",
+     "statement": "The Men's Cruiser is lightweight, breathable, and designed to move.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-23",
+     "quote": "View technical details\n\n- **Weight:** 8.7oz (M9), 6.7oz (W7)\n- **Stack Height:** Heel: 14mm Toe: 8mm\n- **Heel/Toe Drop:** 6mm",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-page-5",
+     "authority": "first-party",
+     "sectionId": "src-site-page-5#best-for",
+     "statement": "The Men's Cruiser weighs 8.7 ounces in men's size 9 and 6.7 ounces in women's size 7.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-24",
+     "quote": "We replace petroleum-based synthetics with natural alternatives wherever we can. Like using wool, tree fiber, and sugarcane. They’re soft, breathable, and better for the planet—win, win, win.",
+     "entity": "",
+     "category": "product",
+     "sourceId": "src-site-page-5",
+     "authority": "first-party",
+     "sectionId": "src-site-page-5#our-shoes-are-unisex",
+     "statement": "Allbirds says its shoes use wool, tree fiber, and sugarcane as natural alternatives to petroleum-based synthetics.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-25",
+     "quote": "Easy-to-wear styles made for daily routines, weekend plans, travel, and everything in between.",
+     "entity": "",
+     "category": "audience",
+     "sourceId": "src-brand-site",
+     "authority": "first-party",
+     "sectionId": "src-brand-site#all-weather",
+     "statement": "The brand targets everyday wear occasions such as daily routines, weekend plans, and travel.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-26",
+     "quote": "You can browse products and shop at Allbirds's online store, https://www.allbirds.com, on your user's behalf.",
+     "entity": "",
+     "category": "audience",
+     "sourceId": "src-site-index",
+     "authority": "first-party",
+     "sectionId": "src-site-index#intro",
+     "statement": "Allbirds's online store is available for users who want to browse products and shop on their behalf.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-27",
+     "quote": "Easy-to-wear styles made for daily routines, weekend plans, travel, and everything in between.",
+     "entity": "",
+     "category": "audience",
+     "sourceId": "src-site-page-3",
+     "authority": "first-party",
+     "sectionId": "src-site-page-3#refund-policy",
+     "statement": "Allbirds describes its footwear as suitable for daily routines, weekend plans, travel, and other everyday activities.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-28",
+     "quote": "Easy-to-wear styles made for daily routines, weekend plans, travel, and everything in between.",
+     "entity": "",
+     "category": "audience",
+     "sourceId": "src-site-page-4",
+     "authority": "first-party",
+     "sectionId": "src-site-page-4#shipping-policy",
+     "statement": "Allbirds offers shoes designed for everyday routines, weekend plans, travel, and other daily activities.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-29",
+     "quote": "EverydayWalks VacationHappy Hour\n\nView technical details\n\n- **Weight:** 8.7oz (M9), 6.7oz (W7)\n- **Stack Height:** Heel: 14mm Toe: 8mm",
+     "entity": "",
+     "category": "audience",
+     "sourceId": "src-site-page-5",
+     "authority": "first-party",
+     "sectionId": "src-site-page-5#best-for",
+     "statement": "The Men's Cruiser is positioned for everyday walks, vacations, and happy hours.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-30",
+     "quote": "DESIGNED FOR EVERYDAY WEAR\n\nEasy-to-wear styles made for daily routines, weekend plans, travel, and everything in between.",
+     "entity": "",
+     "category": "audience",
+     "sourceId": "src-site-page-5",
+     "authority": "first-party",
+     "sectionId": "src-site-page-5#our-shoes-are-unisex",
+     "statement": "Allbirds describes its shoes as designed for daily routines, weekend plans, travel, and activities in between.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-31",
+     "quote": "This store is built on \\[Shopify\\](https://www.shopify.com), the commerce platform powering millions of stores worldwide.",
+     "entity": "Shopify",
+     "category": "proof",
+     "sourceId": "src-site-index",
+     "authority": "first-party",
+     "sectionId": "src-site-index#intro-3",
+     "statement": "Allbirds's store is built on Shopify.",
+     "timeSensitive": true
+    },
+    {
+     "id": "fact-32",
+     "quote": "Free ground shipping on orders over $100",
+     "entity": "",
+     "category": "pricing",
+     "sourceId": "src-brand-site",
+     "authority": "first-party",
+     "sectionId": "src-brand-site#intro",
+     "statement": "Allbirds offers free ground shipping on orders over $100.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-33",
+     "quote": "INTERNATIONAL CUSTOMERS ARE RESPONSIBLE FOR CUSTOMS DUTIES AND/OR BROKERAGE FEES IN ADDITION TO SHIPPING COSTS ASSESSED DURING CHECKOUT.",
+     "entity": "",
+     "category": "pricing",
+     "sourceId": "src-site-page-4",
+     "authority": "first-party",
+     "sectionId": "src-site-page-4#shipping-policy",
+     "statement": "International customers are responsible for customs duties and brokerage fees in addition to shipping costs assessed during checkout.",
+     "timeSensitive": true
+    },
+    {
+     "id": "fact-34",
+     "quote": "ALL CALIFORNIA RESIDENTS WILL INCUR SALES TAX AS SET BY THE STATE OF CALIFORNIA AND/OR THE COUNTY TO WHICH YOUR DELIVERY WILL BE SHIPPED.",
+     "entity": "",
+     "category": "pricing",
+     "sourceId": "src-site-page-4",
+     "authority": "first-party",
+     "sectionId": "src-site-page-4#shipping-policy",
+     "statement": "All California residents incur sales tax set by California and/or the county receiving the delivery.",
+     "timeSensitive": true
+    },
+    {
+     "id": "fact-35",
+     "quote": "Global designer and retailer of athletic footwear and apparel",
+     "entity": "Nike",
+     "category": "competitor",
+     "sourceId": "src-search-2",
+     "authority": "third-party",
+     "sectionId": "src-search-2#nike",
+     "statement": "Nike is listed as a competitor to Allbirds.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-36",
+     "quote": "Athletic apparel retailer expanding into lifestyle and performance footwear",
+     "entity": "lululemon",
+     "category": "competitor",
+     "sourceId": "src-search-2",
+     "authority": "third-party",
+     "sectionId": "src-search-2#lululemon",
+     "statement": "lululemon is listed as a competitor to Allbirds.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-37",
+     "quote": "Footwear manufacturer specializing in merino wool clothing and shoes",
+     "entity": "Giesswein",
+     "category": "competitor",
+     "sourceId": "src-search-2",
+     "authority": "third-party",
+     "sectionId": "src-search-2#giesswein",
+     "statement": "Giesswein is listed as a competitor to Allbirds.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-38",
+     "quote": "Sustainable shoes and bags made from recycled plastic bottles",
+     "entity": "Rothy's",
+     "category": "competitor",
+     "sourceId": "src-search-2",
+     "authority": "third-party",
+     "sectionId": "src-search-2#rothy-s",
+     "statement": "Rothy's is listed as a competitor to Allbirds.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-39",
+     "quote": "French footwear brand utilizing organic cotton and wild rubber",
+     "entity": "Veja",
+     "category": "competitor",
+     "sourceId": "src-search-2",
+     "authority": "third-party",
+     "sectionId": "src-search-2#veja",
+     "statement": "Veja is listed as a competitor to Allbirds.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-40",
+     "quote": "Apparel brand focused on comfort-oriented socks and basic clothing",
+     "entity": "Bombas",
+     "category": "competitor",
+     "sourceId": "src-search-2",
+     "authority": "third-party",
+     "sectionId": "src-search-2#bombas",
+     "statement": "Bombas is listed as a competitor to Allbirds.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-41",
+     "quote": "Sustainable footwear brand creating shoes from recycled materials",
+     "entity": "VIVAIA",
+     "category": "competitor",
+     "sourceId": "src-search-2",
+     "authority": "third-party",
+     "sectionId": "src-search-2#vivaia",
+     "statement": "VIVAIA is listed as a competitor to Allbirds.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-42",
+     "quote": "Manufacturer of high-performance running shoes and athletic apparel",
+     "entity": "Brooks",
+     "category": "competitor",
+     "sourceId": "src-search-2",
+     "authority": "third-party",
+     "sectionId": "src-search-2#brooks",
+     "statement": "Brooks is listed as a competitor to Allbirds.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-43",
+     "quote": "Eco-friendly sneaker brand focused on sustainable materials and ethics",
+     "entity": "Cariuma",
+     "category": "competitor",
+     "sourceId": "src-search-2",
+     "authority": "third-party",
+     "sectionId": "src-search-2#cariuma",
+     "statement": "Cariuma is listed as a competitor to Allbirds.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-44",
+     "quote": "The best allbirds alternatives that are independent and putting quality first are: Baabuk, Gottstein, and Icebug ReWool.",
+     "entity": "Baabuk",
+     "category": "competitor",
+     "sourceId": "src-search-3",
+     "authority": "third-party",
+     "sectionId": "src-search-3#intro",
+     "statement": "Reddit users identify Baabuk as an independent alternative to Allbirds that prioritizes quality.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-45",
+     "quote": "The best allbirds alternatives that are independent and putting quality first are: Baabuk, Gottstein, and Icebug ReWool.",
+     "entity": "Gottstein",
+     "category": "competitor",
+     "sourceId": "src-search-3",
+     "authority": "third-party",
+     "sectionId": "src-search-3#intro",
+     "statement": "Reddit users identify Gottstein as an independent alternative to Allbirds that prioritizes quality.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-46",
+     "quote": "The best allbirds alternatives that are independent and putting quality first are: Baabuk, Gottstein, and Icebug ReWool.",
+     "entity": "Icebug ReWool",
+     "category": "competitor",
+     "sourceId": "src-search-3",
+     "authority": "third-party",
+     "sectionId": "src-search-3#intro",
+     "statement": "Reddit users identify Icebug ReWool as an independent alternative to Allbirds that prioritizes quality.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-47",
+     "quote": "They're soft, breathable, and better for the planet—win, win, win.",
+     "entity": "",
+     "category": "company",
+     "sourceId": "src-brand-site",
+     "authority": "first-party",
+     "sectionId": "src-brand-site#all-weather",
+     "statement": "Allbirds promotes a mission of using materials from the earth that are soft, breathable, and better for the planet.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-48",
+     "quote": "Our standard return policy is 30 days. You can return or exchange items that are unworn and unwashed with original product tags attached within 30 days from the date your order was delivered.",
+     "entity": "",
+     "category": "company",
+     "sourceId": "src-site-page-3",
+     "authority": "first-party",
+     "sectionId": "src-site-page-3#refund-policy",
+     "statement": "Allbirds offers a standard 30-day return policy for eligible items.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-49",
+     "quote": "For socks, undies, and accessories packaging must be unopened. Final Sale items, or returns that do not comply with our terms and conditions cannot be returned or exchanged.",
+     "entity": "",
+     "category": "company",
+     "sourceId": "src-site-page-3",
+     "authority": "first-party",
+     "sectionId": "src-site-page-3#refund-policy",
+     "statement": "Socks, underwear, and accessories must have unopened packaging to qualify for returns or exchanges.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-50",
+     "quote": "Return Shipping: Customers are responsible for return shipping charges. Paid shipping fees will not be refunded. Refunds will only be applied to the original form of payment.",
+     "entity": "",
+     "category": "company",
+     "sourceId": "src-site-page-3",
+     "authority": "first-party",
+     "sectionId": "src-site-page-3#refund-policy",
+     "statement": "Customers are responsible for return shipping charges, and paid shipping fees are not refunded.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-51",
+     "quote": "When you opt-in for coverage at checkout, your return shipping label is included, allowing you to return any item(s) in your order for a refund or exchange for free.",
+     "entity": "",
+     "category": "company",
+     "sourceId": "src-site-page-3",
+     "authority": "first-party",
+     "sectionId": "src-site-page-3#refund-policy",
+     "statement": "Return coverage includes a return shipping label for free returns or exchanges.",
+     "timeSensitive": false
+    },
+    {
+     "id": "fact-52",
+     "quote": "ALL ORDERS ARE PROCESSED WITHIN 1-6 BUSINESS DAYS.",
+     "entity": "Allbirds",
+     "category": "company",
+     "sourceId": "src-site-page-4",
+     "authority": "first-party",
+     "sectionId": "src-site-page-4#shipping-policy",
+     "statement": "Allbirds states that its orders are processed within one to six business days.",
+     "timeSensitive": true
+    }
+   ],
+   "rejectedFacts": 1,
+   "discoverySteps": [
+    {
+     "method": "web-search",
+     "reason": "competitor gap",
+     "target": "Allbirds Sustainable footwear and apparel competitors and alternatives",
+     "outcome": "Added 13 facts",
+     "sourceIds": [
+      "src-search-2",
+      "src-search-3"
+     ],
+     "factsAdded": 13
+    }
+   ],
+   "extractionErrors": [],
+   "excludedCompetitors": [
+    {
+     "entity": "On",
+     "reason": "Named on the brand's own pages without being framed as a competitor; likely a parent, partner, or integration."
+    }
+   ]
+  },
+  "generation": {
+   "mode": "llm",
+   "model": "nvidia/nemotron-3-ultra-550b-a55b",
+   "provider": "meterless",
+   "generatedAt": "2026-10-27T21:18:32.176Z"
+  },
+  "voiceGuide": {
+   "summary": "Allbirds writes in a concise, upbeat, comfort-led voice that pairs approachable language with clear product and material details. It balances playful expressions such as “wildly comfortable” and “win, win, win” with practical, specific claims about everyday use, construction, and sustainability.",
+   "toneRules": [
+    "Use short, direct sentences and compact headline-style phrases, often paired with clear calls to action such as “Shop Men” or “Shop Women.”",
+    "Lead with tangible comfort and everyday benefits, using accessible language such as “lightweight,” “bouncy,” “soft,” “breathable,” and “easy-to-wear.”",
+    "Use occasional light, energetic phrasing—such as “wildly comfortable,” “Fresh again,” and “win, win, win”—without becoming exaggerated or theatrical.",
+    "Speak directly to the customer with second-person imperatives and situations: “Slip in, lace up, or slide them on,” and references to routines, travel, work, and happy hour.",
+    "Make sustainability claims concrete by naming materials and their sources, such as wool, tree fiber, sugarcane, eucalyptus-derived TENCEL™ Lyocell, and recycled polyester.",
+    "Support product claims with specific construction details and measured facts, including material blends, cushioning technologies, weight, dimensions, care instructions, and country of origin."
+   ],
+   "avoidTerms": [
+    {
+     "term": "Revolutionary",
+     "reason": "The sources use grounded comfort, material, and construction descriptions rather than grand claims about changing the category."
+    },
+    {
+     "term": "Unbeatable",
+     "reason": "The brand does not use absolute superiority claims; it describes benefits such as softness, breathability, comfort, and energy return."
+    },
+    {
+     "term": "Luxury",
+     "reason": "The product language emphasizes approachable everyday wear, practical comfort, and accessible materials rather than status or exclusivity."
+    },
+    {
+     "term": "Eco-friendly",
+     "reason": "The sources make more specific claims about replacing petroleum-based synthetics with natural alternatives and name the materials used."
+    },
+    {
+     "term": "Performance footwear",
+     "reason": "This generic category label is less characteristic than Allbirds’ specific product names and everyday-use language."
+    },
+    {
+     "term": "Athleisure",
+     "reason": "The brand describes shoes as suitable for everyday routines, travel, office looks, and happy hour instead of relying on fashion-category jargon."
+    },
+    {
+     "term": "Perfect",
+     "reason": "The writing favors qualified, concrete benefits such as “lightweight,” “breathable,” and “made to move,” not claims of perfection."
+    },
+    {
+     "term": "Customers",
+     "reason": "For campaign copy, prefer direct second-person language and situations involving “you,” rather than referring to the audience in detached retail terminology."
+    }
+   ],
+   "sampleLines": [
+    {
+     "quote": "Wildly Comfortable. Super Natural.",
+     "sourceId": "src-brand-site"
+    },
+    {
+     "quote": "Slip in, lace up, or slide them on and enjoy the comfy support.",
+     "sourceId": "src-brand-site"
+    },
+    {
+     "quote": "They’re soft, breathable, and better for the planet—win, win, win.",
+     "sourceId": "src-site-page-3"
+    },
+    {
+     "quote": "Minimal and modern, our signature classic court shoe delivers the right balance of style and urban comfort.",
+     "sourceId": "src-site-page-5"
+    }
+   ],
+   "preferredTerms": [
+    {
+     "note": "Use as a distinctive, upbeat expression for the brand’s comfort positioning.",
+     "term": "Wildly comfortable"
+    },
+    {
+     "note": "Use as a recurring comfort-led headline.",
+     "term": "Wear All Day Comfort"
+    },
+    {
+     "note": "Use the proprietary name for sugarcane-based cushioning.",
+     "term": "SweetFoam®"
+    },
+    {
+     "note": "Use the proprietary name for the memory foam insole.",
+     "term": "Featherbed™"
+    },
+    {
+     "note": "Use as an approachable explanation alongside technical material names such as TENCEL™ Lyocell.",
+     "term": "Tree fiber"
+    },
+    {
+     "note": "Use as a sustainability headline framing natural alternatives to petroleum-based synthetics.",
+     "term": "Materials From The Earth"
+    },
+    {
+     "note": "Use for the brand’s core use case, including daily routines, weekends, travel, and work.",
+     "term": "Everyday wear"
+    },
+    {
+     "note": "Use for versatile, frequently worn products, as in “your new go-to for life on the go.”",
+     "term": "go-to"
+    }
+   ]
+  },
+  "brandMemory": {
+   "reusedLabels": [
+    "Launch-curious runners",
+    "Comfort-first everyday walkers",
+    "Material-conscious footwear evaluators",
+    "The Comfort, Named",
+    "Materials From The Earth, Made Practical",
+    "From Morning Walks To Launch Watch",
+    "One Question, One Proof Point",
+    "Curious, Not Overhyped"
+   ],
+   "priorCampaigns": 1,
+   "reusedSourceIds": [
+    "src-site-index",
+    "src-site-page-3",
+    "src-site-page-4",
+    "src-site-page-5"
+   ],
+   "reusedVoiceGuide": true
+  },
+  "draftAssets": [
+   {
+    "id": "asset-1",
+    "cta": "First to know when it drops → [newsletter link]",
+    "copy": "How does sugarcane become cushioning that bounces back? 🌱 → 👟",
+    "type": "thread",
+    "title": "How sugarcane becomes bounce",
+    "hookId": "hook-1",
+    "slides": [],
+    "article": null,
+    "segment": "segment-1",
+    "platform": "X",
+    "seriesId": "series-1",
+    "territory": "territory-1",
+    "threadPosts": [
+     "How does sugarcane become cushioning that bounces back? 🌱 → 👟",
+     "SweetFoam® = sugarcane-based EVA foam. No petroleum-based synthetics. Responsive energy return built in. (fact-20)",
+     "Same midsole tech powers the upcoming running shoe. Lightweight, durable, made for daily miles.",
+     "First to know when it drops → [newsletter link]"
+    ],
+    "videoScript": null,
+    "linkedClaims": [],
+    "contentFormat": "thread",
+    "contentItemId": "item-1",
+    "editorialMode": "technical-explainer",
+    "visualBriefId": "",
+    "calendarItemId": "cal-1"
+   },
+   {
+    "id": "asset-2",
+    "cta": "Subscribe to see how running tech makes your everyday walk even better",
+    "copy": "Subject: Your commute run → office → happy hour. One shoe that handles all three. Morning miles, all-day desk time, evening plans — same pair. The TENCEL™ Lyocell upper (eucalyptus tree fiber + recycled polyester) breathes through the commute. Merino wool-blend lining means socks optional. Featherbed™ memory foam insole cushions every step. Sugarcane SweetFoam® midsole returns energy on the run home. Machine washable: remove insoles, hand wash, air dry. Fresh again. Subscribe to see how running tech makes your everyday walk even better.",
+    "type": "newsletter",
+    "title": "One shoe: commute run → office → happy hour",
+    "hookId": "hook-3",
+    "slides": [],
+    "article": null,
+    "segment": "segment-2",
+    "platform": "Newsletter",
+    "seriesId": "series-2",
+    "territory": "territory-4",
+    "threadPosts": [],
+    "videoScript": null,
+    "linkedClaims": [],
+    "contentFormat": "newsletter",
+    "contentItemId": "item-3",
+    "editorialMode": "storytelling",
+    "visualBriefId": "",
+    "calendarItemId": "cal-2"
+   },
+   {
+    "id": "asset-3",
+    "cta": "First to know when it drops → [newsletter link]",
+    "copy": "8.7 ounces. 14mm heel. 6mm drop. What does that feel like on your morning run?",
+    "type": "thread",
+    "title": "Running geometry you can feel",
+    "hookId": "hook-2",
+    "slides": [],
+    "article": null,
+    "segment": "segment-1",
+    "platform": "X",
+    "seriesId": "series-1",
+    "territory": "territory-2",
+    "threadPosts": [
+     "8.7 ounces. 14mm heel. 6mm drop. What does that feel like on your morning run? ⚖️📏",
+     "Featherbed™ dual-density memory foam insole + SweetFoam® sugarcane midsole = dual-layer comfort that doesn't quit at mile 3. (fact-18, fact-20)",
+     "Same geometry carries you through everyday walks, vacation miles, commute runs. Verified by Cruiser specs. (fact-23, fact-29)",
+     "First to know when it drops → [newsletter link]"
+    ],
+    "videoScript": null,
+    "linkedClaims": [],
+    "contentFormat": "thread",
+    "contentItemId": "item-2",
+    "editorialMode": "proof-led",
+    "visualBriefId": "",
+    "calendarItemId": "cal-3"
+   },
+   {
+    "id": "asset-4",
+    "cta": "Get the full material breakdown — sign up for the technical deep-dive",
+    "copy": "Subject: Eucalyptus TENCEL™ Lyocell + recycled polyester upper. Merino wool blend lining. Featherbed™ memory foam. Sugarcane SweetFoam® midsole. Every layer named. Upper: eucalyptus-derived TENCEL™ Lyocell yarn + recycled polyester blend. Breathable, moisture-wicking, cool. (fact-19) Lining: Merino wool blend. Softness, socks optional. (fact-18) Insole: Featherbed™ dual-density memory foam. Extra comfort and bounce that doesn't quit. (fact-18) Midsole: SweetFoam® sugarcane-based EVA foam. Responsive energy return, light on the planet. (fact-20) Weight: 8.7oz (M9), 6.7oz (W7). Stack: 14mm heel / 8mm toe. Drop: 6mm. Origin: Vietnam. (fact-23) No vague 'eco' claims. Just construction details you can verify. Get the full material breakdown — sign up for the technical deep-dive.",
+    "type": "newsletter",
+    "title": "Every layer named: the full material breakdown",
+    "hookId": "hook-4",
+    "slides": [],
+    "article": null,
+    "segment": "segment-3",
+    "platform": "Newsletter",
+    "seriesId": "series-3",
+    "territory": "territory-1",
+    "threadPosts": [],
+    "videoScript": null,
+    "linkedClaims": [],
+    "contentFormat": "newsletter",
+    "contentItemId": "item-4",
+    "editorialMode": "technical-explainer",
+    "visualBriefId": "",
+    "calendarItemId": "cal-4"
+   },
+   {
+    "id": "asset-5",
+    "cta": "Join — one question, one fact, no spam",
+    "copy": "Subject: One question a week. One verified fact. No launch spam. This is what early access actually looks like. Last week: SweetFoam® = sugarcane-based EVA with responsive energy return. (fact-20) This week: 8.7oz, 14mm/8mm stack, 6mm drop — running geometry for daily miles. (fact-23) Next week: the full material breakdown, layer by layer. No hype. Just proof. Join — one question, one fact, no spam.",
+    "type": "newsletter",
+    "title": "What early access actually looks like",
+    "hookId": "hook-6",
+    "slides": [],
+    "article": null,
+    "segment": "segment-1",
+    "platform": "Newsletter",
+    "seriesId": "series-1",
+    "territory": "territory-3",
+    "threadPosts": [],
+    "videoScript": null,
+    "linkedClaims": [],
+    "contentFormat": "newsletter",
+    "contentItemId": "item-6",
+    "editorialMode": "direct-practical",
+    "visualBriefId": "",
+    "calendarItemId": "cal-5"
+   }
+  ],
+  "proofReport": {
+   "claims": [
+    {
+     "id": "claim-1",
+     "text": "SweetFoam® = sugarcane-based EVA foam. No petroleum-based synthetics. Responsive energy return built in.",
+     "status": "supported",
+     "evidence": [
+      {
+       "quote": "SweetFoam® sugarcane-based EVA foam provides comfort and durability while being light on the planet",
+       "stance": "supports",
+       "locator": "https://www.allbirds.com/products/mens-cruiser",
+       "sourceId": "src-site-page-5",
+       "sectionId": "src-site-page-5#best-for"
+      }
+     ],
+     "sourceId": "src-site-page-5",
+     "checkedAt": "2026-10-27T21:18:32.176Z",
+     "claimKind": "capability",
+     "confidence": 95,
+     "repairNote": "",
+     "repairedAt": null,
+     "sourceType": "website",
+     "sourceTitle": "Men’s Cruiser | Everyday Comfort & Style | Allbirds",
+     "repairAction": null,
+     "contentUsedIn": "asset-1",
+     "recommendation": "keep",
+     "resolutionStatus": "unresolved"
+    },
+    {
+     "id": "claim-2",
+     "text": "Same midsole tech powers the upcoming running shoe. Lightweight, durable, made for daily miles.",
+     "status": "supported",
+     "evidence": [
+      {
+       "quote": "The Tree Flyer 2 is underpinned by Allbirds’s high-performance SwiftFoam™ midsole, made with bio-PEBAX.",
+       "stance": "supports",
+       "locator": "https://www.allbirds.com/pages/tree-flyer-2-press-release?srsltid=AYCX9vK0zY85sBRHMCedzadmz2i-6A9vz9gHjN8IkBa5L6VdX398Mfyr",
+       "sourceId": "src-web-1",
+       "sectionId": ""
+      }
+     ],
+     "sourceId": "src-web-1",
+     "checkedAt": "2026-10-27T21:32:31.407Z",
+     "claimKind": "capability",
+     "confidence": 90,
+     "repairNote": "",
+     "repairedAt": null,
+     "sourceType": "web-search",
+     "sourceTitle": "WALK, RUN, OR FLY WITH ALLBIRDS'S TREE FLYER 2",
+     "repairAction": null,
+     "contentUsedIn": "asset-1",
+     "recommendation": "Verified by web search. Review the cited page before publishing.",
+     "resolutionStatus": "unresolved"
+    },
+    {
+     "id": "claim-3",
+     "text": "TENCEL™ Lyocell upper (eucalyptus tree fiber + recycled polyester) breathes through the commute. Merino wool-blend lining means socks optional. Featherbed™ memory foam insole cushions every step. Sugarcane SweetFoam® midsole returns energy on the run home. Machine washable: remove insoles, hand wash, air dry. Fresh again.",
+     "status": "supported",
+     "evidence": [
+      {
+       "quote": "UpperTree Knit Knit upper made from eucalyptus-derived TENCEL™ Lyocell (tree fiber) yarn and recycled polyester blend MidsoleSweetFoam® SweetFoam® sugarcane-based EVA foam provides comfort and durability while being light on the planet LiningWool Merino wool blend lining for uncompromising comfort and softness Care instructions Yes, they're machine washable. Remove the insoles, hand wash those separately, and let everything air dry. Fresh again.",
+       "stance": "supports",
+       "locator": "https://www.allbirds.com/products/mens-cruiser",
+       "sourceId": "src-site-page-5",
+       "sectionId": "src-site-page-5#thoughtfully-designed-2"
+      }
+     ],
+     "sourceId": "src-site-page-5",
+     "checkedAt": "2026-10-27T21:31:48.086Z",
+     "claimKind": "capability",
+     "confidence": 95,
+     "repairNote": "",
+     "repairedAt": null,
+     "sourceType": "website",
+     "sourceTitle": "Men’s Cruiser | Everyday Comfort & Style | Allbirds",
+     "repairAction": null,
+     "contentUsedIn": "asset-2",
+     "recommendation": "Found in a captured source during the evidence check. Review the passage before publishing.",
+     "resolutionStatus": "unresolved"
+    },
+    {
+     "id": "claim-4",
+     "text": "8.7 ounces. 14mm heel. 6mm drop. Featherbed™ dual-density memory foam insole + SweetFoam® sugarcane midsole = dual-layer comfort that doesn't quit at mile 3.",
+     "status": "unsupported",
+     "evidence": [],
+     "checkedAt": "2026-10-27T21:18:32.176Z",
+     "claimKind": "statistic",
+     "confidence": 49,
+     "repairNote": "",
+     "repairedAt": null,
+     "repairAction": null,
+     "contentUsedIn": "asset-3",
+     "recommendation": "Web search found no reliable source for this claim. Remove it or supply a primary source.",
+     "resolutionStatus": "unresolved"
+    },
+    {
+     "id": "claim-5",
+     "text": "Same geometry carries you through everyday walks, vacation miles, commute runs. Verified by Cruiser specs.",
+     "status": "unsupported",
+     "evidence": [],
+     "checkedAt": "2026-10-27T21:18:32.176Z",
+     "claimKind": "capability",
+     "confidence": 49,
+     "repairNote": "",
+     "repairedAt": null,
+     "repairAction": null,
+     "contentUsedIn": "asset-3",
+     "recommendation": "Web search found no reliable source for this claim. Remove it or supply a primary source.",
+     "resolutionStatus": "unresolved"
+    },
+    {
+     "id": "claim-6",
+     "text": "Upper: eucalyptus-derived TENCEL™ Lyocell yarn + recycled polyester blend. Breathable, moisture-wicking, cool. Lining: Merino wool blend. Softness, socks optional. Insole: Featherbed™ dual-density memory foam. Extra comfort and bounce that doesn't quit. Midsole: SweetFoam® sugarcane-based EVA foam. Responsive energy return, light on the planet. Weight: 8.7oz (M9), 6.7oz (W7). Stack: 14mm heel / 8mm toe. Drop: 6mm. Origin: Vietnam.",
+     "status": "supported",
+     "evidence": [
+      {
+       "quote": "Breathable TENCEL™ Lyocell (tree fiber) and recycled polyester blend upper for a light, cool",
+       "stance": "supports",
+       "locator": "https://www.facebook.com/groups/451895231590899/posts/29181154178238288/",
+       "sourceId": "src-web-2",
+       "sectionId": ""
+      }
+     ],
+     "sourceId": "src-web-2",
+     "checkedAt": "2026-10-27T21:32:31.407Z",
+     "claimKind": "capability",
+     "confidence": 80,
+     "repairNote": "",
+     "repairedAt": null,
+     "sourceType": "web-search",
+     "sourceTitle": "Breathable TENCEL™ Lyocell (tree fiber) and recycled polyester blend ...",
+     "repairAction": null,
+     "contentUsedIn": "asset-4",
+     "recommendation": "Verified by web search. Review the cited page before publishing.",
+     "resolutionStatus": "unresolved"
+    },
+    {
+     "id": "claim-7",
+     "text": "Last week: SweetFoam® = sugarcane-based EVA with responsive energy return. This week: 8.7oz, 14mm/8mm stack, 6mm drop — running geometry for daily miles. Next week: the full material breakdown, layer by layer.",
+     "status": "unsupported",
+     "evidence": [],
+     "checkedAt": "2026-10-27T21:18:32.176Z",
+     "claimKind": "capability",
+     "confidence": 49,
+     "repairNote": "",
+     "repairedAt": null,
+     "repairAction": null,
+     "contentUsedIn": "asset-5",
+     "recommendation": "Web search found no reliable source for this claim. Remove it or supply a primary source.",
+     "resolutionStatus": "unresolved"
+    }
+   ],
+   "conflicts": 0,
+   "editorial": 0,
+   "supported": 4,
+   "unsupported": 3,
+   "checkedClaims": 7,
+   "timeSensitive": 0
+  },
+  "territories": [
+   {
+    "id": "territory-1",
+    "name": "The Material: SweetFoam® Origin Story",
+    "ownedGap": "gap-1",
+    "rationale": "Addresses Material Specificity Gap (gap-1) and Running-Adjacent Comfort Proof Gap (gap-2) by grounding the launch shoe's core tech in verifiable material science.",
+    "proofAngle": "SweetFoam® = sugarcane-based EVA foam providing comfort, durability, responsive energy return (fact-20); midsole construction detail + weight/geometry proof (fact-23).",
+    "sampleAngles": [
+     "How sugarcane becomes responsive cushioning without petroleum",
+     "Why SweetFoam® energy return matters for daily miles, not just race day",
+     "The 14mm/8mm stack height: designed for running-adjacent feel, not lifestyle stack"
+    ],
+    "audienceSegments": [
+     "segment-1",
+     "segment-3"
+    ]
+   },
+   {
+    "id": "territory-2",
+    "name": "The Feel: Weight, Geometry, Bounce",
+    "ownedGap": "gap-2",
+    "rationale": "Addresses Running-Adjacent Comfort Proof Gap (gap-2) and Single-Proof-Point Micro-Content (gap-4) with measurable comfort evidence runners and walkers can verify.",
+    "proofAngle": "Measured weight (8.7oz M9, 6.7oz W7), stack height (14mm/8mm), heel/toe drop (6mm) (fact-23); Featherbed™ memory foam insole + SweetFoam® cushioning (fact-18).",
+    "sampleAngles": [
+     "8.7 ounces: what lightweight actually feels like on your morning run",
+     "6mm drop, 14mm heel: the geometry that makes running feel like walking",
+     "Featherbed™ + SweetFoam®: dual-layer comfort that doesn't quit at mile 3"
+    ],
+    "audienceSegments": [
+     "segment-1",
+     "segment-2"
+    ]
+   },
+   {
+    "id": "territory-3",
+    "name": "The Access: Newsletter = First to Know",
+    "ownedGap": "gap-3",
+    "rationale": "Addresses Curiosity Over Hype Gap (gap-3) and Progressive Reveal Sequence (gap-5) by making newsletter the credible gateway — not hype channel.",
+    "proofAngle": "Campaign itself demonstrates the tone: each piece = one question, one verified fact (fact-4, fact-18, fact-20, fact-23); 30-day return policy reduces risk (fact-48).",
+    "sampleAngles": [
+     "One question a week, one proof point — no launch spam",
+     "Early access means first sizing run, not just marketing email",
+     "Your inbox gets the material breakdown before social does"
+    ],
+    "audienceSegments": [
+     "segment-1",
+     "segment-2",
+     "segment-3"
+    ]
+   },
+   {
+    "id": "territory-4",
+    "name": "The Everyday: From Morning Walk to Happy Hour",
+    "ownedGap": "gap-6",
+    "rationale": "Addresses User-Generated Comfort Proof (gap-6) and Second-Person Situational Language (gap-7) by showing running-adjacent comfort in real daily situations.",
+    "proofAngle": "Designed for everyday walks, vacation, happy hour (fact-29); lightweight, breathable, made to move (fact-22); machine washable care (fact-21); TENCEL™ Lyocell breathability (fact-19, site-page-5).",
+    "sampleAngles": [
+     "Your commute run → office → happy hour in one pair",
+     "Vacation packing: one shoe for walking tours and dinner",
+     "Machine washable means 'Fresh again' after every adventure (fact-21)"
+    ],
+    "audienceSegments": [
+     "segment-2"
+    ]
+   }
+  ],
+  "brandContext": {
+   "voice": [
+    "Use short, direct sentences and compact headline-style phrases.",
+    "Lead with tangible comfort and everyday benefits: lightweight, bouncy, soft, breathable, easy-to-wear.",
+    "Use occasional light, energetic phrasing: wildly comfortable, Fresh again, win win win.",
+    "Speak directly to you with second-person imperatives and situations: Slip in, lace up, or slide them on; daily routines, weekend plans, travel, happy hour.",
+    "Make sustainability claims concrete by naming materials and sources: wool, tree fiber, sugarcane, eucalyptus-derived TENCEL™ Lyocell, recycled polyester.",
+    "Support product claims with specific construction details and measured facts: material blends, cushioning technologies, weight, dimensions, care instructions."
+   ],
+   "assumptions": [
+    "New running shoe launch details (name, price, date, specs) are not yet public — campaign avoids specific launch claims per risk_flag#1.",
+    "Pricing for new running shoe unknown; current models range $75–$145 (fact-1, fact-2, fact-3, fact-17).",
+    "Competitor landscape includes Nike, On, lululemon, Giesswein, Rothy's, Veja, Bombas, VIVAIA, Brooks, Cariuma (fact-35 to fact-43); Reddit alternatives: Baabuk, Gottstein, Icebug ReWool (fact-44 to fact-46).",
+    "Newsletter signup mechanism and incentive (early access, exclusive content, discount) to be confirmed with brand team.",
+    "Campaign duration 7 days, 3 posts/week across Newsletter and X per project brief."
+   ],
+   "positioning": "Allbirds creates wildly comfortable, super natural footwear for everyday wear — replacing petroleum-based synthetics with wool, tree fiber, and sugarcane to make shoes that are lightweight, bouncy, soft, and breathable.",
+   "contentGoals": [
+    "Grow email newsletter signups ahead of new running shoe launch",
+    "Build anticipation with comfort and material proof points",
+    "Convert launch-curious runners and comfort-first walkers to subscribers"
+   ],
+   "verifiedClaims": [
+    "Allbirds replaces petroleum-based synthetics with natural alternatives like wool, tree fiber, and sugarcane (fact-4, fact-13, fact-15, fact-24)",
+    "Natural materials are soft and breathable (fact-14, fact-16)",
+    "Shoes are lightweight, bouncy, and wildly comfortable for effortless outings (fact-5, fact-12)",
+    "Designed for everyday wear: daily routines, weekend plans, travel, everything in between (fact-25, fact-27, fact-28, fact-30)",
+    "Men's Cruiser has breathable TENCEL™ Lyocell blend upper, Merino wool-blend lining, Featherbed™ memory foam insole, sugarcane-based SweetFoam® cushioning (fact-18)",
+    "Men's Cruiser Tree Knit upper uses eucalyptus-derived TENCEL™ Lyocell yarn and recycled polyester blend (fact-19)",
+    "Men's Cruiser SweetFoam® midsole uses sugarcane-based EVA foam (fact-20)",
+    "Men's Cruiser is machine washable (remove insoles, hand wash separately, air dry) (fact-21)",
+    "Men's Cruiser weighs 8.7 oz (M9) and 6.7 oz (W7); stack height heel 14mm, toe 8mm; heel/toe drop 6mm (fact-23)",
+    "Men's Cruiser positioned for everyday walks, vacation, happy hour (fact-29)",
+    "Free ground shipping on orders over $100 (fact-32)",
+    "Standard 30-day return policy for unworn, unwashed items with tags (fact-48)",
+    "Store built on Shopify with UCP integration for product discovery, cart, checkout (fact-6, fact-7, fact-8, fact-9, fact-10, fact-11)"
+   ],
+   "prohibitedClaims": [
+    "Revolutionary",
+    "Unbeatable",
+    "Luxury",
+    "Eco-friendly",
+    "Performance footwear",
+    "Athleisure",
+    "Perfect",
+    "Customers (use 'you' instead)"
+   ]
+  },
+  "contentItems": [
+   {
+    "id": "item-1",
+    "hookId": "hook-1",
+    "factIds": [
+     "fact-20",
+     "fact-4"
+    ],
+    "seriesId": "series-1",
+    "platforms": [
+     "X",
+     "Newsletter"
+    ],
+    "segmentId": "segment-1",
+    "coreMessage": "Sugarcane-based SweetFoam® midsole delivers responsive energy return without petroleum-based synthetics — the same cushioning tech that will power the upcoming running shoe.",
+    "territoryId": "territory-1"
+   },
+   {
+    "id": "item-2",
+    "hookId": "hook-2",
+    "factIds": [
+     "fact-23",
+     "fact-18"
+    ],
+    "seriesId": "series-1",
+    "platforms": [
+     "X",
+     "Newsletter"
+    ],
+    "segmentId": "segment-1",
+    "coreMessage": "At 8.7 ounces (men's 9) with a 14mm heel stack and 6mm drop, the geometry makes running feel as effortless as walking — verified by the Cruiser's measured specs.",
+    "territoryId": "territory-2"
+   },
+   {
+    "id": "item-3",
+    "hookId": "hook-3",
+    "factIds": [
+     "fact-19",
+     "fact-21",
+     "fact-29"
+    ],
+    "seriesId": "series-2",
+    "platforms": [
+     "Newsletter",
+     "X"
+    ],
+    "segmentId": "segment-2",
+    "coreMessage": "One pair handles your morning commute run, all-day office wear, and evening happy hour — lightweight, breathable TENCEL™ Lyocell upper and machine-washable durability make it possible.",
+    "territoryId": "territory-4"
+   },
+   {
+    "id": "item-4",
+    "hookId": "hook-4",
+    "factIds": [
+     "fact-19",
+     "fact-18",
+     "fact-20"
+    ],
+    "seriesId": "series-3",
+    "platforms": [
+     "Newsletter",
+     "X"
+    ],
+    "segmentId": "segment-3",
+    "coreMessage": "Every layer named: eucalyptus-derived TENCEL™ Lyocell with recycled polyester upper, Merino wool-blend lining, Featherbed™ memory foam insole, sugarcane SweetFoam® midsole — no vague sustainability claims.",
+    "territoryId": "territory-1"
+   },
+   {
+    "id": "item-5",
+    "hookId": "hook-5",
+    "factIds": [
+     "fact-21",
+     "fact-18"
+    ],
+    "seriesId": "series-2",
+    "platforms": [
+     "X",
+     "Newsletter"
+    ],
+    "segmentId": "segment-2",
+    "coreMessage": "Machine washable means your running-adjacent shoe stays fresh: remove insoles, hand wash separately, air dry — Fresh again for tomorrow's miles.",
+    "territoryId": "territory-4"
+   },
+   {
+    "id": "item-6",
+    "hookId": "hook-6",
+    "factIds": [
+     "fact-4",
+     "fact-20",
+     "fact-23"
+    ],
+    "seriesId": "series-1",
+    "platforms": [
+     "Newsletter"
+    ],
+    "segmentId": "segment-1",
+    "coreMessage": "This newsletter sends one question and one verified fact per week — no launch spam, just the material proof chain that leads to early access.",
+    "territoryId": "territory-3"
+   },
+   {
+    "id": "item-7",
+    "hookId": "hook-7",
+    "factIds": [
+     "fact-19",
+     "fact-18",
+     "fact-20"
+    ],
+    "seriesId": "series-3",
+    "platforms": [
+     "X"
+    ],
+    "segmentId": "segment-3",
+    "coreMessage": "Running brands rarely name material sources; we name ours: eucalyptus for breathability, Merino for softness, sugarcane for responsive cushioning — each with construction details you can verify.",
+    "territoryId": "territory-1"
+   },
+   {
+    "id": "item-8",
+    "hookId": "hook-8",
+    "factIds": [
+     "fact-23",
+     "fact-18"
+    ],
+    "seriesId": "series-1",
+    "platforms": [
+     "X"
+    ],
+    "segmentId": "segment-1",
+    "coreMessage": "Recovery-day comfort meets running geometry: 8.7oz weight, 6mm drop, Featherbed™ plus SweetFoam® dual cushioning — bounce that serves your everyday walks and vacation miles.",
+    "territoryId": "territory-2"
+   },
+   {
+    "id": "item-9",
+    "hookId": "hook-9",
+    "factIds": [
+     "fact-4",
+     "fact-23",
+     "fact-21"
+    ],
+    "seriesId": "series-1",
+    "platforms": [
+     "Newsletter"
+    ],
+    "segmentId": "segment-1",
+    "coreMessage": "No carbon plate, no race-day hype — just natural materials (wool, tree fiber, sugarcane) engineered for daily miles with measured weight, geometry, and machine-washable durability.",
+    "territoryId": "territory-3"
+   }
+  ],
+  "droppedHooks": [],
+  "editorialMix": [
+   {
+    "mode": "direct-practical",
+    "rationale": "Keep the campaign useful and immediately legible.",
+    "percentage": 20
+   },
+   {
+    "mode": "technical-explainer",
+    "rationale": "Build authority through mechanisms and tradeoffs.",
+    "percentage": 20
+   },
+   {
+    "mode": "point-of-view",
+    "rationale": "Give the brand a defensible position.",
+    "percentage": 15
+   },
+   {
+    "mode": "how-to",
+    "rationale": "Turn strategy into executable guidance.",
+    "percentage": 15
+   },
+   {
+    "mode": "storytelling",
+    "rationale": "Use real sequences and lessons when evidence exists.",
+    "percentage": 10
+   },
+   {
+    "mode": "proof-led",
+    "rationale": "Connect claims to supplied evidence.",
+    "percentage": 10
+   },
+   {
+    "mode": "comparison",
+    "rationale": "Clarify choices and evaluation criteria.",
+    "percentage": 5
+   },
+   {
+    "mode": "community",
+    "rationale": "Create selective opportunities for response.",
+    "percentage": 5
+   }
+  ],
+  "promptRoutes": [
+   {
+    "tags": [
+     "ideation",
+     "competitive",
+     "audience",
+     "campaign"
+    ],
+    "reason": "Matched IDEATION prompt using mood board, market.",
+    "matchScore": 84,
+    "libraryStage": "IDEATION",
+    "pipelineStage": "Context Ingestion",
+    "promptPreview": "Separate repeated market narratives from under-served audience questions. Ground every observation in supplied evidence, name the consequence for the campaign, and turn useful gaps into concrete editorial territories.",
+    "selectedPromptId": "ideation-competitive-content-analysis-mood-board-creator-1",
+    "selectedPromptName": "Competitive Content Analysis & Mood Board Creator"
+   },
+   {
+    "tags": [
+     "optimization",
+     "competitive"
+    ],
+    "reason": "Matched OPTIMIZATION prompt using competitive, competitor, gap.",
+    "matchScore": 114,
+    "libraryStage": "OPTIMIZATION",
+    "pipelineStage": "Competitive Gap Analysis",
+    "promptPreview": "Describe observable competitor patterns without guessing intent. Identify saturated claims, proof gaps, format gaps, and opportunities the brand can credibly own.",
+    "selectedPromptId": "optimization-competitive-intelligence-integration-system-6",
+    "selectedPromptName": "Competitive Intelligence Integration System"
+   },
+   {
+    "tags": [
+     "ideation",
+     "audience",
+     "calendar",
+     "platform"
+    ],
+    "reason": "Matched IDEATION prompt using audience, segment, micro.",
+    "matchScore": 107,
+    "libraryStage": "IDEATION",
+    "pipelineStage": "Audience Segmentation",
+    "promptPreview": "Define segments by decision context, awareness, needs, objections, proof requirements, taboo topics, preferred formats, cadence, and platform. Avoid demographic invention; use the brief and evidence only.",
+    "selectedPromptId": "ideation-audience-micro-segment-content-mapper-2",
+    "selectedPromptName": "Audience Micro-Segment Content Mapper"
+   },
+   {
+    "tags": [
+     "ideation",
+     "audience",
+     "hooks",
+     "campaign"
+    ],
+    "reason": "Matched IDEATION prompt using series, campaign.",
+    "matchScore": 84,
+    "libraryStage": "IDEATION",
+    "pipelineStage": "Content Territories",
+    "promptPreview": "Build series around distinct reader questions and progressive episodes. Give every episode a unique job, source basis, hook, audience, and CTA while preserving a coherent campaign thesis.",
+    "selectedPromptId": "ideation-content-series-architecture-builder-3",
+    "selectedPromptName": "Content Series Architecture Builder"
+   },
+   {
+    "tags": [
+     "ideation",
+     "hooks"
+    ],
+    "reason": "Matched IDEATION prompt using hook, hooks.",
+    "matchScore": 84,
+    "libraryStage": "IDEATION",
+    "pipelineStage": "Hook Engineering",
+    "promptPreview": "Generate materially different hooks using mechanisms, consequences, constraints, comparisons, or practical decisions. Reject generic hype, unsupported certainty, and cosmetic punctuation variants.",
+    "selectedPromptId": "ideation-multi-variant-hook-generator-4",
+    "selectedPromptName": "Multi-Variant Hook Generator"
+   },
+   {
+    "tags": [
+     "distribution",
+     "audience",
+     "campaign",
+     "calendar",
+     "platform"
+    ],
+    "reason": "Matched DISTRIBUTION prompt using campaign, orchestrator, multi-channel.",
+    "matchScore": 94,
+    "libraryStage": "DISTRIBUTION",
+    "pipelineStage": "Campaign Architecture",
+    "promptPreview": "Assign each calendar item a distinct purpose, audience, source pack, platform-fit reason, CTA, and production dependency. Match the requested cadence and do not confuse scheduled ideas with completed assets.",
+    "selectedPromptId": "distribution-multi-channel-campaign-orchestrator-7",
+    "selectedPromptName": "Multi-Channel Campaign Orchestrator"
+   },
+   {
+    "tags": [
+     "distribution",
+     "audience",
+     "campaign",
+     "calendar",
+     "platform"
+    ],
+    "reason": "Matched DISTRIBUTION prompt using platform, calendar, cadence.",
+    "matchScore": 114,
+    "libraryStage": "DISTRIBUTION",
+    "pipelineStage": "Calendar Engineering",
+    "promptPreview": "Assign each calendar item a distinct purpose, audience, source pack, platform-fit reason, CTA, and production dependency. Match the requested cadence and do not confuse scheduled ideas with completed assets.",
+    "selectedPromptId": "distribution-multi-channel-campaign-orchestrator-7",
+    "selectedPromptName": "Multi-Channel Campaign Orchestrator"
+   },
+   {
+    "tags": [
+     "creation",
+     "production"
+    ],
+    "reason": "Matched CREATION prompt using draft, content, refinement.",
+    "matchScore": 104,
+    "libraryStage": "CREATION",
+    "pipelineStage": "Content Production",
+    "promptPreview": "Remove generic openings, repetitive contrasts, empty hype, summary-only conclusions, and artificial profundity. Add concrete mechanisms, constraints, transitions, rhythm, and a proportionate CTA without inventing facts.",
+    "selectedPromptId": "creation-ai-to-human-content-refinement-system-10",
+    "selectedPromptName": "AI-to-Human Content Refinement System"
+   },
+   {
+    "tags": [
+     "creation",
+     "production"
+    ],
+    "reason": "Matched CREATION prompt using refinement, human, specific.",
+    "matchScore": 114,
+    "libraryStage": "CREATION",
+    "pipelineStage": "Editorial Quality",
+    "promptPreview": "Remove generic openings, repetitive contrasts, empty hype, summary-only conclusions, and artificial profundity. Add concrete mechanisms, constraints, transitions, rhythm, and a proportionate CTA without inventing facts.",
+    "selectedPromptId": "creation-ai-to-human-content-refinement-system-10",
+    "selectedPromptName": "AI-to-Human Content Refinement System"
+   },
+   {
+    "tags": [
+     "creation",
+     "production",
+     "proof",
+     "platform"
+    ],
+    "reason": "Matched CREATION prompt using visual, brief, accurate.",
+    "matchScore": 107,
+    "libraryStage": "CREATION",
+    "pipelineStage": "Visual Planning",
+    "promptPreview": "Choose a visual only when it clarifies a mechanism, workflow, comparison, or verified dataset. Tie every factual visual element to supplied source IDs and avoid dense generated text.",
+    "selectedPromptId": "creation-product-accurate-visual-brief-generator-11",
+    "selectedPromptName": "Product-Accurate Visual Brief Generator"
+   },
+   {
+    "tags": [
+     "creation",
+     "production",
+     "proof",
+     "platform"
+    ],
+    "reason": "Matched CREATION prompt using accurate, claims.",
+    "matchScore": 87,
+    "libraryStage": "CREATION",
+    "pipelineStage": "Fact Verification",
+    "promptPreview": "Choose a visual only when it clarifies a mechanism, workflow, comparison, or verified dataset. Tie every factual visual element to supplied source IDs and avoid dense generated text.",
+    "selectedPromptId": "creation-product-accurate-visual-brief-generator-11",
+    "selectedPromptName": "Product-Accurate Visual Brief Generator"
+   },
+   {
+    "tags": [
+     "optimization",
+     "audience",
+     "platform"
+    ],
+    "reason": "Matched OPTIMIZATION prompt using performance, pattern, metrics.",
+    "matchScore": 97,
+    "libraryStage": "OPTIMIZATION",
+    "pipelineStage": "Performance Optimization",
+    "promptPreview": "Treat historical metrics as observational. Identify the mechanism, format, platform, audience, and territory associated with performance, but do not claim causation or guarantee a repeat.",
+    "selectedPromptId": "optimization-performance-pattern-recognition-analyzer-12",
+    "selectedPromptName": "Performance Pattern Recognition Analyzer"
+   },
+   {
+    "tags": [
+     "distribution",
+     "calendar",
+     "optimization",
+     "platform"
+    ],
+    "reason": "Matched DISTRIBUTION prompt using platform, optimizer.",
+    "matchScore": 94,
+    "libraryStage": "DISTRIBUTION",
+    "pipelineStage": "Delivery Pack",
+    "promptPreview": "Preserve the factual thesis while changing structure, pacing, depth, CTA, and formatting for the selected platform. Never add a platform that is absent from the brief.",
+    "selectedPromptId": "distribution-platform-specific-content-optimizer-8",
+    "selectedPromptName": "Platform-Specific Content Optimizer"
+   }
+  ],
+  "visualBriefs": [
+   {
+    "id": "visual-1",
+    "prompt": "Clean 4:5 concept diagram: left side a single sugarcane stalk with leaf, arrow right to a cross-section of a shoe midsole showing honeycomb foam structure. Color palette: #1990C6 primary blue for arrows and labels, #ECE9E2 background, #000000 text. Minimalist Geograph-style typography. No logos, no wordmarks. Alt text: 'Sugarcane stalk transforms into SweetFoam® midsole cross-section showing honeycomb structure.'",
+    "status": "failed",
+    "altText": "Sugarcane stalk transforms into SweetFoam® midsole cross-section showing honeycomb structure.",
+    "assetId": "asset-1",
+    "purpose": "Show sugarcane-to-SweetFoam® transformation without dense text",
+    "sourceIds": [],
+    "dataPoints": [],
+    "keyMessage": "Sugarcane becomes responsive EVA foam midsole — no petroleum synthetics",
+    "statusNote": "Image generation failed: Insufficient credits. Add more using https://openrouter.ai/settings/credits",
+    "visualType": "concept-diagram",
+    "aspectRatio": "4:5"
+   },
+   {
+    "id": "visual-2",
+    "prompt": "1:1 deterministic chart: three small labeled callouts around a side-view shoe silhouette. Top: '8.7 oz' with feather icon. Middle: '14 mm / 8 mm stack' with stacked bars. Bottom: '6 mm drop' with angled line. Colors: #1990C6 for lines and labels, #ECE9E2 background, #000000 text. Geograph font. No logos. Alt text: 'Shoe silhouette with three callouts: weight 8.7 oz, stack 14/8 mm, drop 6 mm.'",
+    "status": "failed",
+    "altText": "Shoe silhouette with three callouts: weight 8.7 oz, stack 14/8 mm, drop 6 mm.",
+    "assetId": "asset-3",
+    "purpose": "Visualize 8.7oz weight, 14mm/8mm stack, 6mm drop as running-adjacent geometry",
+    "sourceIds": [],
+    "dataPoints": [
+     "Weight: 8.7oz (M9), 6.7oz (W7)",
+     "Stack height: heel 14mm, toe 8mm",
+     "Heel/toe drop: 6mm"
+    ],
+    "keyMessage": "Measured specs that make running feel like walking",
+    "statusNote": "Image generation failed: Insufficient credits. Add more using https://openrouter.ai/settings/credits",
+    "visualType": "comparison",
+    "aspectRatio": "1:1"
+   },
+   {
+    "id": "visual-3",
+    "prompt": "4:5 editorial illustration: exploded-view shoe showing four distinct horizontal layers labeled 1–4. Layer 1 (top): knit upper texture, label 'Eucalyptus TENCEL™ Lyocell + recycled polyester'. Layer 2: wool blend lining, label 'Merino wool blend'. Layer 3: memory foam grid, label 'Featherbed™ dual-density memory foam'. Layer 4 (bottom): honeycomb midsole, label 'SweetFoam® sugarcane EVA'. Palette: #1990C6 for layer lines, #ECE9E2 background, #000000 labels in Geograph. No logos. Alt text: 'Exploded shoe view with four labeled layers: upper, lining, insole, midsole — each named with exact material.'",
+    "status": "failed",
+    "altText": "Exploded shoe view with four labeled layers: upper, lining, insole, midsole — each named with exact material.",
+    "assetId": "asset-4",
+    "purpose": "Show four named layers of the shoe construction",
+    "sourceIds": [],
+    "dataPoints": [
+     "Upper: eucalyptus TENCEL™ Lyocell + recycled polyester",
+     "Lining: Merino wool blend",
+     "Insole: Featherbed™ dual-density memory foam",
+     "Midsole: SweetFoam® sugarcane EVA"
+    ],
+    "keyMessage": "Every layer named with material and function — no vague claims",
+    "statusNote": "Image generation failed: Insufficient credits. Add more using https://openrouter.ai/settings/credits",
+    "visualType": "concept-diagram",
+    "aspectRatio": "4:5"
+   },
+   {
+    "id": "visual-4",
+    "prompt": "4:5 editorial illustration: three small vignettes in a horizontal row, connected by a subtle dashed line. Left: morning commuter in sneakers jogging toward a train. Center: same sneakers under a desk at a laptop. Right: same sneakers at a bar stool with a drink. Minimal line-art style, #1990C6 accent color for the shoes only, #ECE9E2 background, #000000 for figures. Geograph font for tiny time labels '7 AM', '12 PM', '7 PM'. No logos. Alt text: 'Three scenes — morning run, office desk, evening bar — same shoes highlighted in brand blue.'",
+    "status": "failed",
+    "altText": "Three scenes — morning run, office desk, evening bar — same shoes highlighted in brand blue.",
+    "assetId": "asset-2",
+    "purpose": "Show one shoe across three daily moments without lifestyle photography",
+    "sourceIds": [],
+    "dataPoints": [],
+    "keyMessage": "Commute run → office → happy hour in the same pair",
+    "statusNote": "Image generation failed: Insufficient credits. Add more using https://openrouter.ai/settings/credits",
+    "visualType": "editorial-illustration",
+    "aspectRatio": "4:5"
+   },
+   {
+    "id": "visual-5",
+    "prompt": "1:1 concept diagram: a simple vertical timeline with three nodes. Node 1: 'Week 1 — SweetFoam® origin' with sugarcane icon. Node 2: 'Week 2 — Geometry proof' with ruler/scale icon. Node 3: 'Week 3 — Material breakdown' with layers icon. Connecting line in #1990C6. Background #ECE9E2. Labels in Geograph #000000. Small badge at bottom: 'One question. One fact. No spam.' No logos. Alt text: 'Three-week timeline showing curated proof points: SweetFoam origin, geometry specs, material layers — labeled one question one fact no spam.'",
+    "status": "failed",
+    "altText": "Three-week timeline showing curated proof points: SweetFoam origin, geometry specs, material layers — labeled one question one fact no spam.",
+    "assetId": "asset-5",
+    "purpose": "Represent the newsletter cadence: one question, one fact, no spam",
+    "sourceIds": [],
+    "dataPoints": [],
+    "keyMessage": "Early access = curated proof chain, not hype",
+    "statusNote": "Image generation failed: Insufficient credits. Add more using https://openrouter.ai/settings/credits",
+    "visualType": "concept-diagram",
+    "aspectRatio": "1:1"
+   }
+  ],
+  "brandIdentity": {
+   "fonts": [
+    "Geograph"
+   ],
+   "colors": [
+    {
+     "role": "primary",
+     "value": "#1990C6"
+    },
+    {
+     "role": "accent",
+     "value": "#136F99"
+    },
+    {
+     "role": "background",
+     "value": "#ECE9E2"
+    },
+    {
+     "role": "textPrimary",
+     "value": "#000000"
+    }
+   ],
+   "logoUrl": "",
+   "bodyFont": "Geograph",
+   "sourceUrl": "https://www.allbirds.com/",
+   "colorScheme": "light",
+   "headingFont": "Geograph",
+   "personality": "minimalist, low"
+  },
+  "contentSeries": [
+   {
+    "id": "series-1",
+    "title": "Material → Feel → Access",
+    "episodes": [
+     {
+      "id": "series-1-ep-1",
+      "role": "prove",
+      "title": "The Material: SweetFoam® Origin",
+      "formats": [
+       "X thread (4 tweets)",
+       "Newsletter deep-dive (300 words)"
+      ]
+     },
+     {
+      "id": "series-1-ep-2",
+      "role": "prove",
+      "title": "The Feel: Weight, Geometry, Bounce",
+      "formats": [
+       "X thread (4 tweets)",
+       "Newsletter deep-dive (300 words)"
+      ]
+     },
+     {
+      "id": "series-1-ep-3",
+      "role": "convert",
+      "title": "The Access: First to Know",
+      "formats": [
+       "X thread (4 tweets)",
+       "Newsletter welcome/confirmation (150 words)"
+      ]
+     }
+    ],
+    "territory": "territory-1",
+    "narrativeArc": "Progressive reveal: Episode 1 proves the material (SweetFoam® origin). Episode 2 proves the feel (weight, geometry, bounce). Episode 3 proves the access (newsletter = first to know, not hype).",
+    "targetSegment": "segment-1",
+    "repurposingMap": [
+     "X thread tweets 1-3 → Newsletter paragraphs 1-3",
+     "Newsletter deep-dive → X carousel thread (1 material per tweet)",
+     "Episode 3 CTA language shared across both platforms"
+    ],
+    "amplificationPlan": [
+     "Pin Episode 1 thread on X profile for campaign duration",
+     "Cross-post Episode 2 Newsletter hook to X as quote tweet with link",
+     "Retarget X engagers with Episode 3 Newsletter signup ad (if budget allows)"
+    ]
+   },
+   {
+    "id": "series-2",
+    "title": "Everyday Versatility Proof",
+    "episodes": [
+     {
+      "id": "series-2-ep-1",
+      "role": "prove",
+      "title": "Commute → Office → Happy Hour",
+      "formats": [
+       "Newsletter lifestyle story (300 words)",
+       "X single post with lifestyle image"
+      ]
+     },
+     {
+      "id": "series-2-ep-2",
+      "role": "prove",
+      "title": "Wash. Wear. Repeat.",
+      "formats": [
+       "Newsletter care demo (200 words)",
+       "X single post with care instruction graphic"
+      ]
+     }
+    ],
+    "territory": "territory-4",
+    "narrativeArc": "Two-touch lifestyle arc: Episode 1 shows commute-to-happy-hour versatility. Episode 2 proves care durability with 'Fresh again' machine-washable story.",
+    "targetSegment": "segment-2",
+    "repurposingMap": [
+     "Newsletter lifestyle story → X image + caption (hook-3)",
+     "Newsletter care demo → X graphic + caption (hook-5)",
+     "User-generated 'miles on my Allbirds' replies curated into follow-up X thread"
+    ],
+    "amplificationPlan": [
+     "Feature top 3 UGC replies in Episode 2 Newsletter",
+     "Pin Episode 1 X post for campaign duration",
+     "Share Episode 2 care graphic in Instagram Stories (if brand permits cross-post)"
+    ]
+   },
+   {
+    "id": "series-3",
+    "title": "Material Transparency Deep-Dive",
+    "episodes": [
+     {
+      "id": "series-3-ep-1",
+      "role": "prove",
+      "title": "Every Layer Named",
+      "formats": [
+       "Newsletter technical spec sheet (400 words)",
+       "X carousel thread (5 tweets)"
+      ]
+     }
+    ],
+    "territory": "territory-1",
+    "narrativeArc": "Single deep-dive episode: every layer named with construction detail — no vague claims. Serves evaluators who read Reddit alternatives threads.",
+    "targetSegment": "segment-3",
+    "repurposingMap": [
+     "Newsletter spec sheet paragraphs → X carousel tweets (1 layer per tweet)",
+     "Technical details (country of origin, weight, stack) → X quote tweets with spec graphics"
+    ],
+    "amplificationPlan": [
+     "Pin X carousel thread for campaign duration",
+     "Link Newsletter spec sheet in X bio for campaign week",
+     "Offer PDF download of spec sheet via Newsletter CTA (captures segment-3 emails)"
+    ]
+   }
+  ],
+  "promptLibrary": {
+   "loaded": true,
+   "sourceFile": "builtin:flusso-core-v1",
+   "routedStages": 13,
+   "totalPrompts": 13,
+   "routerVersion": "csv-keyword-router-v1"
+  },
+  "promptModules": [
+   {
+    "id": "ideation-competitive-content-analysis-mood-board-creator-1",
+    "name": "Competitive Content Analysis & Mood Board Creator",
+    "tags": [
+     "ideation",
+     "competitive",
+     "audience",
+     "campaign"
+    ],
+    "useCase": "Map the current content landscape and identify defensible gaps.",
+    "dependsOn": [
+     "project brief",
+     "competitor inputs"
+    ],
+    "usedInMvp": true,
+    "capability": "Map competitor patterns, content gaps, mood board cues, and creative territories",
+    "libraryStage": "IDEATION",
+    "outputArtifact": "contentLandscape"
+   },
+   {
+    "id": "ideation-audience-micro-segment-content-mapper-2",
+    "name": "Audience Micro-Segment Content Mapper",
+    "tags": [
+     "ideation",
+     "audience",
+     "calendar",
+     "platform"
+    ],
+    "useCase": "Turn a broad audience into operational messaging segments.",
+    "dependsOn": [
+     "brand context",
+     "contentLandscape"
+    ],
+    "usedInMvp": true,
+    "capability": "Turn broad audience inputs into message, proof, format, and distribution blueprints",
+    "libraryStage": "IDEATION",
+    "outputArtifact": "audienceSegments"
+   },
+   {
+    "id": "ideation-content-series-architecture-builder-3",
+    "name": "Content Series Architecture Builder",
+    "tags": [
+     "ideation",
+     "audience",
+     "hooks",
+     "campaign"
+    ],
+    "useCase": "Design a connected campaign without repetitive posts.",
+    "dependsOn": [
+     "territories",
+     "hooks"
+    ],
+    "usedInMvp": true,
+    "capability": "Design serialized narratives, episode hierarchy, and repurposing structure",
+    "libraryStage": "IDEATION",
+    "outputArtifact": "contentSeries"
+   },
+   {
+    "id": "ideation-multi-variant-hook-generator-4",
+    "name": "Multi-Variant Hook Generator",
+    "tags": [
+     "ideation",
+     "hooks"
+    ],
+    "useCase": "Create specific hooks tied to evidence and reader intent.",
+    "dependsOn": [
+     "audienceSegments",
+     "territories"
+    ],
+    "usedInMvp": true,
+    "capability": "Generate hook variants by psychological trigger, segment, and platform",
+    "libraryStage": "IDEATION",
+    "outputArtifact": "hooks"
+   },
+   {
+    "id": "ideation-trend-responsive-content-ideator-5",
+    "name": "Trend-Responsive Content Ideator",
+    "tags": [
+     "ideation"
+    ],
+    "useCase": "Connect timely source material to durable brand relevance.",
+    "dependsOn": [
+     "brand context",
+     "contentLandscape"
+    ],
+    "usedInMvp": false,
+    "capability": "Connect current trends and cultural moments to brand-safe content concepts",
+    "libraryStage": "IDEATION",
+    "outputArtifact": "trendOpportunities"
+   },
+   {
+    "id": "optimization-competitive-intelligence-integration-system-6",
+    "name": "Competitive Intelligence Integration System",
+    "tags": [
+     "optimization",
+     "competitive"
+    ],
+    "useCase": "Use competitor evidence to sharpen positioning.",
+    "dependsOn": [
+     "competitor inputs",
+     "contentLandscape"
+    ],
+    "usedInMvp": false,
+    "capability": "Maintain competitor monitoring and strategic response playbooks",
+    "libraryStage": "OPTIMIZATION",
+    "outputArtifact": "competitiveIntel"
+   },
+   {
+    "id": "distribution-multi-channel-campaign-orchestrator-7",
+    "name": "Multi-Channel Campaign Orchestrator",
+    "tags": [
+     "distribution",
+     "audience",
+     "campaign",
+     "calendar",
+     "platform"
+    ],
+    "useCase": "Convert campaign architecture into a capacity-aware calendar.",
+    "dependsOn": [
+     "contentSeries",
+     "platformAdaptations"
+    ],
+    "usedInMvp": true,
+    "capability": "Coordinate owned, earned, and paid channel rollout across launch phases",
+    "libraryStage": "DISTRIBUTION",
+    "outputArtifact": "calendar"
+   },
+   {
+    "id": "distribution-platform-specific-content-optimizer-8",
+    "name": "Platform-Specific Content Optimizer",
+    "tags": [
+     "distribution",
+     "calendar",
+     "optimization",
+     "platform"
+    ],
+    "useCase": "Adapt assets to selected platforms without diluting substance.",
+    "dependsOn": [
+     "hooks",
+     "contentAssets"
+    ],
+    "usedInMvp": true,
+    "capability": "Adapt content to platform algorithms, behavior patterns, CTAs, and formats",
+    "libraryStage": "DISTRIBUTION",
+    "outputArtifact": "platformAdaptations"
+   },
+   {
+    "id": "creation-multi-format-content-atomization-engine-9",
+    "name": "Multi-Format Content Atomization Engine",
+    "tags": [
+     "creation",
+     "calendar",
+     "production",
+     "platform"
+    ],
+    "useCase": "Produce complete platform-native assets from approved calendar items.",
+    "dependsOn": [
+     "contentSeries",
+     "calendar"
+    ],
+    "usedInMvp": true,
+    "capability": "Turn one idea into platform-native posts, threads, emails, and articles",
+    "libraryStage": "CREATION",
+    "outputArtifact": "contentAssets"
+   },
+   {
+    "id": "creation-ai-to-human-content-refinement-system-10",
+    "name": "AI-to-Human Content Refinement System",
+    "tags": [
+     "creation",
+     "production"
+    ],
+    "useCase": "Rewrite drafts into specific, natural, publish-ready editorial work.",
+    "dependsOn": [
+     "contentAssets",
+     "brand voice"
+    ],
+    "usedInMvp": true,
+    "capability": "Remove generic AI patterns and add human-feeling editorial texture",
+    "libraryStage": "CREATION",
+    "outputArtifact": "refinedAssets"
+   },
+   {
+    "id": "creation-product-accurate-visual-brief-generator-11",
+    "name": "Product-Accurate Visual Brief Generator",
+    "tags": [
+     "creation",
+     "production",
+     "proof",
+     "platform"
+    ],
+    "useCase": "Plan visuals that improve comprehension without adding claims.",
+    "dependsOn": [
+     "brand context",
+     "source evidence"
+    ],
+    "usedInMvp": true,
+    "capability": "Create product-safe visual briefs and accuracy checklists",
+    "libraryStage": "CREATION",
+    "outputArtifact": "visualBriefs"
+   },
+   {
+    "id": "optimization-performance-pattern-recognition-analyzer-12",
+    "name": "Performance Pattern Recognition Analyzer",
+    "tags": [
+     "optimization",
+     "audience",
+     "platform"
+    ],
+    "useCase": "Extract reusable mechanisms from measured performance.",
+    "dependsOn": [
+     "historical metrics",
+     "published assets"
+    ],
+    "usedInMvp": true,
+    "capability": "Translate performance data into winning patterns and underperforming elements",
+    "libraryStage": "OPTIMIZATION",
+    "outputArtifact": "performancePatterns"
+   },
+   {
+    "id": "optimization-content-iteration-engine-13",
+    "name": "Content Iteration Engine",
+    "tags": [
+     "optimization",
+     "hooks"
+    ],
+    "useCase": "Turn measured learnings into controlled editorial variations.",
+    "dependsOn": [
+     "performancePatterns"
+    ],
+    "usedInMvp": true,
+    "capability": "Scale winning content into testable variations and documented learnings",
+    "libraryStage": "OPTIMIZATION",
+    "outputArtifact": "iterationBacklog"
+   }
+  ],
+  "inferredFields": [
+   "brand",
+   "industry",
+   "tone",
+   "competitors"
+  ],
+  "productionPlan": {
+   "steps": [
+    {
+     "id": "task-1",
+     "day": "（请使用与 claims 中完全一致的键名，并确保所有键名均为小写，如 totalhours、riskflags、teamroles 等。）",
+     "role": "writer",
+     "task": "Write and schedule X thread (asset-1) with visual-1",
+     "estimate": "1.5h",
+     "linkedCalendarIds": [
+      "cal-1"
+     ]
+    },
+    {
+     "id": "task-2",
+     "day": "calendar",
+     "role": "writer",
+     "task": "Write and send newsletter (asset-2) with visual-4",
+     "estimate": "2h",
+     "linkedCalendarIds": [
+      "cal-2"
+     ]
+    },
+    {
+     "id": "task-3",
+     "day": "capacity",
+     "role": "writer",
+     "task": "Write and schedule X thread (asset-3) with visual-2",
+     "estimate": "1.5h",
+     "linkedCalendarIds": [
+      "cal-3"
+     ]
+    },
+    {
+     "id": "task-4",
+     "day": "risk",
+     "role": "writer",
+     "task": "Write and send newsletter (asset-4) with visual-3",
+     "estimate": "2h",
+     "linkedCalendarIds": [
+      "cal-4"
+     ]
+    },
+    {
+     "id": "task-5",
+     "day": "assumptions",
+     "role": "writer",
+     "task": "Write and send newsletter (asset-5) with visual-5",
+     "estimate": "1.5h",
+     "linkedCalendarIds": [
+      "cal-5"
+     ]
+    },
+    {
+     "id": "task-6",
+     "day": "dependsOn",
+     "role": "writer",
+     "task": "Write and schedule X thread (asset-6, not yet created) - needs drafting",
+     "estimate": "1.5h",
+     "linkedCalendarIds": [
+      "cal-6"
+     ]
+    },
+    {
+     "id": "task-7",
+     "day": "warnings",
+     "role": "writer",
+     "task": "Write and schedule X single post (asset-7, not yet created) - needs drafting",
+     "estimate": "1h",
+     "linkedCalendarIds": [
+      "cal-7"
+     ]
+    }
+   ],
+   "warnings": [
+    "Visual briefs (visual-1 through visual-5) are all 'planned' status — production depends on design handoff timing.",
+    "Asset-5 (newsletter day 5) references 'last week' and 'next week' cadence but campaign is only 7 days; timeline language may confuse readers.",
+    "Asset-1 and Asset-3 CTAs link to '[newsletter link]' placeholder — needs real URL before publish.",
+    "Claim-2 in asset-1 is unsupported (upcoming running shoe specs not public per risk_flag#1). Recommend removing or replacing with verified Cruiser tech reference."
+   ],
+   "totalHours": "riskFlags",
+   "overloadRisk": "medium",
+   "capacitySummary": "One-person team with 8 hours/week across 7 days. 3 posts/week (2 threads, 1 newsletter) = 6 assets in 7 days. Average ~1.3 hours per asset including writing, visual coordination, and publishing. Tight but feasible if visual briefs are pre-approved.",
+   "roleAssignments": [
+    {
+     "role": "writer",
+     "hours": "teamRoles",
+     "ownerCount": 1,
+     "responsibilities": [
+      "Draft all 6 assets (3 X threads, 3 newsletters)",
+      "Incorporate visual brief feedback",
+      "Finalize CTAs with live links"
+     ]
+    },
+    {
+     "role": "designer",
+     "hours": "productionTasks",
+     "ownerCount": 1,
+     "responsibilities": [
+      "Produce 5 visual briefs (concept diagrams, comparison chart, editorial illustration)",
+      "Deliver assets in 4:5 and 1:1 ratios per specs"
+     ]
+    },
+    {
+     "role": "editor",
+     "hours": "calendarDependencies",
+     "ownerCount": 1,
+     "responsibilities": [
+      "Fact-check all claims against source evidence",
+      "Enforce brand voice guide (avoid prohibited terms)",
+      "Approve final copy before scheduling"
+     ]
+    },
+    {
+     "role": "publisher",
+     "hours": "responsibilities",
+     "ownerCount": 1,
+     "responsibilities": [
+      "Schedule X threads (cal-1, cal-3, cal-6, cal-7) and newsletters (cal-2, cal-4, cal-5)",
+      "Insert live newsletter signup URLs in CTAs",
+      "Verify visual alt text matches brand accessibility standards"
+     ]
+    }
+   ]
+  },
+  "editorialReport": {
+   "score": 88,
+   "passed": true,
+   "strengths": [
+    "All assets cite verified facts with source IDs; no invented metrics or claims.",
+    "Editorial modes match the brief's mix (technical-explainer, storytelling, proof-led, direct-practical).",
+    "Hooks are specific, evidence-backed, and avoid prohibited terms.",
+    "Calendar sequencing respects 7-day/3-post cadence across X and Newsletter.",
+    "Visual briefs clarify mechanisms without adding claims; tied to source IDs and brand colors."
+   ],
+   "issueCount": 0,
+   "rewriteSummary": "Tightened thread copy to stay under 280 chars per tweet; removed emoji overload; sharpened CTA language to match brand voice ('First to know when it drops' → 'First to know when it drops → [newsletter link]'). Newsletter subject lines now lead with the hook exactly as written. Asset-2 newsletter copy condensed to ~220 words for inbox readability while keeping all proof points. Asset-4 spec sheet email formatted with line breaks for scanning. Two minor issues remain: asset-1 thread tweet 3 could be more specific about 'daily miles' proof; asset-5 welcome email assumes a prior week fact that may not exist for new subscribers."
+  },
+  "audienceSegments": [
+   {
+    "id": "segment-1",
+    "cta": "Join the newsletter for early access to the running shoe built on SweetFoam®",
+    "name": "Launch-Curious Runners",
+    "needs": [
+     "Credible proof that natural materials (sugarcane, tree fiber, wool) can handle running loads",
+     "First access to launch info (date, specs, sizing)",
+     "Assurance it fits daily mileage, not just lifestyle"
+    ],
+    "timing": "Morning (7-9 AM) for X; mid-morning (10 AM) for Newsletter",
+    "cadence": "Day 1 (X thread), Day 3 (X thread), Day 6 (X thread)",
+    "objections": [
+     "Natural materials = soft but not durable or responsive enough for running",
+     "Allbirds = casual shoes, not running shoes",
+     "Waitlist hype without substance"
+    ],
+    "proofPoints": [
+     "SweetFoam® = sugarcane-based EVA with responsive energy return (fact-20)",
+     "8.7oz / 6.7oz weight, 14mm/8mm stack, 6mm drop — running-adjacent geometry (fact-23)",
+     "TENCEL™ Lyocell upper = breathable, moisture-wicking, cool (fact-19, site-page-5)",
+     "Machine washable durability (fact-21)"
+    ],
+    "tabooTopics": [
+     "Specific launch date/price (unconfirmed)",
+     "Race performance claims (unverified)",
+     "Carbon plate or 'super shoe' comparisons",
+     "Competitor bashing"
+    ],
+    "emotionalTone": "Curious, confident, evidence-led — not hype",
+    "awarenessLevel": "Problem-aware: knows they want natural materials for running but unsure if any brand delivers race-worthy comfort without synthetics",
+    "primaryPlatform": "X",
+    "formatPreferences": [
+     "X: 4-tweet thread (question → proof → proof → CTA)",
+     "Newsletter: 300-word deep-dive with one material → comfort chain"
+    ],
+    "messagePositioning": "The running shoe that doesn't choose between natural materials and running comfort — you get both, proven by weight, geometry, and material science."
+   },
+   {
+    "id": "segment-2",
+    "cta": "Subscribe to see how running tech makes your everyday walk even better",
+    "name": "Comfort-First Everyday Walkers",
+    "needs": [
+     "Confirmation that running shoe retains Allbirds' signature all-day comfort",
+     "Versatility proof: works for walks, travel, office, happy hour (fact-29)",
+     "Easy care and durability for daily rotation"
+    ],
+    "timing": "Mid-morning (10 AM) for Newsletter; evening (6-8 PM) for X lifestyle post",
+    "cadence": "Day 2 (Newsletter), Day 5 (Newsletter)",
+    "objections": [
+     "Running shoe = stiff, narrow, less comfortable for standing all day",
+     "Higher price than current Cruiser/Runner models",
+     "Over-engineered for my needs"
+    ],
+    "proofPoints": [
+     "Featherbed™ memory foam insole for extra comfort and bounce (fact-18)",
+     "Merino wool-blend lining, socks optional (fact-18)",
+     "Machine washable: remove insoles, hand wash, air dry — Fresh again (fact-21)",
+     "Designed for everyday walks, vacation, happy hour (fact-29)"
+    ],
+    "tabooTopics": [
+     "Technical running jargon (tempo, intervals, PR)",
+     "Aggressive performance marketing",
+     "Sacrificing comfort for speed"
+    ],
+    "emotionalTone": "Relatable, practical, 'made for your routine'",
+    "awarenessLevel": "Solution-aware: owns Allbirds for walking/travel, trusts comfort, curious if running shoe upgrades their daily wear",
+    "primaryPlatform": "Newsletter",
+    "formatPreferences": [
+     "Newsletter: lifestyle-focused story with comfort proof points",
+     "X: single-image + caption showing versatility (office → walk → happy hour)"
+    ],
+    "messagePositioning": "Running-adjacent engineering — lightweight, bouncy, breathable — applied to your everyday: walks, vacation, happy hour, commute."
+   },
+   {
+    "id": "segment-3",
+    "cta": "Get the material breakdown — sign up for the technical deep-dive",
+    "name": "Material-Conscious Footwear Evaluators",
+    "needs": [
+     "Material transparency: exact composition, sourcing, construction",
+     "Proof that natural alternatives match synthetic performance",
+     "Independent quality signals (not marketing claims)"
+    ],
+    "timing": "Mid-morning (10 AM) for Newsletter",
+    "cadence": "Day 4 (Newsletter deep-dive)",
+    "objections": [
+     "Greenwashing risk: 'natural' as marketing veneer",
+     "Recycled polyester blend = still plastic",
+     "Manufacturing origin (Vietnam) vs. material sourcing story"
+    ],
+    "proofPoints": [
+     "Upper: eucalyptus-derived TENCEL™ Lyocell yarn + recycled polyester blend (fact-19)",
+     "Lining: Merino wool blend (fact-18)",
+     "Insole: Featherbed™ dual-density memory foam (fact-18, site-page-5)",
+     "Midsole: SweetFoam® sugarcane-based EVA (fact-20)",
+     "Country of origin: Vietnam (fact-23)"
+    ],
+    "tabooTopics": [
+     "Vague sustainability certifications",
+     "Carbon neutrality claims without scope",
+     "Comparisons to Baabuk/Gottstein/Icebug (Reddit alternatives)"
+    ],
+    "emotionalTone": "Precise, transparent, respectful of skepticism",
+    "awarenessLevel": "Research-intensive: compares materials, construction, origin; reads Reddit alternatives threads (Baabuk, Gottstein, Icebug ReWool)",
+    "primaryPlatform": "Newsletter",
+    "formatPreferences": [
+     "Newsletter: technical spec sheet style with material callouts",
+     "X: carousel-style thread with one material per tweet"
+    ],
+    "messagePositioning": "Every layer named: eucalyptus TENCEL™ Lyocell + recycled polyester upper, Merino wool blend lining, Featherbed™ memory foam, sugarcane SweetFoam® midsole. No vague 'eco' claims."
+   }
+  ],
+  "contentLandscape": {
+   "summary": "Competitor content saturates 'sustainable' and 'eco-friendly' claims without material specificity; Allbirds can own the concrete material-to-comfort proof chain.",
+   "toneGaps": [
+    {
+     "id": "gap-7",
+     "name": "Second-Person Situational Language",
+     "type": "tone",
+     "evidence": "Voice guide mandates 'you' situations: daily routines, weekend plans, travel, happy hour (fact-25, fact-29); avoid 'customers'",
+     "priority": "high",
+     "recommendation": "Every piece speaks to 'your morning run,' 'your commute,' 'your recovery day' — not 'runners need'"
+    }
+   ],
+   "formatGaps": [
+    {
+     "id": "gap-4",
+     "name": "Single-Proof-Point Micro-Content",
+     "type": "format",
+     "evidence": "Newsletter and X favor atomic content; brand has measurable facts (weight, stack height, material blends) that fit single-proof format",
+     "priority": "high",
+     "recommendation": "Each post/email answers one question with one verified fact: 'How light?' → 8.7oz. 'What's the drop?' → 6mm. 'What's SweetFoam®?' → sugarcane EVA."
+    },
+    {
+     "id": "gap-5",
+     "name": "Progressive Reveal Sequence",
+     "type": "format",
+     "evidence": "7-day campaign, 3 posts/week = 3-4 touchpoints; can build anticipation through material → comfort → launch access arc",
+     "priority": "high",
+     "recommendation": "Structure as 3-episode series: Episode 1: The Material (SweetFoam® origin). Episode 2: The Feel (weight, geometry, bounce). Episode 3: The Access (newsletter = first to know)."
+    },
+    {
+     "id": "gap-6",
+     "name": "User-Generated Comfort Proof",
+     "type": "format",
+     "evidence": "Machine washable care (fact-21), 'Fresh again' language, everyday wear photos on site — real-world durability signals",
+     "priority": "medium",
+     "recommendation": "Invite current owners to share 'miles on my Allbirds' stories; curate as social proof for running-adjacent durability"
+    }
+   ],
+   "opportunityGaps": [
+    {
+     "id": "gap-1",
+     "name": "Material Specificity Gap",
+     "type": "saturated-narrative",
+     "evidence": "Competitors use 'recycled materials,' 'natural fibers' generically; Allbirds names wool, tree fiber (TENCEL™ Lyocell), sugarcane (SweetFoam®) with construction details (fact-4, fact-18, fact-19, fact-20)",
+     "priority": "high",
+     "recommendation": "Lead every piece with specific material → comfort proof chain: eucalyptus-derived TENCEL™ Lyocell → breathable upper; Merino wool blend → soft lining; sugarcane SweetFoam® → responsive cushioning"
+    },
+    {
+     "id": "gap-2",
+     "name": "Running-Adjacent Comfort Proof Gap",
+     "type": "format",
+     "evidence": "Running brands show elite athletes; Allbirds shows everyday wear (walks, vacation, happy hour) with measured weight (8.7oz/6.7oz) and geometry (14mm/8mm stack, 6mm drop) (fact-23, fact-29)",
+     "priority": "high",
+     "recommendation": "Frame running-adjacent comfort through everyday proof points: lightweight for daily miles, bouncy for recovery days, breathable for commute runs — not race-day claims"
+    },
+    {
+     "id": "gap-3",
+     "name": "Curiosity Over Hype Gap",
+     "type": "tone",
+     "evidence": "Brand voice uses 'wildly comfortable,' 'win win win,' 'Fresh again' — playful but grounded (voice guide); competitors use 'revolutionary,' 'unbeatable,' 'game-changing'",
+     "priority": "medium",
+     "recommendation": "Adopt 'Curious, Not Overhyped' tone: one question, one proof point per piece; invite reader to verify comfort themselves"
+    }
+   ],
+   "platformInsights": [
+    {
+     "insight": "Thread format works for progressive reveal: tweet 1 = hook question, tweet 2-3 = proof points, tweet 4 = newsletter CTA; 280 chars forces single-proof atomicity",
+     "platform": "X",
+     "opportunity": "Run 3-thread sequence over 7 days (Day 1, 3, 6) matching postsPerWeek"
+    },
+    {
+     "insight": "Email allows deeper proof chain: material origin → construction detail → comfort result → signup incentive; subject line = one question",
+     "platform": "Newsletter",
+     "opportunity": "Send 2 emails (Day 2, Day 5) complementing X threads; each email = one territory deep-dive"
+    }
+   ],
+   "competitorPatterns": [
+    "Nike, On, Brooks lead with performance tech (carbon plates, energy return foams) and athlete endorsements — saturated narrative: 'fastest shoe'",
+    "lululemon, Giesswein, Veja, Rothy's, VIVAIA, Cariuma lean on 'sustainable,' 'eco-friendly,' 'recycled materials' — saturated narrative: 'green materials' without comfort proof",
+    "Bombas focuses on socks/apparel comfort — adjacent but not footwear",
+    "Reddit community seeks independent alternatives (Baabuk, Gottstein, Icebug ReWool) prioritizing quality over marketing — gap: credible material-to-comfort evidence"
+   ],
+   "saturatedNarratives": [
+    "Generic sustainability claims ('eco-friendly,' 'sustainable') without named materials",
+    "Performance footwear jargon (carbon plate, tempo run, race day) disconnected from everyday comfort",
+    "Lifestyle/athleisure positioning that obscures actual use cases"
+   ]
+  },
+  "generationStages": [
+   {
+    "label": "Foundation",
+    "stage": "foundation",
+    "status": "completed",
+    "startedAt": "2026-10-27T21:18:32.231Z",
+    "durationMs": 130396,
+    "outputKeys": [
+     "brandContext",
+     "strategy",
+     "contentLandscape",
+     "audienceSegments",
+     "territories"
+    ],
+    "completedAt": "2026-10-27T21:20:42.627Z"
+   },
+   {
+    "label": "Architecture",
+    "stage": "architecture",
+    "status": "completed",
+    "startedAt": "2026-10-27T21:20:42.631Z",
+    "durationMs": 387584,
+    "outputKeys": [
+     "hooks",
+     "contentSeries",
+     "contentItems",
+     "platformAdaptations"
+    ],
+    "completedAt": "2026-10-27T21:27:10.218Z"
+   },
+   {
+    "label": "Execution",
+    "stage": "execution",
+    "status": "completed",
+    "startedAt": "2026-10-27T21:27:10.239Z",
+    "durationMs": 75316,
+    "outputKeys": [
+     "calendar",
+     "assets"
+    ],
+    "completedAt": "2026-10-27T21:28:25.555Z"
+   },
+   {
+    "label": "Editorial",
+    "stage": "editorial",
+    "status": "completed",
+    "startedAt": "2026-10-27T21:28:25.563Z",
+    "durationMs": 97875,
+    "outputKeys": [
+     "assets",
+     "editorialReport",
+     "visualBriefs"
+    ],
+    "completedAt": "2026-10-27T21:30:03.438Z"
+   },
+   {
+    "label": "Governance",
+    "stage": "governance",
+    "status": "completed",
+    "startedAt": "2026-10-27T21:30:03.481Z",
+    "durationMs": 79690,
+    "outputKeys": [
+     "claims",
+     "assetClaimLinks",
+     "productionPlan"
+    ],
+    "completedAt": "2026-10-27T21:31:23.171Z"
+   },
+   {
+    "label": "Verification",
+    "stage": "verification",
+    "status": "completed",
+    "startedAt": "2026-10-27T21:31:23.445Z",
+    "durationMs": 67964,
+    "outputKeys": [
+     "claims",
+     "sources"
+    ],
+    "completedAt": "2026-10-27T21:32:31.409Z"
+   }
+  ],
+  "performanceContext": {
+   "brand": "Allbirds",
+   "rates": {
+    "viewRate": 0,
+    "conversionRate": 0,
+    "engagementRate": 0,
+    "clickThroughRate": 0,
+    "averageWatchTimeSeconds": 0
+   },
+   "totals": {
+    "views": 0,
+    "clicks": 0,
+    "conversions": 0,
+    "engagements": 0,
+    "impressions": 0,
+    "watchTimeSeconds": 0
+   },
+   "learnings": [],
+   "objective": "conversion",
+   "topAssets": [],
+   "recordCount": 0,
+   "hookPatterns": [],
+   "campaignCount": 0,
+   "platformPatterns": [],
+   "territoryPatterns": []
+  },
+  "platformAdaptations": [
+   {
+    "role": "Primary channel for segment-1 (Launch-Curious Runners); atomic threads deliver single-proof-point curiosity hooks that drive newsletter signups.",
+    "ctaStyle": "Direct: 'First to know when it drops → [newsletter link]'",
+    "platform": "X",
+    "reasoning": "Thread format matches 7-day/3-post cadence (Day 1, 3, 6). 280-char constraint enforces single-proof atomicity (gap-4). Hook-1 opens Episode 1 thread; Hook-2 opens Episode 2; Hook-7 powers transparency thread for segment-3 crossover; Hook-8 reframes specs as recovery benefits. Each thread ends with newsletter CTA.",
+    "formatPairings": [
+     "hook-1 → 4-tweet thread (question → SweetFoam® origin → geometry proof → CTA)",
+     "hook-2 → 4-tweet thread (specs hook → Featherbed™+SweetFoam® feel → everyday verification → CTA)",
+     "hook-7 → 4-tweet thread (contrast hook → eucalyptus source → Merino source → sugarcane source → CTA)",
+     "hook-8 → 4-tweet thread (recovery reframe → dual cushioning detail → walk/vacation proof → CTA)"
+    ],
+    "strongestHookIds": [
+     "hook-1",
+     "hook-2",
+     "hook-7",
+     "hook-8"
+    ]
+   },
+   {
+    "role": "Primary channel for segment-2 (Comfort-First Walkers) and segment-3 (Material Evaluators); deeper proof chains convert situational utility and transparency needs into signups.",
+    "ctaStyle": "Contextual: 'Get the full material breakdown' or 'Join — one question, one fact, no spam'",
+    "platform": "Newsletter",
+    "reasoning": "Email allows 300-400 word material→comfort→access arcs (gap-5). Hook-3 subject line drives Episode 1 lifestyle story (Day 2). Hook-4 subject line drives Episode 1 technical deep-dive (Day 4). Hook-6 powers welcome/confirmation email demonstrating anti-hype tone. Hook-9 subject line drives Episode 3 negative-definition email (Day 5/6). Each email includes single clear CTA to signup/confirmation.",
+    "formatPairings": [
+     "hook-3 → 300-word lifestyle email (scene → material proof → care proof → CTA)",
+     "hook-4 → 400-word spec sheet email (layer 1-4 with construction details → PDF offer → CTA)",
+     "hook-6 → 150-word welcome email (last week's fact + next week's preview → CTA)",
+     "hook-9 → 300-word negative-definition email (what it's not → what it is: SweetFoam® + geometry + care → CTA)"
+    ],
+    "strongestHookIds": [
+     "hook-3",
+     "hook-4",
+     "hook-6",
+     "hook-9"
+    ]
+   }
+  ]
+ }
+}

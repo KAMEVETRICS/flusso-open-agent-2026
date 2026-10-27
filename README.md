@@ -24,6 +24,7 @@ npm run agent:sample -- samples/wise-freelancers
 - [Setup](#setup)
 - [Usage](#usage)
 - [Sample inputs and outputs](#sample-inputs-and-outputs)
+- [Test campaigns](#test-campaigns)
 - [Sponsor technology](#sponsor-technology)
 - [Logs and traces](#logs-and-traces)
 - [Tests](#tests)
@@ -159,6 +160,29 @@ On failure it prints a structured error (`{"status":"error","error":{"type":...,
 | [wise-freelancers](samples/wise-freelancers/input.json) | wise.com: get freelancers paid internationally to open an account | 8 / 0 (2 revised) | Don't mention Wise Business cards to US freelancers: card deactivations are a live Hacker News thread (`audience_signals#3`) |
 
 All three were recorded live on 27 October 2026 through Meterless Nightshift, with every model request answered by `nvidia/nemotron-3-ultra-550b-a55b` (see `logs/telemetry.jsonl`), and Zetaris as the data layer. Full outputs are in [output_examples/](output_examples/): `<sample>.json` is the live recording and `<sample>.sample.json` is its replay. Rejections are kept and shown: on Linear, the verifier rejected a risk flag that stated numbers (5, 6) its evidence didn't contain, and an "open question" that cited no evidence.
+
+## Test campaigns
+
+Full campaigns run in the app during the build window, from website and goal to strategy, content calendar, platform-native posts, claim checks and editorial review. All are stored in the Neon campaign store and readable through the Zetaris `brand_evidence` USL.
+
+| Date (UTC) | Brand | Goal | Platforms | Posts | Calendar days | Claims checked / supported / unsupported | Editorial | Evidence agent | Model |
+|---|---|---|---|---|---|---|---|---|---|
+| 27 Oct 21:32 | Allbirds | Newsletter signups before a running shoe launch | Newsletter, X | 5 | 7 | 7 / 4 / 3 | 88 | 6 decisions | Nemotron 3 Ultra via Nightshift |
+| 27 Oct 08:41 | Allbirds | Newsletter signups before a running shoe launch | Newsletter, X | 5 | 7 | 30 / 11 / 0 | 94 | 5 decisions | gpt-5.6-luna via OpenRouter |
+| 27 Oct 06:07 | Linear | Adopt Linear Asks for Slack requests | LinkedIn, X | 8 | 14 | 29 / 21 / 0 | 94 | - | gpt-5.6-luna via OpenRouter |
+| 27 Oct 04:57 | Allbirds | Newsletter signups before a running shoe launch | Instagram, TikTok | 6 | 14 | 24 / 12 / 0 | 91 | - | gpt-5.6-luna via OpenRouter |
+| 27 Oct 04:49 | Allbirds | Newsletter signups before a running shoe launch | Instagram, TikTok | 6 | 14 | 24 / 13 / 0 | 91 | - | gpt-5.6-luna via OpenRouter |
+| 27 Oct 02:12 | Linear | Engineering managers start a Linear trial | LinkedIn, X | 8 | 14 | 28 / 16 / 0 | 92 | - | gpt-5.6-luna via OpenRouter |
+| 26 Oct 21:14 | Wise | Freelancers open a Wise account | LinkedIn, Medium | 6 | 14 | 24 / 6 / 0 | 93 | - | gpt-5.6-luna via OpenRouter |
+| 26 Oct 21:13 | charity: water | Recruit monthly donors to The Spring | LinkedIn, Newsletter | 6 | 14 | 23 / 8 / 0 | 93 | - | gpt-5.6-luna via OpenRouter |
+| 26 Oct 21:09 | Allbirds | Newsletter signups before a running shoe launch | Newsletter, X | 6 | 14 | 20 / 13 / 0 | 94 | - | gpt-5.6-luna via OpenRouter |
+| 26 Oct 08:03 | Doma | Onboard domain traders onchain | X, Discord | 5 | 7 | 22 / 4 / 2 | 91 | - | gpt-5.6-luna via OpenRouter |
+| 26 Oct 07:51 | Doma Protocol | Onboard domain traders onchain | X, Discord | 5 | 7 | 21 / 13 / 0 | 91 | - | gpt-5.6-luna via OpenRouter |
+| 25 Oct 22:57 | Doma | Onboard domain traders onchain | X, Discord | 5 | 7 | 22 / 4 / 2 | 91 | - | gpt-5.6-luna via OpenRouter |
+
+Claims that are neither supported nor unsupported are editorial framing or time-sensitive statements, which the proof report tracks separately. Unsupported claims are flagged in the proof report for review, not published silently.
+
+The most recent run is the full product on the sponsor stack: the evidence agent and all six writing stages ran on NVIDIA Nemotron 3 Ultra through Meterless Nightshift, in about 14 minutes. Its complete delivery pack (strategy, audience segments, calendar, posts, claims with their quotes, editorial report, and the agent's verified decisions) is in [output_examples/campaigns/allbirds-nightshift.json](output_examples/campaigns/allbirds-nightshift.json). Earlier runs used OpenRouter before Nightshift was set up, and the first evidence-agent run (27 Oct 08:41) predates the agent's move to Nightshift.
 
 ## Sponsor technology
 
