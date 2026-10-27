@@ -10,7 +10,7 @@ import { DecisionSetSchema } from "../lib/agent/schemas.ts";
 import { silentTracer } from "../lib/agent/trace.ts";
 import { jdbcFromDatabaseUrl, setupStatements } from "../lib/agent/zetaris-catalog.ts";
 import { createZetarisRunner, parseZetarisResponse, zetarisConfigFromEnv } from "../lib/agent/zetaris.ts";
-import { normalizeMeterlessBaseUrl, probeMeterless, textProvider } from "../lib/model-provider.ts";
+import { isMeterlessConfigured, normalizeMeterlessBaseUrl, probeMeterless, textProvider } from "../lib/model-provider.ts";
 
 const config = { baseUrl: "http://localhost:8888/api/v1.0", orgId: "1", apiKey: "zk-test" };
 
@@ -80,13 +80,14 @@ test("Nightshift is the primary text provider when its runtime is configured", (
   assert.equal(meterless.id, "meterless");
   assert.equal(meterless.model, "meterless/auto");
   assert.equal(meterless.client.baseURL, "http://127.0.0.1:8088/v1");
-  assert.throws(() => textProvider({ METERLESS_BASE_URL: "http://127.0.0.1:8088", METERLESS_RUNTIME_TOKEN: "rt-local" }), /METERLESS_RUNTIME_TOKEN/);
+  // The placeholder token is rejected, so Nightshift does not count as configured.
+  assert.equal(isMeterlessConfigured({ METERLESS_RUNTIME_TOKEN: "rt-local" }), false);
 });
 
 test("without METERLESS_RUNTIME_TOKEN, Flusso reads the token file the Windows runtime writes", () => {
   const localAppData = mkdtempSync(path.join(os.tmpdir(), "flusso-ns-"));
   try {
-    assert.equal(textProvider({ LOCALAPPDATA: localAppData, OPENROUTER_API_KEY: "or" }).id, "openrouter");
+    assert.equal(isMeterlessConfigured({ LOCALAPPDATA: localAppData }), false);
     mkdirSync(path.join(localAppData, "ai.meterless.runtime"));
     writeFileSync(path.join(localAppData, "ai.meterless.runtime", "proxy-token"), "rt-from-file\n");
     const provider = textProvider({ LOCALAPPDATA: localAppData });
