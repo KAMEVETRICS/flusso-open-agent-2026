@@ -188,11 +188,11 @@ Both engines are Meterless's reference implementations (Apache-2.0, commit `1742
 **Nightshift** is the primary text provider ([lib/model-provider.ts](lib/model-provider.ts)), following the Meterless Runtime 0.90 contract:
 - the base URL is normalised to `<host>/v1`;
 - every request sends `Authorization: Bearer <runtime token>`, `meterless-app: flusso` and `meterless-scope: user`;
-- the routing mode `meterless/auto` is used by default;
-- the timeout is 180 s;
+- every request asks for `nvidia/nemotron-3-ultra-550b-a55b` by name (a routing mode such as `meterless/auto` can go in `METERLESS_MODEL` instead), at low reasoning effort;
+- the timeout is 10 minutes, since the largest campaign stage takes about 6.5 minutes on Nemotron 3 Ultra;
 - `GET /v1/models` decides online, unauthorized or offline.
 
-Every campaign stage and agent step goes through it when it is configured. The model that actually answered is read from each response and logged, because `meterless/auto` can route to a non-NVIDIA model.
+Every campaign stage and agent step goes through it when it is configured. The model that actually answered is read from each response and logged, so the logs prove which model handled it. A full Allbirds campaign has run this way end to end: six stages and five assets, all on Nemotron 3 Ultra through Nightshift.
 
 ### NVIDIA
 
