@@ -28,6 +28,7 @@ import { pipelineStageNames } from "@/lib/pipeline-stages";
 import type { CampaignSummary } from "@/lib/campaign-store";
 import type { AgentPlan } from "@/lib/agent/schemas";
 import { buildClientContentPack, type CampaignExportFormat } from "@/lib/exports";
+import { HomeHero } from "./home-hero";
 import type {
   BriefInput,
   Claim,
@@ -434,7 +435,9 @@ function Workbench({
     brief.platforms.length > 0;
 
   return (
-    <main className="main-content">
+    <div className="home-scroll">
+    <HomeHero />
+    <main className="main-content" id="workbench">
       <section className="sidebar">
         <div className="section-label">Project Intake</div>
         <label className="form-field">
@@ -600,6 +603,7 @@ function Workbench({
 
       {pack ? <ProofSummary pack={pack} /> : <EmptyProofSummary />}
     </main>
+    </div>
   );
 }
 function PipelineView({
