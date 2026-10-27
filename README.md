@@ -109,7 +109,7 @@ cp .env.example .env.local      # PowerShell: Copy-Item .env.example .env.local
    npm run zetaris:explore            # exploratory queries, writes docs/zetaris/exploration.md
    ```
    The setup registers the Neon database from `DATABASE_URL` as a JDBC datasource. Use a read-only Neon role if you prefer.
-2. **Meterless Nightshift.** Install Nightshift and put your NVIDIA API key in its **Providers** tab. Copy the runtime token from its Console into `METERLESS_RUNTIME_TOKEN` and keep `METERLESS_BASE_URL=http://127.0.0.1:8088/v1`. When Nightshift is configured, Flusso sends every text model call to it. Without it, Flusso falls back to OpenRouter.
+2. **Meterless Nightshift.** Install Nightshift for Windows (https://www.meterless.ai/windows.html). In **Setup → Providers → Cloud provider keys**, add your NVIDIA key (`nvapi-...`); in **Setup → Local models**, press **Start runtime**. Flusso reads the runtime token from `%LOCALAPPDATA%i.meterless.runtimeproxy-token` automatically, or from `METERLESS_RUNTIME_TOKEN` if you set it; the endpoint is `http://127.0.0.1:8088/v1`. When Nightshift is configured, Flusso sends every text model call to it. Without it, Flusso falls back to OpenRouter.
 3. **Neon and Firecrawl** (pre-existing): `DATABASE_URL` (a pooled Neon connection string) and `FIRECRAWL_API_KEY`. `OPENROUTER_API_KEY` is used for images, and for text only when Nightshift is not configured.
 4. Check readiness with `curl http://localhost:3207/api/health`. It reports `meterless` as online, unauthorized or offline, and whether Zetaris and OpenRouter are configured.
 
