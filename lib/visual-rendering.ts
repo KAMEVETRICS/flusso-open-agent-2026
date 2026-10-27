@@ -6,16 +6,15 @@ const RENDER_CONCURRENCY = 3;
 
 export type VisualRenderOutcome = { visualId: string; status: VisualBrief["status"]; note: string };
 
-// A visual for an asset that still carries an unsupported or conflicting claim would illustrate
-// that claim, so it waits until the claim is repaired.
+// A visual shows its brief's key message and data points, so it waits only on an unsupported or
+// conflicting claim made in the brief itself. Claims in the post's text stay flagged in the proof
+// report; they are not drawn into the image.
 export function blockingClaims(pack: DeliveryPack, brief: VisualBrief) {
-  const asset = pack.assets.find((item) => item.id === brief.assetId);
-  const linked = new Set(asset?.linkedClaims ?? []);
   return pack.proofReport.claims.filter(
     (claim) =>
       claim.resolutionStatus === "unresolved" &&
       (claim.status === "unsupported" || claim.status === "conflict") &&
-      (linked.has(claim.id) || claim.contentUsedIn.split(/[^a-zA-Z0-9-]+/).includes(brief.id))
+      claim.contentUsedIn.split(/[^a-zA-Z0-9-]+/).includes(brief.id)
   );
 }
 

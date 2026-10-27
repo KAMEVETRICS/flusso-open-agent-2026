@@ -21,8 +21,8 @@ const pack = {
   }
 };
 
-test("holds a visual only while its own post or brief carries an open claim", () => {
-  assert.deepEqual(blockingClaims(pack, { id: "visual-1", assetId: "asset-1" }).map((item) => item.id), ["claim-2"]);
+test("holds a visual only while its own brief makes an open claim", () => {
+  assert.deepEqual(blockingClaims(pack, { id: "visual-1", assetId: "asset-1" }), [], "a claim in the post text does not block the image");
   assert.deepEqual(blockingClaims(pack, { id: "visual-2", assetId: "asset-2" }), [], "repaired claims do not block");
   assert.deepEqual(blockingClaims(pack, { id: "visual-3", assetId: "asset-9" }).map((item) => item.id), ["claim-4"]);
 });
