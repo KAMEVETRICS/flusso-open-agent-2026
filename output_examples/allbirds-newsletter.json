@@ -1,0 +1,158 @@
+{
+  "run_id": "live-allbirds-newsletter-4f2833e7",
+  "status": "success",
+  "input": {
+    "website": "https://www.allbirds.com",
+    "goal": "Grow email newsletter signups ahead of a new running shoe launch",
+    "audience": "Runners and everyday walkers who care about comfort and materials"
+  },
+  "output": {
+    "runId": "live-allbirds-newsletter-4f2833e7",
+    "mode": "live",
+    "provider": "OpenRouter",
+    "models": [
+      "nvidia/nemotron-3-ultra-550b-a55b"
+    ],
+    "hypothesis": "Prior campaign evidence will reveal which content angles (comfort, sustainability, performance) and platforms (Instagram vs TikTok) have historically driven the highest email capture rates for Allbirds, informing the editorial strategy for the running shoe launch.",
+    "decisions": [
+      {
+        "id": "claim_policy#1",
+        "kind": "claim_policy",
+        "statement": "Avoid unsupported capability claims such as promising confirmed updates or practical pre-launch guidance; past campaigns had one unsupported capability claim that required repair.",
+        "rationale": "claim_risk#5 shows 1 unsupported capability claim was repaired; unsupported_claims#1 confirms a newsletter guidance claim lacked evidence and was flagged for removal.",
+        "evidenceIds": [
+          "claim_risk#5",
+          "unsupported_claims#1"
+        ],
+        "confidence": 0.85,
+        "status": "accepted",
+        "verification": "",
+        "revised": false
+      },
+      {
+        "id": "claim_policy#2",
+        "kind": "claim_policy",
+        "statement": "Subject framing and opinion claims to editorial review before publishing; 23 framing and 3 opinion claims were flagged as editorial risk across prior runs.",
+        "rationale": "claim_risk#2 (23 framing) and claim_risk#3 (3 opinion) both carry editorial status, meaning they need human judgment to stay on-brand.",
+        "evidenceIds": [
+          "claim_risk#2",
+          "claim_risk#3"
+        ],
+        "confidence": 0.8,
+        "status": "accepted",
+        "verification": "",
+        "revised": false
+      },
+      {
+        "id": "evidence_reuse#1",
+        "kind": "evidence_reuse",
+        "statement": "Lead with the Dasher NZ collection as the new running shoe hero and pair it with SweetFoam® sugarcane midsole and Featherbed™ memory foam details for material credibility.",
+        "rationale": "fact:fact-3 identifies the Dasher NZ collection; fact:fact-15 and fact:fact-18 specify the cushioning and midsole tech; fact:fact-13 adds the TENCEL™ upper for breathability.",
+        "evidenceIds": [
+          "fact:fact-3",
+          "fact:fact-15",
+          "fact:fact-18",
+          "fact:fact-13"
+        ],
+        "confidence": 0.9,
+        "status": "accepted",
+        "verification": "",
+        "revised": false
+      },
+      {
+        "id": "evidence_reuse#2",
+        "kind": "evidence_reuse",
+        "statement": "Reuse the daily-routine positioning (everyday routines, weekend plans, travel) from site copy to frame the running shoe as versatile for both runs and all-day wear.",
+        "rationale": "fact:fact-21 and fact:fact-25 both quote the same “daily routines, weekend plans, travel” language used on Allbirds’ own site.",
+        "evidenceIds": [
+          "fact:fact-21",
+          "fact:fact-25"
+        ],
+        "confidence": 0.85,
+        "status": "accepted",
+        "verification": "",
+        "revised": false
+      },
+      {
+        "id": "channel_priority#1",
+        "kind": "channel_priority",
+        "statement": "Prioritize Instagram and TikTok for short-form video and carousel posts that demonstrate the shoe in daily routines; past briefs consistently targeted these two platforms.",
+        "rationale": "Every prior campaign brief (prior_evidence#1, prior_evidence#3, prior_evidence#5) lists Instagram and TikTok as the chosen platforms for this goal.",
+        "evidenceIds": [
+          "prior_evidence#1",
+          "prior_evidence#3",
+          "prior_evidence#5"
+        ],
+        "confidence": 0.9,
+        "status": "rejected",
+        "verification": "channel_priority needs evidence from performance, audience_signals, attention_trend, memory",
+        "revised": false
+      },
+      {
+        "id": "angle#1",
+        "kind": "angle",
+        "statement": "Angle messaging around “lightweight, bouncy, wildly comfortable” feel plus natural materials (wool, tree fiber, sugarcane) to differentiate from petroleum-based competitors.",
+        "rationale": "fact:fact-1 and fact:fact-8 both use the exact “lightweight, bouncy, wildly comfortable” phrasing; fact:fact-2 and fact:fact-9 confirm the natural-material replacement narrative.",
+        "evidenceIds": [
+          "fact:fact-1",
+          "fact:fact-8",
+          "fact:fact-2",
+          "fact:fact-9"
+        ],
+        "confidence": 0.85,
+        "status": "accepted",
+        "verification": "",
+        "revised": false
+      },
+      {
+        "id": "risk_flag#1",
+        "kind": "risk_flag",
+        "statement": "Do not use the word “sustainable” in IPO or formal labeling contexts; the SEC forced Allbirds to drop that label during its IPO.",
+        "rationale": "fact:fact-29 documents the SEC action requiring removal of the “sustainable” label from the IPO.",
+        "evidenceIds": [
+          "fact:fact-29"
+        ],
+        "confidence": 0.9,
+        "status": "accepted",
+        "verification": "",
+        "revised": false
+      }
+    ],
+    "openQuestions": [
+      "Which specific running-shoe model (Dasher NZ or another) is the launch hero, and do we have launch-date or limited-edition details to build urgency?",
+      "What are the target cost-per-signup and list-growth KPIs for this 14-day campaign?",
+      "Do we have UGC or athlete testimonials approved for Instagram Reels and TikTok Spark Ads?"
+    ],
+    "evidence": {
+      "zetarisQueries": 9,
+      "zetarisRows": 19,
+      "worldFacts": 24,
+      "memories": 0,
+      "tools": [
+        "campaign_history",
+        "performance",
+        "prior_evidence",
+        "unsupported_claims",
+        "claim_risk",
+        "audience_signals"
+      ]
+    },
+    "dataQuality": [
+      {
+        "rule": "claim_status_known",
+        "total": 348,
+        "valid": 348,
+        "invalid": 0
+      },
+      {
+        "rule": "campaign_has_domain",
+        "total": 18,
+        "valid": 15,
+        "invalid": 3
+      }
+    ],
+    "durationMs": 58224
+  },
+  "trace_dir": "logs/runs/live-allbirds-newsletter-4f2833e7",
+  "execution_time_seconds": 61.5
+}

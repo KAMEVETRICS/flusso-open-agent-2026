@@ -1,0 +1,364 @@
+{
+  "dq:claim_status_known": [
+    {
+      "sql": "RUN DQ claim_status_known TABLE lightning.metastore.flusso.brand_evidence.claim_outcome",
+      "headers": [
+        "name",
+        "table",
+        "type",
+        "total_record",
+        "valid_record",
+        "invalid_record"
+      ],
+      "rows": [
+        {
+          "name": "claim_status_known",
+          "table": "claim_outcome",
+          "type": "Custom Data Quality",
+          "total_record": "348",
+          "valid_record": "348",
+          "invalid_record": "0"
+        }
+      ],
+      "total": 1,
+      "timeUsedMs": 10037
+    }
+  ],
+  "dq:campaign_has_domain": [
+    {
+      "sql": "RUN DQ campaign_has_domain TABLE lightning.metastore.flusso.brand_evidence.campaign",
+      "headers": [
+        "name",
+        "table",
+        "type",
+        "total_record",
+        "valid_record",
+        "invalid_record"
+      ],
+      "rows": [
+        {
+          "name": "campaign_has_domain",
+          "table": "campaign",
+          "type": "Custom Data Quality",
+          "total_record": "18",
+          "valid_record": "15",
+          "invalid_record": "3"
+        }
+      ],
+      "total": 1,
+      "timeUsedMs": 7547
+    }
+  ],
+  "performance:wise.com": [
+    {
+      "sql": "SELECT platform, asset_type, count(*) AS assets, sum(impressions) AS impressions, sum(engagements) AS engagements, sum(clicks) AS clicks, sum(conversions) AS conversions FROM lightning.metastore.flusso.brand_evidence.performance WHERE domain = 'wise.com' GROUP BY platform, asset_type ORDER BY engagements DESC",
+      "headers": [
+        "platform",
+        "asset_type",
+        "assets",
+        "impressions",
+        "engagements",
+        "clicks",
+        "conversions"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 3596
+    }
+  ],
+  "audience_signals:wise.com:create": [
+    {
+      "sql": "CREATE REST SESSION TABLE fl_hn_livewisefreelanc REQUEST (endpoint \"https://hn.algolia.com/api/v1/search?query=wise.com&tags=story&hitsPerPage=50\", method \"GET\", http_encoding \"URLENCODED\", response_type \"JSON\", insecure_ssl \"false\") HEADER (\"User-Agent\" \"Flusso/0.3 (evidence agent)\") BODY ()",
+      "headers": [
+        "Result"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 3678
+    }
+  ],
+  "prior_evidence:wise.com": [
+    {
+      "sql": "SELECT evidence_id, heading, excerpt FROM lightning.metastore.flusso.brand_evidence.evidence_section WHERE domain = 'wise.com' AND (lower(excerpt) LIKE '%freelancer international invoicing%' OR lower(excerpt) LIKE '%multi-currency account freelancer%' OR lower(excerpt) LIKE '%wise business freelancer%' OR lower(excerpt) LIKE '%fx fees international payments%' OR lower(excerpt) LIKE '%receive payments multiple currencies%') ORDER BY created_at DESC LIMIT 10",
+      "headers": [
+        "evidence_id",
+        "heading",
+        "excerpt"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 3750
+    }
+  ],
+  "audience_signals:wise.com": [
+    {
+      "sql": "SELECT h.title, h.points, h.num_comments, substr(h.created_at, 1, 10) AS created, h.url FROM session.fl_hn_livewisefreelanc LATERAL VIEW explode(hits) AS h WHERE h.url LIKE '%wise.com%' ORDER BY h.points DESC LIMIT 12",
+      "headers": [
+        "title",
+        "points",
+        "num_comments",
+        "created",
+        "url"
+      ],
+      "rows": [
+        {
+          "title": "TransferWise changes name to Wise",
+          "points": "243",
+          "num_comments": "226",
+          "created": "2021-02-22",
+          "url": "https://wise.com/gb/blog/world-meet-wise"
+        },
+        {
+          "title": "1.0 USD = 158.3 Rub",
+          "points": "95",
+          "num_comments": "127",
+          "created": "2022-03-07",
+          "url": "https://wise.com/us/currency-converter/usd-to-rub-rate?amount=1"
+        },
+        {
+          "title": "Wise is deactivating Business cards in the US on Oct. 31st",
+          "points": "56",
+          "num_comments": "48",
+          "created": "2023-10-28",
+          "url": "https://wise.com/help/articles/1Rygn0gaetjmjGcOvyjRZm/were-temporarily-deactivating-wise-business-cards-in-the-us"
+        },
+        {
+          "title": "Wise Customers Affected by Evolve B&T Data Breach",
+          "points": "8",
+          "num_comments": "0",
+          "created": "2024-06-29",
+          "url": "https://wise.com/help/articles/1Tyvn34K9tp08aZ0y0Hqe0/data-breach-at-evolve-bank-trust-in-the-us"
+        },
+        {
+          "title": "TransferWise offers unlimited virtual cards now",
+          "points": "5",
+          "num_comments": "3",
+          "created": "2021-05-01",
+          "url": "https://wise.com/gb/blog/shop-safely-virtually-anywhere"
+        },
+        {
+          "title": "Wise.com sends email asking to give personal info to third-party",
+          "points": "4",
+          "num_comments": "4",
+          "created": "2024-08-08",
+          "url": "https://wise.com/help/articles/1Tyvn34K9tp08aZ0y0Hqe0/data-breach-at-evolve-bank-trust-in-the-us"
+        },
+        {
+          "title": "Wise announces large fee increases",
+          "points": "4",
+          "num_comments": "1",
+          "created": "2023-09-06",
+          "url": "https://wise.com/help/articles/2946451/sending-usd-to-countries-outside-the-us"
+        },
+        {
+          "title": "Wise Doubles Fees",
+          "points": "3",
+          "num_comments": "4",
+          "created": "2024-05-15",
+          "url": "https://wise.com/price-change/borderless-add?source=EUR&target=EUR&payInMethod=MC_DEBIT_OR_PREPAID&priceChange=global-reprice-may-2024&targetAmount=500"
+        },
+        {
+          "title": "OwnWise",
+          "points": "3",
+          "num_comments": "2",
+          "created": "2021-06-19",
+          "url": "https://wise.com/campaign/ownwise"
+        },
+        {
+          "title": "Wise slashes fees: June fee review",
+          "points": "3",
+          "num_comments": "0",
+          "created": "2025-07-02",
+          "url": "https://wise.com/gb/blog/jun-25-fee-review-summary"
+        },
+        {
+          "title": "Data Breach at Evolve Bank and Trust in the US",
+          "points": "3",
+          "num_comments": "0",
+          "created": "2024-07-01",
+          "url": "https://wise.com/help/articles/1Tyvn34K9tp08aZ0y0Hqe0/data-breach-at-evolve-bank-trust-in-the-us"
+        },
+        {
+          "title": "Wise is now offering to park your cash in low-risk securities",
+          "points": "2",
+          "num_comments": "0",
+          "created": "2023-03-16",
+          "url": "https://wise.com/help/articles/GDxZxemd21yDVP4TQmdDJ/holding-your-money-in-an-interest-earning-fund"
+        }
+      ],
+      "total": 12,
+      "timeUsedMs": 761
+    }
+  ],
+  "audience_signals:wise.com:drop": [
+    {
+      "sql": "DROP TABLE session.fl_hn_livewisefreelanc",
+      "headers": [
+        "Result"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 194
+    }
+  ],
+  "campaign_history:wise.com": [
+    {
+      "sql": "SELECT campaign_id, brand, goal, editorial_score, fact_count, gap_count, claim_count, created_at FROM lightning.metastore.flusso.brand_evidence.campaign WHERE domain = 'wise.com' ORDER BY created_at DESC LIMIT 10",
+      "headers": [
+        "campaign_id",
+        "brand",
+        "goal",
+        "editorial_score",
+        "fact_count",
+        "gap_count",
+        "claim_count",
+        "created_at"
+      ],
+      "rows": [
+        {
+          "campaign_id": "b4ff2e47-c610-476f-882e-3724e7360760",
+          "brand": "Wise",
+          "goal": "Get freelancers who invoice international clients to open a Wise account",
+          "editorial_score": "93",
+          "fact_count": "29",
+          "gap_count": "0",
+          "claim_count": "24",
+          "created_at": "2026-10-26 21:14:05.960401"
+        }
+      ],
+      "total": 1,
+      "timeUsedMs": 3678
+    }
+  ],
+  "attention_trend:wise.com:create": [
+    {
+      "sql": "CREATE REST SESSION TABLE fl_wikis_livewisefreelanc REQUEST (endpoint \"https://en.wikipedia.org/w/rest.php/v1/search/title?q=Wise&limit=1\", method \"GET\", http_encoding \"URLENCODED\", response_type \"JSON\", insecure_ssl \"false\") HEADER (\"User-Agent\" \"Flusso/0.3 (evidence agent)\") BODY ()",
+      "headers": [
+        "Result"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 3574
+    },
+    {
+      "sql": "CREATE REST SESSION TABLE fl_wikiv_livewisefreelanc REQUEST (endpoint \"https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Wise/daily/20260801/20261027\", method \"GET\", http_encoding \"URLENCODED\", response_type \"JSON\", insecure_ssl \"false\") HEADER (\"User-Agent\" \"Flusso/0.3 (evidence agent)\") BODY ()",
+      "headers": [
+        "Result"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 987
+    }
+  ],
+  "attention_trend:wise.com": [
+    {
+      "sql": "SELECT p.key, p.title, p.description FROM session.fl_wikis_livewisefreelanc LATERAL VIEW explode(pages) AS p",
+      "headers": [
+        "key",
+        "title",
+        "description"
+      ],
+      "rows": [
+        {
+          "key": "Wise",
+          "title": "Wise",
+          "description": "Topics referred to by the same term"
+        }
+      ],
+      "total": 1,
+      "timeUsedMs": 144
+    },
+    {
+      "sql": "SELECT substr(i.timestamp, 1, 6) AS month, sum(i.views) AS views, count(*) AS days FROM session.fl_wikiv_livewisefreelanc LATERAL VIEW explode(items) AS i GROUP BY substr(i.timestamp, 1, 6) ORDER BY month",
+      "headers": [
+        "month",
+        "views",
+        "days"
+      ],
+      "rows": [
+        {
+          "month": "202608",
+          "views": "802",
+          "days": "31"
+        },
+        {
+          "month": "202609",
+          "views": "764",
+          "days": "30"
+        },
+        {
+          "month": "202610",
+          "views": "592",
+          "days": "26"
+        }
+      ],
+      "total": 3,
+      "timeUsedMs": 694
+    }
+  ],
+  "attention_trend:wise.com:drop": [
+    {
+      "sql": "DROP TABLE session.fl_wikis_livewisefreelanc",
+      "headers": [
+        "Result"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 73
+    },
+    {
+      "sql": "DROP TABLE session.fl_wikiv_livewisefreelanc",
+      "headers": [
+        "Result"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 166
+    }
+  ],
+  "claim_risk:wise.com": [
+    {
+      "sql": "SELECT o.claim_kind, o.status, count(*) AS claims, sum(CASE WHEN o.resolution_status = 'repaired' THEN 1 ELSE 0 END) AS repaired FROM lightning.metastore.flusso.brand_evidence.claim_outcome o JOIN lightning.metastore.flusso.brand_evidence.campaign c ON o.campaign_id = c.campaign_id WHERE c.domain = 'wise.com' GROUP BY o.claim_kind, o.status ORDER BY claims DESC",
+      "headers": [
+        "claim_kind",
+        "status",
+        "claims",
+        "repaired"
+      ],
+      "rows": [
+        {
+          "claim_kind": "framing",
+          "status": "editorial",
+          "claims": "9",
+          "repaired": "0"
+        },
+        {
+          "claim_kind": "time-bound",
+          "status": "time-sensitive",
+          "claims": "8",
+          "repaired": "0"
+        },
+        {
+          "claim_kind": "capability",
+          "status": "supported",
+          "claims": "4",
+          "repaired": "0"
+        },
+        {
+          "claim_kind": "time-bound",
+          "status": "supported",
+          "claims": "2",
+          "repaired": "0"
+        },
+        {
+          "claim_kind": "opinion",
+          "status": "editorial",
+          "claims": "1",
+          "repaired": "0"
+        }
+      ],
+      "total": 5,
+      "timeUsedMs": 7109
+    }
+  ]
+}

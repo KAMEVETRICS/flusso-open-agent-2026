@@ -1,0 +1,296 @@
+{
+  "dq:claim_status_known": [
+    {
+      "sql": "RUN DQ claim_status_known TABLE lightning.metastore.flusso.brand_evidence.claim_outcome",
+      "headers": [
+        "name",
+        "table",
+        "type",
+        "total_record",
+        "valid_record",
+        "invalid_record"
+      ],
+      "rows": [
+        {
+          "name": "claim_status_known",
+          "table": "claim_outcome",
+          "type": "Custom Data Quality",
+          "total_record": "348",
+          "valid_record": "348",
+          "invalid_record": "0"
+        }
+      ],
+      "total": 1,
+      "timeUsedMs": 10082
+    }
+  ],
+  "dq:campaign_has_domain": [
+    {
+      "sql": "RUN DQ campaign_has_domain TABLE lightning.metastore.flusso.brand_evidence.campaign",
+      "headers": [
+        "name",
+        "table",
+        "type",
+        "total_record",
+        "valid_record",
+        "invalid_record"
+      ],
+      "rows": [
+        {
+          "name": "campaign_has_domain",
+          "table": "campaign",
+          "type": "Custom Data Quality",
+          "total_record": "18",
+          "valid_record": "15",
+          "invalid_record": "3"
+        }
+      ],
+      "total": 1,
+      "timeUsedMs": 11176
+    }
+  ],
+  "campaign_history:allbirds.com": [
+    {
+      "sql": "SELECT campaign_id, brand, goal, editorial_score, fact_count, gap_count, claim_count, created_at FROM lightning.metastore.flusso.brand_evidence.campaign WHERE domain = 'allbirds.com' ORDER BY created_at DESC LIMIT 10",
+      "headers": [
+        "campaign_id",
+        "brand",
+        "goal",
+        "editorial_score",
+        "fact_count",
+        "gap_count",
+        "claim_count",
+        "created_at"
+      ],
+      "rows": [
+        {
+          "campaign_id": "1b71f8c4-a3b5-40aa-9581-d209082e4a44",
+          "brand": "Allbirds",
+          "goal": "Grow email newsletter signups ahead of a new running shoe launch",
+          "editorial_score": "91",
+          "fact_count": "44",
+          "gap_count": "0",
+          "claim_count": "24",
+          "created_at": "2026-10-27 04:57:50.216103"
+        },
+        {
+          "campaign_id": "4108987a-acf4-40f9-a0e0-051f780cb0c3",
+          "brand": "Allbirds",
+          "goal": "Grow email newsletter signups ahead of a new running shoe launch",
+          "editorial_score": "91",
+          "fact_count": "39",
+          "gap_count": "0",
+          "claim_count": "24",
+          "created_at": "2026-10-27 04:49:04.088414"
+        },
+        {
+          "campaign_id": "f6a28f3b-05f9-437b-9518-34437a4c4300",
+          "brand": "Allbirds",
+          "goal": "Grow email newsletter signups ahead of a new running shoe launch",
+          "editorial_score": "94",
+          "fact_count": "41",
+          "gap_count": "0",
+          "claim_count": "20",
+          "created_at": "2026-10-26 21:09:36.477473"
+        }
+      ],
+      "total": 3,
+      "timeUsedMs": 3419
+    }
+  ],
+  "prior_evidence:allbirds.com": [
+    {
+      "sql": "SELECT evidence_id, heading, excerpt FROM lightning.metastore.flusso.brand_evidence.evidence_section WHERE domain = 'allbirds.com' AND (lower(excerpt) LIKE '%email newsletter signup%' OR lower(excerpt) LIKE '%running shoe launch%' OR lower(excerpt) LIKE '%comfort materials%' OR lower(excerpt) LIKE '%sustainable materials%' OR lower(excerpt) LIKE '%dasher nz%') ORDER BY created_at DESC LIMIT 10",
+      "headers": [
+        "evidence_id",
+        "heading",
+        "excerpt"
+      ],
+      "rows": [
+        {
+          "evidence_id": "1b71f8c4-a3b5-40aa-9581-d209082e4a44:src-project-brief#intro",
+          "heading": "",
+          "excerpt": "{\"website\":\"https://www.allbirds.com\",\"docs\":\"\",\"goal\":\"Grow email newsletter signups ahead of a new running shoe launch\",\"platforms\": \"Instagram\",\"TikTok\" ,\"editorialProfile\":\"direct-growth\",\"durationDays\":14,\"postsPerWeek\":3,\"teamSize\":1,\"hoursPerWeek\":8,\"restrictions\":\"\"}"
+        },
+        {
+          "evidence_id": "1b71f8c4-a3b5-40aa-9581-d209082e4a44:src-brand-site#you-may-also-like",
+          "heading": "You may also like",
+          "excerpt": "Anytime Crew Sock\n$18\nAnytime No Show Heel Grip Sock\n$14\n2 colors\n-\nAll New Dasher NZ Collection"
+        },
+        {
+          "evidence_id": "4108987a-acf4-40f9-a0e0-051f780cb0c3:src-project-brief#intro",
+          "heading": "",
+          "excerpt": "{\"website\":\"https://www.allbirds.com\",\"docs\":\"\",\"goal\":\"Grow email newsletter signups ahead of a new running shoe launch\",\"platforms\": \"Instagram\",\"TikTok\" ,\"editorialProfile\":\"direct-growth\",\"durationDays\":14,\"postsPerWeek\":3,\"teamSize\":1,\"hoursPerWeek\":8,\"restrictions\":\"\"}"
+        },
+        {
+          "evidence_id": "4108987a-acf4-40f9-a0e0-051f780cb0c3:src-brand-site#you-may-also-like",
+          "heading": "You may also like",
+          "excerpt": "Anytime Crew Sock\n$18\nAnytime No Show Heel Grip Sock\n$14\n2 colors\n-\nAll New Dasher NZ Collection"
+        },
+        {
+          "evidence_id": "f6a28f3b-05f9-437b-9518-34437a4c4300:src-project-brief#intro",
+          "heading": "",
+          "excerpt": "{\"website\":\"https://www.allbirds.com\",\"docs\":\"\",\"goal\":\"Grow email newsletter signups ahead of a new running shoe launch\",\"platforms\": \"Newsletter\",\"X\" ,\"editorialProfile\":\"direct-growth\",\"durationDays\":14,\"postsPerWeek\":3,\"teamSize\":1,\"hoursPerWeek\":8,\"restrictions\":\"\"}"
+        },
+        {
+          "evidence_id": "f6a28f3b-05f9-437b-9518-34437a4c4300:src-brand-site#you-may-also-like",
+          "heading": "You may also like",
+          "excerpt": "Anytime Crew Sock\n$18\nAnytime No Show Heel Grip Sock\n$14\n2 colors\n-\nAll New Dasher NZ Collection"
+        }
+      ],
+      "total": 6,
+      "timeUsedMs": 3847
+    }
+  ],
+  "performance:allbirds.com": [
+    {
+      "sql": "SELECT platform, asset_type, count(*) AS assets, sum(impressions) AS impressions, sum(engagements) AS engagements, sum(clicks) AS clicks, sum(conversions) AS conversions FROM lightning.metastore.flusso.brand_evidence.performance WHERE domain = 'allbirds.com' GROUP BY platform, asset_type ORDER BY engagements DESC",
+      "headers": [
+        "platform",
+        "asset_type",
+        "assets",
+        "impressions",
+        "engagements",
+        "clicks",
+        "conversions"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 6150
+    }
+  ],
+  "unsupported_claims:allbirds.com": [
+    {
+      "sql": "SELECT claim_kind, status, resolution_status, claim_text, recommendation, created_at FROM lightning.metastore.flusso.brand_evidence.claim_outcome WHERE domain = 'allbirds.com' AND status IN ('unsupported', 'conflict') ORDER BY created_at DESC LIMIT 12",
+      "headers": [
+        "claim_kind",
+        "status",
+        "resolution_status",
+        "claim_text",
+        "recommendation",
+        "created_at"
+      ],
+      "rows": [
+        {
+          "claim_kind": "capability",
+          "status": "unsupported",
+          "resolution_status": "repaired",
+          "claim_text": "The newsletter will provide confirmed updates and practical pre-launch guidance.",
+          "recommendation": "Web search found no reliable source for this claim. Remove it or supply a primary source.",
+          "created_at": "2026-10-27 04:49:04.088414"
+        }
+      ],
+      "total": 1,
+      "timeUsedMs": 3092
+    }
+  ],
+  "audience_signals:allbirds.com:create": [
+    {
+      "sql": "CREATE REST SESSION TABLE fl_hn_liveallbirdsnews REQUEST (endpoint \"https://hn.algolia.com/api/v1/search?query=allbirds.com&tags=story&hitsPerPage=50\", method \"GET\", http_encoding \"URLENCODED\", response_type \"JSON\", insecure_ssl \"false\") HEADER (\"User-Agent\" \"Flusso/0.3 (evidence agent)\") BODY ()",
+      "headers": [
+        "Result"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 2982
+    }
+  ],
+  "audience_signals:allbirds.com": [
+    {
+      "sql": "SELECT h.title, h.points, h.num_comments, substr(h.created_at, 1, 10) AS created, h.url FROM session.fl_hn_liveallbirdsnews LATERAL VIEW explode(hits) AS h WHERE h.url LIKE '%allbirds.com%' ORDER BY h.points DESC LIMIT 12",
+      "headers": [
+        "title",
+        "points",
+        "num_comments",
+        "created",
+        "url"
+      ],
+      "rows": [
+        {
+          "title": "Allbirds, Inc. Announces Expansion into AI Compute Infrastructure",
+          "points": "94",
+          "num_comments": "78",
+          "created": "2026-04-15",
+          "url": "https://ir.allbirds.com/news-releases/news-release-details/allbirds-inc-executes-50m-convertible-financing-facility"
+        },
+        {
+          "title": "Allbirds Announces 1-for-20 Reverse Stock Split",
+          "points": "1",
+          "num_comments": "0",
+          "created": "2024-09-03",
+          "url": "https://ir.allbirds.com/news-releases/news-release-details/allbirds-announces-1-20-reverse-stock-split"
+        }
+      ],
+      "total": 2,
+      "timeUsedMs": 781
+    }
+  ],
+  "audience_signals:allbirds.com:drop": [
+    {
+      "sql": "DROP TABLE session.fl_hn_liveallbirdsnews",
+      "headers": [
+        "Result"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 226
+    }
+  ],
+  "claim_risk:allbirds.com": [
+    {
+      "sql": "SELECT o.claim_kind, o.status, count(*) AS claims, sum(CASE WHEN o.resolution_status = 'repaired' THEN 1 ELSE 0 END) AS repaired FROM lightning.metastore.flusso.brand_evidence.claim_outcome o JOIN lightning.metastore.flusso.brand_evidence.campaign c ON o.campaign_id = c.campaign_id WHERE c.domain = 'allbirds.com' GROUP BY o.claim_kind, o.status ORDER BY claims DESC",
+      "headers": [
+        "claim_kind",
+        "status",
+        "claims",
+        "repaired"
+      ],
+      "rows": [
+        {
+          "claim_kind": "capability",
+          "status": "supported",
+          "claims": "36",
+          "repaired": "0"
+        },
+        {
+          "claim_kind": "framing",
+          "status": "editorial",
+          "claims": "23",
+          "repaired": "0"
+        },
+        {
+          "claim_kind": "opinion",
+          "status": "editorial",
+          "claims": "3",
+          "repaired": "0"
+        },
+        {
+          "claim_kind": "time-bound",
+          "status": "time-sensitive",
+          "claims": "3",
+          "repaired": "0"
+        },
+        {
+          "claim_kind": "capability",
+          "status": "unsupported",
+          "claims": "1",
+          "repaired": "1"
+        },
+        {
+          "claim_kind": "time-bound",
+          "status": "supported",
+          "claims": "1",
+          "repaired": "0"
+        },
+        {
+          "claim_kind": "statistic",
+          "status": "supported",
+          "claims": "1",
+          "repaired": "0"
+        }
+      ],
+      "total": 7,
+      "timeUsedMs": 7784
+    }
+  ]
+}

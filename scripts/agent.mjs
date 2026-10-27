@@ -1,27 +1,30 @@
 /* global console */
 // Usage: npm run agent -- samples/allbirds-newsletter            (live: Zetaris + Nightshift)
-//        SAMPLE_MODE=true npm run agent -- samples/allbirds-newsletter   (replays the recorded run)
+//        npm run agent:sample -- samples/allbirds-newsletter     (replays the recorded run;
+//                                                                  same as SAMPLE_MODE=true)
 //        npm run agent -- samples/allbirds-newsletter --record   (live run, saved as the sample)
 // Runs the evidence-planning agent on one sample input and writes its plan to
 // output_examples/<sample>.json. Traces go to stdout and logs/ (audit, trace, telemetry,
 // provenance JSONL, plus logs/runs/<run id>/).
 import { randomUUID } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { neon } from "@neondatabase/serverless";
-import { isSampleMode, loadSampleFixture, runEvidenceAgent } from "../lib/agent/run-agent.ts";
+import { STATE_DIRECTORY, isSampleMode, loadSampleFixture, runEvidenceAgent } from "../lib/agent/run-agent.ts";
 import { stdoutSink } from "../lib/agent/trace.ts";
 import { brandDomain } from "../lib/brand-model.ts";
 import { DeliveryPackSchema } from "../lib/schemas.ts";
 
-const sampleDirectory = process.argv[2];
+const args = process.argv.slice(2);
+const sampleDirectory = args.find((arg) => !arg.startsWith("--"));
 if (!sampleDirectory || !existsSync(path.join(sampleDirectory, "input.json"))) {
-  console.error("Usage: npm run agent -- <sample directory with input.json> [--record]");
+  console.error("Usage: npm run agent -- <sample directory with input.json> [--sample | --record]");
   process.exit(64);
 }
-const record = process.argv.includes("--record");
-const sample = isSampleMode();
+const record = args.includes("--record");
+// --sample does what SAMPLE_MODE=true does, without setting an environment variable.
+const sample = isSampleMode() || args.includes("--sample");
 if (record && sample) {
   console.error("--record needs a live run; unset SAMPLE_MODE.");
   process.exit(64);
@@ -61,6 +64,13 @@ try {
   console.log("[INFO] run_id=" + runId + " mode=" + (sample ? "sample" : "live") + " domain=" + domain + " facts=" + discovery.factSheet.facts.length +
     (discovery.fromCampaign ? " fact sheet from campaign " + discovery.fromCampaign : ""));
   const recording = record ? { zetaris: {}, model: { provider: "", steps: {} } } : undefined;
+  // A recording keeps the brand's memory as it was before the run, so the replay recalls the same
+  // memories the live run did.
+  const liveMemory = path.join(STATE_DIRECTORY, "hmem", domain);
+  if (record) {
+    rmSync(path.join(sampleDirectory, "hmem"), { recursive: true, force: true });
+    if (existsSync(liveMemory)) cpSync(liveMemory, path.join(sampleDirectory, "hmem"), { recursive: true });
+  }
   const run = await runEvidenceAgent(
     { brief: discovery.brief, domain, factSheet: discovery.factSheet, sources: discovery.sources },
     { runId, sample: sample ? loadSampleFixture(sampleDirectory) : null, record: recording, extraSinks: [stdoutSink()] }

@@ -1,0 +1,963 @@
+{
+  "fromCampaign": "8b57705d-2b45-4936-a5c6-ca93ff084631",
+  "brief": {
+    "brand": "Linear",
+    "industry": "Product development and work management software",
+    "website": "https://linear.app",
+    "docs": "",
+    "goal": "Get product teams to adopt Linear Asks for Slack requests",
+    "audience": "Product and engineering leads who triage requests from Slack",
+    "competitors": [
+      "Plane",
+      "ClickUp",
+      "monday.com"
+    ],
+    "platforms": [
+      "LinkedIn",
+      "X"
+    ],
+    "editorialProfile": "technical-authority",
+    "tone": "Focused, modern, technical, confident",
+    "durationDays": 14,
+    "postsPerWeek": 4,
+    "teamSize": 1,
+    "hoursPerWeek": 8,
+    "restrictions": ""
+  },
+  "factSheet": {
+    "facts": [
+      {
+        "id": "fact-1",
+        "category": "product",
+        "statement": "Linear is a product development system for planning and building products in the AI era.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#the-productdevelopmentsystem-for-teamsand-agentsthe-product-",
+        "quote": "Purpose-built for planning and building products. Designed for the AI era.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-2",
+        "category": "product",
+        "statement": "Linear automatically turns conversations and customer feedback into actionable issues routed, labeled, and prioritized for the right team.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#intake-and-integrations",
+        "quote": "Automatically turn conversations and customer feedback into actionable issues that are instantly routed, labeled, and prioritized for the right team.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-3",
+        "category": "product",
+        "statement": "Linear helps teams plan from idea to launch using product initiatives, strategic roadmaps, and up-to-date PRDs.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#planning-and-monitoring",
+        "quote": "Plan and navigate from idea to launch. Align your team with product initiatives, strategic roadmaps, and clear, up-to-date PRDs.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-4",
+        "category": "product",
+        "statement": "Linear lets teams build and deploy AI agents that work alongside them as teammates or handle entire issues end-to-end.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#ai-and-automations",
+        "quote": "Build and deploy AI agents that work alongside you as teammates. Work on complex tasks together or delegate entire issues end-to-end.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-5",
+        "category": "product",
+        "statement": "Linear streamlines code reviews with clear diffs, better context, and fewer back-and-forth comments.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#build-review-and-ship",
+        "quote": "Streamline code reviews with clear diffs, better context, and fewer back-and-forth comments. Keep PRs moving without sacrificing quality.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-6",
+        "category": "product",
+        "statement": "Linear coding sessions let users assign tasks to Linear Agent, which writes and tests code in a secure cloud environment before opening a pull request for review.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#changelog",
+        "quote": "Assign a task to Linear Agent, and it works in a secure cloud environment to write and test the code before opening a pull request for review.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-7",
+        "category": "product",
+        "statement": "Linear Loops are recurring agent workflows that respond to workspace activity and can edit Linear documents and post updates to Slack.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#changelog",
+        "quote": "Loops are recurring agent workflows for teams. They now respond to more workspace activity, including changes to initiatives, projects, and cycles. They can also edit Linear documents and post updates to Slack.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-8",
+        "category": "product",
+        "statement": "Linear is a purpose-built tool for planning and building products.",
+        "entity": "",
+        "sourceId": "src-site-index",
+        "sectionId": "src-site-index#linear",
+        "quote": "Linear is a purpose-built tool for planning and building products.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-9",
+        "category": "product",
+        "statement": "Linear is designed to streamline issues, projects, and product roadmaps.",
+        "entity": "",
+        "sourceId": "src-site-index",
+        "sectionId": "src-site-index#linear",
+        "quote": "Streamline issues, projects, and product roadmaps.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-10",
+        "category": "product",
+        "statement": "Linear includes intake tools such as triage, Linear Asks, customer requests, and Asks through Slack, email, and web forms.",
+        "entity": "",
+        "sourceId": "src-site-index",
+        "sectionId": "src-site-index#intake",
+        "quote": "Triage\n- [Linear Asks](https://linear.app/docs/linear-asks.md)\n- [Asks with Slack](https://linear.app/docs/linear-asks-slack.md)\n- [Asks with Email](https://linear.app/docs/linear-asks-email.md)\n- [Asks Web Forms](https://linear.app/docs/linear-asks-web-forms.md)\n- [Customer Requests](https://linear.app/docs/customer-requests.md)",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-11",
+        "category": "product",
+        "statement": "Linear supports projects, project milestones, priorities, statuses, dependencies, templates, initiatives, and project updates.",
+        "entity": "",
+        "sourceId": "src-site-index",
+        "sectionId": "src-site-index#projects-and-initiatives",
+        "quote": "Projects\n- [Project milestones](https://linear.app/docs/project-milestones.md)\n- [Project priority](https://linear.app/docs/project-priority.md)\n- [Project status](https://linear.app/docs/project-status.md)\n- [Project labels](https://linear.app/docs/project-labels.md)\n- [Project dependencies](https://linear.app/docs/project-dependencies.md)\n- [Project notifications](https://linear.app/docs/project-notifications.md)\n- [Project templates](https://linear.app/docs/project-templates.md)",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-12",
+        "category": "product",
+        "statement": "Linear includes issues, issue assignment, issue properties, parent and sub-issues, comments, reactions, and cycles.",
+        "entity": "",
+        "sourceId": "src-site-index",
+        "sectionId": "src-site-index#issues-and-cycles",
+        "quote": "Issues\n- [Assign and delegate issues](https://linear.app/docs/assigning-issues.md)\n- [Issue properties](https://linear.app/docs/issue-properties-home.md)\n- [Select issues](https://linear.app/docs/select-issues.md)\n- [Parent and sub-issues](https://linear.app/docs/parent-and-sub-issues.md)\n- [Issue templates](https://linear.app/docs/issue-templates.md)\n- [Comments and reactions](https://linear.app/docs/comment-on-issues.md)\n- [Delete and archive issues](https://linear.app/docs/delete-archive-issues.md)\n- [Cycles](https://linear.app/docs/use-cycles.md)",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-13",
+        "category": "product",
+        "statement": "Linear offers Linear Agent, Loops, AI Agents, Triage Intelligence, Code Intelligence, and an MCP server.",
+        "entity": "",
+        "sourceId": "src-site-index",
+        "sectionId": "src-site-index#agents-and-automation",
+        "quote": "Linear Agent\n- [Loops](https://linear.app/docs/loops.md)\n- [AI Agents](https://linear.app/docs/agents-in-linear.md)\n- [Triage Intelligence](https://linear.app/docs/triage-intelligence.md)\n- [Code Intelligence](https://linear.app/docs/code-intelligence.md)\n- [MCP server](https://linear.app/docs/mcp.md)",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-14",
+        "category": "product",
+        "statement": "Linear provides dashboards, insights, a project graph, and a cycle graph.",
+        "entity": "",
+        "sourceId": "src-site-index",
+        "sectionId": "src-site-index#insights-and-outcomes",
+        "quote": "Dashboards\n- [Insights](https://linear.app/docs/insights.md)\n- [Project graph](https://linear.app/docs/project-graph.md)\n- [Cycle graph](https://linear.app/docs/cycle-graph.md)",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-15",
+        "category": "product",
+        "statement": "Linear integrates with GitHub, GitLab, Figma, Slack, Jira, Notion, Salesforce, Sentry, Zapier, and Zendesk.",
+        "entity": "",
+        "sourceId": "src-site-index",
+        "sectionId": "src-site-index#integrations",
+        "quote": "- [Figma](https://linear.app/docs/figma.md)\n- [Front](https://linear.app/docs/front.md)\n- [GitHub](https://linear.app/docs/github-integration.md)\n- [GitLab](https://linear.app/docs/gitlab.md)\n- [Google Sheets](https://linear.app/docs/google-sheets.md)\n- [Gong](https://linear.app/docs/gong.md)\n- [Intercom](https://linear.app/docs/intercom.md)\n- [Jira](https://linear.app/docs/jira.md)\n- [Microsoft Teams](https://linear.app/docs/microsoft-teams.md)\n- [Notion](https://linear.app/docs/notion.md)\n- [Origin](https://linear.app/docs/origin.md)\n- [Salesforce](https://linear.app/docs/salesforce.md)\n- [Sentry](https://linear.app/docs/sentry.md)\n- [Slack](https://linear.app/docs/slack.md)\n- [Zapier](https://linear.app/docs/zapier.md)\n- [Zendesk](https://linear.app/docs/zendesk.md)",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-16",
+        "category": "product",
+        "statement": "Linear provides a GraphQL API and TypeScript SDK for building apps and integrations.",
+        "entity": "",
+        "sourceId": "src-site-index",
+        "sectionId": "src-site-index#developers",
+        "quote": "Learn about building apps and integrations for Linear using the GraphQL API and TypeScript SDK.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-17",
+        "category": "product",
+        "statement": "Linear supports importing issues from Jira, GitHub Issues, Asana, Shortcut, and Linear.",
+        "entity": "",
+        "sourceId": "src-site-index",
+        "sectionId": "src-site-index#importers",
+        "quote": "- [Jira](https://linear.app/docs/jira-to-linear.md)\n- [GitHub Issues](https://linear.app/docs/github-to-linear.md)\n- [Asana](https://linear.app/docs/asana-to-linear.md)\n- [Shortcut](https://linear.app/docs/shortcut-to-linear.md)\n- [Linear](https://linear.app/docs/linear-to-linear.md)",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-18",
+        "category": "product",
+        "statement": "Linear is a product development system for teams and agents.",
+        "entity": "",
+        "sourceId": "src-site-page-1",
+        "sectionId": "src-site-page-1#intro",
+        "quote": "Linear is the product development system for teams and agents.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-19",
+        "category": "product",
+        "statement": "Linear’s demo workspace shows how issues, projects, and workflows fit together.",
+        "entity": "",
+        "sourceId": "src-site-page-1",
+        "sectionId": "src-site-page-1#intro",
+        "quote": "see how issues, projects, and workflows fit together.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-20",
+        "category": "product",
+        "statement": "Linear provides onboarding videos covering common day-to-day workflows.",
+        "entity": "",
+        "sourceId": "src-site-page-1",
+        "sectionId": "src-site-page-1#intro",
+        "quote": "onboarding videos covering the most common day-to-day workflows",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-21",
+        "category": "product",
+        "statement": "Linear organizes an organization’s work around core concepts ranging from bug fixes to company-wide initiatives.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#intro",
+        "quote": "Linear is built around a few core concepts that provide rails for your organization’s work, from a simple bug fix to a company-wide initiative.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-22",
+        "category": "product",
+        "statement": "Issues are Linear’s fundamental unit of work and can represent bugs, feature work, follow-up tasks, or internal requests.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#intro",
+        "quote": "Issues are the fundamental unit of work in Linear. They represent anything a team needs to track, such as bugs, feature work, follow-up tasks, or internal requests.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-23",
+        "category": "product",
+        "statement": "Linear issues can be assigned, added to projects, planned into cycles, labeled, prioritized, and discussed in comments.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#intro",
+        "quote": "An issue belongs to a team and moves through that team’s workflow. It can be assigned to a person, added to a project, planned into a cycle, labeled, prioritized, and discussed in comments.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-24",
+        "category": "product",
+        "statement": "Teams are Linear’s primary organizational unit, with their own workflows, triage processes, and planning cadences.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#intro",
+        "quote": "Teams are the primary organizational unit in Linear. Each team owns its own workflow, triage process, and planning cadence.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-25",
+        "category": "product",
+        "statement": "A Linear workspace contains all issues, teams, and other concepts associated with an individual company.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#intro-2",
+        "quote": "A Linear workspace is the container for all issues, teams and other concepts relating to an individual company.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-26",
+        "category": "product",
+        "statement": "Projects group issues around a shared outcome and support coordination, visibility, and progress tracking.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#intro-2",
+        "quote": "Projects group issues together around a shared outcome. They are useful when work spans multiple issues and needs coordination, visibility, and progress tracking.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-27",
+        "category": "product",
+        "statement": "Initiatives organize multiple projects around broader strategic efforts and goals.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#intro-2",
+        "quote": "Initiatives sit above projects and represent broader strategic efforts. They help organize work at a higher level, especially when several projects contribute to the same goal.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-28",
+        "category": "product",
+        "statement": "Cycles are repeating team planning periods that help plan near-term work and create a predictable execution rhythm.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#intro-3",
+        "quote": "Cycles are a team’s repeating planning period for issues. They help teams decide what to work on in the near term and create a predictable rhythm for execution.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-29",
+        "category": "product",
+        "statement": "Linear cycles repeat automatically at a configured start date and duration measured in weeks.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#intro-3",
+        "quote": "Cycles are automated and repeating; you'll set a start date and duration for cycles, which will then repeat every N weeks.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-30",
+        "category": "product",
+        "statement": "Views provide different ways to organize and focus the same underlying work without changing the work itself.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#intro-3",
+        "quote": "Views are different ways of looking at the same underlying work. They do not change the work itself—they help teams organize and focus it.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-31",
+        "category": "product",
+        "statement": "Linear is available in browsers, on macOS and Windows, and as iOS and Android apps.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#intro",
+        "quote": "Linear is available on browsers, macOS, Windows, iOS and Android.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-32",
+        "category": "product",
+        "statement": "Linear offers a desktop application, browser access, native mobile apps, and a mobile and tablet PWA.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#intro",
+        "quote": "Linear is available as a desktop application, from the browser, as native mobile apps or on a PWA on mobile and tablet.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-33",
+        "category": "product",
+        "statement": "The Linear desktop app provides operating-system notifications, dock and taskbar alerts, keyboard shortcuts, and tab support.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#intro",
+        "quote": "Notifications are integrated with your operating system, so you can stay up to date on Linear activity from your desktop. Linear is always on and the dock and taskbar quickly alerts you of unread notifications.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-34",
+        "category": "product",
+        "statement": "The Linear web app provides nearly all desktop functionality, including offline mode, in supported browsers.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#intro",
+        "quote": "Nearly all functionality in the desktop app including offline mode is available on the web in most browsers.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-35",
+        "category": "product",
+        "statement": "Linear mobile apps support working with issues, projects, initiatives, and documents.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#intro",
+        "quote": "Work with issues, projects, initiatives, and documents in the Linear iOS and Android apps.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-36",
+        "category": "product",
+        "statement": "Linear mobile apps let users review assigned, created, or subscribed issues and access favorites, teams, cycles, and triage queues.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#intro",
+        "quote": "Review your assigned, created or subscribed issues through “My issues”, quickly access your favorites, and explore teams to view their issues, cycles, and triage queues.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-37",
+        "category": "product",
+        "statement": "Linear mobile apps let users act on notifications by sending comments or updating issues, with inboxes synchronized across clients.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#intro-2",
+        "quote": "Check your Inbox and take action on notifications by sending comments or updating issues directly from the app. Your inbox syncs with Linear on other clients",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-38",
+        "category": "product",
+        "statement": "The Linear desktop app downloads and installs updates automatically in the background.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#intro-3",
+        "quote": "For updates, the desktop app downloads and installs updates automatically in the background.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-39",
+        "category": "product",
+        "statement": "Linear Triage is a special inbox for managing issues created by integrations or workspace members outside a specific team.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#intro",
+        "quote": "Triage is a special inbox for your team. When an issue is created by integration or by a workspace member not belonging to your specific Linear team, it will appear here.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-40",
+        "category": "product",
+        "statement": "Triage lets teams review, update, and prioritize issues before adding them to their workflow.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#intro",
+        "quote": "Triage offers a opportunity to review, update, and prioritize issues before they are added to your team's workflow.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-41",
+        "category": "product",
+        "statement": "Triage supports accepting, declining, marking as duplicate, and snoozing issues.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#intro",
+        "quote": "Open the issue to review it and take one of the following issue actions: accept with 1, decline with 2, mark as duplicate with 3, or snooze with H.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-42",
+        "category": "product",
+        "statement": "Triage rules can automatically update an issue's team, status, assignee, label, project, and priority.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#intro-2",
+        "quote": "Triggered on filterable properties, triage rules can update an issue's team, status, assignee, label, project and priority.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-43",
+        "category": "product",
+        "statement": "Triage Intelligence uses agentic AI to analyze new issues and suggest properties, related issues, and duplicates.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#intro-3",
+        "quote": "Triage Intelligence uses agentic AI to analyze every new issue in triage against your existing issues to suggest properties like assignee and label, and pro-actively surface likely related issues or duplicates",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-44",
+        "category": "product",
+        "statement": "Triage Responsibility can notify or automatically assign selected workspace members to handle incoming issues.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#intro-3",
+        "quote": "You can select specific members of your workspace to receive notifications of new issues or be automatically assigned to them.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-45",
+        "category": "product",
+        "statement": "Triage can connect PagerDuty, OpsGenie, Rootly, and Incident.io schedules to automate first-responder rotations.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#intro-3",
+        "quote": "Once triage responsibility is set, optionally connect your PagerDuty, OpsGenie, Rootly, or Incident.io schedules to automate the rotation of first responders.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-46",
+        "category": "product",
+        "statement": "Triage integrates with Intercom, Front, Zendesk, and Slack to create Linear issues or link customer reports to existing issues.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#intro-3",
+        "quote": "Get more out of Triage by connecting it to our support integrations—Intercom, Front, and Zendesk—or Slack. Using these integrations, your support team can create new Linear issues or link customer reports to existing issues directly from their customer support tool.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-47",
+        "category": "product",
+        "statement": "Linear Asks turns bug reports, questions, and IT needs into actionable issues in Linear.",
+        "entity": "",
+        "sourceId": "src-site-page-5",
+        "sectionId": "src-site-page-5#intro",
+        "quote": "Asks turns requests like bug reports, questions, and IT needs into actionable issues in Linear.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-48",
+        "category": "product",
+        "statement": "Linear Asks accepts requests through Slack, email, and web forms, then converts each request into a Linear issue for team workflows.",
+        "entity": "",
+        "sourceId": "src-site-page-5",
+        "sectionId": "src-site-page-5#intro",
+        "quote": "Once enabled, asks can be submitted through Slack, email, or web forms. Each ask becomes an issue in Linear, where teams can triage, prioritize, assign, and respond using their existing workflows.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-49",
+        "category": "product",
+        "statement": "Linear Asks supports Slack, email, and web forms as intake surfaces.",
+        "entity": "",
+        "sourceId": "src-site-page-5",
+        "sectionId": "src-site-page-5#intro",
+        "quote": "Linear Asks supports three intake surfaces: Slack, email, and web forms.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-50",
+        "category": "product",
+        "statement": "Slack Asks synchronizes comment threads between Linear and Slack.",
+        "entity": "",
+        "sourceId": "src-site-page-5",
+        "sectionId": "src-site-page-5#intro",
+        "quote": "Asks created from Slack keep a synced comment thread between Linear and Slack, so replies in either place stay connected.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-51",
+        "category": "product",
+        "statement": "Email Asks creates a Linear issue using the incoming email subject as the title and message body as the description.",
+        "entity": "",
+        "sourceId": "src-site-page-5",
+        "sectionId": "src-site-page-5#intro-2",
+        "quote": "Each incoming email creates a new issue in Linear using the email subject as the title and the message body as the description.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-52",
+        "category": "product",
+        "statement": "Linear Asks keeps requester conversations connected to issues across Slack, email, and web forms.",
+        "entity": "",
+        "sourceId": "src-site-page-5",
+        "sectionId": "src-site-page-5#intro-2",
+        "quote": "Slack, email, and web forms can keep the requester conversation connected to the issue, so updates and replies stay in sync across surfaces.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-53",
+        "category": "product",
+        "statement": "Templates can standardize intake and apply default issue properties when new Asks are created.",
+        "entity": "",
+        "sourceId": "src-site-page-5",
+        "sectionId": "src-site-page-5#intro-2",
+        "quote": "Templates can help standardize intake and apply default issue properties when new Asks are created.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-54",
+        "category": "product",
+        "statement": "Linear offers paid feedback tools.",
+        "entity": "",
+        "sourceId": "src-search-2",
+        "sectionId": "src-search-2#intro",
+        "quote": "Building a free, open-source alternative to paid Linear feedback tools",
+        "authority": "third-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-55",
+        "category": "product",
+        "statement": "Linear is built around a focused model for software product development.",
+        "entity": "",
+        "sourceId": "src-search-3",
+        "sectionId": "src-search-3#find-the-right-linear-alternative-for-the-way-your-team-work",
+        "quote": "Linear is built around a focused model for software product development.",
+        "authority": "third-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-56",
+        "category": "product",
+        "statement": "Linear organizes issues, projects, cycles, and initiatives in an opinionated system.",
+        "entity": "",
+        "sourceId": "src-search-3",
+        "sectionId": "src-search-3#find-the-right-linear-alternative-for-the-way-your-team-work",
+        "quote": "Issues, projects, cycles, and initiatives sit inside an opinionated system that teams can adopt without designing their own project-management structure first",
+        "authority": "third-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-57",
+        "category": "product",
+        "statement": "Linear uses a more prescribed software-development model than Plane.",
+        "entity": "Plane",
+        "sourceId": "src-search-3",
+        "sectionId": "src-search-3#plane-vs-linear",
+        "quote": "Linear offers a more prescribed software-development model, while Plane gives teams more room to configure how work is structured, governed, and connected to knowledge and agents.",
+        "authority": "third-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-58",
+        "category": "audience",
+        "statement": "Linear is designed for workflows shared by humans and agents.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#a-new-species-of-product-tool-purpose-built-for-modern-teams",
+        "quote": "Powered by agents Designed for workflows shared by humans and agents. From drafting PRDs to pushing PRs.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-59",
+        "category": "audience",
+        "statement": "Linear describes itself as a system for modern software development.",
+        "entity": "",
+        "sourceId": "src-site-index",
+        "sectionId": "src-site-index#linear",
+        "quote": "Meet the system for modern software development.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-60",
+        "category": "audience",
+        "statement": "Linear is designed for teams and agents.",
+        "entity": "",
+        "sourceId": "src-site-page-1",
+        "sectionId": "src-site-page-1#intro",
+        "quote": "Linear is the product development system for teams and agents.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-61",
+        "category": "audience",
+        "statement": "The Linear start guide helps users move from a new workspace to getting work done.",
+        "entity": "",
+        "sourceId": "src-site-page-1",
+        "sectionId": "src-site-page-1#intro",
+        "quote": "This guide helps you move quickly from new workspace to getting work done.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-62",
+        "category": "audience",
+        "statement": "Linear is designed to support teams collaborating and working quickly.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#intro-2",
+        "quote": "This is critical to your team's ability to collaborate well and work quickly.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-63",
+        "category": "audience",
+        "statement": "Triage supports support teams that need to create issues from customer reports or link those reports to existing issues.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#intro-3",
+        "quote": "Using these integrations, your support team can create new Linear issues or link customer reports to existing issues directly from their customer support tool.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-64",
+        "category": "audience",
+        "statement": "Linear Asks is designed for internal requests.",
+        "entity": "",
+        "sourceId": "src-site-page-5",
+        "sectionId": "src-site-page-5#intro",
+        "quote": "Linear Asks is designed for internal requests. It's especially useful for:",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-65",
+        "category": "audience",
+        "statement": "Linear Asks is useful for engineering teams receiving bug reports from non-technical teammates.",
+        "entity": "",
+        "sourceId": "src-site-page-5",
+        "sectionId": "src-site-page-5#intro",
+        "quote": "Engineering teams receiving bug reports from non-technical teammates",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-66",
+        "category": "audience",
+        "statement": "Linear Asks is useful for IT and support teams handling hardware, access, and setup requests.",
+        "entity": "",
+        "sourceId": "src-site-page-5",
+        "sectionId": "src-site-page-5#intro",
+        "quote": "IT and support teams handling hardware, access, and setup requests",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-67",
+        "category": "audience",
+        "statement": "Linear is intended for teams that want to adopt a project-management structure without designing one first.",
+        "entity": "",
+        "sourceId": "src-search-3",
+        "sectionId": "src-search-3#find-the-right-linear-alternative-for-the-way-your-team-work",
+        "quote": "teams can adopt without designing their own project-management structure first, and that focus is one of Linear's strengths.",
+        "authority": "third-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-68",
+        "category": "proof",
+        "statement": "Linear powers over 40,000 product teams, ranging from ambitious startups to major enterprises.",
+        "entity": "Linear",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#changelog",
+        "quote": "Linear powers over **40,000** product teams. From ambitious startups to major enterprises.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-69",
+        "category": "proof",
+        "statement": "OpenAI is named as a Linear customer in a customer testimonial.",
+        "entity": "OpenAI",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#changelog",
+        "quote": "You’ll probably build a better product, just because of the craft that using Linear infuses on your brain. Gabriel PealOpenAI",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-70",
+        "category": "proof",
+        "statement": "Ramp is named as a Linear customer in a customer testimonial.",
+        "entity": "Ramp",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#changelog",
+        "quote": "Our speed is intense and Linear helps us be action biased. Nik KoblovRamp",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-71",
+        "category": "pricing",
+        "statement": "Triage Intelligence, Triage Rules, and Triage Responsibility are available on Linear's Business and Enterprise plans.",
+        "entity": "Business and Enterprise plans",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#intro-2",
+        "quote": "Triage Intelligence, Triage Rules and Triage Responsibility are all available on our Business and Enterprise plans.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-72",
+        "category": "pricing",
+        "statement": "Linear Asks is available on Business and Enterprise plans, with additional features for Enterprise workspaces through Advanced Linear Asks.",
+        "entity": "",
+        "sourceId": "src-site-page-5",
+        "sectionId": "src-site-page-5#intro-2",
+        "quote": "Asks is available on both Business and Enterprise plans, with additional features for Enterprise workspaces through Advanced Linear Asks.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-73",
+        "category": "competitor",
+        "statement": "Plane is presented as an alternative to Linear for flexible product development with connected knowledge and agents.",
+        "entity": "Plane",
+        "sourceId": "src-search-3",
+        "sectionId": "src-search-3#the-six-best-linear-alternatives",
+        "quote": "1. **Plane:** Best for flexible product development with connected knowledge and agents",
+        "authority": "third-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-74",
+        "category": "competitor",
+        "statement": "ClickUp is presented as one of the six best Linear alternatives.",
+        "entity": "ClickUp",
+        "sourceId": "src-search-3",
+        "sectionId": "src-search-3#the-six-best-linear-alternatives",
+        "quote": "3. **Shortcut**\n4. **ClickUp**\n5. **Asana**\n6. **monday.com**",
+        "authority": "third-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-75",
+        "category": "competitor",
+        "statement": "monday.com is presented as one of the six best Linear alternatives.",
+        "entity": "monday.com",
+        "sourceId": "src-search-3",
+        "sectionId": "src-search-3#the-six-best-linear-alternatives",
+        "quote": "5. **Asana**\n6. **monday.com**",
+        "authority": "third-party",
+        "timeSensitive": false
+      }
+    ],
+    "gaps": [],
+    "discoverySteps": [
+      {
+        "reason": "competitor gap",
+        "method": "web-search",
+        "target": "Linear Product development and work management software competitors and alternatives",
+        "sourceIds": [
+          "src-search-2",
+          "src-search-3"
+        ],
+        "factsAdded": 12,
+        "outcome": "Added 12 facts"
+      }
+    ],
+    "rejectedFacts": 4,
+    "extractionErrors": [],
+    "excludedCompetitors": [
+      {
+        "entity": "Asana",
+        "reason": "Named on the brand's own pages without being framed as a competitor; likely a parent, partner, or integration."
+      },
+      {
+        "entity": "Jira",
+        "reason": "Named on the brand's own pages without being framed as a competitor; likely a parent, partner, or integration."
+      },
+      {
+        "entity": "Shortcut",
+        "reason": "Named on the brand's own pages without being framed as a competitor; likely a parent, partner, or integration."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "id": "src-project-brief",
+      "title": "Submitted project brief",
+      "sourceType": "user-note",
+      "authority": "user-supplied"
+    },
+    {
+      "id": "src-brand-site",
+      "title": "Linear – The system for product development",
+      "url": "https://linear.app",
+      "sourceType": "website",
+      "authority": "first-party"
+    },
+    {
+      "id": "src-site-index",
+      "title": "llms.txt index for linear.app",
+      "url": "https://linear.app/llms.txt",
+      "sourceType": "site-index",
+      "authority": "first-party"
+    },
+    {
+      "id": "src-site-page-1",
+      "title": "https://linear.app/docs/start-guide.md",
+      "url": "https://linear.app/docs/start-guide.md",
+      "sourceType": "website",
+      "authority": "first-party"
+    },
+    {
+      "id": "src-site-page-2",
+      "title": "https://linear.app/docs/conceptual-model.md",
+      "url": "https://linear.app/docs/conceptual-model.md",
+      "sourceType": "website",
+      "authority": "first-party"
+    },
+    {
+      "id": "src-site-page-3",
+      "title": "https://linear.app/docs/get-the-app.md",
+      "url": "https://linear.app/docs/get-the-app.md",
+      "sourceType": "website",
+      "authority": "first-party"
+    },
+    {
+      "id": "src-site-page-4",
+      "title": "https://linear.app/docs/triage.md",
+      "url": "https://linear.app/docs/triage.md",
+      "sourceType": "website",
+      "authority": "first-party"
+    },
+    {
+      "id": "src-site-page-5",
+      "title": "https://linear.app/docs/linear-asks.md",
+      "url": "https://linear.app/docs/linear-asks.md",
+      "sourceType": "website",
+      "authority": "first-party"
+    },
+    {
+      "id": "src-search-2",
+      "title": "Best Linear Alternative for general use? - Reddit",
+      "url": "https://www.reddit.com/r/Linear/comments/1o5tveb/best_linear_alternative_for_general_use/",
+      "sourceType": "search-result",
+      "authority": "third-party"
+    },
+    {
+      "id": "src-search-3",
+      "title": "Best Linear alternatives in 2026 | Plane blog",
+      "url": "https://plane.so/blog/best-linear-alternatives-in-2026",
+      "sourceType": "search-result",
+      "authority": "third-party"
+    },
+    {
+      "id": "src-prompt-library",
+      "title": "Human+AI Content System prompt library",
+      "sourceType": "prompt-library",
+      "authority": "internal"
+    }
+  ]
+}

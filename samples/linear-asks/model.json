@@ -1,0 +1,137 @@
+{
+  "provider": "OpenRouter",
+  "steps": {
+    "plan": [
+      {
+        "model": "nvidia/nemotron-3-ultra-550b-a55b",
+        "output": {
+          "hypothesis": "Product and engineering leads will adopt Linear Asks for Slack requests when shown measurable time savings in triage and evidence that peers at similar-scale companies (40k+ teams) have reduced context-switching and improved request-to-issue conversion rates.",
+          "calls": [
+            {
+              "tool": "audience_signals",
+              "terms": [],
+              "reason": "Identify which Linear-related topics/product features HN audiences (proxy for product/engineering leads) actually engage with—validates whether Asks/Slack intake resonates organically."
+            },
+            {
+              "tool": "prior_evidence",
+              "terms": [
+                "Linear Asks",
+                "Slack intake",
+                "triage",
+                "request conversion",
+                "context switching"
+              ],
+              "reason": "Surface any past campaign evidence on Asks/Slack adoption metrics, pain points, or objections to avoid re-litigating settled points."
+            },
+            {
+              "tool": "performance",
+              "terms": [],
+              "reason": "Learn which platforms (LinkedIn vs X) and asset types have historically driven engagement for Linear—directly informs channel mix for this goal."
+            },
+            {
+              "tool": "claim_risk",
+              "terms": [],
+              "reason": "Check whether prior Linear claims around adoption, time savings, or integration reliability have passed/failed governance—guides claim framing safety."
+            },
+            {
+              "tool": "unsupported_claims",
+              "terms": [],
+              "reason": "Flag any recent unsupported claims about Asks/Slack so we don't repeat them and can proactively address gaps."
+            },
+            {
+              "tool": "attention_trend",
+              "terms": [],
+              "reason": "Gauge brand awareness trajectory; rising/falling Wikipedia traffic signals whether we're pushing on an open door or need more education."
+            }
+          ]
+        }
+      }
+    ],
+    "decide": [
+      {
+        "model": "nvidia/nemotron-3-ultra-550b-a55b",
+        "output": {
+          "decisions": [
+            {
+              "id": "dec-1",
+              "kind": "claim_policy",
+              "statement": "Prioritize capability and comparison claims (e.g., \"Linear Asks converts Slack messages into trackable issues\") and keep framing or opinion claims to a minimum.",
+              "rationale": "claim_risk shows 34 supported capability claims and 2 supported comparison claims, while 16 framing and 2 opinion claims are only editorial.",
+              "evidenceIds": [
+                "claim_risk#1",
+                "claim_risk#2",
+                "claim_risk#3",
+                "claim_risk#4"
+              ],
+              "confidence": 0.92
+            },
+            {
+              "id": "dec-2",
+              "kind": "evidence_reuse",
+              "statement": "Build posts around the verified workflow: Slack Asks creates an issue, comment threads stay synced, and Triage Intelligence auto-labels and suggests assignees.",
+              "rationale": "fact:fact-48, fact:fact-50, fact:fact-52, and fact:fact-39 confirm the end-to-end flow from Slack intake to triaged issue.",
+              "evidenceIds": [
+                "fact:fact-48",
+                "fact:fact-50",
+                "fact:fact-52",
+                "fact:fact-39"
+              ],
+              "confidence": 0.95
+            },
+            {
+              "id": "dec-3",
+              "kind": "audience",
+              "statement": "Address product and engineering leads who triage internal requests (bug reports, IT/setup needs) from Slack.",
+              "rationale": "fact:fact-64, fact:fact-65, and fact:fact-66 define Linear Asks as designed for internal requests and useful for engineering and IT/support teams.",
+              "evidenceIds": [
+                "fact:fact-64",
+                "fact:fact-65",
+                "fact:fact-66"
+              ],
+              "confidence": 0.94
+            },
+            {
+              "id": "dec-4",
+              "kind": "angle",
+              "statement": "Frame Linear Asks as the structured intake layer that turns ad-hoc Slack pings into triaged, prioritized issues without leaving Slack.",
+              "rationale": "fact:fact-10, fact:fact-49, and fact:fact-50 show Asks supports Slack intake, converts to issues, and keeps conversations synced.",
+              "evidenceIds": [
+                "fact:fact-10",
+                "fact:fact-49",
+                "fact:fact-50"
+              ],
+              "confidence": 0.93
+            },
+            {
+              "id": "dec-5",
+              "kind": "channel_priority",
+              "statement": "Lead with LinkedIn for product/engineering leads; use X for technical deep-dives and community discussion.",
+              "rationale": "Hacker News conversations (audience_signals#1, #5, #9) show high engagement from technical audiences; LinkedIn aligns with the brief’s target of product leads.",
+              "evidenceIds": [
+                "audience_signals#1",
+                "audience_signals#5",
+                "audience_signals#9"
+              ],
+              "confidence": 0.82
+            },
+            {
+              "id": "dec-6",
+              "kind": "risk_flag",
+              "statement": "Do not claim Linear Asks is available on all plans—note it requires Business or Enterprise.",
+              "rationale": "prior_evidence#9 explicitly states Asks is \"Available to workspaces on our Business and Enterprise plans.\"",
+              "evidenceIds": [
+                "prior_evidence#9"
+              ],
+              "confidence": 0.98
+            }
+          ],
+          "openQuestions": [
+            "What are the current LinkedIn and X engagement benchmarks for Linear’s own posts? (No performance rows were provided.)",
+            "Which specific Slack-workflow pain points (e.g., lost requests, duplicate issues) resonate most with the target leads?",
+            "Are there customer quotes or case studies showing time saved per triaged request?"
+          ]
+        }
+      }
+    ]
+  }
+}

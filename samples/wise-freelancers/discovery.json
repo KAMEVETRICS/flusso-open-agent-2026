@@ -1,0 +1,411 @@
+{
+  "fromCampaign": "b4ff2e47-c610-476f-882e-3724e7360760",
+  "brief": {
+    "brand": "Wise",
+    "industry": "International payments and multi-currency accounts",
+    "website": "https://wise.com",
+    "docs": "",
+    "goal": "Get freelancers who invoice international clients to open a Wise account",
+    "audience": "Freelancers paid in several currencies",
+    "competitors": [
+      "Wells Fargo",
+      "Chase",
+      "PayPal"
+    ],
+    "platforms": [
+      "LinkedIn",
+      "Medium"
+    ],
+    "editorialProfile": "balanced",
+    "tone": "Transparent, direct, reassuring, accessible",
+    "durationDays": 14,
+    "postsPerWeek": 3,
+    "teamSize": 1,
+    "hoursPerWeek": 8,
+    "restrictions": ""
+  },
+  "factSheet": {
+    "facts": [
+      {
+        "id": "fact-1",
+        "category": "product",
+        "statement": "Wise locks in the exchange rate for up to 24 hours so the recipient receives the agreed amount.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#the-fast-way-to-send-money-abroad",
+        "quote": "Lock in exactly what your recipient will get for up to 24 hours. If the rate drops, you won’t lose out.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-2",
+        "category": "product",
+        "statement": "Wise provides global account details for receiving money in 22 currencies.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#receive-money-fast",
+        "quote": "Get paid easily in other currencies with global account details.\n\n22 currencies\n\n[Explore getting paid](https://wise.com/us/receive-money)",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-3",
+        "category": "product",
+        "statement": "Wise lets customers pay and withdraw cash worldwide without hidden fees or markups in 215 countries and territories.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#save-on-spending-abroad",
+        "quote": "Pay and withdraw cash worldwide without any hidden fees or markups.\n\n215 countries and territories\n\n[Learn about Wise cards](https://wise.com/us/card)",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-4",
+        "category": "product",
+        "statement": "Wise offers an opt-in interest feature with passthrough FDIC insurance of up to $250,000 through its program bank.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#receive-interest",
+        "quote": "Opt in and get passthrough FDIC insurance up to $250,000 through our Program Bank. [2](https://wise.com/#disclaimer-anchor-1) [3](https://wise.com/#disclaimer-anchor-2)",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-5",
+        "category": "product",
+        "statement": "Wise provides account details for receiving money in AUD, CAD, EUR, GBP, HUF, NZD, PHP, SGD, and USD.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#get-account-details-around-the-world-for-free",
+        "quote": "Get paid like a local in AUD, CAD, EUR, GBP, HUF, NZD, PHP, SGD, USD without fees — no matter where you are.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-6",
+        "category": "product",
+        "statement": "Wise users can send same-currency payments directly to another Wise Account without fees.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#receive-money-fast-and-for-free-from-other-wise-users",
+        "quote": "People can send same-currency payments directly to your Wise Account in a flash.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-7",
+        "category": "product",
+        "statement": "Wise Business combines payments, receiving money, spending, and earning returns across different currencies in one account.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#the-business-account-for-going-global",
+        "quote": "Make payments, get paid, spend and earn returns in different currencies. Save time, money and hassle with the all-in-one Wise Business account.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-8",
+        "category": "product",
+        "statement": "Wise says that 96% of payments to international partners take less than 24 hours.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#send-payments-to-international-partners",
+        "quote": "Pay suppliers in hours, not days— 96% of payments take less than 24 hours.*",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-9",
+        "category": "product",
+        "statement": "Wise Business lets businesses accept customer payments in 22 currencies, including USD, EUR, and GBP.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#get-paid-like-a-local-business",
+        "quote": "22 currencies Accept payments from international customers— in USD, EUR, GBP and other major currencies with no hidden fees.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-10",
+        "category": "product",
+        "statement": "Wise says its Interest feature offers a variable 3.4% APY on USD without locking funds away.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#earn-3-4-variable-on-usd-apy-2",
+        "quote": "With our interest feature, you can earn on your money without ever locking it away. So it's always ready for whenever you need it.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-11",
+        "category": "product",
+        "statement": "Wise Business provides physical and digital cards for teams in 231 countries and territories.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#spend-with-wise-multi-currency-cards",
+        "quote": "Get physical and digital cards for your team, separate your money and control your spending. 231 countries and territories",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-12",
+        "category": "product",
+        "statement": "Wise Business integrates with accounting software to provide reporting for every currency.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#sync-to-your-accounting-software",
+        "quote": "Integrate your Wise account with accounting software and get fast, accurate reporting for every currency.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-13",
+        "category": "audience",
+        "statement": "Wise offers an international business account for businesses making payments and receiving money in more than 40 currencies.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#built-for-business-too",
+        "quote": "Go global with our international business account. Make payments and get paid in 40+ currencies. Join over 900,000 businesses thriving with Wise.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-14",
+        "category": "audience",
+        "statement": "Users can receive their primary income or pension directly into Wise from their employer.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#receive-your-salary-into-wise",
+        "quote": "Share your Wise Account details with your employer, and receive your primary income or pension directly into Wise. Then, convert it to whatever currency you like.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-15",
+        "category": "audience",
+        "statement": "Wise Business is designed for small businesses that need to pay and get paid internationally.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#for-small-businesses",
+        "quote": "Wise Business makes it easy for small businesses to pay and get paid. Do business without borders.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-16",
+        "category": "audience",
+        "statement": "Wise Business helps startups receive investor funding in local currencies and expand internationally.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#for-startups",
+        "quote": "Wise Business lets you receive investor funding in local currencies while benefiting from our market-leading FX rate. Extend your runway with Wise and help your startup go global.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-17",
+        "category": "audience",
+        "statement": "Wise Business helps freelancers get paid by clients in different currencies.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#for-freelancers",
+        "quote": "Wise Business is the quick and easy way to get paid by clients in different currencies - making payment admin painless.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-18",
+        "category": "proof",
+        "statement": "Wise says that 18.9 million customers, businesses, and banks use it every day and move $16 billion monthly.",
+        "entity": "Wise",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#safe-at-every-step",
+        "quote": "18.9 million customers, businesses and banks use Wise every day. They move $16 billion every month. Here’s how we keep each dollar safe.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-19",
+        "category": "proof",
+        "statement": "Wise says it is regulated nationwide and has 65 licences worldwide.",
+        "entity": "Wise",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#federally-regulated",
+        "quote": "Regulated nationwide, with 65 licences worldwide to keep your money moving.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-20",
+        "category": "proof",
+        "statement": "Wise says more than 1,000 experts and its systems run 7 million fraud checks daily.",
+        "entity": "Wise",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#specialized-anti-fraud-tech",
+        "quote": "Over 1,000 experts and our smart systems run 7 million checks every day to spot and stop fraud.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-21",
+        "category": "proof",
+        "statement": "More than 900,000 global businesses move and spend $16 billion through Wise each month.",
+        "entity": "Wise",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#trusted-to-move-billions",
+        "quote": "Over 900,000 global businesses move and spend $16 billion per month.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-22",
+        "category": "proof",
+        "statement": "Rident Royalties says Wise's batch payments feature reduced client payment time from nearly a week to a few minutes.",
+        "entity": "Rident Royalties",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#hear-from-businesses-scaling-with-wise",
+        "quote": "Sending payments to all our clients used to take me close to a week, and with Wise's batch payments feature, I can accomplish this in just a few minutes.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-23",
+        "category": "pricing",
+        "statement": "Wise says it uses a standout exchange rate comparable to the rate shown on Google.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#100-transparent-pricing",
+        "quote": "Banks and other providers inflate the mid-market exchange rate to hide fees and make you pay more. Not Wise. You’ll always get our stand-out rate, like the one on Google.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-24",
+        "category": "pricing",
+        "statement": "Wise lets users receive and add money to their Wise Account for free.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#fees-for-receiving-and-adding-money",
+        "quote": "Receive and add money to your Wise Account for free. For some currencies, we offer faster or more convenient options for a small fee, too.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-25",
+        "category": "pricing",
+        "statement": "Wise always provides a free alternative when some faster payment methods have a fixed fee.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#then-get-paid-into-any-account",
+        "quote": "Some faster methods of sending money, like wire payments in US dollars, have a fixed fee — but there’ll always be a free alternative.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-26",
+        "category": "pricing",
+        "statement": "Users can add money to Wise Account via bank transfer for free when the currency stays the same.",
+        "entity": "",
+        "sourceId": "src-site-page-2",
+        "sectionId": "src-site-page-2#skip-the-fees-by-making-a-bank-transfer",
+        "quote": "Add money to Wise Account via bank transfer for free when the currency stays the same. Pay a small fee to add USD or CAD.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-27",
+        "category": "pricing",
+        "statement": "Wise offers wire transfers from $1.13 and says U.S. banks typically charge fees of $25 or more.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#send-payments-to-international-partners",
+        "quote": "Send wire transfers from as low as $1.13— Skip the $25+ fee typically charged by U.S. banks.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-28",
+        "category": "competitor",
+        "statement": "Wise compares its total fees and recipient amount with Wells Fargo.",
+        "entity": "Wells Fargo",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#100-transparent-pricing",
+        "quote": "Recipient gets\n\n![Wise](https://dq8dwmysp7hk1.cloudfront.net/logos/wise-mark.svg)Wise🎉 **Save up to 44.03 USD** in total fees889.92 EUR\n\n![Wells Fargo](https://dq8dwmysp7hk1.cloudfront.net/logos/wells-fargo-mark.svg)Wells Fargo**30.68 USD** in total fees867.36 EUR",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-29",
+        "category": "company",
+        "statement": "Wise is identified as an organization with wise.com as its website and social media accounts on Facebook, Twitter, Instagram, YouTube, and LinkedIn.",
+        "entity": "",
+        "sourceId": "src-structured-data",
+        "sectionId": "src-structured-data#intro",
+        "quote": "\"@type\": \"Organization\",\n \"name\": \"Wise\",\n \"url\": \"https://wise.com\",\n \"sameAs\": [\n \"https://www.facebook.com/wise\",\n \"https://twitter.com/wise\",\n \"https://www.instagram.com/wiseaccount\",\n \"https://www.youtube.com/c/wiseaccount\",\n \"https://www.linkedin.com/company/wiseaccount\"",
+        "authority": "first-party",
+        "timeSensitive": false
+      }
+    ],
+    "gaps": [],
+    "discoverySteps": [],
+    "rejectedFacts": 6,
+    "extractionErrors": [],
+    "excludedCompetitors": []
+  },
+  "sources": [
+    {
+      "id": "src-project-brief",
+      "title": "Submitted project brief",
+      "sourceType": "user-note",
+      "authority": "user-supplied"
+    },
+    {
+      "id": "src-brand-site",
+      "title": "Wise: The international account | Money without borders | Wise United States",
+      "url": "https://wise.com",
+      "sourceType": "website",
+      "authority": "first-party"
+    },
+    {
+      "id": "src-structured-data",
+      "title": "Structured data published on wise.com",
+      "url": "https://wise.com/",
+      "sourceType": "structured-data",
+      "authority": "first-party"
+    },
+    {
+      "id": "src-site-page-1",
+      "title": "Nossos relatórios - Wise",
+      "url": "https://wise.com/br/about/relatorios",
+      "sourceType": "website",
+      "authority": "first-party"
+    },
+    {
+      "id": "src-site-page-2",
+      "title": "Wise Account Fees for Receiving & Adding Money",
+      "url": "https://wise.com/gb/pricing/receive",
+      "sourceType": "website",
+      "authority": "first-party"
+    },
+    {
+      "id": "src-site-page-3",
+      "title": "Wise Business: Grow with the international business account",
+      "url": "https://wise.com/business",
+      "sourceType": "website",
+      "authority": "first-party"
+    },
+    {
+      "id": "src-prompt-library",
+      "title": "Human+AI Content System prompt library",
+      "sourceType": "prompt-library",
+      "authority": "internal"
+    },
+    {
+      "id": "src-web-1",
+      "title": "Wise Fees & Pricing: Only Pay for What You Use",
+      "url": "https://wise.com/us/pricing/",
+      "sourceType": "web-search",
+      "authority": "first-party"
+    }
+  ]
+}

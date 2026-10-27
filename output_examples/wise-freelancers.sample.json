@@ -1,0 +1,142 @@
+{
+  "run_id": "sample-wise-freelancers-722b8484",
+  "status": "success",
+  "input": {
+    "website": "https://wise.com",
+    "goal": "Get freelancers who invoice international clients to open a Wise account",
+    "audience": "Freelancers paid in several currencies"
+  },
+  "output": {
+    "runId": "sample-wise-freelancers-722b8484",
+    "mode": "sample",
+    "provider": "sample (recorded OpenRouter run)",
+    "models": [
+      "nvidia/nemotron-3-ultra-550b-a55b"
+    ],
+    "hypothesis": "Freelancers who invoice international clients experience significant pain points with traditional banking (high FX fees, slow settlement, fragmented accounts) that Wise's multi-currency account directly solves, and they are actively discussing/comparing solutions on LinkedIn and Medium.",
+    "decisions": [
+      {
+        "id": "dec-claim_policy",
+        "kind": "claim_policy",
+        "statement": "Avoid any copy that states or implies a guaranteed amount the freelancer will receive after conversion; only describe the rate-lock window that exists in the product.",
+        "rationale": "Eight time-bound claims were flagged as time-sensitive (claim_risk#2), meaning writers must not promise future FX outcomes.",
+        "evidenceIds": [
+          "claim_risk#2"
+        ],
+        "confidence": 0.9,
+        "status": "accepted",
+        "verification": "",
+        "revised": false
+      },
+      {
+        "id": "dec-evidence_reuse",
+        "kind": "evidence_reuse",
+        "statement": "Build the core proof points around the 22-currency local account details (fact:fact-2, fact:fact-5, fact:fact-9), the 24-hour rate lock (fact:fact-1), and the 96% sub-24-hour delivery stat (fact:fact-8).",
+        "rationale": "These verified product facts directly answer the freelancer pain points of getting paid like a local, knowing the exact payout, and receiving money quickly.",
+        "evidenceIds": [
+          "fact:fact-1",
+          "fact:fact-2",
+          "fact:fact-5",
+          "fact:fact-8",
+          "fact:fact-9"
+        ],
+        "confidence": 0.95,
+        "status": "accepted",
+        "verification": "",
+        "revised": false
+      },
+      {
+        "id": "dec-angle",
+        "kind": "angle",
+        "statement": "Lead with \"invoice in your client's currency, get paid like a local, and know exactly what lands in your account\" as the headline message.",
+        "rationale": "The 22-currency account details and 24-hour rate lock (fact:fact-1, fact:fact-2, fact:fact-5, fact:fact-9) give freelancers certainty on both the invoicing side and the settlement side.",
+        "evidenceIds": [
+          "fact:fact-1",
+          "fact:fact-2",
+          "fact:fact-5",
+          "fact:fact-9"
+        ],
+        "confidence": 0.9,
+        "status": "accepted",
+        "verification": "",
+        "revised": false
+      },
+      {
+        "id": "dec-audience",
+        "kind": "audience",
+        "statement": "Target freelancers who currently invoice in USD/EUR/GBP but lose money to bank FX markups and multi-day settlement delays.",
+        "rationale": "World facts identify these three currencies as the major ones supported for local receiving (fact:fact-5, fact:fact-9) and the 96% sub-24-hour speed (fact:fact-8) addresses the delay pain point.",
+        "evidenceIds": [
+          "fact:fact-5",
+          "fact:fact-8",
+          "fact:fact-9"
+        ],
+        "confidence": 0.85,
+        "status": "accepted",
+        "verification": "",
+        "revised": false
+      },
+      {
+        "id": "dec-risk_flag",
+        "kind": "risk_flag",
+        "statement": "Do not reference Wise debit/credit cards, card deactivations, fee changes, or the Evolve Bank data breach in any asset.",
+        "rationale": "Community conversations show active negative sentiment on US business card deactivation (audience_signals#3), fee increases (audience_signals#7, audience_signals#8), and the Evolve breach (audience_signals#11); mentioning them would distract from the invoicing value prop.",
+        "evidenceIds": [
+          "audience_signals#3",
+          "audience_signals#7",
+          "audience_signals#8",
+          "audience_signals#11"
+        ],
+        "confidence": 0.9,
+        "status": "accepted",
+        "verification": "",
+        "revised": false
+      },
+      {
+        "id": "dec-open_question",
+        "kind": "channel_priority",
+        "statement": "Open question: which platform—LinkedIn or Medium—has historically driven more Wise Business sign-ups from freelancers? No performance rows exist for either channel.",
+        "rationale": "The performance tool returned zero measured rows, so we cannot prioritize one platform over the other with evidence.",
+        "evidenceIds": [],
+        "confidence": 0.5,
+        "status": "rejected",
+        "verification": "cites no evidence that exists",
+        "revised": false
+      }
+    ],
+    "openQuestions": [
+      "Which platform—LinkedIn or Medium—has historically driven more Wise Business sign-ups from freelancers? No performance rows exist for either channel."
+    ],
+    "evidence": {
+      "zetarisQueries": 12,
+      "zetarisRows": 21,
+      "worldFacts": 24,
+      "memories": 0,
+      "tools": [
+        "prior_evidence",
+        "audience_signals",
+        "performance",
+        "claim_risk",
+        "campaign_history",
+        "attention_trend"
+      ]
+    },
+    "dataQuality": [
+      {
+        "rule": "claim_status_known",
+        "total": 348,
+        "valid": 348,
+        "invalid": 0
+      },
+      {
+        "rule": "campaign_has_domain",
+        "total": 18,
+        "valid": 15,
+        "invalid": 3
+      }
+    ],
+    "durationMs": 124
+  },
+  "trace_dir": "logs/runs/sample-wise-freelancers-722b8484",
+  "execution_time_seconds": 0.1
+}
