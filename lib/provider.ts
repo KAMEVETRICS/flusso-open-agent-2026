@@ -1380,6 +1380,11 @@ export class ModelContentProvider implements ContentGenerationProvider {
       maxOutputTokens: Math.max(12000, assetTarget * 1400)
     });
     let execution = normalizeExecutionStage(executionResult.output, sources, architecture, brief);
+    // An extra asset is surplus, not a broken plan: keep the cadence's count, in the model's order.
+    if (execution.assets.length > assetTarget) {
+      console.warn("Flusso Execution returned " + execution.assets.length + " assets for a cadence of " + assetTarget + "; keeping the first " + assetTarget + ".");
+      execution = { ...execution, assets: execution.assets.slice(0, assetTarget) };
+    }
     if (execution.assets.length !== assetTarget) {
       throw new Error(
         "Execution returned " + execution.assets.length +
