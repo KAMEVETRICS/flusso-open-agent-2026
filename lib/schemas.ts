@@ -155,7 +155,9 @@ export const FactSheetSchema = z.object({
   discoverySteps: z.array(DiscoveryStepSchema).default([]),
   // Facts the model proposed whose quotes were not found in the cited source.
   rejectedFacts: z.number().int().nonnegative().default(0),
-  extractionErrors: z.array(z.object({ sourceId: z.string(), reason: z.string() })).default([])
+  extractionErrors: z.array(z.object({ sourceId: z.string(), reason: z.string() })).default([]),
+  // Companies a third-party page called competitors that the brand itself names otherwise.
+  excludedCompetitors: z.array(z.object({ entity: z.string(), reason: z.string() })).default([])
 });
 
 export const BrandContextSchema = z.object({
@@ -600,7 +602,7 @@ export const DeliveryPackSchema = z.object({
   brandIdentity: BrandIdentitySchema.nullable().default(null),
   // Brief fields inferred from the website rather than stated by the user.
   inferredFields: z.array(z.string()).default([]),
-  factSheet: FactSheetSchema.default({ facts: [], gaps: [], discoverySteps: [], rejectedFacts: 0, extractionErrors: [] }),
+  factSheet: FactSheetSchema.default({ facts: [], gaps: [], discoverySteps: [], rejectedFacts: 0, extractionErrors: [], excludedCompetitors: [] }),
   brandContext: BrandContextSchema,
   strategy: CampaignStrategySchema.nullable().default(null),
   contentLandscape: ContentLandscapeSchema,

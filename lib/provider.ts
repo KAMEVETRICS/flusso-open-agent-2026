@@ -45,7 +45,7 @@ import { isEvidenceSource, normalizeGeneratedClaims, summarizeProof } from "./pr
 import { noteSource } from "./source-ingestion";
 import { campaignProductionScope } from "./campaign-scope";
 import type { DiscoveryModel, DiscoveryResult } from "./discovery";
-import type { FactContext, GeneratedFact } from "./fact-sheet";
+import { isNonprofit, type FactContext, type GeneratedFact } from "./fact-sheet";
 import { plainText, splitIntoSections, type SourceSection } from "./sections";
 import { normalizeForMatch } from "./text-match";
 import type { BriefInference } from "./discovery-helpers";
@@ -834,7 +834,10 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
         "- audience: who it is for, use cases, the kinds of users or customers it names.",
         "- proof: traction figures, named customers, partners, investors, audits, launches, awards, press coverage.",
         "- pricing: prices, fees, plans, free tiers, costs.",
-        "- competitor: a named company or product that competes with or is compared to the brand; set entity to its name. Only companies in the brand's market (" + (context.industry || "its industry") + "). Ignore unrelated companies that share a similar name.",
+        isNonprofit(context.industry)
+          ? "- competitor: a named peer organization working on the same cause, which donors might compare with the brand; set entity to its name. Ignore unrelated organizations that share a similar name."
+          : "- competitor: a named company or product that competes with or is compared to the brand; set entity to its name. Only companies in the brand's market (" + (context.industry || "its industry") + "). Ignore unrelated companies that share a similar name.",
+        "Never list the brand's own parent company, owner, partners, or integrations as competitors.",
         "- company: what the company is, its mission, team, founding, locations, and dates.",
         "statement: one plain sentence a reader could confirm from the quote alone, with no interpretation.",
         "quote: an exact contiguous passage of 8 to 60 words copied from the section named by sectionId, without ellipses.",

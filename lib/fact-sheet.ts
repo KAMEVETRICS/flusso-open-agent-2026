@@ -98,8 +98,48 @@ export function numberFacts(facts: UnnumberedFact[]): BrandFact[] {
     .map(({ fact }, index) => ({ id: "fact-" + (index + 1), ...fact }));
 }
 
-export function factGaps(facts: Array<Pick<BrandFact, "category">>): FactCategory[] {
-  return REQUIRED_FACT_CATEGORIES.filter((category) => !facts.some((fact) => fact.category === category));
+const NONPROFIT = /\b(non-?profit|charit(?:y|able)|ngo|foundation|philanthrop\w*|humanitarian|cause)\b/i;
+
+// Non-profits have peer organisations rather than competitors; a missing peer is not a gap.
+export function isNonprofit(industry: string) {
+  return NONPROFIT.test(industry);
+}
+
+export function factGaps(facts: Array<Pick<BrandFact, "category">>, industry = ""): FactCategory[] {
+  return REQUIRED_FACT_CATEGORIES
+    .filter((category) => !(category === "competitor" && isNonprofit(industry)))
+    .filter((category) => !facts.some((fact) => fact.category === category));
+}
+
+function namesEntity(text: string, entity: string) {
+  const escaped = entity.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return escaped.length > 1 && new RegExp("(^|[^a-z0-9])" + escaped + "($|[^a-z0-9])", "i").test(text);
+}
+
+// A third-party page can call a company a competitor when it is really the brand's parent,
+// partner, or integration. When the brand's own pages name that company and no first-party fact
+// frames it as a competitor, the competitor fact is set aside.
+export function setAsideOwnRelations(
+  facts: UnnumberedFact[],
+  sources: SourceDocument[]
+): { facts: UnnumberedFact[]; excluded: Array<{ entity: string; reason: string }> } {
+  const firstPartyText = sources
+    .filter((source) => source.authority === "first-party" && source.fetchStatus === "fetched")
+    .map((source) => source.extractedText)
+    .join("\n");
+  const firstPartyRivals = new Set(
+    facts
+      .filter((fact) => fact.category === "competitor" && fact.authority === "first-party")
+      .map((fact) => fact.entity.toLowerCase())
+  );
+  const excluded = new Map<string, string>();
+  const kept = facts.filter((fact) => {
+    if (fact.category !== "competitor" || fact.authority === "first-party") return true;
+    if (firstPartyRivals.has(fact.entity.toLowerCase()) || !namesEntity(firstPartyText, fact.entity)) return true;
+    excluded.set(fact.entity, "Named on the brand's own pages without being framed as a competitor; likely a parent, partner, or integration.");
+    return false;
+  });
+  return { facts: kept, excluded: Array.from(excluded, ([entity, reason]) => ({ entity, reason })) };
 }
 
 export function competitorNames(facts: BrandFact[]) {
@@ -159,7 +199,9 @@ export function gapPage(category: FactCategory, links: SiteLink[], website: stri
 export function gapSearchQuery(category: FactCategory, context: FactContext) {
   const subject = (context.brand + " " + context.industry).trim();
   const queries: Partial<Record<FactCategory, string>> = {
-    competitor: subject + " competitors and alternatives",
+    competitor: isNonprofit(context.industry)
+      ? subject + " similar organizations working on the same cause"
+      : subject + " competitors and alternatives",
     proof: subject + " partners customers announcement",
     pricing: context.brand + " pricing fees",
     audience: subject + " use cases",

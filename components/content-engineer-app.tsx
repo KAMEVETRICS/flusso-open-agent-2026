@@ -23,6 +23,7 @@ import {
   XCircle
 } from "@phosphor-icons/react";
 import { emptyBrief } from "@/lib/brief";
+import { campaignProductionScope } from "@/lib/campaign-scope";
 import { pipelineStageNames } from "@/lib/pipeline-stages";
 import type { CampaignSummary } from "@/lib/campaign-store";
 import { buildClientContentPack, type CampaignExportFormat } from "@/lib/exports";
@@ -357,6 +358,10 @@ function Workbench({
       : [...brief.platforms, platform];
     update("platforms", platforms);
   };
+  // Images render automatically, so say up front how many to expect.
+  const { assetTarget } = campaignProductionScope(brief);
+  const visualFirst = brief.platforms.some((platform) => platform === "Instagram" || platform === "TikTok");
+  const imageEstimate = visualFirst ? "up to " + Math.min(16, assetTarget + 4) + " images" : "2 to 4 images";
   const canGenerate =
     websiteLabel(brief.website).includes(".") &&
     brief.goal.trim().length >= 5 &&
@@ -468,6 +473,7 @@ function Workbench({
           {loading ? <Sparkle size={16} weight="duotone" /> : <Play size={16} weight="fill" />}
           {loading ? "Generating..." : "Generate Campaign Pack"}
         </button>
+        <p className="muted">{assetTarget} posts and {imageEstimate} will be generated; each image is a paid image-model call.</p>
         {error ? <div className="error-box">{error}</div> : null}
       </section>
 
@@ -977,7 +983,7 @@ const factCategories: Array<{ id: FactCategory; label: string }> = [
   { id: "audience", label: "Audience" },
   { id: "proof", label: "Proof" },
   { id: "pricing", label: "Pricing" },
-  { id: "competitor", label: "Competitors" },
+  { id: "competitor", label: "Competitors or peer organizations" },
   { id: "company", label: "Company" }
 ];
 
@@ -1105,6 +1111,11 @@ function FactsTab({ pack, campaignId }: { pack: DeliveryPack; campaignId: string
             </tbody>
           </table>
         </>
+      ) : null}
+      {factSheet.excludedCompetitors.length ? (
+        <p className="muted">
+          Not counted as competitors: {factSheet.excludedCompetitors.map((item) => item.entity).join(", ")}. The brand&apos;s own pages name them, so they are likely a parent, partner, or integration.
+        </p>
       ) : null}
       {factSheet.rejectedFacts || factSheet.extractionErrors.length ? (
         <p className="muted">

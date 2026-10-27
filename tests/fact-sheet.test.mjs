@@ -10,6 +10,7 @@ import {
   gapPage,
   gapSearchQuery,
   numberFacts,
+  setAsideOwnRelations,
   verifyFacts
 } from "../lib/fact-sheet.ts";
 import { splitIntoSections } from "../lib/sections.ts";
@@ -232,4 +233,29 @@ test("discovery keeps one copy of a page that several gap searches return", asyn
   const halborn = result.sources.filter((source) => source.url === "https://www.halborn.com/case-studies/doma");
   assert.equal(halborn.length, 1);
   assert.deepEqual(result.factSheet.discoverySteps.map((step) => step.sourceIds.length), [1, 0, 0]);
+});
+
+test("does not treat a missing competitor as a gap for non-profits", () => {
+  const facts = [{ category: "product" }, { category: "audience" }, { category: "proof" }, { category: "pricing" }];
+  assert.deepEqual(factGaps(facts, "Non-profit clean water charity"), []);
+  assert.deepEqual(factGaps(facts, "B2B software"), ["competitor"]);
+  assert.match(gapSearchQuery("competitor", { brand: "charity: water", industry: "nonprofit", website: "" }), /similar organizations/);
+});
+
+test("sets aside a third-party competitor that the brand's own pages name", () => {
+  const base = { statement: "s", sourceId: "src-search-1", sectionId: "s#a", quote: "q", authority: "third-party", timeSensitive: false, category: "competitor" };
+  const own = source("src-brand-site", "Doma is built by D3 Global, the team behind the D3 registrar platform.");
+  const { facts, excluded } = setAsideOwnRelations([
+    { ...base, entity: "D3 Global" },
+    { ...base, entity: "Namefi" },
+    { ...base, entity: "D3 Global", authority: "first-party", category: "company" }
+  ], [own]);
+  assert.deepEqual(facts.map((fact) => fact.entity), ["Namefi", "D3 Global"]);
+  assert.deepEqual(excluded.map((item) => item.entity), ["D3 Global"]);
+
+  const rival = setAsideOwnRelations([
+    { ...base, entity: "Jira" },
+    { ...base, entity: "Jira", authority: "first-party" }
+  ], [source("src-site-page-1", "Linear vs Jira: why teams switch")]);
+  assert.equal(rival.facts.length, 2, "the brand's own comparison page keeps it a competitor");
 });

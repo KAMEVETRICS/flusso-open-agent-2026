@@ -27,6 +27,7 @@ import {
   gapSearchQuery,
   isFactSource,
   numberFacts,
+  setAsideOwnRelations,
   pageKey,
   verifyFacts,
   type FactContext,
@@ -42,11 +43,11 @@ import {
 } from "./source-ingestion";
 
 const MAP_LINK_LIMIT = 200;
-const MAX_KEY_PAGES = 3;
+const MAX_KEY_PAGES = 5;
 const MAX_DOC_URLS = 5;
 const MAX_COMPETITOR_URLS = 5;
 // Pages and search results read beyond the homepage, docs, and site index before facts are trusted.
-const MIN_CONTENT_SOURCES = 4;
+const MIN_CONTENT_SOURCES = 6;
 const MAX_GAP_SEARCHES = 3;
 const SEARCH_PRIORITY: FactCategory[] = ["competitor", "proof", "pricing", "audience", "product"];
 const COMPETITOR_SEARCH_RESULTS = 3;
@@ -231,12 +232,13 @@ async function researchFacts(
 ): Promise<{ sources: SourceDocument[]; factSheet: FactSheet }> {
   const seenSections = new Set<string>();
   const first = await extractFactRound(initialSources, context, model, seenSections);
-  const gapsBefore = factGaps(first.facts);
+  const gapsBefore = factGaps(first.facts, context.industry);
   const fetches = await fetchForGaps(gapsBefore, context, links, initialSources, fetchedAt);
   const added = fetches.flatMap((fetch) => fetch.sources);
   const second = await extractFactRound(added, context, model, seenSections);
 
-  const facts = numberFacts([...first.facts, ...second.facts]);
+  const screened = setAsideOwnRelations([...first.facts, ...second.facts], [...initialSources, ...added]);
+  const facts = numberFacts(screened.facts);
   const discoverySteps: DiscoveryStep[] = fetches.map((fetch) => {
     const sourceIds = fetch.sources.map((source) => source.id);
     const factsAdded = second.facts.filter((fact) => sourceIds.includes(fact.sourceId)).length;
@@ -246,7 +248,8 @@ async function researchFacts(
     sources: [...initialSources, ...added],
     factSheet: {
       facts,
-      gaps: factGaps(facts),
+      gaps: factGaps(facts, context.industry),
+      excludedCompetitors: screened.excluded,
       discoverySteps,
       rejectedFacts: first.rejected + second.rejected,
       extractionErrors: [...first.errors, ...second.errors]
