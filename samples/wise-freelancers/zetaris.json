@@ -15,13 +15,13 @@
           "name": "claim_status_known",
           "table": "claim_outcome",
           "type": "Custom Data Quality",
-          "total_record": "348",
-          "valid_record": "348",
+          "total_record": "378",
+          "valid_record": "378",
           "invalid_record": "0"
         }
       ],
       "total": 1,
-      "timeUsedMs": 10037
+      "timeUsedMs": 8164
     }
   ],
   "dq:campaign_has_domain": [
@@ -40,13 +40,55 @@
           "name": "campaign_has_domain",
           "table": "campaign",
           "type": "Custom Data Quality",
-          "total_record": "18",
-          "valid_record": "15",
+          "total_record": "19",
+          "valid_record": "16",
           "invalid_record": "3"
         }
       ],
       "total": 1,
-      "timeUsedMs": 7547
+      "timeUsedMs": 6244
+    }
+  ],
+  "campaign_history:wise.com": [
+    {
+      "sql": "SELECT campaign_id, brand, goal, editorial_score, fact_count, gap_count, claim_count, created_at FROM lightning.metastore.flusso.brand_evidence.campaign WHERE domain = 'wise.com' ORDER BY created_at DESC LIMIT 10",
+      "headers": [
+        "campaign_id",
+        "brand",
+        "goal",
+        "editorial_score",
+        "fact_count",
+        "gap_count",
+        "claim_count",
+        "created_at"
+      ],
+      "rows": [
+        {
+          "campaign_id": "b4ff2e47-c610-476f-882e-3724e7360760",
+          "brand": "Wise",
+          "goal": "Get freelancers who invoice international clients to open a Wise account",
+          "editorial_score": "93",
+          "fact_count": "29",
+          "gap_count": "0",
+          "claim_count": "24",
+          "created_at": "2026-10-26 21:14:05.960401"
+        }
+      ],
+      "total": 1,
+      "timeUsedMs": 3497
+    }
+  ],
+  "prior_evidence:wise.com": [
+    {
+      "sql": "SELECT evidence_id, heading, excerpt FROM lightning.metastore.flusso.brand_evidence.evidence_section WHERE domain = 'wise.com' AND (lower(excerpt) LIKE '%freelancer international invoicing%' OR lower(excerpt) LIKE '%22 currencies account details%' OR lower(excerpt) LIKE '%96  payments 24 hours%' OR lower(excerpt) LIKE '%freelancer wise adoption%') ORDER BY created_at DESC LIMIT 10",
+      "headers": [
+        "evidence_id",
+        "heading",
+        "excerpt"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 3705
     }
   ],
   "performance:wise.com": [
@@ -63,7 +105,23 @@
       ],
       "rows": [],
       "total": 0,
-      "timeUsedMs": 3596
+      "timeUsedMs": 6071
+    }
+  ],
+  "unsupported_claims:wise.com": [
+    {
+      "sql": "SELECT claim_kind, status, resolution_status, claim_text, recommendation, created_at FROM lightning.metastore.flusso.brand_evidence.claim_outcome WHERE domain = 'wise.com' AND status IN ('unsupported', 'conflict') ORDER BY created_at DESC LIMIT 12",
+      "headers": [
+        "claim_kind",
+        "status",
+        "resolution_status",
+        "claim_text",
+        "recommendation",
+        "created_at"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 3503
     }
   ],
   "audience_signals:wise.com:create": [
@@ -74,20 +132,7 @@
       ],
       "rows": [],
       "total": 0,
-      "timeUsedMs": 3678
-    }
-  ],
-  "prior_evidence:wise.com": [
-    {
-      "sql": "SELECT evidence_id, heading, excerpt FROM lightning.metastore.flusso.brand_evidence.evidence_section WHERE domain = 'wise.com' AND (lower(excerpt) LIKE '%freelancer international invoicing%' OR lower(excerpt) LIKE '%multi-currency account freelancer%' OR lower(excerpt) LIKE '%wise business freelancer%' OR lower(excerpt) LIKE '%fx fees international payments%' OR lower(excerpt) LIKE '%receive payments multiple currencies%') ORDER BY created_at DESC LIMIT 10",
-      "headers": [
-        "evidence_id",
-        "heading",
-        "excerpt"
-      ],
-      "rows": [],
-      "total": 0,
-      "timeUsedMs": 3750
+      "timeUsedMs": 2811
     }
   ],
   "audience_signals:wise.com": [
@@ -187,7 +232,7 @@
         }
       ],
       "total": 12,
-      "timeUsedMs": 761
+      "timeUsedMs": 478
     }
   ],
   "audience_signals:wise.com:drop": [
@@ -198,122 +243,7 @@
       ],
       "rows": [],
       "total": 0,
-      "timeUsedMs": 194
-    }
-  ],
-  "campaign_history:wise.com": [
-    {
-      "sql": "SELECT campaign_id, brand, goal, editorial_score, fact_count, gap_count, claim_count, created_at FROM lightning.metastore.flusso.brand_evidence.campaign WHERE domain = 'wise.com' ORDER BY created_at DESC LIMIT 10",
-      "headers": [
-        "campaign_id",
-        "brand",
-        "goal",
-        "editorial_score",
-        "fact_count",
-        "gap_count",
-        "claim_count",
-        "created_at"
-      ],
-      "rows": [
-        {
-          "campaign_id": "b4ff2e47-c610-476f-882e-3724e7360760",
-          "brand": "Wise",
-          "goal": "Get freelancers who invoice international clients to open a Wise account",
-          "editorial_score": "93",
-          "fact_count": "29",
-          "gap_count": "0",
-          "claim_count": "24",
-          "created_at": "2026-10-26 21:14:05.960401"
-        }
-      ],
-      "total": 1,
-      "timeUsedMs": 3678
-    }
-  ],
-  "attention_trend:wise.com:create": [
-    {
-      "sql": "CREATE REST SESSION TABLE fl_wikis_livewisefreelanc REQUEST (endpoint \"https://en.wikipedia.org/w/rest.php/v1/search/title?q=Wise&limit=1\", method \"GET\", http_encoding \"URLENCODED\", response_type \"JSON\", insecure_ssl \"false\") HEADER (\"User-Agent\" \"Flusso/0.3 (evidence agent)\") BODY ()",
-      "headers": [
-        "Result"
-      ],
-      "rows": [],
-      "total": 0,
-      "timeUsedMs": 3574
-    },
-    {
-      "sql": "CREATE REST SESSION TABLE fl_wikiv_livewisefreelanc REQUEST (endpoint \"https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Wise/daily/20260801/20261027\", method \"GET\", http_encoding \"URLENCODED\", response_type \"JSON\", insecure_ssl \"false\") HEADER (\"User-Agent\" \"Flusso/0.3 (evidence agent)\") BODY ()",
-      "headers": [
-        "Result"
-      ],
-      "rows": [],
-      "total": 0,
-      "timeUsedMs": 987
-    }
-  ],
-  "attention_trend:wise.com": [
-    {
-      "sql": "SELECT p.key, p.title, p.description FROM session.fl_wikis_livewisefreelanc LATERAL VIEW explode(pages) AS p",
-      "headers": [
-        "key",
-        "title",
-        "description"
-      ],
-      "rows": [
-        {
-          "key": "Wise",
-          "title": "Wise",
-          "description": "Topics referred to by the same term"
-        }
-      ],
-      "total": 1,
-      "timeUsedMs": 144
-    },
-    {
-      "sql": "SELECT substr(i.timestamp, 1, 6) AS month, sum(i.views) AS views, count(*) AS days FROM session.fl_wikiv_livewisefreelanc LATERAL VIEW explode(items) AS i GROUP BY substr(i.timestamp, 1, 6) ORDER BY month",
-      "headers": [
-        "month",
-        "views",
-        "days"
-      ],
-      "rows": [
-        {
-          "month": "202608",
-          "views": "802",
-          "days": "31"
-        },
-        {
-          "month": "202609",
-          "views": "764",
-          "days": "30"
-        },
-        {
-          "month": "202610",
-          "views": "592",
-          "days": "26"
-        }
-      ],
-      "total": 3,
-      "timeUsedMs": 694
-    }
-  ],
-  "attention_trend:wise.com:drop": [
-    {
-      "sql": "DROP TABLE session.fl_wikis_livewisefreelanc",
-      "headers": [
-        "Result"
-      ],
-      "rows": [],
-      "total": 0,
-      "timeUsedMs": 73
-    },
-    {
-      "sql": "DROP TABLE session.fl_wikiv_livewisefreelanc",
-      "headers": [
-        "Result"
-      ],
-      "rows": [],
-      "total": 0,
-      "timeUsedMs": 166
+      "timeUsedMs": 125
     }
   ],
   "claim_risk:wise.com": [
@@ -358,7 +288,7 @@
         }
       ],
       "total": 5,
-      "timeUsedMs": 7109
+      "timeUsedMs": 7234
     }
   ]
 }

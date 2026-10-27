@@ -1,0 +1,2 @@
+{"ts":"2026-10-27T19:16:59.398Z","runId":"live-linear-asks-052dc325","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:linear.app","facts":75,"gaps":[]}
+{"ts":"2026-10-27T19:17:40.028Z","runId":"live-linear-asks-052dc325","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:linear.app","written":12}

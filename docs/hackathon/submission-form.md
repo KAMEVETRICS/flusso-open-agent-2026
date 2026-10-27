@@ -24,7 +24,7 @@ A unified semantic layer, `brand_evidence`, models campaigns, claim outcomes, pe
 - **World Model** holds the brand's verified fact sheet and the live Zetaris signals as one event-sourced model, with provenance on every write. Its context builder ranks facts by the campaign goal for the planner.
 - **H-MEM** keeps a tiered memory per brand. After each campaign it stores which claims failed verification and why, the campaign outcome, and the decisions that were accepted. The next campaign for that brand recalls them. Cited memories get trust feedback in H-MEM's ledger.
 
-Feature powered: the Evidence Agent step and the Evidence Agent tab in the app. Tests: `tests/meterless-engines.test.mjs` (H-MEM learn and recall across restarts; World Model provenance and context ranking), `tests/evidence-agent.test.mjs`, and `tests/sample-mode.test.mjs`. All 125 tests pass with `npm test`.
+Feature powered: the Evidence Agent step and the Evidence Agent tab in the app. Tests: `tests/meterless-engines.test.mjs` (H-MEM learn and recall across restarts; World Model provenance and context ranking), `tests/evidence-agent.test.mjs`, and `tests/sample-mode.test.mjs`. All 126 tests pass with `npm test`.
 
 **Meterless Nightshift (primary AI provider).** Every text model call goes to Nightshift through its OpenAI-compatible Runtime 0.90 contract when it is configured:
 - `METERLESS_BASE_URL` and `METERLESS_RUNTIME_TOKEN`

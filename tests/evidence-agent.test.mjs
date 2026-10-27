@@ -79,6 +79,10 @@ test("the verifier rejects missing citations, the wrong evidence kind, and inven
 
   const invented = verifyDecision({ id: "d3", kind: "angle", confidence: 50, statement: "Say Asks saves 40% of triage time.", rationale: "", evidenceIds: ["fact:fact-1"] }, index, "");
   assert.match(invented.problems.join(" "), /states numbers not in its evidence: 40/);
+
+  // Digits inside evidence IDs, with or without the fact: prefix, are not claims.
+  const ids = verifyDecision({ id: "d4", kind: "angle", confidence: 50, statement: "Lead with Slack intake.", rationale: "Per fact-1 and fact:fact-1.", evidenceIds: ["fact:fact-1"] }, index, "");
+  assert.deepEqual(ids.problems, []);
 });
 
 test("the agent plans, queries Zetaris, verifies, and revises a rejected decision once", async () => {

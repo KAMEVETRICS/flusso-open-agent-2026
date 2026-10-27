@@ -1,47 +1,46 @@
 {
-  "provider": "OpenRouter",
+  "provider": "Meterless Nightshift",
   "steps": {
     "plan": [
       {
         "model": "nvidia/nemotron-3-ultra-550b-a55b",
         "output": {
-          "hypothesis": "Prior campaign evidence will reveal which content angles (comfort, sustainability, performance) and platforms (Instagram vs TikTok) have historically driven the highest email capture rates for Allbirds, informing the editorial strategy for the running shoe launch.",
+          "hypothesis": "Highlighting Allbirds' natural, sustainable materials (wool, tree fiber, sugarcane) and comfort-focused design in newsletter content will drive higher email signups from runners and walkers who prioritize comfort and materials, especially when paired with social proof and early-access incentives for the new running shoe launch.",
           "calls": [
             {
-              "tool": "campaign_history",
-              "terms": [],
-              "reason": "Baseline performance of past Flusso campaigns for Allbirds to understand what goals, scores, and fact/claim patterns exist."
+              "tool": "prior_evidence",
+              "terms": [
+                "Allbirds newsletter signups",
+                "running shoe launch email",
+                "natural materials comfort",
+                "early access waitlist"
+              ],
+              "reason": "Find past campaign evidence on what messaging and incentives drove newsletter signups for Allbirds product launches, especially around materials and comfort."
             },
             {
               "tool": "performance",
               "terms": [],
-              "reason": "Measured content performance by platform and asset type to see which formats and channels have actually driven engagement/conversions."
-            },
-            {
-              "tool": "prior_evidence",
-              "terms": [
-                "email newsletter signup",
-                "running shoe launch",
-                "comfort materials",
-                "sustainable materials",
-                "Dasher NZ"
-              ],
-              "reason": "Retrieve source sections from past campaigns that match key search terms relevant to the current goal and product context."
-            },
-            {
-              "tool": "unsupported_claims",
-              "terms": [],
-              "reason": "Identify past claims that failed verification to avoid repeating risky angles in the new campaign."
-            },
-            {
-              "tool": "claim_risk",
-              "terms": [],
-              "reason": "Understand the brand's claim verification track record by kind and status to govern new claims responsibly."
+              "reason": "Measure which content types (materials-focused, comfort-focused, launch teasers) and platforms (Newsletter, X) historically drove the highest signup conversion rates for Allbirds."
             },
             {
               "tool": "audience_signals",
               "terms": [],
-              "reason": "See live Hacker News engagement with Allbirds content to gauge audience interest topics and sentiment."
+              "reason": "Identify what Allbirds-related content resonates with technical/early-adopter audiences on Hacker News, especially around materials innovation and product launches."
+            },
+            {
+              "tool": "unsupported_claims",
+              "terms": [],
+              "reason": "Review which claims about Allbirds' materials, comfort, or launch details failed verification in the last campaign to avoid repeating unsupported promises."
+            },
+            {
+              "tool": "claim_risk",
+              "terms": [],
+              "reason": "Understand the verification risk profile for claims about natural materials, comfort, sustainability, and launch timelines to ensure only supported claims are used."
+            },
+            {
+              "tool": "campaign_history",
+              "terms": [],
+              "reason": "Review the prior campaign's editorial score (94/100), fact/check patterns, and gaps to build on strengths and avoid past claim pitfalls."
             }
           ]
         }
@@ -55,89 +54,76 @@
             {
               "id": "claim_policy#1",
               "kind": "claim_policy",
-              "statement": "Avoid unsupported capability claims such as promising confirmed updates or practical pre-launch guidance; past campaigns had one unsupported capability claim that required repair.",
-              "rationale": "claim_risk#5 shows 1 unsupported capability claim was repaired; unsupported_claims#1 confirms a newsletter guidance claim lacked evidence and was flagged for removal.",
+              "statement": "Lead with capability claims about natural materials and comfort (45 supported) and avoid time-bound claims about launch dates or performance metrics (3 time-sensitive, 1 conflict).",
+              "rationale": "Claim risk table shows capability claims are well-supported while time-bound claims are mostly time-sensitive or conflicting.",
               "evidenceIds": [
-                "claim_risk#5",
-                "unsupported_claims#1"
+                "claim_risk#1",
+                "claim_risk#4",
+                "claim_risk#7"
               ],
-              "confidence": 0.85
-            },
-            {
-              "id": "claim_policy#2",
-              "kind": "claim_policy",
-              "statement": "Subject framing and opinion claims to editorial review before publishing; 23 framing and 3 opinion claims were flagged as editorial risk across prior runs.",
-              "rationale": "claim_risk#2 (23 framing) and claim_risk#3 (3 opinion) both carry editorial status, meaning they need human judgment to stay on-brand.",
-              "evidenceIds": [
-                "claim_risk#2",
-                "claim_risk#3"
-              ],
-              "confidence": 0.8
+              "confidence": 0.95
             },
             {
               "id": "evidence_reuse#1",
               "kind": "evidence_reuse",
-              "statement": "Lead with the Dasher NZ collection as the new running shoe hero and pair it with SweetFoam® sugarcane midsole and Featherbed™ memory foam details for material credibility.",
-              "rationale": "fact:fact-3 identifies the Dasher NZ collection; fact:fact-15 and fact:fact-18 specify the cushioning and midsole tech; fact:fact-13 adds the TENCEL™ upper for breathability.",
+              "statement": "Build messaging around verified material facts: wool, tree fiber, and sugarcane replace petroleum-based synthetics (fact-2, fact-3, fact-14) and SweetFoam® midsole uses sugarcane-based EVA (fact-19).",
+              "rationale": "These are the core differentiated product facts that directly address the audience's comfort and materials concerns.",
               "evidenceIds": [
+                "fact:fact-2",
                 "fact:fact-3",
-                "fact:fact-15",
-                "fact:fact-18",
-                "fact:fact-13"
+                "fact:fact-14",
+                "fact:fact-19"
               ],
-              "confidence": 0.9
+              "confidence": 0.98
             },
             {
               "id": "evidence_reuse#2",
               "kind": "evidence_reuse",
-              "statement": "Reuse the daily-routine positioning (everyday routines, weekend plans, travel) from site copy to frame the running shoe as versatile for both runs and all-day wear.",
-              "rationale": "fact:fact-21 and fact:fact-25 both quote the same “daily routines, weekend plans, travel” language used on Allbirds’ own site.",
+              "statement": "Reference the Cruiser's lightweight design (8.7oz men's, 6.7oz women's) and 14mm/8mm stack height as proof of running-adjacent comfort (fact-31).",
+              "rationale": "Specific weight and geometry data provide concrete evidence for comfort claims without making unverified performance promises.",
               "evidenceIds": [
-                "fact:fact-21",
-                "fact:fact-25"
+                "fact:fact-31"
               ],
-              "confidence": 0.85
+              "confidence": 0.96
             },
             {
-              "id": "channel_priority#1",
-              "kind": "channel_priority",
-              "statement": "Prioritize Instagram and TikTok for short-form video and carousel posts that demonstrate the shoe in daily routines; past briefs consistently targeted these two platforms.",
-              "rationale": "Every prior campaign brief (prior_evidence#1, prior_evidence#3, prior_evidence#5) lists Instagram and TikTok as the chosen platforms for this goal.",
+              "id": "audience#1",
+              "kind": "audience",
+              "statement": "Target runners and everyday walkers who value natural materials and all-day comfort for daily routines, travel, and weekend plans (fact-27, fact-29, fact-30).",
+              "rationale": "Audience facts explicitly name these use cases and the material preferences align with Allbirds' verified differentiators.",
               "evidenceIds": [
-                "prior_evidence#1",
-                "prior_evidence#3",
-                "prior_evidence#5"
+                "fact:fact-27",
+                "fact:fact-29",
+                "fact:fact-30"
               ],
-              "confidence": 0.9
+              "confidence": 0.94
             },
             {
               "id": "angle#1",
               "kind": "angle",
-              "statement": "Angle messaging around “lightweight, bouncy, wildly comfortable” feel plus natural materials (wool, tree fiber, sugarcane) to differentiate from petroleum-based competitors.",
-              "rationale": "fact:fact-1 and fact:fact-8 both use the exact “lightweight, bouncy, wildly comfortable” phrasing; fact:fact-2 and fact:fact-9 confirm the natural-material replacement narrative.",
+              "statement": "Frame the newsletter as early access to the next evolution of Allbirds' natural-material comfort — specifically the sugarcane-based SweetFoam® technology that makes running-adjacent feel effortless (fact-1, fact-19).",
+              "rationale": "Combines the verified 'lightweight, bouncy, effortless' claim with the specific midsole technology that enables it.",
               "evidenceIds": [
                 "fact:fact-1",
-                "fact:fact-8",
-                "fact:fact-2",
-                "fact:fact-9"
+                "fact:fact-19"
               ],
-              "confidence": 0.85
+              "confidence": 0.93
             },
             {
               "id": "risk_flag#1",
               "kind": "risk_flag",
-              "statement": "Do not use the word “sustainable” in IPO or formal labeling contexts; the SEC forced Allbirds to drop that label during its IPO.",
-              "rationale": "fact:fact-29 documents the SEC action requiring removal of the “sustainable” label from the IPO.",
+              "statement": "Do not claim specific launch dates, price points, or performance benchmarks for the upcoming running shoe — the prior campaign had a time-bound claim conflict on exactly these details (unsupported_claims#1).",
+              "rationale": "A previous claim that construction, fit, price, availability, and performance details were unconfirmed was contradicted by official release evidence, so any specific claims in these areas need primary source verification.",
               "evidenceIds": [
-                "fact:fact-29"
+                "unsupported_claims#1",
+                "claim_risk#7"
               ],
-              "confidence": 0.9
+              "confidence": 0.97
             }
           ],
           "openQuestions": [
-            "Which specific running-shoe model (Dasher NZ or another) is the launch hero, and do we have launch-date or limited-edition details to build urgency?",
-            "What are the target cost-per-signup and list-growth KPIs for this 14-day campaign?",
-            "Do we have UGC or athlete testimonials approved for Instagram Reels and TikTok Spark Ads?"
+            "No performance rows exist for prior Allbirds newsletter campaigns on X or email; measure signup conversion on first two newsletter issues before scaling.",
+            "Hacker News signals show financial news (AI compute, reverse split) not product engagement; validate whether target audience actually discusses Allbirds on X or other platforms."
           ]
         }
       }
@@ -150,87 +136,76 @@
             {
               "id": "claim_policy#1",
               "kind": "claim_policy",
-              "statement": "Avoid unsupported capability claims about what the newsletter will deliver; past campaigns had one unsupported capability claim that was repaired (claim_risk#5).",
-              "rationale": "The claim risk log shows one unsupported capability claim was repaired, so writers must verify any promise about newsletter content before using it.",
+              "statement": "Lead with capability claims about natural materials and comfort (45 supported) and avoid time-bound claims about launch dates or performance metrics (3 time-sensitive, 1 conflict).",
+              "rationale": "Claim risk table shows capability claims are well-supported while time-bound claims are mostly time-sensitive or conflicting.",
               "evidenceIds": [
-                "claim_risk#5"
+                "claim_risk#1",
+                "claim_risk#4",
+                "claim_risk#7"
               ],
-              "confidence": 0.9
-            },
-            {
-              "id": "claim_policy#2",
-              "kind": "claim_policy",
-              "statement": "Treat framing and opinion claims as editorial decisions requiring internal sign-off; 23 framing claims and 3 opinion claims were flagged editorial in past runs (claim_risk#2, claim_risk#3).",
-              "rationale": "High volumes of framing and opinion claims were marked editorial, meaning they need brand approval rather than factual proof.",
-              "evidenceIds": [
-                "claim_risk#2",
-                "claim_risk#3"
-              ],
-              "confidence": 0.9
+              "confidence": 0.95
             },
             {
               "id": "evidence_reuse#1",
               "kind": "evidence_reuse",
-              "statement": "Lead with Dasher NZ Collection visuals and product facts for the upcoming running shoe launch; three prior briefs all surface this collection first (prior_evidence#2, prior_evidence#4, prior_evidence#6) and world facts confirm it is new (fact:fact-3).",
-              "rationale": "The Dasher NZ Collection appears as the top cross-sell in every prior campaign and is explicitly labeled new, making it the strongest verified asset for launch content.",
+              "statement": "Build messaging around verified material facts: wool, tree fiber, and sugarcane replace petroleum-based synthetics (fact:fact-2, fact:fact-3, fact:fact-14) and SweetFoam® midsole uses sugarcane-based EVA (fact:fact-19).",
+              "rationale": "These are the core differentiated product facts that directly address the audience's comfort and materials concerns.",
               "evidenceIds": [
-                "prior_evidence#2",
-                "prior_evidence#4",
-                "prior_evidence#6",
-                "fact:fact-3"
+                "fact:fact-2",
+                "fact:fact-3",
+                "fact:fact-14",
+                "fact:fact-19"
               ],
-              "confidence": 0.95
+              "confidence": 0.98
             },
             {
               "id": "evidence_reuse#2",
               "kind": "evidence_reuse",
-              "statement": "Use the verified material story — wool, tree fiber, sugarcane SweetFoam® — as the proof backbone; these appear across multiple product facts (fact:fact-2, fact:fact-9, fact:fact-18) and the Men's Cruiser specs (fact:fact-13, fact:fact-15).",
-              "rationale": "Natural-material substitution is the most repeated, citation-ready claim in the fact base and directly supports the audience's comfort-and-materials interest.",
+              "statement": "Reference the Cruiser's lightweight design (8.7oz men's, 6.7oz women's) and 14mm/8mm stack height as proof of running-adjacent comfort (fact:fact-31).",
+              "rationale": "Specific weight and geometry data provide concrete evidence for comfort claims without making unverified performance promises.",
               "evidenceIds": [
-                "fact:fact-2",
-                "fact:fact-9",
-                "fact:fact-13",
-                "fact:fact-15",
-                "fact:fact-18"
+                "fact:fact-31"
               ],
-              "confidence": 0.95
+              "confidence": 0.96
+            },
+            {
+              "id": "audience#1",
+              "kind": "audience",
+              "statement": "Target runners and everyday walkers who value natural materials and all-day comfort for daily routines, travel, and weekend plans (fact:fact-27, fact:fact-29, fact:fact-30).",
+              "rationale": "Audience facts explicitly name these use cases and the material preferences align with Allbirds' verified differentiators.",
+              "evidenceIds": [
+                "fact:fact-27",
+                "fact:fact-29",
+                "fact:fact-30"
+              ],
+              "confidence": 0.94
             },
             {
               "id": "angle#1",
               "kind": "angle",
-              "statement": "Frame the shoe as \"everyday performance\" — light, bouncy, supportive for daily routines, weekend plans, and travel — using the exact language from audience facts (fact:fact-21, fact:fact-25) and product feel facts (fact:fact-1, fact:fact-8).",
-              "rationale": "Audience and product facts converge on everyday versatility and effortless comfort, matching the brief's runner-and-walker target.",
+              "statement": "Frame the newsletter as early access to the next evolution of Allbirds' natural-material comfort — specifically the sugarcane-based SweetFoam® technology that makes running-adjacent feel effortless (fact:fact-1, fact:fact-19).",
+              "rationale": "Combines the verified 'lightweight, bouncy, effortless' claim with the specific midsole technology that enables it.",
               "evidenceIds": [
                 "fact:fact-1",
-                "fact:fact-8",
-                "fact:fact-21",
-                "fact:fact-25"
+                "fact:fact-19"
               ],
-              "confidence": 0.9
+              "confidence": 0.93
             },
             {
               "id": "risk_flag#1",
               "kind": "risk_flag",
-              "statement": "Do not use the word \"sustainable\" or imply broad sustainability leadership; the SEC forced Allbirds to drop the term from its IPO (fact:fact-29) and a 2025 zero-carbon claim covered only 500 pairs (fact:fact-30).",
-              "rationale": "Regulatory history and a limited-run claim make any unqualified sustainability language legally risky and credibility-damaging.",
+              "statement": "Do not claim specific launch dates, price points, or performance benchmarks for the upcoming running shoe — the prior campaign had a time-bound claim conflict on exactly these details (unsupported_claims#1).",
+              "rationale": "A previous claim that construction, fit, price, availability, and performance details were unconfirmed was contradicted by official release evidence, so any specific claims in these areas need primary source verification.",
               "evidenceIds": [
-                "fact:fact-29",
-                "fact:fact-30"
+                "unsupported_claims#1",
+                "claim_risk#7"
               ],
-              "confidence": 0.95
-            },
-            {
-              "id": "open_question#1",
-              "kind": "risk_flag",
-              "statement": "Open: No performance data exists for Instagram or TikTok posts in this campaign history; confirm platform KPIs with the growth team before finalizing channel mix.",
-              "rationale": "The performance tool returned zero rows, so we cannot evidence-base a channel priority decision.",
-              "evidenceIds": [],
-              "confidence": 0.5
+              "confidence": 0.97
             }
           ],
           "openQuestions": [
-            "What are the target cost-per-signup and click-through-rate benchmarks for Instagram vs. TikTok in the upcoming 14-day window?",
-            "Has legal pre-approved any sustainability-adjacent phrasing (e.g., \"natural materials,\" \"lower-carbon\") for this launch?"
+            "No performance rows exist for prior Allbirds newsletter campaigns on X or email; measure signup conversion on first two newsletter issues before scaling.",
+            "Hacker News signals show financial news (AI compute, reverse split) not product engagement; validate whether target audience actually discusses Allbirds on X or other platforms."
           ]
         }
       }

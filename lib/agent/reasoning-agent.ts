@@ -97,7 +97,8 @@ export function buildEvidenceIndex(world: WorldContext, memories: RecalledMemory
 
 // Numbers a decision asserts, ignoring the digits inside evidence IDs it may mention inline.
 function numbersIn(text: string) {
-  const withoutIds = text.replace(/\b[a-z_]+#\d+|\bfact:[\w-]+|\bmem-\d+|\bworld:[\w-]+/gi, " ");
+  // Models also write fact IDs without their prefix ("fact-48").
+  const withoutIds = text.replace(/\b[a-z_]+#\d+|\bfact:[\w-]+|\bfact-\d+|\bmem-\d+|\bworld:[\w-]+/gi, " ");
   return [...new Set(withoutIds.match(/\d+(?:\.\d+)?/g) ?? [])];
 }
 

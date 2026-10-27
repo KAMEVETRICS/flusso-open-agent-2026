@@ -15,13 +15,13 @@
           "name": "claim_status_known",
           "table": "claim_outcome",
           "type": "Custom Data Quality",
-          "total_record": "348",
-          "valid_record": "348",
+          "total_record": "378",
+          "valid_record": "378",
           "invalid_record": "0"
         }
       ],
       "total": 1,
-      "timeUsedMs": 8957
+      "timeUsedMs": 12939
     }
   ],
   "dq:campaign_has_domain": [
@@ -40,88 +40,13 @@
           "name": "campaign_has_domain",
           "table": "campaign",
           "type": "Custom Data Quality",
-          "total_record": "18",
-          "valid_record": "15",
+          "total_record": "19",
+          "valid_record": "16",
           "invalid_record": "3"
         }
       ],
       "total": 1,
-      "timeUsedMs": 10469
-    }
-  ],
-  "audience_signals:linear.app:create": [
-    {
-      "sql": "CREATE REST SESSION TABLE fl_hn_livelinearasks8d REQUEST (endpoint \"https://hn.algolia.com/api/v1/search?query=linear.app&tags=story&hitsPerPage=50\", method \"GET\", http_encoding \"URLENCODED\", response_type \"JSON\", insecure_ssl \"false\") HEADER (\"User-Agent\" \"Flusso/0.3 (evidence agent)\") BODY ()",
-      "headers": [
-        "Result"
-      ],
-      "rows": [],
-      "total": 0,
-      "timeUsedMs": 2741
-    }
-  ],
-  "prior_evidence:linear.app": [
-    {
-      "sql": "SELECT evidence_id, heading, excerpt FROM lightning.metastore.flusso.brand_evidence.evidence_section WHERE domain = 'linear.app' AND (lower(excerpt) LIKE '%linear asks%' OR lower(excerpt) LIKE '%slack intake%' OR lower(excerpt) LIKE '%triage%' OR lower(excerpt) LIKE '%request conversion%' OR lower(excerpt) LIKE '%context switching%') ORDER BY created_at DESC LIMIT 10",
-      "headers": [
-        "evidence_id",
-        "heading",
-        "excerpt"
-      ],
-      "rows": [
-        {
-          "evidence_id": "8b57705d-2b45-4936-a5c6-ca93ff084631:src-project-brief#intro",
-          "heading": "",
-          "excerpt": "{\"website\":\"https://linear.app\",\"docs\":\"\",\"goal\":\"Get product teams to adopt Linear Asks for Slack requests\",\"platforms\": \"LinkedIn\",\"X\" ,\"editorialProfile\":\"technical-authority\",\"durationDays\":14,\"postsPerWeek\":4,\"teamSize\":1,\"hoursPerWeek\":8,\"restrictions\":\"\"}"
-        },
-        {
-          "evidence_id": "8b57705d-2b45-4936-a5c6-ca93ff084631:src-brand-site#activity",
-          "heading": "Activity",
-          "excerpt": "Linear created the issue via Slack on behalf ofKarri·2min ago\nTriage Intelligence added the labels Performanceand iOS·2min ago\nkarri·4 min ago\nRight now we show a spinner forever, which makes it look like the car disappeared...\njori·just now\n@Linear can you take a stab at this?\nLinearconnected byJori·2 min ago\nChanged 2 filesDraft PR awaiting your review·2 min ago\nLinear moved from Todo toIn Progress·just now\nReviews\nRevert\nProperties\nIn Progress\nMedium\nKarri\nLinear\nCycle 144\nLabels\nPerformance\niOS\nReleases\nLinear App1.6881...⋅Jun 25\nPowering the companies building the future"
-        },
-        {
-          "evidence_id": "8b57705d-2b45-4936-a5c6-ca93ff084631:src-brand-site#intake-and-integrations-2",
-          "heading": "Intake and integrations",
-          "excerpt": "didier2:03 AM\nYea, we’re still blocking initial render on a full vehicle state sync every time…\nandreas2:03 AM\nFeels like we could render sooner and load the rest in the background. Probably also worth tracking startup timing so we know how often this happens!\n@Linearcreate issues and assign to me\nFeatures\nLinear Agent+\nCustomer Requests+\nTriage+\nLinear Asks+"
-        },
-        {
-          "evidence_id": "8b57705d-2b45-4936-a5c6-ca93ff084631:src-site-index#intake",
-          "heading": "Intake",
-          "excerpt": "- Triage\n- Linear Asks\n- Asks with Slack\n- Asks with Email\n- Asks Web Forms\n- Customer Requests"
-        },
-        {
-          "evidence_id": "8b57705d-2b45-4936-a5c6-ca93ff084631:src-site-index#agents-and-automation",
-          "heading": "Agents and automation",
-          "excerpt": "- Linear Agent\n- Loops\n- AI Agents\n- Triage Intelligence\n- Code Intelligence\n- MCP server"
-        },
-        {
-          "evidence_id": "8b57705d-2b45-4936-a5c6-ca93ff084631:src-site-page-4#intro",
-          "heading": "",
-          "excerpt": "# Triage\nManage issues created by other teams and customer support integrations.\n! Triage\n## Overview\nTriage is a special inbox for your team. When an issue is created by integration or by a workspace member not belonging to your specific Linear team, it will appear here. Triage offers a opportunity to review, update, and prioritize issues before they are added to your team's workflow. Consider using Triage responsibility to set a rotating schedule of ownership for monitoring incoming issues.\n! Watch on YouTube\n## Configure\nGo to your Team Settings > Triage . Once you toggle it on, Triage will"
-        },
-        {
-          "evidence_id": "8b57705d-2b45-4936-a5c6-ca93ff084631:src-site-page-4#intro-2",
-          "heading": "",
-          "excerpt": "Snoozing will hide the issue from the triage queue to return at a time of your choosing, or when there's new activity on that issue: whichever comes first. See snoozed Triage issues by toggling the preference in View Options. Snoozing hides the issue in Triage from other users by default as well.\n## Automation\n> !NOTE\n> Triage Intelligence, Triage Rules and Triage Responsibility are all available on our Business and Enterprise plans.\nTriage supports a collection of automation that allow issues to be processed, enriched, and acted on automatically without manual overhead.\nTriage Rules apply pre"
-        },
-        {
-          "evidence_id": "8b57705d-2b45-4936-a5c6-ca93ff084631:src-site-page-4#intro-3",
-          "heading": "",
-          "excerpt": "Triage Intelligence uses agentic AI to analyze every new issue in triage against your existing issues to suggest properties like assignee and label, and pro-actively surface likely related issues or duplicates based on the analysis of the issue's content against historical behavior in your workspace.\nLearn more about Triage Intelligence here .\n### Triage responsibility\nEnable triage responsibility to define who handles incoming issues. You can select specific members of your workspace to receive notifications of new issues or be automatically assigned to them. Configure triage responsibility i"
-        },
-        {
-          "evidence_id": "8b57705d-2b45-4936-a5c6-ca93ff084631:src-site-page-5#intro",
-          "heading": "",
-          "excerpt": "# Linear Asks\nAsks turns requests like bug reports, questions, and IT needs into actionable issues in Linear.\n> !NOTE\n> Available to workspaces on our Business and Enterprise plans. Additional features available to Enterprise workspaces through Advanced Linear Asks.\n! Linear logo and Asks logo\n## Overview\nLinear Asks helps organizations manage internal requests that would otherwise be scattered across chat, email, and ad-hoc forms.\nOnce enabled, asks can be submitted through Slack, email, or web forms. Each ask becomes an issue in Linear, where teams can triage, prioritize, assign, and respond"
-        },
-        {
-          "evidence_id": "22243b53-8690-4d1c-896d-033f099bf4dc:src-search-2#height",
-          "heading": "Height",
-          "excerpt": "7.9/5Free tier available, paid plans per user\nBest for: Teams wanting an AI-native, autonomous tracker\nHeight is an autonomous project management tool that leans on AI for backlog grooming, bug triage, and status updates. It targets product and engineering teams that want the software to handle the busywork.\nHeight pushes AI past suggestions into action, auto-grooming the backlog, drafting specs, and triaging bugs rather than just labeling them. A product team drowning in manual Linear upkeep will feel the difference immediately. The interface stays clean and keyboard-driven in the Linear trad"
-        }
-      ],
-      "total": 10,
-      "timeUsedMs": 6825
+      "timeUsedMs": 6470
     }
   ],
   "performance:linear.app": [
@@ -138,12 +63,36 @@
       ],
       "rows": [],
       "total": 0,
-      "timeUsedMs": 6651
+      "timeUsedMs": 5058
+    }
+  ],
+  "audience_signals:linear.app:create": [
+    {
+      "sql": "CREATE REST SESSION TABLE fl_hn_livelinearasks05 REQUEST (endpoint \"https://hn.algolia.com/api/v1/search?query=linear.app&tags=story&hitsPerPage=50\", method \"GET\", http_encoding \"URLENCODED\", response_type \"JSON\", insecure_ssl \"false\") HEADER (\"User-Agent\" \"Flusso/0.3 (evidence agent)\") BODY ()",
+      "headers": [
+        "Result"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 5202
+    }
+  ],
+  "prior_evidence:linear.app": [
+    {
+      "sql": "SELECT evidence_id, heading, excerpt FROM lightning.metastore.flusso.brand_evidence.evidence_section WHERE domain = 'linear.app' AND (lower(excerpt) LIKE '%linear asks slack%' OR lower(excerpt) LIKE '%triage requests%' OR lower(excerpt) LIKE '%product team adoption%' OR lower(excerpt) LIKE '%engineering leads workflow%') ORDER BY created_at DESC LIMIT 10",
+      "headers": [
+        "evidence_id",
+        "heading",
+        "excerpt"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 5462
     }
   ],
   "audience_signals:linear.app": [
     {
-      "sql": "SELECT h.title, h.points, h.num_comments, substr(h.created_at, 1, 10) AS created, h.url FROM session.fl_hn_livelinearasks8d LATERAL VIEW explode(hits) AS h WHERE h.url LIKE '%linear.app%' ORDER BY h.points DESC LIMIT 12",
+      "sql": "SELECT h.title, h.points, h.num_comments, substr(h.created_at, 1, 10) AS created, h.url FROM session.fl_hn_livelinearasks05 LATERAL VIEW explode(hits) AS h WHERE h.url LIKE '%linear.app%' ORDER BY h.points DESC LIMIT 12",
       "headers": [
         "title",
         "points",
@@ -238,120 +187,57 @@
         }
       ],
       "total": 12,
-      "timeUsedMs": 3170
+      "timeUsedMs": 733
     }
   ],
   "audience_signals:linear.app:drop": [
     {
-      "sql": "DROP TABLE session.fl_hn_livelinearasks8d",
+      "sql": "DROP TABLE session.fl_hn_livelinearasks05",
       "headers": [
         "Result"
       ],
       "rows": [],
       "total": 0,
-      "timeUsedMs": 262
+      "timeUsedMs": 101
     }
   ],
-  "attention_trend:linear.app:create": [
+  "campaign_history:linear.app": [
     {
-      "sql": "CREATE REST SESSION TABLE fl_wikis_livelinearasks8d REQUEST (endpoint \"https://en.wikipedia.org/w/rest.php/v1/search/title?q=Linear&limit=1\", method \"GET\", http_encoding \"URLENCODED\", response_type \"JSON\", insecure_ssl \"false\") HEADER (\"User-Agent\" \"Flusso/0.3 (evidence agent)\") BODY ()",
+      "sql": "SELECT campaign_id, brand, goal, editorial_score, fact_count, gap_count, claim_count, created_at FROM lightning.metastore.flusso.brand_evidence.campaign WHERE domain = 'linear.app' ORDER BY created_at DESC LIMIT 10",
       "headers": [
-        "Result"
-      ],
-      "rows": [],
-      "total": 0,
-      "timeUsedMs": 1995
-    },
-    {
-      "sql": "CREATE REST SESSION TABLE fl_wikiv_livelinearasks8d REQUEST (endpoint \"https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Linearity/daily/20260801/20261027\", method \"GET\", http_encoding \"URLENCODED\", response_type \"JSON\", insecure_ssl \"false\") HEADER (\"User-Agent\" \"Flusso/0.3 (evidence agent)\") BODY ()",
-      "headers": [
-        "Result"
-      ],
-      "rows": [],
-      "total": 0,
-      "timeUsedMs": 2087
-    }
-  ],
-  "unsupported_claims:linear.app": [
-    {
-      "sql": "SELECT claim_kind, status, resolution_status, claim_text, recommendation, created_at FROM lightning.metastore.flusso.brand_evidence.claim_outcome WHERE domain = 'linear.app' AND status IN ('unsupported', 'conflict') ORDER BY created_at DESC LIMIT 12",
-      "headers": [
-        "claim_kind",
-        "status",
-        "resolution_status",
-        "claim_text",
-        "recommendation",
+        "campaign_id",
+        "brand",
+        "goal",
+        "editorial_score",
+        "fact_count",
+        "gap_count",
+        "claim_count",
         "created_at"
       ],
-      "rows": [],
-      "total": 0,
-      "timeUsedMs": 4919
-    }
-  ],
-  "attention_trend:linear.app": [
-    {
-      "sql": "SELECT p.key, p.title, p.description FROM session.fl_wikis_livelinearasks8d LATERAL VIEW explode(pages) AS p",
-      "headers": [
-        "key",
-        "title",
-        "description"
-      ],
       "rows": [
         {
-          "key": "Linearity",
-          "title": "Linearity",
-          "description": "Properties of mathematical relationships"
-        }
-      ],
-      "total": 1,
-      "timeUsedMs": 4266
-    },
-    {
-      "sql": "SELECT substr(i.timestamp, 1, 6) AS month, sum(i.views) AS views, count(*) AS days FROM session.fl_wikiv_livelinearasks8d LATERAL VIEW explode(items) AS i GROUP BY substr(i.timestamp, 1, 6) ORDER BY month",
-      "headers": [
-        "month",
-        "views",
-        "days"
-      ],
-      "rows": [
-        {
-          "month": "202608",
-          "views": "1610",
-          "days": "31"
+          "campaign_id": "8b57705d-2b45-4936-a5c6-ca93ff084631",
+          "brand": "Linear",
+          "goal": "Get product teams to adopt Linear Asks for Slack requests",
+          "editorial_score": "94",
+          "fact_count": "75",
+          "gap_count": "0",
+          "claim_count": "29",
+          "created_at": "2026-10-27 06:07:38.124876"
         },
         {
-          "month": "202609",
-          "views": "2034",
-          "days": "30"
-        },
-        {
-          "month": "202610",
-          "views": "1405",
-          "days": "26"
+          "campaign_id": "22243b53-8690-4d1c-896d-033f099bf4dc",
+          "brand": "Linear",
+          "goal": "Get engineering managers at 50 to 500 person startups to start a Linear trial",
+          "editorial_score": "92",
+          "fact_count": "72",
+          "gap_count": "0",
+          "claim_count": "28",
+          "created_at": "2026-10-27 02:12:28.497552"
         }
       ],
-      "total": 3,
-      "timeUsedMs": 1445
-    }
-  ],
-  "attention_trend:linear.app:drop": [
-    {
-      "sql": "DROP TABLE session.fl_wikis_livelinearasks8d",
-      "headers": [
-        "Result"
-      ],
-      "rows": [],
-      "total": 0,
-      "timeUsedMs": 255
-    },
-    {
-      "sql": "DROP TABLE session.fl_wikiv_livelinearasks8d",
-      "headers": [
-        "Result"
-      ],
-      "rows": [],
-      "total": 0,
-      "timeUsedMs": 247
+      "total": 2,
+      "timeUsedMs": 3569
     }
   ],
   "claim_risk:linear.app": [
@@ -402,7 +288,23 @@
         }
       ],
       "total": 6,
-      "timeUsedMs": 10639
+      "timeUsedMs": 6754
+    }
+  ],
+  "unsupported_claims:linear.app": [
+    {
+      "sql": "SELECT claim_kind, status, resolution_status, claim_text, recommendation, created_at FROM lightning.metastore.flusso.brand_evidence.claim_outcome WHERE domain = 'linear.app' AND status IN ('unsupported', 'conflict') ORDER BY created_at DESC LIMIT 12",
+      "headers": [
+        "claim_kind",
+        "status",
+        "resolution_status",
+        "claim_text",
+        "recommendation",
+        "created_at"
+      ],
+      "rows": [],
+      "total": 0,
+      "timeUsedMs": 6025
     }
   ]
 }

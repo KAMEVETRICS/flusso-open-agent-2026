@@ -1,5 +1,5 @@
 {
-  "run_id": "live-linear-asks-8d25168d",
+  "run_id": "live-linear-asks-052dc325",
   "status": "success",
   "input": {
     "website": "https://linear.app",
@@ -7,40 +7,24 @@
     "audience": "Product and engineering leads who triage requests from Slack"
   },
   "output": {
-    "runId": "live-linear-asks-8d25168d",
+    "runId": "live-linear-asks-052dc325",
     "mode": "live",
-    "provider": "OpenRouter",
+    "provider": "Meterless Nightshift",
     "models": [
       "nvidia/nemotron-3-ultra-550b-a55b"
     ],
-    "hypothesis": "Product and engineering leads will adopt Linear Asks for Slack requests when shown measurable time savings in triage and evidence that peers at similar-scale companies (40k+ teams) have reduced context-switching and improved request-to-issue conversion rates.",
+    "hypothesis": "Product and engineering leads triaging Slack requests will adopt Linear Asks when shown concrete workflow improvements and peer adoption evidence, reducing context-switching and lost requests.",
     "decisions": [
       {
-        "id": "dec-1",
+        "id": "claim_policy#1",
         "kind": "claim_policy",
-        "statement": "Prioritize capability and comparison claims (e.g., \"Linear Asks converts Slack messages into trackable issues\") and keep framing or opinion claims to a minimum.",
-        "rationale": "claim_risk shows 34 supported capability claims and 2 supported comparison claims, while 16 framing and 2 opinion claims are only editorial.",
+        "statement": "Lead with capability claims (supported, 34 instances) and comparison claims (supported, 2 instances); avoid framing claims (16 editorial) and opinion claims (2 editorial).",
+        "rationale": "Claim risk table shows capability claims are supported (34) and comparison claims are supported (2), while framing (16) and opinion (2) claims remain editorial without verification.",
         "evidenceIds": [
           "claim_risk#1",
           "claim_risk#2",
           "claim_risk#3",
           "claim_risk#4"
-        ],
-        "confidence": 0.92,
-        "status": "accepted",
-        "verification": "",
-        "revised": false
-      },
-      {
-        "id": "dec-2",
-        "kind": "evidence_reuse",
-        "statement": "Build posts around the verified workflow: Slack Asks creates an issue, comment threads stay synced, and Triage Intelligence auto-labels and suggests assignees.",
-        "rationale": "fact:fact-48, fact:fact-50, fact:fact-52, and fact:fact-39 confirm the end-to-end flow from Slack intake to triaged issue.",
-        "evidenceIds": [
-          "fact:fact-48",
-          "fact:fact-50",
-          "fact:fact-52",
-          "fact:fact-39"
         ],
         "confidence": 0.95,
         "status": "accepted",
@@ -48,14 +32,42 @@
         "revised": false
       },
       {
-        "id": "dec-3",
-        "kind": "audience",
-        "statement": "Address product and engineering leads who triage internal requests (bug reports, IT/setup needs) from Slack.",
-        "rationale": "fact:fact-64, fact:fact-65, and fact:fact-66 define Linear Asks as designed for internal requests and useful for engineering and IT/support teams.",
+        "id": "evidence_reuse#1",
+        "kind": "evidence_reuse",
+        "statement": "Build messaging around the verified Slack intake workflow: Linear Asks accepts Slack, email, and web forms and converts each request into a Linear issue (fact-48); Slack Asks synchronizes comment threads between Linear and Slack (fact-50); Linear Asks keeps requester conversations connected across Slack, email, and web forms (fact-52).",
+        "rationale": "These three facts directly describe the end-to-end Slack-to-issue flow with synced comments that the campaign must demonstrate.",
         "evidenceIds": [
-          "fact:fact-64",
+          "fact:fact-48",
+          "fact:fact-50",
+          "fact:fact-52"
+        ],
+        "confidence": 0.98,
+        "status": "accepted",
+        "verification": "",
+        "revised": false
+      },
+      {
+        "id": "evidence_reuse#2",
+        "kind": "evidence_reuse",
+        "statement": "Anchor credibility with the scale fact: Linear powers over 40,000 product teams (fact-68).",
+        "rationale": "A single quantified adoption metric that is already verified and relevant to product teams.",
+        "evidenceIds": [
+          "fact:fact-68"
+        ],
+        "confidence": 0.97,
+        "status": "accepted",
+        "verification": "",
+        "revised": false
+      },
+      {
+        "id": "audience#1",
+        "kind": "audience",
+        "statement": "Address product and engineering leads who triage internal requests from non-technical teammates — specifically engineering teams receiving bug reports (fact-65) and IT/support teams handling hardware, access, and setup requests (fact-66).",
+        "rationale": "Audience facts explicitly name these two segments as the ones Linear Asks is designed for.",
+        "evidenceIds": [
           "fact:fact-65",
-          "fact:fact-66"
+          "fact:fact-66",
+          "fact:fact-64"
         ],
         "confidence": 0.94,
         "status": "accepted",
@@ -63,84 +75,94 @@
         "revised": false
       },
       {
-        "id": "dec-4",
+        "id": "angle#1",
         "kind": "angle",
-        "statement": "Frame Linear Asks as the structured intake layer that turns ad-hoc Slack pings into triaged, prioritized issues without leaving Slack.",
-        "rationale": "fact:fact-10, fact:fact-49, and fact:fact-50 show Asks supports Slack intake, converts to issues, and keeps conversations synced.",
+        "statement": "Frame the message around turning noisy Slack threads into triage-ready Linear issues without leaving Slack, using the synced comment thread and multi-surface conversation continuity.",
+        "rationale": "Fact-48, fact-50, and fact-52 together show the end-to-end Slack-to-issue flow with synced comments and cross-surface conversation continuity.",
         "evidenceIds": [
-          "fact:fact-10",
-          "fact:fact-49",
-          "fact:fact-50"
+          "fact:fact-48",
+          "fact:fact-50",
+          "fact:fact-52"
         ],
-        "confidence": 0.93,
+        "confidence": 0.96,
         "status": "accepted",
         "verification": "",
         "revised": false
       },
       {
-        "id": "dec-5",
+        "id": "channel_priority#1",
         "kind": "channel_priority",
-        "statement": "Lead with LinkedIn for product/engineering leads; use X for technical deep-dives and community discussion.",
-        "rationale": "Hacker News conversations (audience_signals#1, #5, #9) show high engagement from technical audiences; LinkedIn aligns with the brief’s target of product leads.",
+        "statement": "Prioritize LinkedIn for long-form posts that link to Linear blog articles that already attracted high Hacker News engagement (e.g., “Planning for Unplanned Work in Linear” 65 pts/33 cmts, “Settings are not a design failure” 488 pts/378 cmts); use X for short clips and screenshots referencing the same articles.",
+        "rationale": "Hacker News conversation signals show Linear blog posts repeatedly hit 65–491 points and dozens of comments, indicating the audience consumes long-form content on professional networks and shares snippets on X.",
         "evidenceIds": [
           "audience_signals#1",
-          "audience_signals#5",
+          "audience_signals#2",
           "audience_signals#9"
         ],
-        "confidence": 0.82,
+        "confidence": 0.85,
         "status": "accepted",
         "verification": "",
         "revised": false
       },
       {
-        "id": "dec-6",
+        "id": "risk_flag#1",
         "kind": "risk_flag",
-        "statement": "Do not claim Linear Asks is available on all plans—note it requires Business or Enterprise.",
-        "rationale": "prior_evidence#9 explicitly states Asks is \"Available to workspaces on our Business and Enterprise plans.\"",
+        "statement": "Do not claim time-bound results because the only time-bound claims in the risk table are marked time-sensitive and unsupported.",
+        "rationale": "Claim risk rows 5 and 6 flag time-bound claims as time-sensitive; no verified time-bound metrics exist in the evidence.",
         "evidenceIds": [
-          "prior_evidence#9"
+          "claim_risk#5",
+          "claim_risk#6"
         ],
-        "confidence": 0.98,
-        "status": "accepted",
-        "verification": "",
-        "revised": false
+        "confidence": 0.93,
+        "status": "rejected",
+        "verification": "states numbers not in its evidence: 5, 6",
+        "revised": true
+      },
+      {
+        "id": "open_question#1",
+        "kind": "risk_flag",
+        "statement": "Open question: No performance rows exist for prior Linear Asks campaigns; measure CTR and conversion on the first two posts before scaling spend.",
+        "rationale": "Performance tool returned zero rows, so we have no baseline to set targets.",
+        "evidenceIds": [],
+        "confidence": 0.9,
+        "status": "rejected",
+        "verification": "cites no evidence that exists",
+        "revised": true
       }
     ],
     "openQuestions": [
-      "What are the current LinkedIn and X engagement benchmarks for Linear’s own posts? (No performance rows were provided.)",
-      "Which specific Slack-workflow pain points (e.g., lost requests, duplicate issues) resonate most with the target leads?",
-      "Are there customer quotes or case studies showing time saved per triaged request?"
+      "No performance rows exist for prior Linear Asks campaigns; measure CTR and conversion on the first two posts before scaling spend."
     ],
     "evidence": {
-      "zetarisQueries": 12,
-      "zetarisRows": 31,
+      "zetarisQueries": 9,
+      "zetarisRows": 20,
       "worldFacts": 24,
       "memories": 0,
       "tools": [
-        "audience_signals",
         "prior_evidence",
+        "audience_signals",
         "performance",
         "claim_risk",
-        "unsupported_claims",
-        "attention_trend"
+        "campaign_history",
+        "unsupported_claims"
       ]
     },
     "dataQuality": [
       {
         "rule": "claim_status_known",
-        "total": 348,
-        "valid": 348,
+        "total": 378,
+        "valid": 378,
         "invalid": 0
       },
       {
         "rule": "campaign_has_domain",
-        "total": 18,
-        "valid": 15,
+        "total": 19,
+        "valid": 16,
         "invalid": 3
       }
     ],
-    "durationMs": 65265
+    "durationMs": 101271
   },
-  "trace_dir": "logs/runs/live-linear-asks-8d25168d",
-  "execution_time_seconds": 67.5
+  "trace_dir": "logs/runs/live-linear-asks-052dc325",
+  "execution_time_seconds": 104.3
 }

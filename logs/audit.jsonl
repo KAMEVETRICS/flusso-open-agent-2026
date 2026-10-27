@@ -1,0 +1,16 @@
+{"ts":"2026-10-27T19:10:31.642Z","runId":"live-linear-asks-1eb93cc0","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:linear.app","facts":75,"gaps":[]}
+{"ts":"2026-10-27T19:11:22.160Z","runId":"live-linear-asks-1eb93cc0","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:linear.app","written":12}
+{"ts":"2026-10-27T19:12:06.974Z","runId":"live-allbirds-newsletter-563a4809","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:allbirds.com","facts":53,"gaps":[]}
+{"ts":"2026-10-27T19:12:46.118Z","runId":"live-allbirds-newsletter-563a4809","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:allbirds.com","written":2}
+{"ts":"2026-10-27T19:13:21.941Z","runId":"live-wise-freelancers-72c007b5","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:wise.com","facts":29,"gaps":[]}
+{"ts":"2026-10-27T19:13:56.623Z","runId":"live-wise-freelancers-72c007b5","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:wise.com","written":12}
+{"ts":"2026-10-27T19:15:57.812Z","runId":"sample-linear-asks-c4f40cb6","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:linear.app","facts":75,"gaps":[]}
+{"ts":"2026-10-27T19:15:57.875Z","runId":"sample-linear-asks-c4f40cb6","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:linear.app","written":12}
+{"ts":"2026-10-27T19:16:01.449Z","runId":"sample-allbirds-newsletter-24cbd687","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:allbirds.com","facts":53,"gaps":[]}
+{"ts":"2026-10-27T19:16:01.509Z","runId":"sample-allbirds-newsletter-24cbd687","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:allbirds.com","written":2}
+{"ts":"2026-10-27T19:16:04.270Z","runId":"sample-wise-freelancers-64702e80","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:wise.com","facts":29,"gaps":[]}
+{"ts":"2026-10-27T19:16:04.325Z","runId":"sample-wise-freelancers-64702e80","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:wise.com","written":12}
+{"ts":"2026-10-27T19:16:59.398Z","runId":"live-linear-asks-052dc325","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:linear.app","facts":75,"gaps":[]}
+{"ts":"2026-10-27T19:17:40.028Z","runId":"live-linear-asks-052dc325","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:linear.app","written":12}
+{"ts":"2026-10-27T19:18:43.221Z","runId":"sample-linear-asks-70cbb306","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:linear.app","facts":75,"gaps":[]}
+{"ts":"2026-10-27T19:18:43.287Z","runId":"sample-linear-asks-70cbb306","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:linear.app","written":12}

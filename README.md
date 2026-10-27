@@ -129,17 +129,17 @@ A live CLI run plans from the latest fact sheet Flusso stored for that domain. T
 
 ```json
 {
-  "run_id": "live-linear-asks-8d25168d",
+  "run_id": "live-linear-asks-052dc325",
   "status": "success",
   "output": {
-    "provider": "OpenRouter",
+    "provider": "Meterless Nightshift",
     "models": ["nvidia/nemotron-3-ultra-550b-a55b"],
-    "decisions": [{ "id": "...", "kind": "risk_flag", "status": "accepted",
-                    "statement": "Do not claim Linear Asks is available on all plans; note it requires Business or Enterprise.",
-                    "evidenceIds": ["prior_evidence#9"] }],
-    "dataQuality": [{ "rule": "campaign_has_domain", "total": 18, "valid": 15, "invalid": 3 }]
+    "decisions": [{ "id": "...", "kind": "channel_priority", "status": "accepted",
+                    "statement": "Prioritize LinkedIn for long-form posts that link to Linear blog articles that already attracted high Hacker News engagement ...",
+                    "evidenceIds": ["audience_signals#1", "audience_signals#2", "audience_signals#9"] }],
+    "dataQuality": [{ "rule": "campaign_has_domain", "total": 19, "valid": 16, "invalid": 3 }]
   },
-  "trace_dir": "logs/runs/live-linear-asks-8d25168d"
+  "trace_dir": "logs/runs/live-linear-asks-052dc325"
 }
 ```
 
@@ -151,11 +151,11 @@ On failure it prints a structured error (`{"status":"error","error":{"type":...,
 
 | Sample | Input | Accepted / rejected | One decision it reached |
 |---|---|---|---|
-| [allbirds-newsletter](samples/allbirds-newsletter/input.json) | allbirds.com: grow newsletter signups before a running shoe launch | 6 / 1 | Don't use "sustainable" in formal labelling: the SEC made Allbirds drop it at IPO (`fact:fact-29`) |
-| [linear-asks](samples/linear-asks/input.json) | linear.app: get product teams to adopt Linear Asks for Slack requests | 6 / 0 | Don't imply Asks is on every plan; it needs Business or Enterprise (`prior_evidence#9`) |
-| [wise-freelancers](samples/wise-freelancers/input.json) | wise.com: get freelancers paid internationally to open an account | 5 / 1 | Stay off cards, fee changes and the Evolve Bank breach that dominate Hacker News threads (`audience_signals#3`, `#7`, `#8`, `#11`) |
+| [allbirds-newsletter](samples/allbirds-newsletter/input.json) | allbirds.com: grow newsletter signups before a running shoe launch | 6 / 0 (4 revised) | Don't claim launch dates, prices or benchmarks for the new shoe: a time-bound claim failed verification in the last Allbirds campaign (`unsupported_claims#1`, `claim_risk#7`). H-MEM recalled 2 memories from that campaign. |
+| [linear-asks](samples/linear-asks/input.json) | linear.app: get product teams to adopt Linear Asks for Slack requests | 6 / 2 | Lead on LinkedIn with links to Linear posts that already drew Hacker News engagement (`audience_signals#1`, `#2`, `#9`) |
+| [wise-freelancers](samples/wise-freelancers/input.json) | wise.com: get freelancers paid internationally to open an account | 8 / 0 (2 revised) | Don't mention Wise Business cards to US freelancers: card deactivations are a live Hacker News thread (`audience_signals#3`) |
 
-Full outputs are in [output_examples/](output_examples/): `<sample>.json` is the live recording and `<sample>.sample.json` is its replay. On the Wise run, the verifier first rejected two decisions that stated numbers (5, 8, 22) their evidence didn't contain, and the revisions passed.
+All three were recorded live on 27 October 2026 through Meterless Nightshift, with every model request answered by `nvidia/nemotron-3-ultra-550b-a55b` (see `logs/telemetry.jsonl`), and Zetaris as the data layer. Full outputs are in [output_examples/](output_examples/): `<sample>.json` is the live recording and `<sample>.sample.json` is its replay. Rejections are kept and shown: on Linear, the verifier rejected a risk flag that stated numbers (5, 6) its evidence didn't contain, and an "open question" that cited no evidence.
 
 ## Sponsor technology
 
@@ -168,7 +168,7 @@ Zetaris is where the agent gets every fact it reasons about that isn't on the br
   - Hacker News, as Lightning REST tables in `flusso_signals` and as per-run REST session tables;
   - Wikimedia pageviews, as per-run REST session tables.
 - **USL:** `lightning.metastore.flusso.brand_evidence` with 4 tables (`campaign`, `claim_outcome`, `performance`, `evidence_section`), keyed on `campaign_id` and aligned on `domain`.
-- **Data quality:** `claim_status_known` and `campaign_has_domain`. The agent runs both at the start of every run. Live result: 348 of 348 claims valid, and 3 of 18 campaigns lack a domain and stay out of every brand's evidence.
+- **Data quality:** `claim_status_known` and `campaign_has_domain`. The agent runs both at the start of every run. Live result on 27 October: 378 of 378 claims valid, and 3 of 19 campaigns lack a domain and stay out of every brand's evidence.
 - **Code:**
   - REST client with retries: [lib/agent/zetaris.ts](lib/agent/zetaris.ts)
   - objects: [lib/agent/zetaris-catalog.ts](lib/agent/zetaris-catalog.ts)
@@ -195,7 +195,7 @@ Every campaign stage and agent step goes through it when it is configured. The m
 
 ### NVIDIA
 
-The evidence agent's plan, decide and revise steps run on **NVIDIA Nemotron**. Every request logs its `answeredBy` model and a `nemotron: true|false` flag in `logs/telemetry.jsonl`. The recorded samples were all answered by `nvidia/nemotron-3-ultra-550b-a55b`.
+The evidence agent's plan, decide and revise steps run on **NVIDIA Nemotron**. Every request logs its `answeredBy` model and a `nemotron: true|false` flag in `logs/telemetry.jsonl`. Through Nightshift the agent asks for `nvidia/nemotron-3-ultra-550b-a55b`, which Nightshift serves from NVIDIA's hosted endpoints with the key in its KEYS tab; `meterless/auto` alone routed a test request to the smaller Nemotron 3.5 Bolt. All 9 model requests in the committed live runs were answered by Nemotron 3 Ultra through Nightshift.
 
 We tried 4 Nemotron variants on the same decide input ([lib/agent/reasoning-agent.ts](lib/agent/reasoning-agent.ts) keeps the token budgets this produced):
 
@@ -233,7 +233,7 @@ H-MEM keeps its own append-only ledger at `.flusso/hmem/<domain>/ledger.jsonl`. 
 ## Tests
 
 ```bash
-npm test            # 125 tests, including the agent, engine, adapter, and sample-mode tests
+npm test            # 126 tests, including the agent, engine, adapter, and sample-mode tests
 npx tsc --noEmit
 npx eslint .
 ```

@@ -1,0 +1,2 @@
+{"ts":"2026-10-27T19:16:01.449Z","runId":"sample-allbirds-newsletter-24cbd687","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:allbirds.com","facts":53,"gaps":[]}
+{"ts":"2026-10-27T19:16:01.509Z","runId":"sample-allbirds-newsletter-24cbd687","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:allbirds.com","written":2}

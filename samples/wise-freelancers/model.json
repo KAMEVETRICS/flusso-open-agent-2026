@@ -1,47 +1,46 @@
 {
-  "provider": "OpenRouter",
+  "provider": "Meterless Nightshift",
   "steps": {
     "plan": [
       {
         "model": "nvidia/nemotron-3-ultra-550b-a55b",
         "output": {
-          "hypothesis": "Freelancers who invoice international clients experience significant pain points with traditional banking (high FX fees, slow settlement, fragmented accounts) that Wise's multi-currency account directly solves, and they are actively discussing/comparing solutions on LinkedIn and Medium.",
+          "hypothesis": "Freelancers invoicing international clients will open a Wise account when shown specific currency coverage (22 currencies with local account details), concrete speed metrics (96% under 24 hours), and peer adoption evidence from similar freelancers on LinkedIn and Medium.",
           "calls": [
             {
               "tool": "prior_evidence",
               "terms": [
                 "freelancer international invoicing",
-                "multi-currency account freelancer",
-                "Wise Business freelancer",
-                "FX fees international payments",
-                "receive payments multiple currencies"
+                "22 currencies account details",
+                "96% payments 24 hours",
+                "freelancer Wise adoption"
               ],
-              "reason": "Need existing proof points, testimonials, or content showing freelancers' specific pain points and how Wise solves them"
-            },
-            {
-              "tool": "audience_signals",
-              "terms": [],
-              "reason": "See what freelancer/developer communities are actually discussing about Wise on Hacker News - reveals authentic language and priorities"
-            },
-            {
-              "tool": "performance",
-              "terms": [],
-              "reason": "Learn which content formats and angles performed best on LinkedIn and Medium for Wise previously"
-            },
-            {
-              "tool": "claim_risk",
-              "terms": [],
-              "reason": "Understand which claims about Wise's freelancer benefits have governance risks before building campaign messaging"
+              "reason": "Find past campaign evidence about freelancer-specific messaging, currency coverage claims, and speed metrics that drove account openings"
             },
             {
               "tool": "campaign_history",
               "terms": [],
-              "reason": "See past Wise campaign patterns, editorial scores, and what worked for similar goals"
+              "reason": "Understand previous campaign goals, editorial scores, and fact/claim patterns for Wise freelancer campaigns"
             },
             {
-              "tool": "attention_trend",
+              "tool": "performance",
               "terms": [],
-              "reason": "Gauge current brand awareness momentum - informs whether campaign needs awareness-building or conversion focus"
+              "reason": "Measure which content types and platforms (LinkedIn, Medium) historically drove account openings for Wise"
+            },
+            {
+              "tool": "claim_risk",
+              "terms": [],
+              "reason": "Check if past claims about currency coverage, payment speed, and freelancer benefits were verified or flagged"
+            },
+            {
+              "tool": "unsupported_claims",
+              "terms": [],
+              "reason": "Identify specific claims about Wise freelancer features that failed verification to avoid repeating them"
+            },
+            {
+              "tool": "audience_signals",
+              "terms": [],
+              "reason": "Identify what freelancer audiences actually engage with on platforms regarding international payments and Wise"
             }
           ]
         }
@@ -53,78 +52,95 @@
         "output": {
           "decisions": [
             {
-              "id": "dec-claim_policy",
+              "id": "decision-1",
               "kind": "claim_policy",
-              "statement": "Avoid any copy that states or implies a guaranteed amount the freelancer will receive after conversion; only describe the rate-lock window that exists in the product.",
-              "rationale": "Eight time-bound claims were flagged as time-sensitive (claim_risk#2), meaning writers must not promise future FX outcomes.",
+              "statement": "Do not use time-bound claims about payment speed or fee structures without current verification; 8 time-bound claims remain unverified and 9 framing claims need editorial review.",
+              "rationale": "claim_risk#2 shows 8 time-bound claims in time-sensitive status unrepaired; claim_risk#1 shows 9 framing claims in editorial status.",
               "evidenceIds": [
-                "claim_risk#2"
-              ],
-              "confidence": 0.9
-            },
-            {
-              "id": "dec-evidence_reuse",
-              "kind": "evidence_reuse",
-              "statement": "Build the core proof points around the 22-currency local account details (fact:fact-2, fact:fact-5, fact:fact-9), the 24-hour rate lock (fact:fact-1), and the 96% sub-24-hour delivery stat (fact:fact-8).",
-              "rationale": "These verified product facts directly answer the freelancer pain points of getting paid like a local, knowing the exact payout, and receiving money quickly.",
-              "evidenceIds": [
-                "fact:fact-1",
-                "fact:fact-2",
-                "fact:fact-5",
-                "fact:fact-8",
-                "fact:fact-9"
+                "claim_risk#2",
+                "claim_risk#1"
               ],
               "confidence": 0.95
             },
             {
-              "id": "dec-angle",
-              "kind": "angle",
-              "statement": "Lead with \"invoice in your client's currency, get paid like a local, and know exactly what lands in your account\" as the headline message.",
-              "rationale": "The 22-currency account details and 24-hour rate lock (fact:fact-1, fact:fact-2, fact:fact-5, fact:fact-9) give freelancers certainty on both the invoicing side and the settlement side.",
+              "id": "decision-2",
+              "kind": "claim_policy",
+              "statement": "Capability claims about Wise Business features are supported and safe to use; 4 capability claims verified.",
+              "rationale": "claim_risk#3 shows 4 capability claims with supported status and 0 repaired.",
               "evidenceIds": [
-                "fact:fact-1",
-                "fact:fact-2",
-                "fact:fact-5",
-                "fact:fact-9"
+                "claim_risk#3"
               ],
               "confidence": 0.9
             },
             {
-              "id": "dec-audience",
-              "kind": "audience",
-              "statement": "Target freelancers who currently invoice in USD/EUR/GBP but lose money to bank FX markups and multi-day settlement delays.",
-              "rationale": "World facts identify these three currencies as the major ones supported for local receiving (fact:fact-5, fact:fact-9) and the 96% sub-24-hour speed (fact:fact-8) addresses the delay pain point.",
+              "id": "decision-3",
+              "kind": "evidence_reuse",
+              "statement": "Build content around the verified 22-currency account details and specific currency list (AUD, CAD, EUR, GBP, HUF, NZD, PHP, SGD, USD) for receiving payments like a local.",
+              "rationale": "fact:fact-2 confirms 22 currencies with global account details; fact:fact-5 lists 9 specific currencies available for local receiving.",
               "evidenceIds": [
-                "fact:fact-5",
-                "fact:fact-8",
-                "fact:fact-9"
+                "fact:fact-2",
+                "fact:fact-5"
+              ],
+              "confidence": 0.95
+            },
+            {
+              "id": "decision-4",
+              "kind": "evidence_reuse",
+              "statement": "Use the 96% under-24-hours payment speed metric as a core proof point for freelancers invoicing international clients.",
+              "rationale": "fact:fact-8 states 96% of payments to international partners take less than 24 hours.",
+              "evidenceIds": [
+                "fact:fact-8"
+              ],
+              "confidence": 0.9
+            },
+            {
+              "id": "decision-5",
+              "kind": "audience",
+              "statement": "Target freelancers who need to receive payments in multiple currencies and value payment admin simplicity; avoid US-based freelancers needing business cards due to deactivation signals.",
+              "rationale": "fact:fact-17 and fact:fact-15 position Wise Business for international payment admin; audience_signals#3 shows US Business card deactivation with 56 points/48 comments.",
+              "evidenceIds": [
+                "fact:fact-17",
+                "fact:fact-15",
+                "audience_signals#3"
               ],
               "confidence": 0.85
             },
             {
-              "id": "dec-risk_flag",
+              "id": "decision-6",
               "kind": "risk_flag",
-              "statement": "Do not reference Wise debit/credit cards, card deactivations, fee changes, or the Evolve Bank data breach in any asset.",
-              "rationale": "Community conversations show active negative sentiment on US business card deactivation (audience_signals#3), fee increases (audience_signals#7, audience_signals#8), and the Evolve breach (audience_signals#11); mentioning them would distract from the invoicing value prop.",
+              "statement": "Do not mention Wise Business cards for US audiences or imply card availability in the US; the deactivation notice is a live community concern.",
+              "rationale": "audience_signals#3 documents Wise deactivating Business cards in the US on Oct 31st with significant community discussion (56 points, 48 comments).",
               "evidenceIds": [
-                "audience_signals#3",
-                "audience_signals#7",
-                "audience_signals#8",
-                "audience_signals#11"
+                "audience_signals#3"
               ],
               "confidence": 0.9
             },
             {
-              "id": "dec-open_question",
+              "id": "decision-7",
+              "kind": "angle",
+              "statement": "Lead with 'payment admin painless' messaging: combine 22-currency local account details, 96% sub-24-hour speed, and free same-currency receipt to show total workflow relief.",
+              "rationale": "fact:fact-17 quotes 'making payment admin painless'; fact:fact-2 and fact:fact-8 provide the concrete metrics; fact:fact-24 confirms free receipt.",
+              "evidenceIds": [
+                "fact:fact-17",
+                "fact:fact-2",
+                "fact:fact-8",
+                "fact:fact-24"
+              ],
+              "confidence": 0.9
+            },
+            {
+              "id": "decision-8",
               "kind": "channel_priority",
-              "statement": "Open question: which platform—LinkedIn or Medium—has historically driven more Wise Business sign-ups from freelancers? No performance rows exist for either channel.",
-              "rationale": "The performance tool returned zero measured rows, so we cannot prioritize one platform over the other with evidence.",
+              "statement": "Prioritize LinkedIn for professional freelancer audiences; Medium performance data unavailable so treat as secondary until measured.",
+              "rationale": "Platforms specified are LinkedIn and Medium; performance tool returned no rows for either platform, so no evidence to prioritize Medium.",
               "evidenceIds": [],
-              "confidence": 0.5
+              "confidence": 0.7
             }
           ],
           "openQuestions": [
-            "Which platform—LinkedIn or Medium—has historically driven more Wise Business sign-ups from freelancers? No performance rows exist for either channel."
+            "What specific freelancer segments (designers, developers, writers, consultants) showed highest conversion in the previous campaign (campaign_history#1)?",
+            "Which exact claims from the prior campaign's 24 claims were flagged in claim_risk#1 and claim_risk#2?",
+            "What are the current fee structures for the 22 currencies to ensure no time-bound pricing claims are outdated?"
           ]
         }
       }
@@ -135,97 +151,96 @@
         "output": {
           "decisions": [
             {
-              "id": "dec-claim_policy-1",
+              "id": "decision-1",
               "kind": "claim_policy",
-              "statement": "Avoid time-bound and framing claims that lack current proof; only use capability and supported time-bound claims backed by verified facts.",
-              "rationale": "The claim risk table shows 8 time-sensitive claims and 9 framing claims that are editorial or unsupported, while only 4 capability and 2 supported time-bound claims are verified.",
+              "statement": "Do not use time-bound claims about payment speed or fee structures without current verification; 8 time-bound claims remain in time-sensitive status unrepaired.",
+              "rationale": "claim_risk#2 shows 8 time-bound claims in time-sensitive status with 0 repaired.",
               "evidenceIds": [
-                "claim_risk#1",
-                "claim_risk#2",
-                "claim_risk#3",
-                "claim_risk#4"
+                "claim_risk#2"
               ],
-              "confidence": 0.92
+              "confidence": 0.95
             },
             {
-              "id": "dec-evidence_reuse-1",
+              "id": "decision-2",
+              "kind": "claim_policy",
+              "statement": "Framing claims from prior campaign need editorial review before reuse; 9 framing claims are in editorial status with 0 repaired.",
+              "rationale": "claim_risk#1 shows 9 framing claims in editorial status with 0 repaired.",
+              "evidenceIds": [
+                "claim_risk#1"
+              ],
+              "confidence": 0.9
+            },
+            {
+              "id": "decision-3",
+              "kind": "claim_policy",
+              "statement": "Capability claims about Wise Business features are supported and safe to use; 4 capability claims verified with supported status.",
+              "rationale": "claim_risk#3 shows 4 capability claims with supported status and 0 repaired.",
+              "evidenceIds": [
+                "claim_risk#3"
+              ],
+              "confidence": 0.9
+            },
+            {
+              "id": "decision-4",
               "kind": "evidence_reuse",
-              "statement": "Build the core message around verified product capabilities: 22 currencies for receiving payments, global account details in 9 named currencies, 96% of payments under 24 hours, and 900k+ businesses moving $16B/month.",
-              "rationale": "These facts are verified and directly address freelancer needs for multi-currency invoicing and fast payouts.",
+              "statement": "Build content around the verified 22-currency account details for receiving payments and the specific currency list (AUD, CAD, EUR, GBP, HUF, NZD, PHP, SGD, USD) for local receiving.",
+              "rationale": "fact:fact-2 confirms 22 currencies with global account details; fact:fact-5 lists 9 specific currencies available for local receiving.",
               "evidenceIds": [
                 "fact:fact-2",
-                "fact:fact-5",
-                "fact:fact-8",
-                "fact:fact-21"
-              ],
-              "confidence": 0.96
-            },
-            {
-              "id": "dec-evidence_reuse-2",
-              "kind": "evidence_reuse",
-              "statement": "Add trust signals: 18.9M daily users, 65 licenses worldwide, 7M daily fraud checks, and the Rident Royalties case study showing batch payments cut payout time from a week to minutes.",
-              "rationale": "Proof facts and a concrete customer story reduce perceived risk for freelancers opening a new financial account.",
-              "evidenceIds": [
-                "fact:fact-18",
-                "fact:fact-19",
-                "fact:fact-20",
-                "fact:fact-22"
-              ],
-              "confidence": 0.94
-            },
-            {
-              "id": "dec-channel_priority-1",
-              "kind": "channel_priority",
-              "statement": "Prioritize LinkedIn for distribution; use Medium only for long-form case studies. No performance data exists for either, but LinkedIn matches the professional freelancer audience and the campaign brief lists it first.",
-              "rationale": "Zero measured performance rows prevent evidence-based prioritization; LinkedIn is the default professional channel for B2B freelancer outreach.",
-              "evidenceIds": [
-                "audience_signals#1"
-              ],
-              "confidence": 0.65
-            },
-            {
-              "id": "dec-angle-1",
-              "kind": "angle",
-              "statement": "Lead with \"Get paid like a local in 9 currencies with zero receiving fees\" and support with \"96% of international payments arrive in under 24 hours\" and the Rident Royalties batch-payment story.",
-              "rationale": "Fact-5, fact-8, and fact-22 directly quantify the speed and cost benefits freelancers care about when invoicing global clients.",
-              "evidenceIds": [
-                "fact:fact-5",
-                "fact:fact-8",
-                "fact:fact-22"
-              ],
-              "confidence": 0.93
-            },
-            {
-              "id": "dec-audience-1",
-              "kind": "audience",
-              "statement": "Target freelancers who invoice in USD, EUR, GBP, CAD, AUD, SGD, NZD, HUF, or PHP — the nine currencies where Wise provides local account details for free receiving.",
-              "rationale": "Fact-5 lists exactly these nine currencies as free to receive, matching the brief's multi-currency freelancer segment.",
-              "evidenceIds": [
                 "fact:fact-5"
               ],
               "confidence": 0.95
             },
             {
-              "id": "dec-risk_flag-1",
+              "id": "decision-5",
+              "kind": "evidence_reuse",
+              "statement": "Use the 96% under-24-hours payment speed metric as a core proof point for freelancers invoicing international clients.",
+              "rationale": "fact:fact-8 states 96% of payments to international partners take less than 24 hours.",
+              "evidenceIds": [
+                "fact:fact-8"
+              ],
+              "confidence": 0.9
+            },
+            {
+              "id": "decision-6",
+              "kind": "audience",
+              "statement": "Target freelancers who need to receive payments in multiple currencies and value payment admin simplicity; avoid US-based freelancers needing business cards due to deactivation signals.",
+              "rationale": "fact:fact-17 and fact:fact-15 position Wise Business for international payment admin; audience_signals#3 shows US Business card deactivation with 56 points/48 comments.",
+              "evidenceIds": [
+                "fact:fact-17",
+                "fact:fact-15",
+                "audience_signals#3"
+              ],
+              "confidence": 0.85
+            },
+            {
+              "id": "decision-7",
               "kind": "risk_flag",
-              "statement": "Do not mention Wise Business debit cards for US-based freelancers or imply card availability in the US.",
-              "rationale": "Hacker News discussion (audience_signals#3) shows Wise deactivated Business cards in the US on 31 Oct 2023; promoting cards there would be inaccurate.",
+              "statement": "Do not mention Wise Business cards for US audiences or imply card availability in the US; the deactivation notice is a live community concern.",
+              "rationale": "audience_signals#3 documents Wise deactivating Business cards in the US on Oct 31st with significant community discussion (56 points, 48 comments).",
               "evidenceIds": [
                 "audience_signals#3"
               ],
-              "confidence": 0.97
+              "confidence": 0.9
             },
             {
-              "id": "dec-open_question-1",
-              "kind": "channel_priority",
-              "statement": "Open question: which platform — LinkedIn or Medium — has historically driven more Wise Business sign-ups from freelancers? No performance rows exist for either channel.",
-              "rationale": "The performance tool returned zero measured rows, so we cannot prioritize one platform over the other with evidence.",
-              "evidenceIds": [],
-              "confidence": 0.5
+              "id": "decision-8",
+              "kind": "angle",
+              "statement": "Lead with 'payment admin painless' messaging: combine 22-currency local account details, 96% sub-24-hour speed, and free same-currency receipt to show total workflow relief.",
+              "rationale": "fact:fact-17 quotes 'making payment admin painless'; fact:fact-2 and fact:fact-8 provide the concrete metrics; fact:fact-24 confirms free receipt.",
+              "evidenceIds": [
+                "fact:fact-17",
+                "fact:fact-2",
+                "fact:fact-8",
+                "fact:fact-24"
+              ],
+              "confidence": 0.9
             }
           ],
           "openQuestions": [
-            "Which platform — LinkedIn or Medium — has historically driven more Wise Business sign-ups from freelancers? No performance rows exist for either channel."
+            "What specific freelancer segments (designers, developers, writers, consultants) showed highest conversion in the previous campaign (campaign_history#1)?",
+            "Which exact claims from the prior campaign's 24 claims were flagged in claim_risk#1 and claim_risk#2?",
+            "What are the current fee structures for the 22 currencies to ensure no time-bound pricing claims are outdated?"
           ]
         }
       }
