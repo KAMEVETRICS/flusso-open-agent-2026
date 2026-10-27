@@ -1,9 +1,12 @@
+import { randomUUID } from "node:crypto";
 import { z } from "zod";
+import { findSampleFixture, isSampleMode, runEvidenceAgent } from "@/lib/agent/run-agent";
+import { zetarisConfigFromEnv } from "@/lib/agent/zetaris";
 import { normalizeBrief } from "@/lib/brief";
 import { brandDomain, emptyBrandModel, getBrandModel, learnFromCampaign, saveBrandModel } from "@/lib/brand-model";
 import { saveCampaign, updateCampaignPack } from "@/lib/campaign-store";
 import { ensureCampaignSchema } from "@/lib/db";
-import { discoverBrief } from "@/lib/discovery";
+import { discoverBrief, type DiscoveryResult } from "@/lib/discovery";
 import { isFirecrawlConfigured } from "@/lib/firecrawl";
 import { createContentGenerationProvider } from "@/lib/provider";
 import { getPerformanceContextForBrand } from "@/lib/performance-store";
@@ -14,6 +17,34 @@ export const maxDuration = 300;
 
 function encodeEvent(event: string, data: unknown) {
   return new TextEncoder().encode("event: " + event + "\ndata: " + JSON.stringify(data) + "\n\n");
+}
+
+// The evidence agent is advisory: the campaign still runs its own evidence checks, so when Zetaris
+// is not set up or the agent fails, the stream says so and generation continues without a plan.
+async function runAgentStep(discovery: DiscoveryResult, domain: string, send: (event: string, data: unknown) => void) {
+  const sample = isSampleMode() ? findSampleFixture(domain) : null;
+  if (isSampleMode() && !sample) {
+    send("agent", { status: "skipped", message: "SAMPLE_MODE has no recorded agent run for " + domain + "." });
+    return null;
+  }
+  if (!sample && !zetarisConfigFromEnv()) {
+    send("agent", { status: "skipped", message: "Zetaris is not configured (ZETARIS_REST_URL, ZETARIS_API_KEY)." });
+    return null;
+  }
+  send("agent", { status: "running" });
+  try {
+    const run = await runEvidenceAgent(
+      { brief: discovery.brief, domain, factSheet: discovery.factSheet, sources: discovery.sources },
+      { runId: (sample ? "sample-" : "live-") + randomUUID(), sample }
+    );
+    send("agent", { status: "done", plan: run.plan });
+    return run;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("Flusso evidence agent failed: " + message);
+    send("agent", { status: "failed", message: "Evidence agent failed: " + message });
+    return null;
+  }
 }
 
 function inputErrorMessage(error: z.ZodError) {
@@ -43,7 +74,7 @@ export async function POST(request: Request) {
           }
         };
 
-        send("ready", { stages: ["discovery", "foundation", "architecture", "execution", "editorial", "governance", "verification", "visuals"] });
+        send("ready", { stages: ["discovery", "agent", "foundation", "architecture", "execution", "editorial", "governance", "verification", "visuals"] });
 
         void (async () => {
           try {
@@ -58,13 +89,14 @@ export async function POST(request: Request) {
               factCount: discovery.factSheet.facts.length,
               factGaps: discovery.factSheet.gaps
             });
+            const agent = await runAgentStep(discovery, domain, send);
             const promptRouting = routePromptLibrary(discovery.brief);
             const performanceContext = await getPerformanceContextForBrand(discovery.brief.brand, discovery.brief.goal);
             const pack = await provider.generateCampaignPack(
               discovery.brief,
               promptRouting,
               performanceContext,
-              discovery,
+              { ...discovery, agentPlan: agent?.plan ?? null },
               (stage) => send("stage", stage)
             );
             const campaign = await saveCampaign(pack);
@@ -78,6 +110,12 @@ export async function POST(request: Request) {
               await saveBrandModel(learnFromCampaign(memory ?? emptyBrandModel(domain), rendered.pack, new Date().toISOString()));
             } catch (error) {
               console.error("Flusso brand model save failed: " + (error instanceof Error ? error.message : String(error)));
+            }
+            // H-MEM learns which claims failed and which decisions held, for the next campaign.
+            try {
+              agent?.remember(campaign.id, rendered.pack);
+            } catch (error) {
+              console.error("Flusso H-MEM update failed: " + (error instanceof Error ? error.message : String(error)));
             }
             send("complete", { pack: rendered.pack, campaignId: campaign.id });
           } catch (error) {

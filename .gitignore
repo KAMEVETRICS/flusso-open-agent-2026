@@ -8,3 +8,7 @@ tsconfig.tsbuildinfo
 video_frames_*/
 raw gpt chat.txt
 Copy of HubSpot x MATG*
+# Local engine state (H-MEM per domain, World Model event logs) and scratch files
+.flusso/
+*.tmp.mjs
+*.tmp.json

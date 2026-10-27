@@ -67,6 +67,12 @@ export async function completeStructured<T extends z.ZodTypeAny>(
     instructions: string;
     input: unknown;
     maxTokens: number;
+    // For reasoning models: how long to think before answering. Nemotron at high effort can
+    // think through the whole token budget on a large structured answer.
+    reasoningEffort?: "low" | "medium" | "high";
+    // Called with the model that actually answered; a routing mode such as meterless/auto
+    // resolves to a concrete model only in the response.
+    onCompletion?: (info: { model: string; promptTokens: number; completionTokens: number }) => void;
   }
 ): Promise<z.infer<T>> {
   const messages: ChatCompletionMessageParam[] = [
@@ -74,17 +80,26 @@ export async function completeStructured<T extends z.ZodTypeAny>(
     { role: "system", content: options.instructions },
     { role: "user", content: typeof options.input === "string" ? options.input : JSON.stringify(options.input) }
   ];
+  const viaOpenRouter = client.baseURL.startsWith(OPENROUTER_BASE_URL);
+  const effort = options.reasoningEffort;
   const body = {
     model: options.model,
     messages,
     response_format: zodResponseFormat(options.schema, options.name),
     max_tokens: options.maxTokens,
     // OpenRouter routing: only use endpoints that honor response_format and max_tokens.
-    provider: { require_parameters: true }
+    ...(viaOpenRouter ? { provider: { require_parameters: true } } : {}),
+    // OpenRouter takes a reasoning object; other OpenAI-compatible runtimes take reasoning_effort.
+    ...(effort ? (viaOpenRouter ? { reasoning: { effort } } : { reasoning_effort: effort }) : {})
   };
 
   try {
     const completion = await client.chat.completions.parse(body);
+    options.onCompletion?.({
+      model: completion.model || options.model,
+      promptTokens: completion.usage?.prompt_tokens ?? 0,
+      completionTokens: completion.usage?.completion_tokens ?? 0
+    });
     const message = completion.choices[0]?.message;
     if (message?.refusal) throw new Error("the model refused: " + message.refusal);
     if (!message?.parsed) throw new Error("returned no structured output");

@@ -18,7 +18,8 @@ const globals = {
 
 export default [
   {
-    ignores: [".next/**", "node_modules/**", "next-env.d.ts"]
+    // vendor/ holds third-party engine code kept as published upstream.
+    ignores: [".next/**", "node_modules/**", "next-env.d.ts", "vendor/**"]
   },
   js.configs.recommended,
   {

@@ -26,6 +26,7 @@ import { emptyBrief } from "@/lib/brief";
 import { campaignProductionScope } from "@/lib/campaign-scope";
 import { pipelineStageNames } from "@/lib/pipeline-stages";
 import type { CampaignSummary } from "@/lib/campaign-store";
+import type { AgentPlan } from "@/lib/agent/schemas";
 import { buildClientContentPack, type CampaignExportFormat } from "@/lib/exports";
 import type {
   BriefInput,
@@ -42,7 +43,9 @@ import type {
 type ViewName = "workbench" | "history" | "pipeline" | "results" | "performance" | "proof" | "exports";
 type DiscoveredBrief = { brief: ProjectBrief; inferredFields: string[]; sourceCount: number; factCount?: number; factGaps?: string[] };
 type VisualProgress = { total: number; rendered: number; failed: number };
-type ResultsTab = "strategy" | "facts" | "landscape" | "audience" | "hooks" | "platform" | "lineage" | "calendar" | "content" | "visuals" | "proof" | "prompt-os" | "capacity";
+// The evidence agent runs between discovery and the Foundation stage.
+type AgentProgress = { status: "running" | "done" | "skipped" | "failed"; plan?: AgentPlan; message?: string };
+type ResultsTab = "agent" | "strategy" | "facts" | "landscape" | "audience" | "hooks" | "platform" | "lineage" | "calendar" | "content" | "visuals" | "proof" | "prompt-os" | "capacity";
 type ProofFilter = "all" | "repaired" | Claim["status"];
 
 const viewLabels: Record<ViewName, string> = {
@@ -56,6 +59,7 @@ const viewLabels: Record<ViewName, string> = {
 };
 
 const resultsTabs: Array<{ id: ResultsTab; label: string }> = [
+  { id: "agent", label: "Evidence Agent" },
   { id: "strategy", label: "Strategy" },
   { id: "facts", label: "Fact Sheet" },
   { id: "landscape", label: "Landscape" },
@@ -151,7 +155,8 @@ async function readGenerationStream(
   response: Response,
   onDiscovery: (discovered: DiscoveredBrief) => void,
   onStage: (stage: GenerationStage) => void,
-  onVisuals: (progress: VisualProgress) => void
+  onVisuals: (progress: VisualProgress) => void,
+  onAgent: (progress: AgentProgress) => void
 ): Promise<{ pack: DeliveryPack; campaignId: string }> {
   let progress: VisualProgress = { total: 0, rendered: 0, failed: 0 };
   const reader = response.body?.getReader();
@@ -179,6 +184,8 @@ async function readGenerationStream(
 
         if (event === "discovery") {
           onDiscovery(payload as DiscoveredBrief);
+        } else if (event === "agent") {
+          onAgent(payload as AgentProgress);
         } else if (event === "stage") {
           onStage(payload as GenerationStage);
         } else if (event === "visuals") {
@@ -599,12 +606,14 @@ function PipelineView({
   brief,
   discovered,
   stages,
-  visuals
+  visuals,
+  agent
 }: {
   brief: BriefInput;
   discovered: DiscoveredBrief | null;
   stages: GenerationStage[];
   visuals: VisualProgress | null;
+  agent: AgentProgress | null;
 }) {
   const activeStage = discovered ? generationStageLabels[stages.length] : null;
   const summary = discovered?.brief ?? brief;
@@ -646,6 +655,7 @@ function PipelineView({
               <span className="badge bg-green">{discovered ? "done" : "running"}</span>
             </div>
           </div>
+          <AgentStageCard agent={agent} discovered={Boolean(discovered)} />
           {generationStageLabels.map((stage, index) => {
             const completed = stages.find((item) => item.stage === stage.id);
             const running = Boolean(discovered) && !completed && index === stages.length;
@@ -706,7 +716,7 @@ function ResultsView({
   campaignId: string | null;
   onPackChange: (pack: DeliveryPack) => void;
 }) {
-  const [tab, setTab] = useState<ResultsTab>("calendar");
+  const [tab, setTab] = useState<ResultsTab>(pack.agentPlan ? "agent" : "calendar");
   return (
     <main className="page-view">
       <div className="page-header">
@@ -738,6 +748,7 @@ function ResultsView({
       </div>
       <div className="main-area">
         <section className="content-area">
+          {tab === "agent" ? <AgentTab pack={pack} /> : null}
           {tab === "strategy" ? <StrategyTab pack={pack} /> : null}
           {tab === "facts" ? <FactsTab pack={pack} campaignId={campaignId} /> : null}
           {tab === "landscape" ? <LandscapeTab pack={pack} /> : null}
@@ -1583,6 +1594,98 @@ function VisualsTab({
   );
 }
 
+function AgentStageCard({ agent, discovered }: { agent: AgentProgress | null; discovered: boolean }) {
+  const accepted = agent?.plan?.decisions.filter((decision) => decision.status === "accepted").length ?? 0;
+  const finished = agent?.status === "done" || agent?.status === "skipped" || agent?.status === "failed";
+  const note = !agent
+    ? "Queries Zetaris, the World Model, and H-MEM, then verifies each decision against its evidence"
+    : agent.status === "running"
+      ? "Planning evidence queries"
+      : agent.status === "done" && agent.plan
+        ? accepted + " decisions verified from " + agent.plan.evidence.zetarisQueries + " Zetaris queries, " +
+          agent.plan.evidence.worldFacts + " world facts, and " + agent.plan.evidence.memories + " memories"
+        : agent.message ?? agent.status;
+  return (
+    <div className={finished ? "stage-card complete" : agent || discovered ? "stage-card running" : "stage-card queued"}>
+      <div className="stage-circle">{finished ? <Check size={13} weight="bold" /> : null}</div>
+      <span className="st-num">0A</span>
+      <div className="st-name-wrap">
+        <div className="st-name">Evidence Agent</div>
+        <div className="st-note">{note}</div>
+      </div>
+      <div className="st-meta">
+        <span className={agent?.status === "done" ? "badge bg-green" : agent?.status === "failed" ? "badge bg-amber" : "pill pill-gray"}>
+          {agent?.status === "done" && agent.plan ? (agent.plan.durationMs / 1000).toFixed(1) + "s" : agent?.status ?? "queued"}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function AgentTab({ pack }: { pack: DeliveryPack }) {
+  const plan = pack.agentPlan;
+  if (!plan) {
+    return <div className="panel"><div className="section-title">Evidence Agent</div><p>The evidence agent did not run for this campaign.</p></div>;
+  }
+  const accepted = plan.decisions.filter((decision) => decision.status === "accepted");
+  return (
+    <div className="proof-tab-stack">
+      <section className="proof-mini-summary" aria-label="Evidence agent summary">
+        <div className="sum-card"><div className="sum-num green-text">{accepted.length}</div><div className="sum-label">Accepted</div></div>
+        <div className="sum-card"><div className="sum-num amber-text">{plan.decisions.length - accepted.length}</div><div className="sum-label">Rejected</div></div>
+        <div className="sum-card"><div className="sum-num blue-text">{plan.evidence.zetarisQueries}</div><div className="sum-label">Zetaris queries</div></div>
+        <div className="sum-card"><div className="sum-num">{plan.evidence.worldFacts}</div><div className="sum-label">World facts</div></div>
+        <div className="sum-card"><div className="sum-num">{plan.evidence.memories}</div><div className="sum-label">Memories</div></div>
+      </section>
+      <div className="panel">
+        <div className="section-title">How this plan was reached <span>{(plan.durationMs / 1000).toFixed(1)}s</span></div>
+        <div className="tags-row">
+          <span className="pill-green">{plan.mode === "sample" ? "Sample replay" : "Live"}</span>
+          <span className="pill-gray">Provider: {plan.provider}</span>
+          {plan.models.map((model) => <span key={model} className="pill-gray">Model: {model}</span>)}
+          {plan.evidence.tools.map((tool) => <span key={tool} className="pill-gray">{tool}</span>)}
+        </div>
+        <p><strong>Hypothesis.</strong> {plan.hypothesis}</p>
+        {plan.dataQuality.map((rule) => (
+          <div className="kv-row" key={rule.rule}>
+            <span>DQ {rule.rule}</span>
+            <strong>{rule.valid} of {rule.total} valid{rule.invalid ? ", " + rule.invalid + " excluded" : ""}</strong>
+          </div>
+        ))}
+      </div>
+      <div className="panel">
+        <div className="section-title">Decisions <span>run {plan.runId}</span></div>
+        <table>
+          <thead><tr><th>Status</th><th>Kind</th><th>Decision</th><th>Evidence</th></tr></thead>
+          <tbody>
+            {plan.decisions.map((decision) => (
+              <tr key={decision.id + decision.status}>
+                <td>
+                  <span className={decision.status === "accepted" ? "badge bg-green" : "badge bg-amber"}>{decision.status}</span>
+                  {decision.revised ? <div className="st-note">revised once</div> : null}
+                </td>
+                <td>{decision.kind.replace(/_/g, " ")}</td>
+                <td>
+                  <strong>{decision.statement}</strong>
+                  <div className="st-note">{decision.rationale}</div>
+                  {decision.verification ? <div className="st-note amber-text">Verifier: {decision.verification}</div> : null}
+                </td>
+                <td>{decision.evidenceIds.join(", ") || "-"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {plan.openQuestions.length ? (
+        <div className="panel">
+          <div className="section-title">Open questions the evidence could not answer</div>
+          <ul>{plan.openQuestions.map((question) => <li key={question}>{question}</li>)}</ul>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 function ProofMiniTab({ pack }: { pack: DeliveryPack }) {
   const repaired = pack.proofReport.claims.filter(
     (claim) => claim.resolutionStatus === "repaired"
@@ -2262,6 +2365,7 @@ export function ContentEngineerApp() {
   const [campaignId, setCampaignId] = useState<string | null>(null);
   const [discovered, setDiscovered] = useState<DiscoveredBrief | null>(null);
   const [visualProgress, setVisualProgress] = useState<VisualProgress | null>(null);
+  const [agentProgress, setAgentProgress] = useState<AgentProgress | null>(null);
   const [liveStages, setLiveStages] = useState<GenerationStage[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -2291,6 +2395,7 @@ export function ContentEngineerApp() {
     setRepairError(null);
     setDiscovered(null);
     setVisualProgress(null);
+    setAgentProgress(null);
     setLiveStages([]);
     setView("pipeline");
     try {
@@ -2310,7 +2415,7 @@ export function ContentEngineerApp() {
           ...current.filter((item) => item.stage !== stage.stage),
           stage
         ]);
-      }, setVisualProgress);
+      }, setVisualProgress, setAgentProgress);
       setLiveStages(generationResult.pack.generationStages);
       setCampaignId(generationResult.campaignId);
       setPack(generationResult.pack);
@@ -2353,7 +2458,7 @@ export function ContentEngineerApp() {
       <TopNav view={view} setView={setView} hasPack={Boolean(pack)} loading={loading} />
       {view === "workbench" ? <Workbench brief={brief} setBrief={setBrief} pack={pack} onGenerate={generatePack} loading={loading} error={error} /> : null}
       {view === "history" ? <HistoryView onOpen={openSavedCampaign} /> : null}
-      {view === "pipeline" ? <PipelineView brief={brief} discovered={discovered} stages={liveStages} visuals={visualProgress} /> : null}
+      {view === "pipeline" ? <PipelineView brief={brief} discovered={discovered} stages={liveStages} visuals={visualProgress} agent={agentProgress} /> : null}
       {view === "results" && pack ? <ResultsView pack={pack} campaignId={campaignId} onPackChange={setPack} /> : null}
       {view === "performance" && pack ? <PerformanceView pack={pack} campaignId={campaignId} /> : null}
       {view === "proof" && pack ? <ProofView pack={pack} canRepair={Boolean(campaignId) && proofIssueCount > 0} repairing={repairing} repairError={repairError} onRepair={repairClaims} /> : null}

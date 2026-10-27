@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { AgentPlanSchema } from "./agent/schemas";
 
 export const PlatformSchema = z.enum(["X", "LinkedIn", "Newsletter", "Discord", "Mirror", "Medium", "Instagram", "TikTok"]);
 // Image-first platforms: every asset there needs its own visual.
@@ -667,7 +668,9 @@ export const DeliveryPackSchema = z.object({
   promptModules: z.array(PromptModuleSchema).default([]),
   generation: GenerationMetadataSchema,
   generationStages: z.array(GenerationStageSchema).default([]),
-  productionPlan: ProductionPlanSchema
+  productionPlan: ProductionPlanSchema,
+  // The evidence agent's verified decisions this campaign was written to, when it ran.
+  agentPlan: AgentPlanSchema.nullable().default(null)
 });
 
 export type Platform = z.infer<typeof PlatformSchema>;
