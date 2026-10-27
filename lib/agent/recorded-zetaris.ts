@@ -1,4 +1,6 @@
 import { randomUUID } from "node:crypto";
+import type { Tracer } from "./trace";
+import { silentTracer } from "./trace";
 import type { ZetarisResult, ZetarisRunner } from "./zetaris";
 
 // Sample mode replays Zetaris responses recorded from a live run, so a reviewer without a Zetaris
@@ -19,7 +21,7 @@ export function recordingRunner(inner: ZetarisRunner, recording: ZetarisRecordin
   };
 }
 
-export function replayRunner(recording: ZetarisRecording): ZetarisRunner {
+export function replayRunner(recording: ZetarisRecording, tracer: Tracer = silentTracer): ZetarisRunner {
   const used = new Map<string, number>();
   return async (sql, options = {}) => {
     const key = options.purpose ?? sql;
@@ -27,6 +29,10 @@ export function replayRunner(recording: ZetarisRecording): ZetarisRunner {
     const stored = recording[key]?.[index];
     if (!stored) throw new Error("Sample mode has no recorded Zetaris response for " + key + " (call " + (index + 1) + ").");
     used.set(key, index + 1);
-    return { ...stored, queryId: "replay-" + randomUUID() };
+    const queryId = "replay-" + randomUUID();
+    // Replayed queries are traced like live ones, marked as replayed.
+    tracer.write("trace", "zetaris", "query.start", { queryId, purpose: key, sql: stored.sql, replayed: true });
+    tracer.write("telemetry", "zetaris", "query", { queryId, purpose: key, rows: stored.rows.length, zetarisTimeMs: stored.timeUsedMs, replayed: true });
+    return { ...stored, queryId };
   };
 }

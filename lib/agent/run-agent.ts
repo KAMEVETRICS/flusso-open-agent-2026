@@ -90,7 +90,7 @@ export async function runEvidenceAgent(
   let provider: string;
   let memoryDirectory: string;
   if (sample) {
-    zetaris = replayRunner(sample.zetaris);
+    zetaris = replayRunner(sample.zetaris, tracer);
     generate = replayGenerator(sample.model, tracer);
     provider = "sample (recorded " + (sample.model.provider || "live") + " run)";
     // Each sample run starts from the fixture's memory, so it is repeatable.

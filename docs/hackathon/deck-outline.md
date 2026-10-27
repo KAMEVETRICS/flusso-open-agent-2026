@@ -3,7 +3,7 @@
 Ten slides. It covers the eight required points (problem and users, solution, workflow or architecture, technical stack, how Zetaris and Meterless were used, what was unique about that use, product visuals, future enhancements) plus a pre-existing versus new slide, which the rules ask for.
 
 ## 1. Title
-Flusso: campaigns that check their own claims. Track 03, Reasoning Architecture. One screenshot of the Evidence Agent tab.
+Flusso: campaigns that check their own claims. Wildcard [Tinkerer] track. One screenshot of the Evidence Console at /agent.
 
 ## 2. The problem and who has it
 - Small marketing teams and agencies now draft campaigns with AI, and the drafts assert things nobody checked: invented stats, wrong capabilities, stale prices.

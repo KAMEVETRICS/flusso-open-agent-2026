@@ -1,6 +1,6 @@
 # Flusso
 
-Flusso turns a website and a campaign goal into a content campaign where every claim is checked against a source. For the GenAI Works **Open Agent Hackathon 2026** (Track 03, Reasoning Architecture) we added an **evidence agent**. Before anything is written, it turns data, knowledge and memory into a few campaign decisions, and code verifies each one against the evidence it cites.
+Flusso turns a website and a campaign goal into a content campaign where every claim is checked against a source. For the GenAI Works **Open Agent Hackathon 2026** (Wildcard [Tinkerer] track: an existing product, scored on what was built during the hackathon) we added an **evidence agent**. Before anything is written, it turns data, knowledge and memory into a few campaign decisions, and code verifies each one against the evidence it cites.
 
 - **Data:** Zetaris federates Flusso's campaign store (Neon Postgres), Hacker News and Wikimedia pageviews behind one unified semantic layer (USL). The agent queries it as a tool.
 - **Knowledge:** the Meterless **World Model** engine holds the brand's verified fact sheet and the live signals, with provenance on every write.
@@ -115,7 +115,9 @@ cp .env.example .env.local      # PowerShell: Copy-Item .env.example .env.local
 
 ## Usage
 
-**App.** `npm run dev -- --port 3207`, then open http://localhost:3207. Enter a website and a goal and start. The pipeline view shows the Evidence Agent card between Discovery and Foundation. The results open on the **Evidence Agent** tab, where each decision shows its status, evidence IDs and verifier notes.
+**Evidence Console** (new, the best place to start): `npm run dev -- --port 3207`, then open http://localhost:3207/agent. Pick a brand, choose **Live** (Zetaris + Nightshift) or **Replay** (no credentials), and run. The page streams the agent's reasoning as it happens, counts what each engine contributed (Zetaris queries and rows, World Model facts, H-MEM recalls, and the Nemotron model that answered each call through Nightshift), shows the DQ results, and lists each decision as verified or rejected. Clicking an evidence ID opens the row, fact or memory behind it, with its Zetaris query ID or provenance. It is served by `POST /api/agent`, which streams the same trace records the JSONL logs hold.
+
+**Campaign studio** (pre-existing app, now with the agent step): open http://localhost:3207. Enter a website and a goal and start. The pipeline view shows the Evidence Agent card between Discovery and Foundation. The results open on the **Evidence Agent** tab, where each decision shows its status, evidence IDs and verifier notes.
 
 **Programmatic entry point** (JSON out, traces to stdout and `logs/`):
 

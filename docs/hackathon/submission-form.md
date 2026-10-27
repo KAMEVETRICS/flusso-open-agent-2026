@@ -9,7 +9,7 @@ Flusso
 An evidence agent that turns data (Zetaris), knowledge (Meterless World Model), and memory (Meterless H-MEM) into campaign decisions that code verifies, so AI-written marketing campaigns only say what their sources support.
 
 ## Track
-Track 03, Reasoning Architecture
+Wildcard [Tinkerer]. Flusso existed before the build window (declared below); scored on the new work: the evidence agent with Zetaris, Meterless H-MEM, World Model and Nightshift, the Evidence Console, and Phases 1 to 3.
 
 ## Sponsor technology explanation
 

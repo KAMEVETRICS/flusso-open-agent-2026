@@ -1,31 +1,31 @@
 # Demo script (target 3:30, hard limit 4:00)
 
-Track 03, Reasoning Architecture. The story: Flusso's evidence agent turns data (Zetaris), knowledge (World Model), and memory (H-MEM) into campaign decisions that code checks before any content is written.
+Wildcard [Tinkerer] track, so show the before and after. Before: Flusso already wrote evidence-checked campaigns. During the hackathon it gained a reasoning layer. The evidence agent turns data (Zetaris), knowledge (Meterless World Model) and memory (Meterless H-MEM) into campaign decisions. It reasons with NVIDIA Nemotron through Meterless Nightshift, and code verifies every decision.
 
-Record at 1920x1080. Before you start, close every window that shows `.env.local`, tokens, or the Nightshift Providers tab. Never scroll a terminal past a line with a key in it.
+Record at 1920x1080. Before you start, close every window that shows `.env.local`, the Nightshift KEYS tab, or any token.
 
 ## Prepare (before recording)
 
-1. Start Zetaris (Docker) and Nightshift. Check both: `curl http://127.0.0.1:8088/v1/models` (with the token header) and the Zetaris UI on port 8888.
-2. `npm run dev -- --port 3207` in this repo and open http://localhost:3207.
-3. Run one full Allbirds campaign in the app beforehand, so a finished result is ready. A full run takes 8 to 12 minutes; the video cuts that wait.
-4. Open three terminal tabs: one for `npm run agent`, one with `logs/` open, one spare.
-5. Open the Zetaris UI on the `lightning.metastore.flusso.brand_evidence` USL.
+1. Docker Desktop must be running with the Zetaris containers up, including `zetaris-driver-1`. Nightshift must show "daemon online".
+2. Run `npm run dev -- --port 3207` in this repo. Open http://localhost:3207/agent (the Evidence Console), and http://localhost:3207 in a second tab.
+3. In Nightshift, click **Open Meterless** so its home screen is ready to show traffic.
+4. Open the Zetaris UI (http://localhost:8888) on the `lightning.metastore.flusso.brand_evidence` USL.
+5. Do one warm-up live run in the console. The first Zetaris query after a pause is slow while Neon wakes up.
 
 ## Shot list
 
 | Time | On screen | Say (roughly) |
 |---|---|---|
-| 0:00-0:20 | Flusso workbench | "Marketing teams ship AI-written campaigns full of claims nobody checked. Flusso reads a brand's site, builds a verified fact sheet, and writes a campaign where every claim carries a checked quote. For the hackathon we added a reasoning layer that decides what the campaign should do before anything is written." |
-| 0:20-0:40 | Type `allbirds.com` and the goal "Grow email newsletter signups ahead of a new running shoe launch". Start. Show Discovery finishing. | "Discovery reads the site and extracts facts. Each fact's quote is checked against the page." |
-| 0:40-1:30 | Terminal: `npm run agent -- samples/allbirds-newsletter`. Let the stdout trace scroll. Pause on: the DQ line, the plan line, a Zetaris USL query, the `CREATE REST SESSION TABLE` lines, a `verifier decision.rejected` line, and `revise`. | "The evidence agent runs on Nemotron through Meterless Nightshift. First Zetaris runs two data-quality rules on our semantic layer: three old campaigns have no domain, so they are excluded. Nemotron picks which evidence to pull. Zetaris federates three sources: our Neon campaign store through a unified semantic layer, Hacker News, and Wikipedia pageviews, which the agent registers as live REST tables and drops when it is done. Then the important part: code verifies every decision. A decision that cites evidence that does not exist, the wrong kind of evidence, or a number that is not in its evidence is rejected and sent back once for revision." |
-| 1:30-2:15 | App: Pipeline view, Evidence Agent card done; Results, Evidence Agent tab. Point at accepted and rejected rows, the evidence IDs, the "Model: nvidia/nemotron..." pill, the DQ rows. | "Accepted decisions become binding instructions for every writing stage. Here the agent found that past Allbirds sustainability claims were risky, so the campaign leads with material facts it can quote." |
-| 2:15-2:45 | Results, Proof Report, then Content Pack. Show one asset that follows a decision and its supported claims. | "The campaign that comes out follows those decisions, and the proof report shows each claim with its verified quote." |
-| 2:45-3:15 | Terminal: run the agent for the same brand again. Show the `h-mem recall` line with memory IDs, and a decision that cites `mem-` evidence. Then open `logs/provenance.jsonl` and expand one record. | "After each campaign, Meterless H-MEM stores which claims failed and which decisions held, with provenance. The next run for the same brand recalls them. Every decision's evidence chain is in the provenance log, down to the Zetaris query ID." |
-| 3:15-3:35 | Zetaris UI: the brand_evidence USL tables and DQ rules. Nightshift Console: the request log showing Nemotron answering `flusso`. | "This is the USL in Zetaris, and this is Nightshift routing Flusso's requests to Nemotron on NVIDIA's hosted endpoints." |
-| 3:35-3:50 | README sample mode command | "Judges can replay all three sample runs with no credentials: `npm run agent:sample`." |
+| 0:00-0:25 | Campaign studio (http://localhost:3207), a finished campaign's Proof Report | "This is Flusso before the hackathon. Give it a website and a goal, and it writes a campaign where every claim carries a verified quote. But it wrote every campaign from scratch: no memory of which claims failed before, no data beyond the brand's own pages, and no reasoning about what the campaign should avoid." |
+| 0:25-0:40 | Evidence Console hero. Pick **Linear**, select **Live: Zetaris + Nightshift**. | "So we built an evidence agent. Before anything is written, it decides what the campaign must do and avoid, and code checks each decision." |
+| 0:40-1:40 | Press **Run the evidence agent**. Let the stream run. Point at the phase rail, the DQ bars, the hypothesis, the teal Zetaris SQL lines, the green Nightshift calls, and the amber verifier lines. | "It observes first. The verified fact sheet goes into the Meterless World Model, H-MEM recalls past lessons for this brand, and Zetaris runs data-quality rules. Three old campaigns have no domain, so they're excluded. Nemotron 3 Ultra, through Meterless Nightshift, picks which evidence to pull. Zetaris federates our Neon campaign store through a unified semantic layer, plus Hacker News, which the agent registers as a live REST table and drops afterwards. Then Nemotron proposes decisions, and code checks every one. A citation that doesn't exist, the wrong kind of evidence, or a number missing from the evidence gets rejected and sent back once." |
+| 1:40-2:30 | Decision cards. Click an evidence chip on a verified card (for example `audience_signals#1`) to open its provenance. Then show a rejected card and its verifier note. | "Here's what came out. Lead on LinkedIn with links to posts that already drew Hacker News engagement. Click the evidence and you see the exact row and the Zetaris query it came from. This one was rejected: it stated numbers its evidence didn't contain. The rejection stays visible." |
+| 2:30-3:00 | Switch to Nightshift's home screen (traffic from `flusso`), then the Zetaris UI showing the USL tables and DQ rules. | "Every model call went through Nightshift to Nemotron on NVIDIA's endpoints, and the console logs which model answered each one. This is the semantic layer in Zetaris that the agent queries." |
+| 3:00-3:25 | Console: pick **Allbirds**, choose **Replay**, run. Point at the H-MEM card ("2 recalled"). | "Memory: after each campaign, H-MEM stores which claims failed and why. Allbirds already has a campaign, so its next plan starts from those lessons." |
+| 3:25-3:45 | README: the sample-mode command and the `logs/` folder | "Everything you saw is in the JSONL logs, with provenance for every decision. And judges can replay all three runs with no credentials using `npm run agent:sample`." |
 
 ## If something fails while recording
 
-- Zetaris slow on the first query: Neon wakes its compute. The client retries; wait or cut.
-- Nightshift unavailable: say it on camera, and use `npm run agent:sample`, whose output labels the model that produced the recorded run.
+- **The first Zetaris query is slow.** Neon is waking up, and the client retries. Wait, or cut the pause in editing.
+- **Zetaris queries hang.** Check that `zetaris-driver-1` is running in Docker Desktop, and start it if it isn't.
+- **Nightshift shows offline in the console pills.** Use **Replay**, which shows Nemotron as the model that produced the recorded run, and say on camera that you're replaying.

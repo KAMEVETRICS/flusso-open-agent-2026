@@ -14,3 +14,11 @@
 {"ts":"2026-10-27T19:17:40.028Z","runId":"live-linear-asks-052dc325","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:linear.app","written":12}
 {"ts":"2026-10-27T19:18:43.221Z","runId":"sample-linear-asks-70cbb306","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:linear.app","facts":75,"gaps":[]}
 {"ts":"2026-10-27T19:18:43.287Z","runId":"sample-linear-asks-70cbb306","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:linear.app","written":12}
+{"ts":"2026-10-27T19:57:56.464Z","runId":"console-replay-wise-freelancers-428852fa","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:wise.com","facts":29,"gaps":[]}
+{"ts":"2026-10-27T19:57:56.839Z","runId":"console-replay-wise-freelancers-428852fa","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:wise.com","written":12}
+{"ts":"2026-10-27T19:59:04.618Z","runId":"console-replay-wise-freelancers-551f7995","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:wise.com","facts":29,"gaps":[]}
+{"ts":"2026-10-27T19:59:04.745Z","runId":"console-replay-wise-freelancers-551f7995","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:wise.com","written":12}
+{"ts":"2026-10-27T20:00:25.223Z","runId":"console-replay-wise-freelancers-f3ffa8c7","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:wise.com","facts":29,"gaps":[]}
+{"ts":"2026-10-27T20:00:25.341Z","runId":"console-replay-wise-freelancers-f3ffa8c7","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:wise.com","written":12}
+{"ts":"2026-10-27T20:01:04.947Z","runId":"console-live-linear-asks-5445ccf4","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:linear.app","facts":75,"gaps":[]}
+{"ts":"2026-10-27T20:02:06.247Z","runId":"console-live-linear-asks-5445ccf4","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:linear.app","written":12}
