@@ -2556,3 +2556,19 @@ a.chip {
     flex-direction: column;
   }
 }
+
+.plat-ig {
+  background: #c13584;
+}
+
+.plat-tt {
+  background: #010101;
+}
+
+.caption-text {
+  white-space: pre-line;
+}
+
+.visual-frame.ratio-9-16 {
+  aspect-ratio: 9 / 16;
+}

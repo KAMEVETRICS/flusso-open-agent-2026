@@ -100,7 +100,7 @@ export function ensureCampaignSchema() {
         asset_id text NOT NULL,
         asset_title text NOT NULL,
         asset_type text NOT NULL,
-        platform text NOT NULL CHECK (platform IN ('X', 'LinkedIn', 'Newsletter', 'Discord', 'Mirror', 'Medium')),
+        platform text NOT NULL CHECK (platform IN ('X', 'LinkedIn', 'Newsletter', 'Discord', 'Mirror', 'Medium', 'Instagram', 'TikTok')),
         hook_id text NOT NULL DEFAULT '',
         territory text NOT NULL DEFAULT '',
         impressions bigint NOT NULL DEFAULT 0 CHECK (impressions >= 0),
@@ -121,7 +121,7 @@ export function ensureCampaignSchema() {
     await sql`
       ALTER TABLE content_performance
       ADD CONSTRAINT content_performance_platform_check
-      CHECK (platform IN ('X', 'LinkedIn', 'Newsletter', 'Discord', 'Mirror', 'Medium'))
+      CHECK (platform IN ('X', 'LinkedIn', 'Newsletter', 'Discord', 'Mirror', 'Medium', 'Instagram', 'TikTok'))
     `;
     await sql`
       CREATE INDEX IF NOT EXISTS content_performance_campaign_idx

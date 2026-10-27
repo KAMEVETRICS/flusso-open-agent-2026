@@ -101,6 +101,8 @@ function platformClass(platform: string) {
   if (key === "newsletter") return "plat-pill plat-news";
   if (key === "discord") return "plat-pill plat-dis";
   if (key === "medium") return "plat-pill plat-med";
+  if (key === "instagram") return "plat-pill plat-ig";
+  if (key === "tiktok") return "plat-pill plat-tt";
   return "plat-pill plat-mir";
 }
 
@@ -348,7 +350,7 @@ function Workbench({
   error: string | null;
 }) {
   const update = <K extends keyof BriefInput>(key: K, value: BriefInput[K]) => setBrief({ ...brief, [key]: value });
-  const platformOptions: BriefInput["platforms"] = ["X", "LinkedIn", "Newsletter", "Discord", "Mirror", "Medium"];
+  const platformOptions: BriefInput["platforms"] = ["X", "LinkedIn", "Instagram", "TikTok", "Newsletter", "Discord", "Mirror", "Medium"];
   const togglePlatform = (platform: BriefInput["platforms"][number]) => {
     const platforms = brief.platforms.includes(platform)
       ? brief.platforms.filter((item) => item !== platform)
@@ -1228,6 +1230,16 @@ function assetBodyText(asset: DeliveryPack["assets"][number]) {
       asset.article.tags.join(", ")
     ].filter(Boolean).join("\n\n");
   }
+  if (asset.contentFormat === "carousel" && asset.slides.length) {
+    const slides = asset.slides.map((slide, index) => `Slide ${index + 1}: ${slide.headline}\n${slide.body}`);
+    return [...slides, "Caption:\n" + asset.copy].join("\n\n");
+  }
+  if (asset.videoScript) {
+    const beats = asset.videoScript.beats.map(
+      (beat, index) => `${index + 1}. Visual: ${beat.visual}\nVoiceover: ${beat.voiceover}\nOn screen: ${beat.onScreenText}`
+    );
+    return ["Hook: " + asset.videoScript.hook, ...beats, "Caption:\n" + asset.copy].join("\n\n");
+  }
   return asset.copy;
 }
 
@@ -1290,8 +1302,33 @@ function AssetGrid({ assets }: { assets: DeliveryPack["assets"] }) {
               ))}
               <p>{asset.article.conclusion}</p>
             </div>
+          ) : asset.contentFormat === "carousel" && asset.slides.length ? (
+            <div className="article-preview">
+              <ol className="thread-posts">
+                {asset.slides.map((slide, index) => (
+                  <li key={`${asset.id}-slide-${index}`}><strong>{slide.headline}</strong> {slide.body}</li>
+                ))}
+              </ol>
+              <div className="mini-heading">Caption</div>
+              <p className="caption-text">{asset.copy}</p>
+            </div>
+          ) : asset.videoScript ? (
+            <div className="article-preview">
+              <p><strong>Hook:</strong> {asset.videoScript.hook}</p>
+              <ol className="thread-posts">
+                {asset.videoScript.beats.map((beat, index) => (
+                  <li key={`${asset.id}-beat-${index}`}>
+                    <strong>{beat.onScreenText || "Beat " + (index + 1)}</strong> {beat.voiceover}
+                    <span className="muted"> ({beat.visual})</span>
+                  </li>
+                ))}
+              </ol>
+              <p className="muted">{asset.videoScript.durationSeconds} seconds · {asset.videoScript.audioNote}</p>
+              <div className="mini-heading">Caption</div>
+              <p className="caption-text">{asset.copy}</p>
+            </div>
           ) : (
-            <p>{asset.copy}</p>
+            <p className="caption-text">{asset.copy}</p>
           )}
           <div className="chip-row">
             {asset.segment ? <span className="chip">{asset.segment}</span> : null}

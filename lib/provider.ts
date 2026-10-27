@@ -6,6 +6,7 @@ import {
   BrandContextSchema,
   CalendarItemSchema,
   CampaignStrategySchema,
+  CarouselSlideSchema,
   ClaimKindSchema,
   ContentAssetSchema,
   ContentFormatSchema,
@@ -20,6 +21,7 @@ import {
   HookSchema,
   PlatformAdaptationSchema,
   ProductionPlanSchema,
+  VideoScriptSchema,
   VisualBriefSchema,
   type BriefInput,
   type Claim,
@@ -131,6 +133,8 @@ const GeneratedAssetSchema = ContentAssetSchema.omit({ linkedClaims: true }).ext
   contentFormat: ContentFormatSchema,
   threadPosts: z.array(z.string()),
   article: ArticleContentSchema.nullable(),
+  slides: z.array(CarouselSlideSchema),
+  videoScript: VideoScriptSchema.nullable(),
   visualBriefId: z.string()
 });
 
@@ -141,7 +145,7 @@ const ExecutionStageSchema = z.object({
 
 const EditorialStageSchema = z.object({
   assets: z.array(GeneratedAssetSchema).min(5).max(30),
-  visualBriefs: z.array(VisualBriefSchema.omit({ status: true, statusNote: true })).min(2).max(4),
+  visualBriefs: z.array(VisualBriefSchema.omit({ status: true, statusNote: true })).min(2).max(16),
   editorialReport: EditorialReportSchema
 });
 
@@ -187,6 +191,8 @@ const ClaimRepairPatchSchema = z.object({
     copy: z.string(),
     threadPosts: z.array(z.string()),
     article: ArticleContentSchema.nullable(),
+    slides: z.array(CarouselSlideSchema),
+    videoScript: VideoScriptSchema.nullable(),
     linkedClaims: z.array(z.string())
   })),
   visualBriefUpdates: z.array(z.object({
@@ -1015,7 +1021,7 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
           "Use only the supplied fetched evidence sources. Never invent a source, metric, capability, partnership, or guarantee.",
           "Return an asset update for every supplied asset affected by a target claim.",
           "Return a visual brief update for every supplied visual affected by a target claim.",
-          "For every asset update, return its complete visible body: copy, threadPosts, and article. Preserve unused structures as [] or null.",
+          "For every asset update, return its complete visible body: copy, threadPosts, article, slides, and videoScript. Preserve unused structures as [] or null.",
           "For every visual brief update, rewrite purpose, keyMessage, dataPoints, prompt, and altText so the unsupported assertion is removed or explicitly framed as an independent interpretation. Preserve only supplied source IDs.",
           "For action removed, rewrite every visible body field so the factual assertion is gone and remove that claimId from linkedClaims.",
           "For action replaced-with-supported, use a conservative replacement backed by an exact supplied sourceId in every affected asset and visual field and keep that claimId in linkedClaims.",
@@ -1168,6 +1174,8 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
           copy: update?.copy.trim() || asset.copy,
           threadPosts: update?.threadPosts ?? asset.threadPosts,
           article: update ? update.article : asset.article,
+          slides: update ? update.slides : asset.slides,
+          videoScript: update ? update.videoScript : asset.videoScript,
           linkedClaims: Array.from(linkedClaims)
         };
       });
@@ -1429,7 +1437,9 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
         "For X with three or more X assets, include at least one short-post, one thread, and one article.",
         "For X threads, populate threadPosts with three to twelve ordered posts and keep copy as a concise thread summary.",
         "For articles, populate subtitle, introduction, at least three developed sections, conclusion, and tags; write at least 300 words unless the brief explicitly requests a shorter form; use article format for every Medium asset.",
-        "For non-articles return article as null. For non-threads return threadPosts as an empty array.",
+        "For Instagram, use image-post or carousel. A carousel has three to ten slides, each with a short headline and body; copy is the caption (at most 2,200 characters, line breaks allowed, a few relevant hashtags at the end).",
+        "For TikTok, use short-video: write videoScript with a two-second hook, three to twelve beats (visual, voiceover, onScreenText), durationSeconds between 15 and 90, and an audioNote; copy is the caption (at most 2,200 characters).",
+        "For non-articles return article as null. For non-threads return threadPosts as an empty array. For non-carousels return slides as an empty array. For non-videos return videoScript as null.",
         "Set visualBriefId to an empty string; visual planning happens during editorial refinement.",
         "Asset titles must be materially new variations, not historical top-asset titles with punctuation or light paraphrasing.",
         "Claims will be linked after editorial refinement, so do not invent claim IDs."
@@ -1524,7 +1534,8 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
       "Preserve platform, calendarItemId, seriesId, segment, territory, hookId, and CTA intent.",
       "Keep supported factual substance intact. Improve specificity and rhythm without inventing evidence.",
       "Return an editorialReport with an honest score, strengths, issue count, pass decision, and concise rewrite summary.",
-      "Create two to four visual briefs only where a visual materially improves understanding.",
+      "Create exactly one visual brief for every Instagram and TikTok asset: 4:5 or 1:1 for Instagram (for a carousel, its cover slide), 9:16 for a TikTok cover frame.",
+      "Beyond those, create up to four visual briefs only where a visual materially improves understanding; create at least two briefs in total.",
       "When brandIdentity is supplied, build each visual prompt around its colors (name the exact values) and the mood of its typography. Never request logos, wordmarks, or trademarked marks.",
       "Use data-chart only when supplied evidence contains the exact data points; otherwise prefer concept-diagram, workflow, comparison, or editorial-illustration.",
       "Keep generated-image prompts visually specific and avoid dense embedded text.",
@@ -1560,7 +1571,7 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
           "Return exactly one asset repair per supplied draft, reusing its exact asset ID.",
           "Preserve platform, calendarItemId, seriesId, segment, territory, hookId, and CTA intent.",
           "A thread must contain three to twelve nonempty threadPosts of at most 280 characters each.",
-          "Explicitly return threadPosts, article, editorialMode, contentFormat, and visualBriefId for every asset."
+          "Explicitly return threadPosts, article, slides, videoScript, editorialMode, contentFormat, and visualBriefId for every asset."
         ].join("\n"),
         outputKeys: ["assetRepairs"],
         maxOutputTokens: Math.max(8000, rewritePass.missing.length * 1800)
@@ -1666,7 +1677,7 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
             "Correct every qualityGateFeedback issue associated with that asset.",
             "Each repair must reuse an exact rejected asset ID and preserve its platform, lineage fields, factual substance, and CTA intent.",
             "A repaired thread must contain three to twelve nonempty threadPosts of at most 280 characters each.",
-            "Explicitly return threadPosts, article, editorialMode, contentFormat, and visualBriefId for every repair."
+            "Explicitly return threadPosts, article, slides, videoScript, editorialMode, contentFormat, and visualBriefId for every repair."
           ].join("\n"),
           outputKeys: ["assetRepairs"],
           maxOutputTokens: Math.max(8000, rejectedAssets.length * 1800)

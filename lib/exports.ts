@@ -269,6 +269,20 @@ export function buildStrategyMarkdown(pack: DeliveryPack) {
       });
       lines.push(asset.article.conclusion, "");
       lines.push("Tags: " + asset.article.tags.map(cleanLine).join(", "));
+    } else if (asset.contentFormat === "carousel" && asset.slides?.length) {
+      asset.slides.forEach((slide, index) => {
+        lines.push("**Slide " + (index + 1) + ": " + cleanLine(slide.headline) + "**", "", slide.body, "");
+      });
+      lines.push("**Caption:**", "", asset.copy);
+    } else if (asset.videoScript) {
+      const script = asset.videoScript;
+      lines.push("**Hook (first 2 seconds):** " + cleanLine(script.hook), "");
+      lines.push("| # | Visual | Voiceover | On-screen text |", "| --- | --- | --- | --- |");
+      script.beats.forEach((beat, index) => {
+        lines.push("| " + (index + 1) + " | " + markdownCell(beat.visual) + " | " + markdownCell(beat.voiceover) + " | " + markdownCell(beat.onScreenText) + " |");
+      });
+      lines.push("", "**Length:** " + script.durationSeconds + " seconds. **Audio:** " + cleanLine(script.audioNote), "");
+      lines.push("**Caption:**", "", asset.copy);
     } else {
       lines.push(asset.copy);
     }
@@ -528,6 +542,8 @@ export function buildClientContentPack(pack: DeliveryPack) {
       copy: asset.copy,
       threadPosts: asset.threadPosts,
       article: asset.article,
+      slides: asset.slides ?? [],
+      videoScript: asset.videoScript ?? null,
       cta: asset.cta,
       visualBriefId: asset.visualBriefId,
       claimIds: asset.linkedClaims

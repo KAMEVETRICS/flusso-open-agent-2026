@@ -18,6 +18,8 @@ export const EDITORIAL_POLICY = [
   "For X articles and Medium, return a subtitle, introduction, at least three developed sections, conclusion, and tags.",
   "Publish-ready articles should contain at least 300 words unless the brief explicitly requests a shorter form.",
   "For Medium, always use the article format.",
+  "For Instagram, use an image post or a carousel of three to ten slides; the caption leads with the point and stays within 2,200 characters.",
+  "For TikTok, write a short-video script: a hook that lands in the first two seconds, three to twelve beats, 15 to 90 seconds, and a caption within 2,200 characters.",
   "Use visuals only when they improve comprehension. Prefer deterministic charts for numeric data and avoid text-heavy generated images."
 ].join("\n");
 
@@ -166,7 +168,14 @@ export type EditorialIssue = {
     | "article-depth"
     | "medium-format"
     | "format-mix"
-    | "duplicate-opening";
+    | "duplicate-opening"
+    | "instagram-format"
+    | "carousel-structure"
+    | "tiktok-format"
+    | "video-script"
+    | "video-duration"
+    | "caption-length"
+    | "visual-required";
   message: string;
 };
 
@@ -188,7 +197,10 @@ function assetText(asset: ContentAsset) {
     asset.article?.subtitle ?? "",
     asset.article?.introduction ?? "",
     ...(asset.article?.sections.flatMap((section) => [section.heading, section.body]) ?? []),
-    asset.article?.conclusion ?? ""
+    asset.article?.conclusion ?? "",
+    ...asset.slides.flatMap((slide) => [slide.headline, slide.body]),
+    asset.videoScript?.hook ?? "",
+    ...(asset.videoScript?.beats.flatMap((beat) => [beat.voiceover, beat.onScreenText]) ?? [])
   ].join("\n");
 }
 
@@ -216,6 +228,42 @@ function articleWordCount(asset: ContentAsset) {
     .split(/\s+/)
     .filter(Boolean)
     .length;
+}
+
+const MAX_SOCIAL_CAPTION_CHARS = 2200;
+
+// Instagram and TikTok rules: the right format, a complete carousel or script, a caption within the
+// platform limit, and a visual for every post.
+function visualPlatformIssues(asset: ContentAsset): EditorialIssue[] {
+  const issues: EditorialIssue[] = [];
+  const add = (code: EditorialIssue["code"], message: string) => issues.push({ assetId: asset.id, code, message });
+  if (asset.platform === "Instagram") {
+    if (asset.contentFormat !== "image-post" && asset.contentFormat !== "carousel") {
+      add("instagram-format", "Instagram assets must be an image-post or a carousel.");
+    }
+    if (asset.contentFormat === "carousel" && (
+      asset.slides.length < 3 || asset.slides.length > 10 ||
+      asset.slides.some((slide) => !slide.headline.trim() && !slide.body.trim())
+    )) {
+      add("carousel-structure", "An Instagram carousel needs three to ten nonempty slides.");
+    }
+  }
+  if (asset.platform === "TikTok") {
+    const script = asset.videoScript;
+    if (asset.contentFormat !== "short-video") add("tiktok-format", "TikTok assets must use the short-video format.");
+    if (!script || !script.hook.trim() || script.beats.length < 3 || script.beats.length > 12) {
+      add("video-script", "A TikTok script needs a hook and three to twelve beats.");
+    } else if (script.durationSeconds < 15 || script.durationSeconds > 90) {
+      add("video-duration", "A TikTok script should run 15 to 90 seconds.");
+    }
+  }
+  if (asset.platform === "Instagram" || asset.platform === "TikTok") {
+    if (asset.copy.length > MAX_SOCIAL_CAPTION_CHARS) {
+      add("caption-length", asset.platform + " caption exceeds " + MAX_SOCIAL_CAPTION_CHARS + " characters.");
+    }
+    if (!asset.visualBriefId) add("visual-required", asset.platform + " assets need a visual brief.");
+  }
+  return issues;
 }
 
 export function inspectEditorialAssets(
@@ -282,6 +330,8 @@ export function inspectEditorialAssets(
         });
       }
     }
+
+    issues.push(...visualPlatformIssues(asset));
 
     if (asset.platform === "Medium" && asset.contentFormat !== "article") {
       issues.push({

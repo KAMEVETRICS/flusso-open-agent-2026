@@ -30,6 +30,8 @@ function articleAsset(wordsPerSection) {
     editorialMode: "technical-explainer",
     contentFormat: "article",
     threadPosts: [],
+    slides: [],
+    videoScript: null,
     article: {
       subtitle: "A practical architecture review",
       introduction: body,
@@ -113,4 +115,42 @@ test("finds repeated hooks and spares items that must keep their wording", () =>
   assert.deepEqual(findRepeatedHooks(items), ["cal-7"]);
   assert.deepEqual(findRepeatedHooks(items, new Set(["cal-7"])), ["cal-1"]);
   assert.deepEqual(findRepeatedHooks(items, new Set(["cal-1", "cal-7"])), []);
+});
+
+function socialAsset(overrides) {
+  return {
+    ...articleAsset(70),
+    article: null,
+    copy: "Your sneakers can do more. Here is how the new runner is built.",
+    visualBriefId: "visual-1",
+    ...overrides
+  };
+}
+
+const beat = { visual: "Close-up of the sole", voiceover: "This foam is made from sugarcane.", onScreenText: "Sugarcane foam" };
+
+test("accepts complete Instagram carousels and TikTok scripts", () => {
+  const issues = inspectEditorialAssets([
+    socialAsset({ id: "asset-1", platform: "Instagram", contentFormat: "carousel", slides: [1, 2, 3].map((n) => ({ headline: "Slide " + n, body: "Point " + n })) }),
+    socialAsset({ id: "asset-2", platform: "TikTok", contentFormat: "short-video", visualBriefId: "visual-2", videoScript: { hook: "Guess what this sole is made of.", beats: [beat, beat, beat], durationSeconds: 30, audioNote: "Upbeat, no lyrics" } })
+  ], { platforms: ["Instagram", "TikTok"] });
+  assert.deepEqual(issues.filter((issue) => issue.code !== "duplicate-opening"), []);
+});
+
+test("flags wrong formats, thin carousels, incomplete scripts, long captions, and missing visuals", () => {
+  const issues = inspectEditorialAssets([
+    socialAsset({ id: "asset-1", platform: "Instagram", contentFormat: "short-post", copy: "x".repeat(2201), visualBriefId: "" }),
+    socialAsset({ id: "asset-2", platform: "Instagram", contentFormat: "carousel", slides: [{ headline: "One", body: "" }], copy: "Second caption." }),
+    socialAsset({ id: "asset-3", platform: "TikTok", contentFormat: "short-video", videoScript: { hook: "Hook", beats: [beat], durationSeconds: 30, audioNote: "" }, copy: "Third caption." }),
+    socialAsset({ id: "asset-4", platform: "TikTok", contentFormat: "short-video", videoScript: { hook: "Hook", beats: [beat, beat, beat], durationSeconds: 200, audioNote: "" }, copy: "Fourth caption." })
+  ], { platforms: ["Instagram", "TikTok"] });
+  const codes = issues.filter((issue) => issue.code !== "duplicate-opening").map((issue) => issue.assetId + " " + issue.code);
+  assert.deepEqual(codes, [
+    "asset-1 instagram-format",
+    "asset-1 caption-length",
+    "asset-1 visual-required",
+    "asset-2 carousel-structure",
+    "asset-3 video-script",
+    "asset-4 video-duration"
+  ]);
 });

@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-export const PlatformSchema = z.enum(["X", "LinkedIn", "Newsletter", "Discord", "Mirror", "Medium"]);
+export const PlatformSchema = z.enum(["X", "LinkedIn", "Newsletter", "Discord", "Mirror", "Medium", "Instagram", "TikTok"]);
+// Image-first platforms: every asset there needs its own visual.
+export const VISUAL_FIRST_PLATFORMS = ["Instagram", "TikTok"] as const;
 // "editorial" marks framing or opinion: reviewed for tone, never fact-checked.
 export const ClaimStatusSchema = z.enum(["supported", "unsupported", "conflict", "time-sensitive", "editorial"]);
 export const ClaimKindSchema = z.enum([
@@ -31,6 +33,9 @@ export const EditorialModeSchema = z.enum([
   "community"
 ]);
 export const ContentFormatSchema = z.enum([
+  "image-post",
+  "carousel",
+  "short-video",
   "short-post",
   "thread",
   "article",
@@ -329,6 +334,23 @@ export const ArticleContentSchema = z.object({
   tags: z.array(z.string())
 });
 
+export const CarouselSlideSchema = z.object({
+  headline: z.string(),
+  body: z.string()
+});
+
+export const VideoScriptSchema = z.object({
+  // What is seen and heard in the first two seconds.
+  hook: z.string(),
+  beats: z.array(z.object({
+    visual: z.string(),
+    voiceover: z.string(),
+    onScreenText: z.string()
+  })),
+  durationSeconds: z.number().int(),
+  audioNote: z.string()
+});
+
 export const ContentAssetSchema = z.object({
   id: z.string(),
   type: z.string(),
@@ -347,6 +369,10 @@ export const ContentAssetSchema = z.object({
   contentFormat: ContentFormatSchema.default("short-post"),
   threadPosts: z.array(z.string()).default([]),
   article: ArticleContentSchema.nullable().default(null),
+  // Instagram carousel slides, in order.
+  slides: z.array(CarouselSlideSchema).default([]),
+  // TikTok (or Reels) script; Flusso writes it, a person films it.
+  videoScript: VideoScriptSchema.nullable().default(null),
   visualBriefId: z.string().default("")
 });
 
@@ -372,7 +398,7 @@ export const VisualBriefSchema = z.object({
   keyMessage: z.string(),
   dataPoints: z.array(z.string()),
   prompt: z.string(),
-  aspectRatio: z.enum(["1:1", "16:9", "4:5"]),
+  aspectRatio: z.enum(["1:1", "16:9", "4:5", "9:16"]),
   altText: z.string(),
   sourceIds: z.array(z.string()),
   status: z.enum(["planned", "generated", "failed"]).default("planned"),

@@ -14,7 +14,8 @@ export type GeneratedVisualImage = {
 const aspectRatios: Record<VisualBrief["aspectRatio"], string> = {
   "1:1": "1:1",
   "16:9": "16:9",
-  "4:5": "3:4"
+  "4:5": "3:4",
+  "9:16": "9:16"
 };
 
 function imagePrompt(pack: DeliveryPack, brief: VisualBrief) {
