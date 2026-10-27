@@ -335,6 +335,65 @@ function EmptyProofSummary() {
   );
 }
 
+const MAX_DOCUMENTS = 5;
+
+// Uploads decks, PDFs, and docs; Firecrawl converts each to text that becomes a source.
+function DocumentUpload({
+  documents,
+  onChange
+}: {
+  documents: BriefInput["documents"];
+  onChange: (documents: BriefInput["documents"]) => void;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  async function upload(file: File) {
+    setUploading(true);
+    setUploadError(null);
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const response = await fetch("/api/documents", { method: "POST", body: form });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error ?? "Upload failed.");
+      onChange([...documents, { title: payload.title, text: payload.text }]);
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "Upload failed.");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  return (
+    <div className="form-field">
+      <span>Documents (decks, PDFs, briefs)</span>
+      {documents.map((document, index) => (
+        <div className="kv-row" key={document.title + index}>
+          <strong>{document.title}</strong>
+          <button className="icon-btn" type="button" onClick={() => onChange(documents.filter((_, item) => item !== index))} aria-label={"Remove " + document.title}>
+            <XCircle size={15} />
+          </button>
+        </div>
+      ))}
+      {documents.length < MAX_DOCUMENTS ? (
+        <input
+          type="file"
+          accept=".pdf,.doc,.docx,.ppt,.pptx,.odt,.odp,.rtf,.xls,.xlsx,.csv,.html,.htm,.epub"
+          disabled={uploading}
+          onChange={(event) => {
+            const file = event.target.files?.[0];
+            event.target.value = "";
+            if (file) void upload(file);
+          }}
+        />
+      ) : null}
+      {uploading ? <p className="muted">Reading the file...</p> : null}
+      {uploadError ? <div className="error-box">{uploadError}</div> : null}
+    </div>
+  );
+}
+
 function Workbench({
   brief,
   setBrief,
@@ -464,6 +523,10 @@ function Workbench({
               <input type="number" min={1} max={80} value={brief.hoursPerWeek} onChange={(event) => update("hoursPerWeek", Number(event.target.value))} placeholder="8" />
             </label>
           </div>
+          <DocumentUpload
+            documents={brief.documents}
+            onChange={(documents) => update("documents", documents)}
+          />
           <label className="form-field">
             <span>Restrictions</span>
             <textarea value={brief.restrictions} onChange={(event) => update("restrictions", event.target.value)} placeholder="e.g. Avoid pricing speculation and unverified performance claims" />
@@ -937,11 +1000,38 @@ function CampaignStrategyPanel({ pack }: { pack: DeliveryPack }) {
   );
 }
 
+function VoiceGuidePanel({ guide }: { guide: DeliveryPack["voiceGuide"] }) {
+  if (!guide) return null;
+  return (
+    <>
+      <div className="section-title">Brand Voice</div>
+      <div className="panel">
+        <p>{guide.summary}</p>
+        <div className="grid-2-responsive">
+          <div>
+            <h3>Tone rules</h3>
+            <ul className="clean-list">{guide.toneRules.map((rule) => <li key={rule}>{rule}</li>)}</ul>
+            <h3>Preferred terms</h3>
+            <ul className="clean-list">{guide.preferredTerms.map((item) => <li key={item.term}><strong>{item.term}</strong>: {item.note}</li>)}</ul>
+          </div>
+          <div>
+            <h3>Avoid</h3>
+            <ul className="clean-list warning-list">{guide.avoidTerms.map((item) => <li key={item.term}><strong>{item.term}</strong>: {item.reason}</li>)}</ul>
+            <h3>In the brand&apos;s own words</h3>
+            {guide.sampleLines.map((line) => <blockquote className="evidence-quote" key={line.quote}>{line.quote}</blockquote>)}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
 function StrategyTab({ pack }: { pack: DeliveryPack }) {
   const assumptions = pack.brandContext.assumptions ?? [];
   return (
     <div>
       <CampaignStrategyPanel pack={pack} />
+      <VoiceGuidePanel guide={pack.voiceGuide} />
       <div className="section-title">Strategic Positioning</div>
       <div className="panel">
         <p>{pack.brandContext.positioning}</p>
@@ -1061,6 +1151,13 @@ function FactsTab({ pack, campaignId }: { pack: DeliveryPack; campaignId: string
   const sourceById = new Map(pack.sources.map((source) => [source.id, source]));
   return (
     <div>
+      {pack.brandMemory ? (
+        <p className="muted">
+          Brand memory: this domain has {pack.brandMemory.priorCampaigns} earlier campaign{pack.brandMemory.priorCampaigns === 1 ? "" : "s"}.
+          {" "}{pack.brandMemory.reusedSourceIds.length} unchanged page{pack.brandMemory.reusedSourceIds.length === 1 ? "" : "s"} reused saved facts
+          {pack.brandMemory.reusedVoiceGuide ? ", and the saved voice guide was applied." : "."}
+        </p>
+      ) : null}
       {factSheet.gaps.length ? (
         <div className="warning-card">
           <strong><Warning size={14} /> No verified evidence for {factSheet.gaps.join(", ")}</strong>
@@ -2179,7 +2276,8 @@ export function ContentEngineerApp() {
   function openSavedCampaign(savedPack: DeliveryPack, savedCampaignId: string) {
     setPack(savedPack);
     setCampaignId(savedCampaignId);
-    setBrief(savedPack.brief);
+    // Uploaded documents live in the campaign's sources, not in the saved brief.
+    setBrief({ ...savedPack.brief, documents: [] });
     setLiveStages(savedPack.generationStages ?? []);
     setRepairError(null);
     setView("results");

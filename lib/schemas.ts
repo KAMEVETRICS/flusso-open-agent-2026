@@ -77,7 +77,12 @@ export const BriefInputSchema = z.object({
   postsPerWeek: z.number().int().min(1).max(20).default(5),
   teamSize: z.number().int().min(1).max(20).default(1),
   hoursPerWeek: z.number().int().min(1).max(80).default(8),
-  restrictions: z.string().default("")
+  restrictions: z.string().default(""),
+  // Files the user uploaded, already converted to text by Firecrawl.
+  documents: z.array(z.object({
+    title: z.string().trim().min(1).max(200),
+    text: z.string().min(1).max(100_000)
+  })).max(5).default([])
 });
 
 export const SourceDocumentSchema = z.object({
@@ -93,7 +98,8 @@ export const SourceDocumentSchema = z.object({
     "search-result",
     "web-search",
     "prompt-library",
-    "user-note"
+    "user-note",
+    "uploaded-document"
   ]),
   extractedText: z.string(),
   fetchedAt: z.string(),
@@ -158,6 +164,15 @@ export const FactSheetSchema = z.object({
   extractionErrors: z.array(z.object({ sourceId: z.string(), reason: z.string() })).default([]),
   // Companies a third-party page called competitors that the brand itself names otherwise.
   excludedCompetitors: z.array(z.object({ entity: z.string(), reason: z.string() })).default([])
+});
+
+// How the brand writes, drawn from its own pages. Sample lines are verbatim quotes.
+export const VoiceGuideSchema = z.object({
+  summary: z.string(),
+  toneRules: z.array(z.string()),
+  preferredTerms: z.array(z.object({ term: z.string(), note: z.string() })),
+  avoidTerms: z.array(z.object({ term: z.string(), reason: z.string() })),
+  sampleLines: z.array(z.object({ quote: z.string(), sourceId: z.string() }))
 });
 
 export const BrandContextSchema = z.object({
@@ -605,6 +620,14 @@ export const DeliveryPackSchema = z.object({
   factSheet: FactSheetSchema.default({ facts: [], gaps: [], discoverySteps: [], rejectedFacts: 0, extractionErrors: [], excludedCompetitors: [] }),
   brandContext: BrandContextSchema,
   strategy: CampaignStrategySchema.nullable().default(null),
+  voiceGuide: VoiceGuideSchema.nullable().default(null),
+  // How this campaign used the saved brand model for its domain.
+  brandMemory: z.object({
+    priorCampaigns: z.number().int().nonnegative(),
+    reusedSourceIds: z.array(z.string()),
+    reusedVoiceGuide: z.boolean(),
+    reusedLabels: z.array(z.string())
+  }).nullable().default(null),
   contentLandscape: ContentLandscapeSchema,
   audienceSegments: z.array(AudienceSegmentSchema),
   territories: z.array(ContentTerritorySchema),
@@ -662,6 +685,7 @@ export type FactCategory = z.infer<typeof FactCategorySchema>;
 export type BrandFact = z.infer<typeof BrandFactSchema>;
 export type DiscoveryStep = z.infer<typeof DiscoveryStepSchema>;
 export type FactSheet = z.infer<typeof FactSheetSchema>;
+export type VoiceGuide = z.infer<typeof VoiceGuideSchema>;
 export type BrandContext = z.infer<typeof BrandContextSchema>;
 export type SuccessCriterion = z.infer<typeof SuccessCriterionSchema>;
 export type CampaignStrategy = z.infer<typeof CampaignStrategySchema>;

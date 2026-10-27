@@ -166,6 +166,9 @@ test("discovery fills fact gaps with a site page and a web search, and records e
     async inferBrief() {
       return { brand: "Doma", industry: "DomainFi", audience: "Domain investors", tone: "Direct", competitors: [] };
     },
+    async extractVoiceGuide() {
+      return { summary: "Plain.", toneRules: [], preferredTerms: [], avoidTerms: [], sampleLines: [] };
+    },
     async extractFacts(_context, src) {
       return factsBySource[src.id] ?? [];
     }
@@ -175,7 +178,7 @@ test("discovery fills fact gaps with a site page and a web search, and records e
     website: "https://doma.xyz",
     goal: "Onboard domain flippers onchain",
     brand: "", industry: "", audience: "", tone: "", docs: "", competitors: [],
-    platforms: ["X"], editorialProfile: "balanced", durationDays: 30, postsPerWeek: 5, teamSize: 1, hoursPerWeek: 8, restrictions: ""
+    platforms: ["X"], editorialProfile: "balanced", durationDays: 30, postsPerWeek: 5, teamSize: 1, hoursPerWeek: 8, restrictions: "", documents: []
   }, model);
 
   assert.deepEqual(searches, ["Doma DomainFi competitors and alternatives"]);
@@ -213,6 +216,9 @@ test("discovery keeps one copy of a page that several gap searches return", asyn
     async inferBrief() {
       return { brand: "Doma", industry: "DomainFi", audience: "Domain investors", tone: "Direct", competitors: [] };
     },
+    async extractVoiceGuide() {
+      return { summary: "Plain.", toneRules: [], preferredTerms: [], avoidTerms: [], sampleLines: [] };
+    },
     async extractFacts(_context, src) {
       return src.id === "src-brand-site" ? [generated({ sectionId: "src-brand-site#protocol" })] : [];
     }
@@ -222,7 +228,7 @@ test("discovery keeps one copy of a page that several gap searches return", asyn
     website: "https://doma.xyz",
     goal: "Onboard domain flippers onchain",
     brand: "", industry: "", audience: "", tone: "", docs: "", competitors: [],
-    platforms: ["X"], editorialProfile: "balanced", durationDays: 30, postsPerWeek: 5, teamSize: 1, hoursPerWeek: 8, restrictions: ""
+    platforms: ["X"], editorialProfile: "balanced", durationDays: 30, postsPerWeek: 5, teamSize: 1, hoursPerWeek: 8, restrictions: "", documents: []
   }, model);
 
   assert.deepEqual(searches, [

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { normalizeBrief } from "@/lib/brief";
+import { brandDomain, emptyBrandModel, getBrandModel, learnFromCampaign, saveBrandModel } from "@/lib/brand-model";
 import { saveCampaign, updateCampaignPack } from "@/lib/campaign-store";
 import { ensureCampaignSchema } from "@/lib/db";
 import { discoverBrief } from "@/lib/discovery";
@@ -47,7 +48,9 @@ export async function POST(request: Request) {
         void (async () => {
           try {
             await ensureCampaignSchema();
-            const discovery = await discoverBrief(input, provider);
+            const domain = brandDomain(input.website);
+            const memory = await getBrandModel(domain);
+            const discovery = await discoverBrief(input, provider, memory);
             send("discovery", {
               brief: discovery.brief,
               inferredFields: discovery.inferredFields,
@@ -69,6 +72,13 @@ export async function POST(request: Request) {
             send("visuals", { total: pack.visualBriefs.length });
             const rendered = await renderCampaignVisuals(campaign.id, pack, (outcome) => send("visual", outcome));
             await updateCampaignPack(campaign.id, rendered.pack);
+            // The brand model makes the next campaign for this domain faster and consistent; a
+            // failure to save it never loses the campaign itself.
+            try {
+              await saveBrandModel(learnFromCampaign(memory ?? emptyBrandModel(domain), rendered.pack, new Date().toISOString()));
+            } catch (error) {
+              console.error("Flusso brand model save failed: " + (error instanceof Error ? error.message : String(error)));
+            }
             send("complete", { pack: rendered.pack, campaignId: campaign.id });
           } catch (error) {
             const message = error instanceof Error ? error.message : "Unable to generate campaign pack.";

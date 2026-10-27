@@ -134,6 +134,21 @@ export function buildStrategyMarkdown(pack: DeliveryPack) {
   }
   lines.push("");
 
+  if (pack.voiceGuide) {
+    const guide = pack.voiceGuide;
+    lines.push("## Brand Voice", "", cleanLine(guide.summary), "", "### Tone Rules", "");
+    addBullets(lines, guide.toneRules.map(cleanLine));
+    lines.push("", "### Preferred Terms", "");
+    addBullets(lines, guide.preferredTerms.map((item) => "**" + cleanLine(item.term) + ":** " + cleanLine(item.note)));
+    lines.push("", "### Avoid", "");
+    addBullets(lines, guide.avoidTerms.map((item) => "**" + cleanLine(item.term) + ":** " + cleanLine(item.reason)));
+    if (guide.sampleLines.length) {
+      lines.push("", "### In the Brand's Own Words", "");
+      guide.sampleLines.forEach((line) => lines.push("> " + cleanLine(line.quote), ""));
+    }
+    lines.push("");
+  }
+
   const factSheet = pack.factSheet ?? { facts: [], gaps: [], discoverySteps: [] };
   if (factSheet.facts.length || factSheet.discoverySteps.length) {
     const sourceTitle = (sourceId: string) => pack.sources.find((source) => source.id === sourceId)?.title ?? sourceId;
@@ -496,6 +511,7 @@ export function buildClientContentPack(pack: DeliveryPack) {
         narrativeArc: series.narrativeArc
       }))
     },
+    voiceGuide: pack.voiceGuide ?? null,
     factSheet: {
       facts: (pack.factSheet?.facts ?? []).map((fact) => {
         const source = sourcesById.get(fact.sourceId);

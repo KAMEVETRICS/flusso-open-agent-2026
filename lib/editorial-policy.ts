@@ -175,7 +175,8 @@ export type EditorialIssue = {
     | "video-script"
     | "video-duration"
     | "caption-length"
-    | "visual-required";
+    | "visual-required"
+    | "voice-avoid-term";
   message: string;
 };
 
@@ -232,6 +233,11 @@ function articleWordCount(asset: ContentAsset) {
 
 const MAX_SOCIAL_CAPTION_CHARS = 2200;
 
+function containsTerm(text: string, term: string) {
+  const escaped = term.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return escaped.length > 1 && new RegExp("(^|[^a-z0-9])" + escaped + "($|[^a-z0-9])", "i").test(text);
+}
+
 // Instagram and TikTok rules: the right format, a complete carousel or script, a caption within the
 // platform limit, and a visual for every post.
 function visualPlatformIssues(asset: ContentAsset): EditorialIssue[] {
@@ -268,7 +274,8 @@ function visualPlatformIssues(asset: ContentAsset): EditorialIssue[] {
 
 export function inspectEditorialAssets(
   assets: ContentAsset[],
-  brief: ProjectBrief
+  brief: ProjectBrief,
+  avoidTerms: string[] = []
 ): EditorialIssue[] {
   const issues: EditorialIssue[] = [];
 
@@ -332,6 +339,9 @@ export function inspectEditorialAssets(
     }
 
     issues.push(...visualPlatformIssues(asset));
+    for (const term of avoidTerms.filter((item) => containsTerm(text, item))) {
+      issues.push({ assetId: asset.id, code: "voice-avoid-term", message: "Replace \"" + term + "\", which the brand voice guide avoids." });
+    }
 
     if (asset.platform === "Medium" && asset.contentFormat !== "article") {
       issues.push({

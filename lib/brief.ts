@@ -16,7 +16,8 @@ export const emptyBrief: BriefInput = {
   postsPerWeek: 5,
   teamSize: 1,
   hoursPerWeek: 8,
-  restrictions: ""
+  restrictions: "",
+  documents: []
 };
 
 export function normalizeBrief(input: unknown): BriefInput {

@@ -2,12 +2,15 @@ import {
   ProjectBriefSchema,
   type BrandIdentity,
   type BriefInput,
+  type DeliveryPack,
   type DiscoveryStep,
   type FactCategory,
   type FactSheet,
   type ProjectBrief,
-  type SourceDocument
+  type SourceDocument,
+  type VoiceGuide
 } from "./schemas";
+import { excerptAppearsIn } from "./text-match";
 import { firecrawlMap, type FirecrawlLink } from "./firecrawl";
 import {
   isLikelyUrl,
@@ -34,10 +37,12 @@ import {
   type GeneratedFact,
   type UnnumberedFact
 } from "./fact-sheet";
-import type { SourceSection } from "./sections";
+import { splitIntoSections, type SourceSection } from "./sections";
+import { cachedFactsFor, type BrandModel } from "./brand-model";
 import {
   scrapeBrandSite,
   scrapeSiteIndex,
+  noteSource,
   scrapeSourceDocument,
   searchSourceDocuments
 } from "./source-ingestion";
@@ -60,6 +65,7 @@ export interface BriefInferrer {
 
 export interface DiscoveryModel extends BriefInferrer {
   extractFacts(context: FactContext, source: SourceDocument, sections: SourceSection[]): Promise<GeneratedFact[]>;
+  extractVoiceGuide(context: FactContext, sources: SourceDocument[]): Promise<VoiceGuide>;
 }
 
 export type DiscoveryResult = {
@@ -68,6 +74,8 @@ export type DiscoveryResult = {
   inferredFields: string[];
   brandIdentity: BrandIdentity | null;
   factSheet: FactSheet;
+  voiceGuide: VoiceGuide | null;
+  brandMemory: DeliveryPack["brandMemory"];
 };
 
 const fieldLabels: Record<string, string> = {
@@ -104,27 +112,36 @@ async function mapWithConcurrency<T, R>(items: T[], limit: number, task: (item: 
   return results;
 }
 
-type FactRound = { facts: UnnumberedFact[]; rejected: number; errors: FactSheet["extractionErrors"] };
+type FactRound = { facts: UnnumberedFact[]; rejected: number; errors: FactSheet["extractionErrors"]; reused: string[] };
 
 // Reads each source once for citable facts. A failed source is recorded; the others still count.
 async function extractFactRound(
   sources: SourceDocument[],
   context: FactContext,
   model: DiscoveryModel,
-  seenSections: Set<string>
+  seenSections: Set<string>,
+  memory: BrandModel | null
 ): Promise<FactRound> {
   const work = sources
     .filter(isFactSource)
     .map((source) => ({ source, sections: extractionSections(source, seenSections) }))
     .filter((item) => item.sections.length);
+  const reused: string[] = [];
   const outcomes = await mapWithConcurrency(work, FACT_EXTRACTION_CONCURRENCY, async ({ source, sections }) => {
     try {
+      // A page with the same text as in an earlier campaign keeps its facts; quotes are re-checked.
+      const cached = cachedFactsFor(memory, source);
+      if (cached) {
+        reused.push(source.id);
+        return { source, ...verifyFacts(cached, source, splitIntoSections(source), context.brand) };
+      }
       return { source, ...verifyFacts(await model.extractFacts(context, source, sections), source, sections, context.brand) };
     } catch (error) {
       return { source, facts: [], rejected: 0, error: error instanceof Error ? error.message : String(error) };
     }
   });
   return {
+    reused,
     facts: outcomes.flatMap((outcome) => outcome.facts),
     rejected: outcomes.reduce((sum, outcome) => sum + outcome.rejected, 0),
     errors: outcomes.flatMap((outcome) =>
@@ -228,14 +245,15 @@ async function researchFacts(
   initialSources: SourceDocument[],
   links: SiteLink[],
   model: DiscoveryModel,
-  fetchedAt: string
-): Promise<{ sources: SourceDocument[]; factSheet: FactSheet }> {
+  fetchedAt: string,
+  memory: BrandModel | null
+): Promise<{ sources: SourceDocument[]; factSheet: FactSheet; reusedSourceIds: string[] }> {
   const seenSections = new Set<string>();
-  const first = await extractFactRound(initialSources, context, model, seenSections);
+  const first = await extractFactRound(initialSources, context, model, seenSections, memory);
   const gapsBefore = factGaps(first.facts, context.industry);
   const fetches = await fetchForGaps(gapsBefore, context, links, initialSources, fetchedAt);
   const added = fetches.flatMap((fetch) => fetch.sources);
-  const second = await extractFactRound(added, context, model, seenSections);
+  const second = await extractFactRound(added, context, model, seenSections, memory);
 
   const screened = setAsideOwnRelations([...first.facts, ...second.facts], [...initialSources, ...added]);
   const facts = numberFacts(screened.facts);
@@ -246,6 +264,7 @@ async function researchFacts(
   });
   return {
     sources: [...initialSources, ...added],
+    reusedSourceIds: [...first.reused, ...second.reused],
     factSheet: {
       facts,
       gaps: factGaps(facts, context.industry),
@@ -267,7 +286,23 @@ function parseBrief(brief: unknown) {
   );
 }
 
-export async function discoverBrief(input: BriefInput, model: DiscoveryModel): Promise<DiscoveryResult> {
+// Keeps only sample lines that appear word for word in their cited source.
+function verifiedVoiceGuide(guide: VoiceGuide, sources: SourceDocument[]): VoiceGuide {
+  const byId = new Map(sources.map((source) => [source.id, source]));
+  return {
+    ...guide,
+    sampleLines: guide.sampleLines.filter((line) => {
+      const source = byId.get(line.sourceId);
+      return Boolean(source) && excerptAppearsIn(line.quote, (source as SourceDocument).extractedText);
+    })
+  };
+}
+
+export async function discoverBrief(
+  input: BriefInput,
+  model: DiscoveryModel,
+  memory: BrandModel | null = null
+): Promise<DiscoveryResult> {
   const fetchedAt = new Date().toISOString();
   const docUrls = splitSourceUrls(input.docs).slice(0, MAX_DOC_URLS);
   const competitorUrls = input.competitors.filter(isLikelyUrl).slice(0, MAX_COMPETITOR_URLS);
@@ -306,11 +341,15 @@ export async function discoverBrief(input: BriefInput, model: DiscoveryModel): P
       authority: "third-party"
     }, fetchedAt))
   ]);
+  const uploadedSources = input.documents.map((document, index) =>
+    noteSource("src-upload-" + (index + 1), document.title, "uploaded-document", document.text, fetchedAt, "user-supplied")
+  );
   const initialSources = [
     homepage.source,
     ...(homepage.structuredData ? [homepage.structuredData] : []),
     ...(siteIndex ? [siteIndex.source] : []),
-    ...linkedSources
+    ...linkedSources,
+    ...uploadedSources
   ];
   const site = homepage.source;
   const evidence = initialSources.filter((source) => source.fetchStatus === "fetched");
@@ -329,13 +368,30 @@ export async function discoverBrief(input: BriefInput, model: DiscoveryModel): P
   // Fail before paying for fact extraction when the brief cannot be completed.
   const draft = parseBrief(mergeInferredBrief(input, inferred).brief);
 
-  const research = await researchFacts(
-    { brand: draft.brand, industry: draft.industry, website: input.website },
-    initialSources,
-    [...(siteIndex?.links.map((url) => ({ url })) ?? []), ...links],
-    model,
-    fetchedAt
-  );
+  const context = { brand: draft.brand, industry: draft.industry, website: input.website };
+  // The voice guide is learned once per brand and reused; the first campaign builds it.
+  const firstParty = initialSources.filter((source) => source.authority === "first-party" && source.fetchStatus === "fetched");
+  const voicePromise: Promise<VoiceGuide | null> = memory?.voiceGuide
+    ? Promise.resolve(memory.voiceGuide)
+    : firstParty.length
+      ? model.extractVoiceGuide(context, firstParty)
+          .then((guide) => verifiedVoiceGuide(guide, firstParty))
+          .catch((error: unknown) => {
+            console.warn("Flusso voice guide failed: " + (error instanceof Error ? error.message : String(error)));
+            return null;
+          })
+      : Promise.resolve(null);
+  const [research, voiceGuide] = await Promise.all([
+    researchFacts(
+      context,
+      initialSources,
+      [...(siteIndex?.links.map((url) => ({ url })) ?? []), ...links],
+      model,
+      fetchedAt,
+      memory
+    ),
+    voicePromise
+  ]);
   const factCompetitors = competitorNames(research.factSheet.facts);
   const merged = mergeInferredBrief(
     input,
@@ -352,6 +408,15 @@ export async function discoverBrief(input: BriefInput, model: DiscoveryModel): P
     sources: research.sources,
     inferredFields: merged.inferredFields,
     brandIdentity: homepage.brandIdentity,
-    factSheet: research.factSheet
+    factSheet: research.factSheet,
+    voiceGuide,
+    brandMemory: memory
+      ? {
+          priorCampaigns: memory.campaignCount,
+          reusedSourceIds: research.reusedSourceIds,
+          reusedVoiceGuide: Boolean(memory.voiceGuide),
+          reusedLabels: [...memory.vocabulary.segments, ...memory.vocabulary.territories]
+        }
+      : null
   };
 }

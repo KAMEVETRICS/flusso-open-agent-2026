@@ -156,3 +156,29 @@ export async function firecrawlSearch(query: string, limit: number): Promise<Fir
     })
     .filter((result) => result.url);
 }
+
+const PARSE_TIMEOUT_MS = 120_000;
+
+// Converts an uploaded file (PDF, DOCX, PPTX, and similar) to markdown with Firecrawl /parse.
+export async function firecrawlParse(file: Blob, filename: string): Promise<{ markdown: string; title: string }> {
+  const form = new FormData();
+  form.append("file", file, filename);
+  form.append("options", new Blob([JSON.stringify({ formats: ["markdown"], timeout: PARSE_TIMEOUT_MS })], { type: "application/json" }));
+  const response = await fetchWithRetry(FIRECRAWL_API_URL + "/parse", {
+    method: "POST",
+    headers: { Authorization: "Bearer " + apiKey() },
+    body: form,
+    signal: AbortSignal.timeout(PARSE_TIMEOUT_MS + 15_000)
+  });
+  let payload: JsonRecord = {};
+  try {
+    payload = asRecord(JSON.parse(await response.text()));
+  } catch {
+    // Non-JSON error bodies fall through to the status-based message.
+  }
+  if (!response.ok || payload.success === false) {
+    throw new Error("Firecrawl parse failed: " + (asText(payload.error) || "HTTP " + response.status));
+  }
+  const data = asRecord(payload.data);
+  return { markdown: asText(data.markdown), title: asText(asRecord(data.metadata).title) };
+}

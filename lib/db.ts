@@ -169,6 +169,14 @@ export function ensureCampaignSchema() {
       CREATE INDEX IF NOT EXISTS source_sections_search_idx
       ON source_sections USING gin (search_vector)
     `;
+    // What Flusso has learned about a brand, keyed by its website domain and reused by later campaigns.
+    await sql`
+      CREATE TABLE IF NOT EXISTS brand_models (
+        domain text PRIMARY KEY,
+        model jsonb NOT NULL,
+        updated_at timestamptz NOT NULL DEFAULT now()
+      )
+    `;
     await sql`
       INSERT INTO campaign_stage_artifacts (
         campaign_id,
