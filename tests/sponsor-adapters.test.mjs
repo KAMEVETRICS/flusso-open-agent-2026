@@ -1,5 +1,8 @@
 /* global Response */
 import assert from "node:assert/strict";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import test from "node:test";
 import { recordingRunner, replayRunner } from "../lib/agent/recorded-zetaris.ts";
 import { recordingGenerator, replayGenerator } from "../lib/agent/recorded-generator.ts";
@@ -78,6 +81,21 @@ test("Nightshift is the primary text provider when its runtime is configured", (
   assert.equal(meterless.model, "meterless/auto");
   assert.equal(meterless.client.baseURL, "http://127.0.0.1:8088/v1");
   assert.throws(() => textProvider({ METERLESS_BASE_URL: "http://127.0.0.1:8088", METERLESS_RUNTIME_TOKEN: "rt-local" }), /METERLESS_RUNTIME_TOKEN/);
+});
+
+test("without METERLESS_RUNTIME_TOKEN, Flusso reads the token file the Windows runtime writes", () => {
+  const localAppData = mkdtempSync(path.join(os.tmpdir(), "flusso-ns-"));
+  try {
+    assert.equal(textProvider({ LOCALAPPDATA: localAppData, OPENROUTER_API_KEY: "or" }).id, "openrouter");
+    mkdirSync(path.join(localAppData, "ai.meterless.runtime"));
+    writeFileSync(path.join(localAppData, "ai.meterless.runtime", "proxy-token"), "rt-from-file\n");
+    const provider = textProvider({ LOCALAPPDATA: localAppData });
+    assert.equal(provider.id, "meterless");
+    assert.equal(provider.client.apiKey, "rt-from-file");
+    assert.equal(provider.client.baseURL, "http://127.0.0.1:8088/v1");
+  } finally {
+    rmSync(localAppData, { recursive: true, force: true });
+  }
 });
 
 test("the Nightshift probe tells online, unauthorized, and offline apart", async () => {

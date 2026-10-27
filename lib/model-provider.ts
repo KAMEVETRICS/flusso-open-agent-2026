@@ -1,3 +1,5 @@
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
 import process from "node:process";
 import OpenAI from "openai";
 import { createOpenRouterClient, isOpenRouterConfigured, textModel } from "./openrouter";
@@ -38,8 +40,19 @@ export function normalizeMeterlessBaseUrl(raw: string) {
   return url.protocol + "//" + url.host + "/v1";
 }
 
+// The runtime token: METERLESS_RUNTIME_TOKEN when set, otherwise the proxy-token file the Windows
+// runtime writes to %LOCALAPPDATA%\ai.meterless.runtime, so a local Nightshift needs no copying.
+export function meterlessToken(env: Env = process.env) {
+  const fromEnv = env.METERLESS_RUNTIME_TOKEN?.trim();
+  if (fromEnv) return fromEnv;
+  if (!env.LOCALAPPDATA) return "";
+  const file = path.join(env.LOCALAPPDATA, "ai.meterless.runtime", "proxy-token");
+  return existsSync(file) ? readFileSync(file, "utf8").trim() : "";
+}
+
 export function isMeterlessConfigured(env: Env = process.env) {
-  return Boolean(env.METERLESS_BASE_URL?.trim() && env.METERLESS_RUNTIME_TOKEN?.trim());
+  const token = meterlessToken(env);
+  return Boolean(token && token !== "rt-local");
 }
 
 export function meterlessHeaders() {
@@ -47,9 +60,9 @@ export function meterlessHeaders() {
 }
 
 export function createMeterlessClient(env: Env = process.env) {
-  const token = env.METERLESS_RUNTIME_TOKEN?.trim();
+  const token = meterlessToken(env);
   if (!token || token === "rt-local") {
-    throw new Error("METERLESS_RUNTIME_TOKEN is missing. Copy the runtime token from Nightshift's Console into .env.local.");
+    throw new Error("No Nightshift runtime token: start Nightshift, or copy the token from Setup > Providers into METERLESS_RUNTIME_TOKEN.");
   }
   return new OpenAI({
     apiKey: token,
@@ -94,7 +107,7 @@ export async function probeMeterless(
   const baseUrl = normalizeMeterlessBaseUrl(env.METERLESS_BASE_URL || METERLESS_DEFAULT_BASE_URL);
   try {
     const response = await fetchImpl(baseUrl + "/models", {
-      headers: { Authorization: "Bearer " + (env.METERLESS_RUNTIME_TOKEN?.trim() ?? ""), ...meterlessHeaders() },
+      headers: { Authorization: "Bearer " + meterlessToken(env), ...meterlessHeaders() },
       signal: AbortSignal.timeout(10_000)
     });
     if (response.status === 401 || response.status === 403) {

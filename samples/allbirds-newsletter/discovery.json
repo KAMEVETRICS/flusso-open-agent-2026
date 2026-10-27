@@ -1,5 +1,5 @@
 {
-  "fromCampaign": "53e69ff6-b400-431e-8251-8114b4ad08a5",
+  "fromCampaign": "1b71f8c4-a3b5-40aa-9581-d209082e4a44",
   "brief": {
     "brand": "Allbirds",
     "industry": "Sustainable footwear and apparel",
@@ -11,15 +11,15 @@
       "Baabuk",
       "Gottstein",
       "Icebug",
-      "Columbia"
+      "Columbia Konos"
     ],
     "platforms": [
-      "Newsletter",
-      "X"
+      "Instagram",
+      "TikTok"
     ],
-    "editorialProfile": "balanced",
-    "tone": "Approachable, playful, comfort-focused, sustainability-minded",
-    "durationDays": 7,
+    "editorialProfile": "direct-growth",
+    "tone": "Friendly, playful, comfort-focused, sustainability-minded",
+    "durationDays": 14,
     "postsPerWeek": 3,
     "teamSize": 1,
     "hoursPerWeek": 8,
@@ -30,18 +30,18 @@
       {
         "id": "fact-1",
         "category": "product",
-        "statement": "Allbirds describes its shoes as lightweight, bouncy, and comfortable for effortless outings.",
+        "statement": "Allbirds describes its shoes as lightweight, bouncy, comfortable, and supportive.",
         "entity": "",
         "sourceId": "src-brand-site",
         "sectionId": "src-brand-site#fresh-colors-for-summer",
-        "quote": "Lightweight, bouncy, and wildly comfortable, Allbirds shoes make any outing feel effortless.",
+        "quote": "Lightweight, bouncy, and wildly comfortable, Allbirds shoes make any outing feel effortless. Slip in, lace up, or slide them on and enjoy the comfy support.",
         "authority": "first-party",
         "timeSensitive": false
       },
       {
         "id": "fact-2",
         "category": "product",
-        "statement": "Allbirds says it replaces petroleum-based synthetics with natural alternatives wherever possible.",
+        "statement": "Allbirds says it uses wool, tree fiber, and sugarcane as natural material alternatives to petroleum-based synthetics.",
         "entity": "",
         "sourceId": "src-brand-site",
         "sectionId": "src-brand-site#fresh-colors-for-summer",
@@ -52,29 +52,18 @@
       {
         "id": "fact-3",
         "category": "product",
-        "statement": "Allbirds identifies wool, tree fiber, and sugarcane as materials used in its products.",
+        "statement": "Allbirds features a Dasher NZ collection among its new offerings.",
         "entity": "",
         "sourceId": "src-brand-site",
-        "sectionId": "src-brand-site#fresh-colors-for-summer",
-        "quote": "Like using wool, tree fiber, and sugarcane. They’re soft, breathable, and better for the planet—win, win, win.",
+        "sectionId": "src-brand-site#you-may-also-like",
+        "quote": "![](https://www.allbirds.com/cdn/shop/files/26Q1_DasherNZ_Site_Homepage_Hero_Desktop_16x9-3.jpg?v=1779316981&width=2560)![](https://www.allbirds.com/cdn/shop/files/26Q1_DasherNZ_Site_Homepage_Hero_Mobile_9x16_2.jpg?v=1779316979&width=1024)\n\nAll New Dasher NZ Collection",
         "authority": "first-party",
         "timeSensitive": false
       },
       {
         "id": "fact-4",
         "category": "product",
-        "statement": "Allbirds offers shoes in styles that can be slipped on, laced up, or slid on.",
-        "entity": "",
-        "sourceId": "src-brand-site",
-        "sectionId": "src-brand-site#fresh-colors-for-summer",
-        "quote": "Slip in, lace up, or slide them on and enjoy the comfy support.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-5",
-        "category": "product",
-        "statement": "Allbirds's store implements the Universal Commerce Protocol for product discovery, carts, and checkout.",
+        "statement": "Allbirds' store implements the Universal Commerce Protocol for product discovery, carts, and checkout.",
         "entity": "",
         "sourceId": "src-site-index",
         "sectionId": "src-site-index#intro",
@@ -83,9 +72,9 @@
         "timeSensitive": false
       },
       {
-        "id": "fact-6",
+        "id": "fact-5",
         "category": "product",
-        "statement": "Allbirds's store provides an MCP endpoint for retrieving available shopping tools and their schemas.",
+        "statement": "Allbirds provides an MCP endpoint that exposes tools and schemas for shopping workflows.",
         "entity": "",
         "sourceId": "src-site-index",
         "sectionId": "src-site-index#intro",
@@ -94,53 +83,31 @@
         "timeSensitive": false
       },
       {
-        "id": "fact-7",
+        "id": "fact-6",
         "category": "product",
-        "statement": "Allbirds's store supports product discovery by text or image and can find similar products.",
+        "statement": "Allbirds' UCP tools support finding products, managing carts, preparing checkout, and completing buyer-authorized purchases.",
         "entity": "",
         "sourceId": "src-site-index",
         "sectionId": "src-site-index#intro",
-        "quote": "Personalized discovery: search by text or image, find similar products, and use your user's Shop purchase history to find options that match their preferences.",
+        "quote": "Use those tools to find products, manage carts, prepare checkout, and complete buyer-authorized purchases.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-7",
+        "category": "product",
+        "statement": "Allbirds' checkout page exposes UCP tools through WebMCP for the current browser session.",
+        "entity": "",
+        "sourceId": "src-site-index",
+        "sectionId": "src-site-index#intro",
+        "quote": "The checkout page exposes UCP tools over WebMCP. These tools act on the checkout in the current browser session.",
         "authority": "first-party",
         "timeSensitive": false
       },
       {
         "id": "fact-8",
         "category": "product",
-        "statement": "Allbirds's store supports accelerated checkout with prefilled addresses and saved payment methods through Shop Pay.",
-        "entity": "",
-        "sourceId": "src-site-index",
-        "sectionId": "src-site-index#intro",
-        "quote": "Accelerated cart and checkout: build and update carts and checkouts, then use Shop Pay with prefilled addresses and saved payment methods.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-9",
-        "category": "product",
-        "statement": "Allbirds's store supports order-history searches, delivery tracking, and product reordering.",
-        "entity": "",
-        "sourceId": "src-site-index",
-        "sectionId": "src-site-index#intro",
-        "quote": "Orders: search your user's order history for purchases from this store, track deliveries, and reorder products.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-10",
-        "category": "product",
-        "statement": "Allbirds's store supports product discovery, cart management, and checkout through its UCP integration.",
-        "entity": "",
-        "sourceId": "src-site-index",
-        "sectionId": "src-site-index#intro",
-        "quote": "This store implements the \\[Universal Commerce Protocol\\](https://ucp.dev) for product discovery, carts, and checkout. Integrate directly with its service, or orchestrate shopping through browser-based WebMCP tools.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-11",
-        "category": "product",
-        "statement": "Allbirds shoes are described as lightweight, bouncy, and comfortable, with supportive designs that can be slipped on, laced up, or slid on.",
+        "statement": "Allbirds shoes are described as lightweight, bouncy, and comfortable, with support for slipping in, lacing up, or sliding on.",
         "entity": "",
         "sourceId": "src-site-page-3",
         "sectionId": "src-site-page-3#refund-policy",
@@ -149,9 +116,9 @@
         "timeSensitive": false
       },
       {
-        "id": "fact-12",
+        "id": "fact-9",
         "category": "product",
-        "statement": "Allbirds says it uses wool, tree fiber, and sugarcane as natural alternatives to petroleum-based synthetics.",
+        "statement": "Allbirds says it replaces petroleum-based synthetics with natural alternatives such as wool, tree fiber, and sugarcane.",
         "entity": "",
         "sourceId": "src-site-page-3",
         "sectionId": "src-site-page-3#refund-policy",
@@ -160,131 +127,10 @@
         "timeSensitive": false
       },
       {
-        "id": "fact-13",
+        "id": "fact-10",
         "category": "product",
-        "statement": "Allbirds says its natural materials are soft and breathable.",
-        "entity": "",
-        "sourceId": "src-site-page-3",
-        "sectionId": "src-site-page-3#refund-policy",
-        "quote": "Like using wool, tree fiber, and sugarcane. They’re soft, breathable, and better for the planet—win, win, win.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-14",
-        "category": "product",
-        "statement": "Allbirds replaces petroleum-based synthetics with natural materials such as wool, tree fiber, and sugarcane where possible.",
-        "entity": "",
-        "sourceId": "src-site-page-4",
-        "sectionId": "src-site-page-4#shipping-policy",
-        "quote": "We replace petroleum-based synthetics with natural alternatives wherever we can. Like using wool, tree fiber, and sugarcane.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-15",
-        "category": "product",
-        "statement": "Allbirds describes its natural materials as soft and breathable.",
-        "entity": "",
-        "sourceId": "src-site-page-4",
-        "sectionId": "src-site-page-4#shipping-policy",
-        "quote": "Like using wool, tree fiber, and sugarcane. They’re soft, breathable, and better for the planet—win, win, win.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-16",
-        "category": "product",
-        "statement": "The Men's Cruiser is described as a minimal, modern court shoe designed for urban comfort and life on the go.",
-        "entity": "",
-        "sourceId": "src-site-page-5",
-        "sectionId": "src-site-page-5#men-s-cruiser-2",
-        "quote": "Why we made this\n\nMinimal and modern, our signature classic court shoe delivers the right balance of style and urban comfort. Lightweight, breathable, and made to move, this is your new go-to for life on the go.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-17",
-        "category": "product",
-        "statement": "The Men's Cruiser has a breathable TENCEL™ Lyocell blend upper, Merino wool-blend lining, Featherbed™ memory foam insole, and sugarcane-based SweetFoam® cushioning.",
-        "entity": "",
-        "sourceId": "src-site-page-5",
-        "sectionId": "src-site-page-5#thoughtfully-designed",
-        "quote": "Breathable TENCEL™ Lyocell (tree fiber) blend upper for a light, cool feel\n- **Merino wool-blend lining** for softness, socks optional\n- Plush **Featherbed™ memory foam** insole for extra comfort and bounce\n- Sugarcane-based **SweetFoam® cushioning** with responsive energy return",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-18",
-        "category": "product",
-        "statement": "The Men's Cruiser's Tree Knit upper uses eucalyptus-derived TENCEL™ Lyocell yarn and recycled polyester blend.",
-        "entity": "",
-        "sourceId": "src-site-page-5",
-        "sectionId": "src-site-page-5#best-for",
-        "quote": "UpperTree Knit\n\nKnit upper made from eucalyptus-derived TENCEL™ Lyocell (tree fiber) yarn and recycled polyester blend",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-19",
-        "category": "product",
-        "statement": "The Men's Cruiser's SweetFoam® midsole uses sugarcane-based EVA foam for comfort and durability.",
-        "entity": "",
-        "sourceId": "src-site-page-5",
-        "sectionId": "src-site-page-5#best-for",
-        "quote": "MidsoleSweetFoam®\n\nSweetFoam® sugarcane-based EVA foam provides comfort and durability while being light on the planet",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-20",
-        "category": "product",
-        "statement": "The Men's Cruiser is machine washable when the insoles are removed, washed separately by hand, and everything is air dried.",
-        "entity": "",
-        "sourceId": "src-site-page-5",
-        "sectionId": "src-site-page-5#best-for",
-        "quote": "Yes, they’re machine washable. Remove the insoles, hand wash those separately, and let everything air dry. Fresh again.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-21",
-        "category": "product",
-        "statement": "The Men's Cruiser is lightweight, breathable, and designed to move.",
-        "entity": "",
-        "sourceId": "src-site-page-5",
-        "sectionId": "src-site-page-5#men-s-cruiser-2",
-        "quote": "Minimal and modern, our signature classic court shoe delivers the right balance of style and urban comfort. Lightweight, breathable, and made to move, this is your new go-to for life on the go.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-22",
-        "category": "product",
-        "statement": "The Men's Cruiser weighs 8.7 ounces in men's size 9 and 6.7 ounces in women's size 7.",
-        "entity": "",
-        "sourceId": "src-site-page-5",
-        "sectionId": "src-site-page-5#best-for",
-        "quote": "View technical details\n\n- **Weight:** 8.7oz (M9), 6.7oz (W7)\n- **Stack Height:** Heel: 14mm Toe: 8mm\n- **Heel/Toe Drop:** 6mm",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-23",
-        "category": "product",
-        "statement": "Allbirds says its shoes use wool, tree fiber, and sugarcane as natural alternatives to petroleum-based synthetics.",
-        "entity": "",
-        "sourceId": "src-site-page-5",
-        "sectionId": "src-site-page-5#our-shoes-are-unisex",
-        "quote": "We replace petroleum-based synthetics with natural alternatives wherever we can. Like using wool, tree fiber, and sugarcane. They’re soft, breathable, and better for the planet—win, win, win.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-24",
-        "category": "product",
-        "statement": "In 2016, Allbirds combined the comfort of traditional materials with modern minimalist design and sustainable branding.",
-        "entity": "",
+        "statement": "In 2016, Allbirds combined traditional-material comfort with a modern minimalist design and sustainable branding.",
+        "entity": "Allbirds",
         "sourceId": "src-search-2",
         "sectionId": "src-search-2#the-best-allbirds-alternatives-3-ethical-wool-sneaker-brands",
         "quote": "In 2016, Allbirds combined the comfort of traditional materials with a modern minimalist design and sustainable branding.",
@@ -292,10 +138,10 @@
         "timeSensitive": true
       },
       {
-        "id": "fact-25",
+        "id": "fact-11",
         "category": "product",
-        "statement": "Allbirds has shifted some product lines from wool to Lyocell derived from wood pulp and recycled plastic.",
-        "entity": "",
+        "statement": "The source says Allbirds shifted many product lines from wool to Lyocell derived from wood pulp and later to recycled plastic.",
+        "entity": "Allbirds",
         "sourceId": "src-search-2",
         "sectionId": "src-search-2#why-wool-sneakers-really-are-a-great-idea",
         "quote": "Ironically, Allbirds has shifted away from wool for many of their product lines, which now use Lyocell derived from wood pulp. More recently they moved into recycled plastic.",
@@ -303,20 +149,108 @@
         "timeSensitive": false
       },
       {
-        "id": "fact-26",
+        "id": "fact-12",
         "category": "product",
-        "statement": "The Allbirds store is built on Shopify and supports UCP natively for agent-driven commerce.",
+        "statement": "The Men's Cruiser is a minimal, modern court shoe designed for urban comfort and movement.",
         "entity": "",
-        "sourceId": "src-site-page-6",
-        "sectionId": "src-site-page-6#intro-3",
-        "quote": "This store is built on Shopify, the commerce platform powering millions of stores worldwide. Shopify stores support UCP natively, enabling seamless agent-driven commerce.",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#men-s-cruiser-2",
+        "quote": "Why we made this\n\nMinimal and modern, our signature classic court shoe delivers the right balance of style and urban comfort. Lightweight, breathable, and made to move, this is your new go-to for life on the go.",
         "authority": "first-party",
         "timeSensitive": false
       },
       {
-        "id": "fact-27",
+        "id": "fact-13",
+        "category": "product",
+        "statement": "The Men's Cruiser has a breathable TENCEL™ Lyocell blend upper designed for a light, cool feel.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#thoughtfully-designed",
+        "quote": "- **Breathable TENCEL™ Lyocell (tree fiber)** blend upper for a light, cool feel\n- **Merino wool-blend lining** for softness, socks optional",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-14",
+        "category": "product",
+        "statement": "The Men's Cruiser has a merino wool-blend lining intended to provide softness without requiring socks.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#thoughtfully-designed",
+        "quote": "**Merino wool-blend lining** for softness, socks optional\n- Plush **Featherbed™ memory foam** insole for extra comfort and bounce",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-15",
+        "category": "product",
+        "statement": "The Men's Cruiser includes a Featherbed™ memory foam insole for extra comfort and bounce.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#thoughtfully-designed",
+        "quote": "- Plush **Featherbed™ memory foam** insole for extra comfort and bounce\n- Sugarcane-based **SweetFoam® cushioning** with responsive energy return",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-16",
+        "category": "product",
+        "statement": "The Men's Cruiser uses sugarcane-based SweetFoam® cushioning with responsive energy return.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#thoughtfully-designed",
+        "quote": "Sugarcane-based **SweetFoam® cushioning** with responsive energy return",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-17",
+        "category": "product",
+        "statement": "The Men's Cruiser uses an upper made from eucalyptus-derived TENCEL™ Lyocell yarn and recycled polyester blend.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#best-for",
+        "quote": "UpperTree Knit\n\nKnit upper made from eucalyptus-derived TENCEL™ Lyocell (tree fiber) yarn and recycled polyester blend",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-18",
+        "category": "product",
+        "statement": "SweetFoam® sugarcane-based EVA foam provides comfort and durability while being light on the planet.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#best-for",
+        "quote": "MidsoleSweetFoam®\n\nSweetFoam® sugarcane-based EVA foam provides comfort and durability while being light on the planet",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-19",
+        "category": "product",
+        "statement": "The Men's Cruiser is machine washable, with separate hand washing recommended for the insoles and air drying for everything.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#best-for",
+        "quote": "Yes, they’re machine washable. Remove the insoles, hand wash those separately, and let everything air dry. Fresh again.",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-20",
+        "category": "product",
+        "statement": "The Men's Cruiser fits true-to-size for most customers and has an average width.",
+        "entity": "",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#men-s-cruiser-3",
+        "quote": "The Cruiser fits true-to-size for most customers.\n\nAverage Width\n\n![](https://www.allbirds.com/cdn/shop/files/A11559_25Q3_Cruiser_Dark_Navy_Blizzard_PDP_LEFT-2000x2000_94291ddb-5968-49d6-a1b5-979998c5cf8d.png?v=1751900466&width=1024)",
+        "authority": "first-party",
+        "timeSensitive": false
+      },
+      {
+        "id": "fact-21",
         "category": "audience",
-        "statement": "Allbirds positions its shoes for daily routines, weekend plans, travel, and other everyday activities.",
+        "statement": "Allbirds positions its shoes for everyday routines, weekend plans, travel, and other daily activities.",
         "entity": "",
         "sourceId": "src-brand-site",
         "sectionId": "src-brand-site#fresh-colors-for-summer",
@@ -325,9 +259,9 @@
         "timeSensitive": false
       },
       {
-        "id": "fact-28",
+        "id": "fact-22",
         "category": "audience",
-        "statement": "Allbirds's online store is available for users who want to browse products and shop on their behalf.",
+        "statement": "Allbirds supports browsing and shopping through its online store on a user's behalf.",
         "entity": "",
         "sourceId": "src-site-index",
         "sectionId": "src-site-index#intro",
@@ -336,9 +270,9 @@
         "timeSensitive": false
       },
       {
-        "id": "fact-29",
+        "id": "fact-23",
         "category": "audience",
-        "statement": "Allbirds describes its footwear as suitable for daily routines, weekend plans, travel, and other everyday activities.",
+        "statement": "Allbirds offers easy-to-wear styles for daily routines, weekend plans, travel, and other activities.",
         "entity": "",
         "sourceId": "src-site-page-3",
         "sectionId": "src-site-page-3#refund-policy",
@@ -347,53 +281,42 @@
         "timeSensitive": false
       },
       {
-        "id": "fact-30",
+        "id": "fact-24",
         "category": "audience",
-        "statement": "Allbirds offers shoes designed for everyday routines, weekend plans, travel, and other daily activities.",
+        "statement": "The Men's Cruiser is presented for travel and office wear, including versatile outfits and workday looks.",
         "entity": "",
         "sourceId": "src-site-page-4",
-        "sectionId": "src-site-page-4#shipping-policy",
-        "quote": "Easy-to-wear styles made for daily routines, weekend plans, travel, and everything in between.",
+        "sectionId": "src-site-page-4#thoughtfully-designed-2",
+        "quote": "When you packed a bunch of outfits and need one versatile pair of shoes to go with them: bring these.\n\nOFFICE READY\n\nSleek trainers for workday looks, taking you effortlessly from rush hour to happy hour.",
         "authority": "first-party",
         "timeSensitive": false
       },
       {
-        "id": "fact-31",
+        "id": "fact-25",
         "category": "audience",
-        "statement": "The Men's Cruiser is positioned for everyday walks, vacations, and happy hours.",
+        "statement": "Allbirds describes its shoes as designed for daily routines, weekend plans, travel, and other everyday activities.",
         "entity": "",
-        "sourceId": "src-site-page-5",
-        "sectionId": "src-site-page-5#best-for",
-        "quote": "EverydayWalks VacationHappy Hour\n\nView technical details\n\n- **Weight:** 8.7oz (M9), 6.7oz (W7)\n- **Stack Height:** Heel: 14mm Toe: 8mm",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#our-shoes-are-unisex",
+        "quote": "Easy-to-wear styles made for daily routines, weekend plans, travel, and everything in between.\n\nMaterials From The Earth",
         "authority": "first-party",
         "timeSensitive": false
       },
       {
-        "id": "fact-32",
-        "category": "audience",
-        "statement": "Allbirds describes its shoes as designed for daily routines, weekend plans, travel, and activities in between.",
-        "entity": "",
-        "sourceId": "src-site-page-5",
-        "sectionId": "src-site-page-5#our-shoes-are-unisex",
-        "quote": "DESIGNED FOR EVERYDAY WEAR\n\nEasy-to-wear styles made for daily routines, weekend plans, travel, and everything in between.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-33",
+        "id": "fact-26",
         "category": "proof",
-        "statement": "Allbirds's store is built on Shopify.",
+        "statement": "Allbirds' store is built on Shopify.",
         "entity": "Shopify",
         "sourceId": "src-site-index",
         "sectionId": "src-site-index#intro-3",
         "quote": "This store is built on \\[Shopify\\](https://www.shopify.com), the commerce platform powering millions of stores worldwide.",
         "authority": "first-party",
-        "timeSensitive": true
+        "timeSensitive": false
       },
       {
-        "id": "fact-34",
+        "id": "fact-27",
         "category": "proof",
-        "statement": "Allbirds completed nine funding rounds and raised $255 million by 2021.",
+        "statement": "Allbirds held nine funding rounds by 2021 and raised a total of $255 million.",
         "entity": "Allbirds",
         "sourceId": "src-search-2",
         "sectionId": "src-search-2#growth-dependent-business-model",
@@ -402,9 +325,9 @@
         "timeSensitive": true
       },
       {
-        "id": "fact-35",
+        "id": "fact-28",
         "category": "proof",
-        "statement": "Allbirds sold $348 million worth of shares on the stock market in 2021.",
+        "statement": "In 2021, Allbirds sold $348 million worth of shares on the stock market.",
         "entity": "Allbirds",
         "sourceId": "src-search-2",
         "sectionId": "src-search-2#growth-dependent-business-model",
@@ -413,9 +336,20 @@
         "timeSensitive": true
       },
       {
-        "id": "fact-36",
+        "id": "fact-29",
         "category": "proof",
-        "statement": "Allbirds claimed in 2025 to have created zero-carbon shoes in a limited run of 500 pairs.",
+        "statement": "The Securities and Exchange Commission forced Allbirds to remove the word “sustainable” from its IPO label.",
+        "entity": "Allbirds",
+        "sourceId": "src-search-2",
+        "sectionId": "src-search-2#greenwashing-concerns",
+        "quote": "The US government was not buying it and the Securities and Exchange Commission forced Allbirds to drop the “sustainable” label from their IPO altogether.",
+        "authority": "third-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-30",
+        "category": "proof",
+        "statement": "In 2025, Allbirds claimed to have created zero-carbon shoes and sold a limited run of 500 pairs.",
         "entity": "Allbirds",
         "sourceId": "src-search-2",
         "sectionId": "src-search-2#greenwashing-concerns",
@@ -424,86 +358,108 @@
         "timeSensitive": true
       },
       {
-        "id": "fact-37",
+        "id": "fact-31",
         "category": "proof",
-        "statement": "Allbirds lost $101 million in 2022, $152 million in 2023, and $93 million in 2024.",
-        "entity": "Allbirds",
+        "statement": "In early 2026, Allbirds sold its intellectual property rights for $39 million to the American Exchange Group.",
+        "entity": "American Exchange Group",
         "sourceId": "src-search-2",
-        "sectionId": "src-search-2#quality-decline-issues",
-        "quote": "Allbirds lost $101 million in 2022, $152 million in 2023, and $93 million in 2024.",
+        "sectionId": "src-search-2#growth-dependent-business-model",
+        "quote": "In early 2026, they sold off Allbirds intellectual property rights for $39M, a fraction of its former billion dollar valuation. The new owner is the American Exchange Group",
         "authority": "third-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-32",
+        "category": "pricing",
+        "statement": "Allbirds offers free ground shipping on orders over $100, while noting that increased demand may extend shipping to 30 days.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#intro",
+        "quote": "Free ground shipping on orders over $100\n\nDue to increased demand, orders may take up to 30 days to ship.",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-33",
+        "category": "pricing",
+        "statement": "The Women's Tree Runner NZ in Medium Grey is listed at $100.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#best-sellers",
+        "quote": "Best Sellers\n\n[Women's Tree Runner NZ\\\\\n\\\\\nMedium Grey\\\\\n\\\\\n$100](https://www.allbirds.com/products/womens-tree-runner-nz-medium-grey)\n\n$100\n\nQuick add",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-34",
+        "category": "pricing",
+        "statement": "The Men's Runner NZ Slip On in Mushroom is listed at $105.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#best-sellers",
+        "quote": "[Men's Runner NZ Slip On\\\\\n\\\\\nMushroom\\\\\n\\\\\n$105](https://www.allbirds.com/products/mens-runner-nz-slip-on-mushroom)\n\n$105\n\nQuick add\n\nAdd\n\nNEW",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-35",
+        "category": "pricing",
+        "statement": "The Women's Canvas Cruiser Slip On in Warm White is listed at $75.",
+        "entity": "",
+        "sourceId": "src-brand-site",
+        "sectionId": "src-brand-site#best-sellers-2",
+        "quote": "[Women's Canvas Cruiser Slip On\\\\\n\\\\\nWarm White\\\\\n\\\\\n$75](https://www.allbirds.com/products/womens-cruiser-slip-on-canvas)\n\n$75\n\nQuick add\n\nAdd\n\nNEW",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-36",
+        "category": "pricing",
+        "statement": "The Anytime Crew Sock is listed at $18.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#you-may-also-like",
+        "quote": "Anytime Crew Sock\n\n$18",
+        "authority": "first-party",
+        "timeSensitive": true
+      },
+      {
+        "id": "fact-37",
+        "category": "pricing",
+        "statement": "The Anytime No Show Heel Grip Sock is listed at $14 and offered in two colors.",
+        "entity": "",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#you-may-also-like",
+        "quote": "Anytime No Show Heel Grip Sock\n\n$14\n\n2 colors",
+        "authority": "first-party",
         "timeSensitive": true
       },
       {
         "id": "fact-38",
         "category": "pricing",
-        "statement": "Allbirds offers free ground shipping on orders over $100.",
+        "statement": "Allbirds’ standard return policy allows returns or exchanges within 30 days of delivery for unworn and unwashed items with original tags attached.",
         "entity": "",
-        "sourceId": "src-brand-site",
-        "sectionId": "src-brand-site#intro",
-        "quote": "Free ground shipping on orders over $100",
+        "sourceId": "src-site-page-3",
+        "sectionId": "src-site-page-3#refund-policy",
+        "quote": "Our standard return policy is 30 days. You can return or exchange items that are unworn and unwashed with original product tags attached within 30 days from the date your order was delivered.",
         "authority": "first-party",
         "timeSensitive": true
       },
       {
         "id": "fact-39",
         "category": "pricing",
-        "statement": "Allbirds says orders may take up to 30 days to ship because of increased demand.",
+        "statement": "The Men's Cruiser is priced at $105.",
         "entity": "",
-        "sourceId": "src-brand-site",
-        "sectionId": "src-brand-site#intro",
-        "quote": "Due to increased demand, orders may take up to 30 days to ship.",
+        "sourceId": "src-site-page-4",
+        "sectionId": "src-site-page-4#men-s-cruiser",
+        "quote": "Men's Cruiser$105\n\nSelect A Size Add to Cart \\- $105Notify Me",
         "authority": "first-party",
         "timeSensitive": true
       },
       {
         "id": "fact-40",
-        "category": "pricing",
-        "statement": "The Anytime Crew Sock is listed at $18 on Allbirds’ website.",
-        "entity": "",
-        "sourceId": "src-brand-site",
-        "sectionId": "src-brand-site#you-may-also-like",
-        "quote": "[![Anytime Crew Sock](https://www.allbirds.com/cdn/shop/products/STIUWE_SOCKS_WHEAT_FRONT_Resize_0001_SKU-SOCKS-GLOBAL-CREW-NATURAL-BLACK-1-min.png?v=1676567942&width=400)\\\\\n\\\\\nAnytime Crew Sock\\\\\n\\\\\n$18](https://www.allbirds.com/products/anytime-crew-sock-natural-black)",
-        "authority": "first-party",
-        "timeSensitive": true
-      },
-      {
-        "id": "fact-41",
-        "category": "pricing",
-        "statement": "The Women’s Canvas Cruiser Slip On in Warm White is listed at $75.",
-        "entity": "",
-        "sourceId": "src-brand-site",
-        "sectionId": "src-brand-site#best-sellers-2",
-        "quote": "[Women's Canvas Cruiser Slip On\\\\\n\\\\\nWarm White\\\\\n\\\\\n$75](https://www.allbirds.com/products/womens-cruiser-slip-on-canvas)",
-        "authority": "first-party",
-        "timeSensitive": true
-      },
-      {
-        "id": "fact-42",
-        "category": "pricing",
-        "statement": "International customers are responsible for customs duties and brokerage fees in addition to shipping costs assessed during checkout.",
-        "entity": "",
-        "sourceId": "src-site-page-4",
-        "sectionId": "src-site-page-4#shipping-policy",
-        "quote": "INTERNATIONAL CUSTOMERS ARE RESPONSIBLE FOR CUSTOMS DUTIES AND/OR BROKERAGE FEES IN ADDITION TO SHIPPING COSTS ASSESSED DURING CHECKOUT.",
-        "authority": "first-party",
-        "timeSensitive": true
-      },
-      {
-        "id": "fact-43",
-        "category": "pricing",
-        "statement": "All California residents incur sales tax set by California and/or the county receiving the delivery.",
-        "entity": "",
-        "sourceId": "src-site-page-4",
-        "sectionId": "src-site-page-4#shipping-policy",
-        "quote": "ALL CALIFORNIA RESIDENTS WILL INCUR SALES TAX AS SET BY THE STATE OF CALIFORNIA AND/OR THE COUNTY TO WHICH YOUR DELIVERY WILL BE SHIPPED.",
-        "authority": "first-party",
-        "timeSensitive": true
-      },
-      {
-        "id": "fact-44",
         "category": "competitor",
-        "statement": "Baabuk is presented as an Allbirds alternative and makes sneakers described as equally comfortable but longer lasting.",
+        "statement": "Baabuk is described as a Swiss brand making sneakers positioned as comfortable as Allbirds but longer lasting.",
         "entity": "Baabuk",
         "sourceId": "src-search-2",
         "sectionId": "src-search-2#1-best-overall-allbirds-alternative-baabuk",
@@ -512,9 +468,9 @@
         "timeSensitive": false
       },
       {
-        "id": "fact-45",
+        "id": "fact-41",
         "category": "competitor",
-        "statement": "Gottstein is presented as an understated Allbirds alternative offering wool sneakers with breathable, moisture-wicking, water-repellent, and temperature-regulating properties.",
+        "statement": "Gottstein is presented as an understated Allbirds alternative offering wool sneakers.",
         "entity": "Gottstein",
         "sourceId": "src-search-2",
         "sectionId": "src-search-2#2-most-understated-allbirds-alternative-gottstein",
@@ -523,9 +479,9 @@
         "timeSensitive": false
       },
       {
-        "id": "fact-46",
+        "id": "fact-42",
         "category": "competitor",
-        "statement": "Icebug is presented as an Allbirds alternative for running and offers Aura ReWool runners and Eide ReWool everyday sneakers.",
+        "statement": "Icebug is presented as an Allbirds alternative for running, with Aura ReWool and Eide ReWool sneaker options.",
         "entity": "Icebug",
         "sourceId": "src-search-2",
         "sectionId": "src-search-2#3-best-allbirds-alternatives-for-running-icebug",
@@ -534,73 +490,18 @@
         "timeSensitive": false
       },
       {
-        "id": "fact-47",
+        "id": "fact-43",
         "category": "competitor",
-        "statement": "A Reddit commenter says they prefer Columbia Konos over their Allbirds and describes Columbia as mainly a hiking and trail-running shoe company.",
-        "entity": "Columbia",
+        "statement": "A Reddit commenter describes Columbia Konos as the most comfortable shoes they own and prefers them over Allbirds.",
+        "entity": "Columbia Konos",
         "sourceId": "src-search-3",
         "sectionId": "src-search-3#intro",
-        "quote": "The most comfortable shoes I own and definitely pick over my AllBirds are Columbia Konos. They're mainly an hiking/trail running shoe company",
+        "quote": "The most comfortable shoes I own and definitely pick over my AllBirds are Columbia Konos.",
         "authority": "third-party",
         "timeSensitive": false
       },
       {
-        "id": "fact-48",
-        "category": "company",
-        "statement": "Allbirds offers a standard 30-day return policy for eligible items.",
-        "entity": "",
-        "sourceId": "src-site-page-3",
-        "sectionId": "src-site-page-3#refund-policy",
-        "quote": "Our standard return policy is 30 days. You can return or exchange items that are unworn and unwashed with original product tags attached within 30 days from the date your order was delivered.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-49",
-        "category": "company",
-        "statement": "Socks, underwear, and accessories must have unopened packaging to qualify for returns or exchanges.",
-        "entity": "",
-        "sourceId": "src-site-page-3",
-        "sectionId": "src-site-page-3#refund-policy",
-        "quote": "For socks, undies, and accessories packaging must be unopened. Final Sale items, or returns that do not comply with our terms and conditions cannot be returned or exchanged.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-50",
-        "category": "company",
-        "statement": "Customers are responsible for return shipping charges, and paid shipping fees are not refunded.",
-        "entity": "",
-        "sourceId": "src-site-page-3",
-        "sectionId": "src-site-page-3#refund-policy",
-        "quote": "Return Shipping: Customers are responsible for return shipping charges. Paid shipping fees will not be refunded. Refunds will only be applied to the original form of payment.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-51",
-        "category": "company",
-        "statement": "Return coverage includes a return shipping label for free returns or exchanges.",
-        "entity": "",
-        "sourceId": "src-site-page-3",
-        "sectionId": "src-site-page-3#refund-policy",
-        "quote": "When you opt-in for coverage at checkout, your return shipping label is included, allowing you to return any item(s) in your order for a refund or exchange for free.",
-        "authority": "first-party",
-        "timeSensitive": false
-      },
-      {
-        "id": "fact-52",
-        "category": "company",
-        "statement": "Allbirds states that its orders are processed within one to six business days.",
-        "entity": "Allbirds",
-        "sourceId": "src-site-page-4",
-        "sectionId": "src-site-page-4#shipping-policy",
-        "quote": "ALL ORDERS ARE PROCESSED WITHIN 1-6 BUSINESS DAYS.",
-        "authority": "first-party",
-        "timeSensitive": true
-      },
-      {
-        "id": "fact-53",
+        "id": "fact-44",
         "category": "company",
         "statement": "Allbirds was founded in 2014 with a grant from the New Zealand government to help increase the market for wool.",
         "entity": "",
@@ -621,21 +522,21 @@
           "src-search-2",
           "src-search-3"
         ],
-        "factsAdded": 11,
-        "outcome": "Added 11 facts"
+        "factsAdded": 12,
+        "outcome": "Added 12 facts"
       },
       {
         "reason": "source minimum",
         "method": "site-page",
-        "target": "https://www.allbirds.com/agents.md",
+        "target": "https://www.allbirds.com/products/mens-cruiser",
         "sourceIds": [
-          "src-site-page-6"
+          "src-site-page-4"
         ],
-        "factsAdded": 1,
-        "outcome": "Added 1 fact"
+        "factsAdded": 12,
+        "outcome": "Added 12 facts"
       }
     ],
-    "rejectedFacts": 3,
+    "rejectedFacts": 4,
     "extractionErrors": [],
     "excludedCompetitors": []
   },
@@ -682,20 +583,6 @@
       "authority": "first-party"
     },
     {
-      "id": "src-site-page-4",
-      "title": "https://www.allbirds.com/policies/shipping-policy",
-      "url": "https://www.allbirds.com/policies/shipping-policy",
-      "sourceType": "website",
-      "authority": "first-party"
-    },
-    {
-      "id": "src-site-page-5",
-      "title": "Men’s Cruiser | Everyday Comfort & Style | Allbirds",
-      "url": "https://www.allbirds.com/products/mens-cruiser",
-      "sourceType": "website",
-      "authority": "first-party"
-    },
-    {
       "id": "src-search-2",
       "title": "The Best Allbirds Alternatives: 3 Ethical Wool Sneaker Brands",
       "url": "https://cobbledgoods.com/allbirds-alternatives/",
@@ -710,9 +597,9 @@
       "authority": "third-party"
     },
     {
-      "id": "src-site-page-6",
-      "title": "https://www.allbirds.com/agents.md",
-      "url": "https://www.allbirds.com/agents.md",
+      "id": "src-site-page-4",
+      "title": "Men’s Cruiser | Everyday Comfort & Style | Allbirds",
+      "url": "https://www.allbirds.com/products/mens-cruiser",
       "sourceType": "website",
       "authority": "first-party"
     },
@@ -721,13 +608,6 @@
       "title": "Human+AI Content System prompt library",
       "sourceType": "prompt-library",
       "authority": "internal"
-    },
-    {
-      "id": "src-web-1",
-      "title": "WALK, RUN, OR FLY WITH ALLBIRDS'S TREE FLYER 2",
-      "url": "https://www.allbirds.com/pages/tree-flyer-2-press-release?srsltid=AYCX9vKTM4hxZhF-o4wlpaqLgp4cXkINTME5N_YCBnyifX-7-s_PSjxH",
-      "sourceType": "web-search",
-      "authority": "first-party"
     }
   ]
 }

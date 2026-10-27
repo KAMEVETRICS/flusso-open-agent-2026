@@ -15,13 +15,13 @@
           "name": "claim_status_known",
           "table": "claim_outcome",
           "type": "Custom Data Quality",
-          "total_record": "378",
-          "valid_record": "378",
+          "total_record": "348",
+          "valid_record": "348",
           "invalid_record": "0"
         }
       ],
       "total": 1,
-      "timeUsedMs": 12430
+      "timeUsedMs": 10082
     }
   ],
   "dq:campaign_has_domain": [
@@ -40,46 +40,13 @@
           "name": "campaign_has_domain",
           "table": "campaign",
           "type": "Custom Data Quality",
-          "total_record": "19",
-          "valid_record": "16",
+          "total_record": "18",
+          "valid_record": "15",
           "invalid_record": "3"
         }
       ],
       "total": 1,
-      "timeUsedMs": 7671
-    }
-  ],
-  "unsupported_claims:allbirds.com": [
-    {
-      "sql": "SELECT claim_kind, status, resolution_status, claim_text, recommendation, created_at FROM lightning.metastore.flusso.brand_evidence.claim_outcome WHERE domain = 'allbirds.com' AND status IN ('unsupported', 'conflict') ORDER BY created_at DESC LIMIT 12",
-      "headers": [
-        "claim_kind",
-        "status",
-        "resolution_status",
-        "claim_text",
-        "recommendation",
-        "created_at"
-      ],
-      "rows": [
-        {
-          "claim_kind": "time-bound",
-          "status": "conflict",
-          "resolution_status": "unresolved",
-          "claim_text": "The upcoming running shoe’s construction, fit, price, availability, and performance details remain unconfirmed in the supplied brief.",
-          "recommendation": "Web evidence contradicts this claim: The supplied official Allbirds release confirms the shoe’s launch, construction materials, fit-related design, availability, and performance characteristics. Therefore, the claim that these details remain unconfirmed is contradicted, although this document does not state a price.",
-          "created_at": "2026-10-27 08:41:00.461511"
-        },
-        {
-          "claim_kind": "capability",
-          "status": "unsupported",
-          "resolution_status": "repaired",
-          "claim_text": "The newsletter will provide confirmed updates and practical pre-launch guidance.",
-          "recommendation": "Web search found no reliable source for this claim. Remove it or supply a primary source.",
-          "created_at": "2026-10-27 04:49:04.088414"
-        }
-      ],
-      "total": 2,
-      "timeUsedMs": 3472
+      "timeUsedMs": 11176
     }
   ],
   "campaign_history:allbirds.com": [
@@ -96,16 +63,6 @@
         "created_at"
       ],
       "rows": [
-        {
-          "campaign_id": "53e69ff6-b400-431e-8251-8114b4ad08a5",
-          "brand": "Allbirds",
-          "goal": "Grow email newsletter signups ahead of a new running shoe launch",
-          "editorial_score": "94",
-          "fact_count": "53",
-          "gap_count": "0",
-          "claim_count": "30",
-          "created_at": "2026-10-27 08:41:00.461511"
-        },
         {
           "campaign_id": "1b71f8c4-a3b5-40aa-9581-d209082e4a44",
           "brand": "Allbirds",
@@ -137,13 +94,13 @@
           "created_at": "2026-10-26 21:09:36.477473"
         }
       ],
-      "total": 4,
-      "timeUsedMs": 3535
+      "total": 3,
+      "timeUsedMs": 3419
     }
   ],
   "prior_evidence:allbirds.com": [
     {
-      "sql": "SELECT evidence_id, heading, excerpt FROM lightning.metastore.flusso.brand_evidence.evidence_section WHERE domain = 'allbirds.com' AND (lower(excerpt) LIKE '%wool%' OR lower(excerpt) LIKE '%tree fiber%' OR lower(excerpt) LIKE '%sugarcane%' OR lower(excerpt) LIKE '%soft breathable%' OR lower(excerpt) LIKE '%sweetfoam%') ORDER BY created_at DESC LIMIT 10",
+      "sql": "SELECT evidence_id, heading, excerpt FROM lightning.metastore.flusso.brand_evidence.evidence_section WHERE domain = 'allbirds.com' AND (lower(excerpt) LIKE '%email newsletter signup%' OR lower(excerpt) LIKE '%running shoe launch%' OR lower(excerpt) LIKE '%comfort materials%' OR lower(excerpt) LIKE '%sustainable materials%' OR lower(excerpt) LIKE '%dasher nz%') ORDER BY created_at DESC LIMIT 10",
       "headers": [
         "evidence_id",
         "heading",
@@ -151,58 +108,38 @@
       ],
       "rows": [
         {
-          "evidence_id": "53e69ff6-b400-431e-8251-8114b4ad08a5:src-search-2#why-wool-sneakers-really-are-a-great-idea",
-          "heading": "Why wool sneakers really are a great idea",
-          "excerpt": "The rise of plastic fashion\nSince the 1980s, plastics, primarily polyester, have come to dominate fashion from sweaters to shoes. The low cost of synthetic fibres has been overtaking wool production for decades. The trend has hit hardest in places like New Zealand, where wool farming is part of the cultural fabric.\nAllbirds was founded in 2014 with a grant from the New Zealand government to help tackle this problem by increasing the market for wool. It was a great idea because wool is the original technical fibre used to keep our ancestors warm and dry for millennia.\nThe irreplaceability of wo"
+          "evidence_id": "1b71f8c4-a3b5-40aa-9581-d209082e4a44:src-project-brief#intro",
+          "heading": "",
+          "excerpt": "{\"website\":\"https://www.allbirds.com\",\"docs\":\"\",\"goal\":\"Grow email newsletter signups ahead of a new running shoe launch\",\"platforms\": \"Instagram\",\"TikTok\" ,\"editorialProfile\":\"direct-growth\",\"durationDays\":14,\"postsPerWeek\":3,\"teamSize\":1,\"hoursPerWeek\":8,\"restrictions\":\"\"}"
         },
         {
-          "evidence_id": "53e69ff6-b400-431e-8251-8114b4ad08a5:src-site-page-5#built-to-bounce-back-2",
-          "heading": "BUILT TO BOUNCE BACK",
-          "excerpt": "SweetFoam® cushioning made from sugarcane delivers comfort and energy return."
+          "evidence_id": "1b71f8c4-a3b5-40aa-9581-d209082e4a44:src-brand-site#you-may-also-like",
+          "heading": "You may also like",
+          "excerpt": "Anytime Crew Sock\n$18\nAnytime No Show Heel Grip Sock\n$14\n2 colors\n-\nAll New Dasher NZ Collection"
         },
         {
-          "evidence_id": "53e69ff6-b400-431e-8251-8114b4ad08a5:src-search-2#1-best-overall-allbirds-alternative-baabuk",
-          "heading": "1. Best overall Allbirds alternative: Baabuk",
-          "excerpt": "- Ownership Founder-owned\n- Made in Porto, Portugal (Shoes) & Kathmandu, Nepal (Slippers)\n- Wool Mulesing-free\n- Starting at 125 USD\nBaabuk is a Swiss brand that makes sneakers that are just as comfortable as Allbirds but longer lasting. The key difference is Baabuk sneakers are made with Burel fabric.\nBurel comes from the wool of the Bordaleira sheep, a hardy mountain breed. It is tightly woven on 100-year-old looms before it is felted by beating and scalding the fabric. The process is slow, but it makes the fibres very dense, creating a highly water- and wear-resistant material.\nBeyond keepi"
+          "evidence_id": "4108987a-acf4-40f9-a0e0-051f780cb0c3:src-project-brief#intro",
+          "heading": "",
+          "excerpt": "{\"website\":\"https://www.allbirds.com\",\"docs\":\"\",\"goal\":\"Grow email newsletter signups ahead of a new running shoe launch\",\"platforms\": \"Instagram\",\"TikTok\" ,\"editorialProfile\":\"direct-growth\",\"durationDays\":14,\"postsPerWeek\":3,\"teamSize\":1,\"hoursPerWeek\":8,\"restrictions\":\"\"}"
         },
         {
-          "evidence_id": "53e69ff6-b400-431e-8251-8114b4ad08a5:src-brand-site#fresh-colors-for-summer",
-          "heading": "Fresh Colors For Summer",
-          "excerpt": "Shop Women\nWear All Day Comfort\nLightweight, bouncy, and wildly comfortable, Allbirds shoes make any outing feel effortless. Slip in, lace up, or slide them on and enjoy the comfy support.\nDESIGNED FOR EVERYDAY WEAR\nEasy-to-wear styles made for daily routines, weekend plans, travel, and everything in between.\nMaterials From The Earth\nWe replace petroleum-based synthetics with natural alternatives wherever we can. Like using wool, tree fiber, and sugarcane. They’re soft, breathable, and better for the planet—win, win, win.\nwww.allbirds.com"
+          "evidence_id": "4108987a-acf4-40f9-a0e0-051f780cb0c3:src-brand-site#you-may-also-like",
+          "heading": "You may also like",
+          "excerpt": "Anytime Crew Sock\n$18\nAnytime No Show Heel Grip Sock\n$14\n2 colors\n-\nAll New Dasher NZ Collection"
         },
         {
-          "evidence_id": "53e69ff6-b400-431e-8251-8114b4ad08a5:src-site-page-5#thoughtfully-designed",
-          "heading": "Thoughtfully designed",
-          "excerpt": "- Breathable TENCEL™ Lyocell (tree fiber) blend upper for a light, cool feel\n- Merino wool-blend lining for softness, socks optional\n- Plush Featherbed™ memory foam insole for extra comfort and bounce\n- Sugarcane-based SweetFoam® cushioning with responsive energy return"
+          "evidence_id": "f6a28f3b-05f9-437b-9518-34437a4c4300:src-project-brief#intro",
+          "heading": "",
+          "excerpt": "{\"website\":\"https://www.allbirds.com\",\"docs\":\"\",\"goal\":\"Grow email newsletter signups ahead of a new running shoe launch\",\"platforms\": \"Newsletter\",\"X\" ,\"editorialProfile\":\"direct-growth\",\"durationDays\":14,\"postsPerWeek\":3,\"teamSize\":1,\"hoursPerWeek\":8,\"restrictions\":\"\"}"
         },
         {
-          "evidence_id": "53e69ff6-b400-431e-8251-8114b4ad08a5:src-site-page-5#best-for",
-          "heading": "Best for",
-          "excerpt": "EverydayWalks VacationHappy Hour\nView technical details\n- Weight: 8.7oz (M9), 6.7oz (W7)\n- Stack Height: Heel: 14mm Toe: 8mm\n- Heel/Toe Drop: 6mm\n- Country of Origin: Vietnam\nMaterials & Sustainability\nUpperTree Knit\nKnit upper made from eucalyptus-derived TENCEL™ Lyocell (tree fiber) yarn and recycled polyester blend\nMidsoleSweetFoam®\nSweetFoam® sugarcane-based EVA foam provides comfort and durability while being light on the planet\nLiningWool\nMerino wool blend lining for uncompromising comfort and softness\nCare instructions\nYes, they’re machine washable. Remove the insoles, hand wash those s"
-        },
-        {
-          "evidence_id": "53e69ff6-b400-431e-8251-8114b4ad08a5:src-site-page-5#thoughtfully-designed-2",
-          "heading": "Thoughtfully designed",
-          "excerpt": "- Breathable TENCEL™ Lyocell (tree fiber) blend upper for a light, cool feel\n- Merino wool-blend lining for softness, socks optional\n- Plush Featherbed™ memory foam insole for extra comfort and bounce\n- Sugarcane-based SweetFoam® cushioning with responsive energy return\nMaterials & Sustainability\nUpperTree Knit\nKnit upper made from eucalyptus-derived TENCEL™ Lyocell (tree fiber) yarn and recycled polyester blend\nMidsoleSweetFoam®\nSweetFoam® sugarcane-based EVA foam provides comfort and durability while being light on the planet\nLiningWool\nMerino wool blend lining for uncompromising comfort and"
-        },
-        {
-          "evidence_id": "53e69ff6-b400-431e-8251-8114b4ad08a5:src-site-page-5#breathe-easy",
-          "heading": "BREATHE EASY",
-          "excerpt": "Made from TENCEL™ Lyocell (tree fiber) to stay breathable, moisture-wicking, and cool."
-        },
-        {
-          "evidence_id": "53e69ff6-b400-431e-8251-8114b4ad08a5:src-site-page-5#built-to-bounce-back",
-          "heading": "BUILT TO BOUNCE BACK",
-          "excerpt": "SweetFoam® cushioning made from sugarcane delivers comfort and energy return."
-        },
-        {
-          "evidence_id": "53e69ff6-b400-431e-8251-8114b4ad08a5:src-site-page-5#breathe-easy-2",
-          "heading": "BREATHE EASY",
-          "excerpt": "Made from TENCEL™ Lyocell (tree fiber) to stay breathable, moisture-wicking, and cool."
+          "evidence_id": "f6a28f3b-05f9-437b-9518-34437a4c4300:src-brand-site#you-may-also-like",
+          "heading": "You may also like",
+          "excerpt": "Anytime Crew Sock\n$18\nAnytime No Show Heel Grip Sock\n$14\n2 colors\n-\nAll New Dasher NZ Collection"
         }
       ],
-      "total": 10,
-      "timeUsedMs": 6777
+      "total": 6,
+      "timeUsedMs": 3847
     }
   ],
   "performance:allbirds.com": [
@@ -219,70 +156,32 @@
       ],
       "rows": [],
       "total": 0,
-      "timeUsedMs": 6917
+      "timeUsedMs": 6150
     }
   ],
-  "claim_risk:allbirds.com": [
+  "unsupported_claims:allbirds.com": [
     {
-      "sql": "SELECT o.claim_kind, o.status, count(*) AS claims, sum(CASE WHEN o.resolution_status = 'repaired' THEN 1 ELSE 0 END) AS repaired FROM lightning.metastore.flusso.brand_evidence.claim_outcome o JOIN lightning.metastore.flusso.brand_evidence.campaign c ON o.campaign_id = c.campaign_id WHERE c.domain = 'allbirds.com' GROUP BY o.claim_kind, o.status ORDER BY claims DESC",
+      "sql": "SELECT claim_kind, status, resolution_status, claim_text, recommendation, created_at FROM lightning.metastore.flusso.brand_evidence.claim_outcome WHERE domain = 'allbirds.com' AND status IN ('unsupported', 'conflict') ORDER BY created_at DESC LIMIT 12",
       "headers": [
         "claim_kind",
         "status",
-        "claims",
-        "repaired"
+        "resolution_status",
+        "claim_text",
+        "recommendation",
+        "created_at"
       ],
       "rows": [
         {
           "claim_kind": "capability",
-          "status": "supported",
-          "claims": "45",
-          "repaired": "0"
-        },
-        {
-          "claim_kind": "framing",
-          "status": "editorial",
-          "claims": "40",
-          "repaired": "0"
-        },
-        {
-          "claim_kind": "opinion",
-          "status": "editorial",
-          "claims": "4",
-          "repaired": "0"
-        },
-        {
-          "claim_kind": "time-bound",
-          "status": "time-sensitive",
-          "claims": "3",
-          "repaired": "0"
-        },
-        {
-          "claim_kind": "time-bound",
-          "status": "supported",
-          "claims": "2",
-          "repaired": "0"
-        },
-        {
-          "claim_kind": "statistic",
-          "status": "supported",
-          "claims": "2",
-          "repaired": "0"
-        },
-        {
-          "claim_kind": "time-bound",
-          "status": "conflict",
-          "claims": "1",
-          "repaired": "0"
-        },
-        {
-          "claim_kind": "capability",
           "status": "unsupported",
-          "claims": "1",
-          "repaired": "1"
+          "resolution_status": "repaired",
+          "claim_text": "The newsletter will provide confirmed updates and practical pre-launch guidance.",
+          "recommendation": "Web search found no reliable source for this claim. Remove it or supply a primary source.",
+          "created_at": "2026-10-27 04:49:04.088414"
         }
       ],
-      "total": 8,
-      "timeUsedMs": 10805
+      "total": 1,
+      "timeUsedMs": 3092
     }
   ],
   "audience_signals:allbirds.com:create": [
@@ -293,7 +192,7 @@
       ],
       "rows": [],
       "total": 0,
-      "timeUsedMs": 2170
+      "timeUsedMs": 2982
     }
   ],
   "audience_signals:allbirds.com": [
@@ -323,7 +222,7 @@
         }
       ],
       "total": 2,
-      "timeUsedMs": 405
+      "timeUsedMs": 781
     }
   ],
   "audience_signals:allbirds.com:drop": [
@@ -334,7 +233,64 @@
       ],
       "rows": [],
       "total": 0,
-      "timeUsedMs": 58
+      "timeUsedMs": 226
+    }
+  ],
+  "claim_risk:allbirds.com": [
+    {
+      "sql": "SELECT o.claim_kind, o.status, count(*) AS claims, sum(CASE WHEN o.resolution_status = 'repaired' THEN 1 ELSE 0 END) AS repaired FROM lightning.metastore.flusso.brand_evidence.claim_outcome o JOIN lightning.metastore.flusso.brand_evidence.campaign c ON o.campaign_id = c.campaign_id WHERE c.domain = 'allbirds.com' GROUP BY o.claim_kind, o.status ORDER BY claims DESC",
+      "headers": [
+        "claim_kind",
+        "status",
+        "claims",
+        "repaired"
+      ],
+      "rows": [
+        {
+          "claim_kind": "capability",
+          "status": "supported",
+          "claims": "36",
+          "repaired": "0"
+        },
+        {
+          "claim_kind": "framing",
+          "status": "editorial",
+          "claims": "23",
+          "repaired": "0"
+        },
+        {
+          "claim_kind": "opinion",
+          "status": "editorial",
+          "claims": "3",
+          "repaired": "0"
+        },
+        {
+          "claim_kind": "time-bound",
+          "status": "time-sensitive",
+          "claims": "3",
+          "repaired": "0"
+        },
+        {
+          "claim_kind": "capability",
+          "status": "unsupported",
+          "claims": "1",
+          "repaired": "1"
+        },
+        {
+          "claim_kind": "time-bound",
+          "status": "supported",
+          "claims": "1",
+          "repaired": "0"
+        },
+        {
+          "claim_kind": "statistic",
+          "status": "supported",
+          "claims": "1",
+          "repaired": "0"
+        }
+      ],
+      "total": 7,
+      "timeUsedMs": 7784
     }
   ]
 }

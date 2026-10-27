@@ -113,8 +113,10 @@ export async function runEvidenceAgent(
   mkdirSync(memoryDirectory, { recursive: true });
 
   const memory = openBrandMemory(input.domain, memoryDirectory);
-  // World state is per run in sample mode and persists per domain in live mode.
-  const world = openWorldModel(input.domain, sample ? undefined : path.join(stateDirectory, "world"));
+  // World state is built fresh for each run. Fact IDs (fact-3) are unique only within one fact
+  // sheet, so a world carried over from an earlier run would let a citation resolve to an older
+  // sheet's fact. What should carry across campaigns lives in H-MEM.
+  const world = openWorldModel(input.domain);
   const plan = await planCampaignEvidence({
     runId: options.runId,
     mode: sample ? "sample" : "live",

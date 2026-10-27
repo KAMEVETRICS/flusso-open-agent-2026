@@ -151,7 +151,7 @@ On failure it prints a structured error (`{"status":"error","error":{"type":...,
 
 | Sample | Input | Accepted / rejected | One decision it reached |
 |---|---|---|---|
-| [allbirds-newsletter](samples/allbirds-newsletter/input.json) | allbirds.com: grow newsletter signups before a running shoe launch | 7 / 1 | Don't make capability claims about what the newsletter will deliver without a primary source: a past campaign's claim like that failed verification (`unsupported_claims#2`). H-MEM recalled 2 memories from the previous Allbirds campaign. |
+| [allbirds-newsletter](samples/allbirds-newsletter/input.json) | allbirds.com: grow newsletter signups before a running shoe launch | 6 / 1 | Don't use "sustainable" in formal labelling: the SEC made Allbirds drop it at IPO (`fact:fact-29`) |
 | [linear-asks](samples/linear-asks/input.json) | linear.app: get product teams to adopt Linear Asks for Slack requests | 6 / 0 | Don't imply Asks is on every plan; it needs Business or Enterprise (`prior_evidence#9`) |
 | [wise-freelancers](samples/wise-freelancers/input.json) | wise.com: get freelancers paid internationally to open an account | 5 / 1 | Stay off cards, fee changes and the Evolve Bank breach that dominate Hacker News threads (`audience_signals#3`, `#7`, `#8`, `#11`) |
 
@@ -228,7 +228,7 @@ Each run writes JSONL to `logs/` (all runs) and to `logs/runs/<run id>/` (one ru
 | `audit.jsonl` | Writes: World Model ingests, H-MEM memories written and feedback given, Zetaris objects created by setup (credentials masked) |
 | `provenance.jsonl` | Each accepted decision with its full evidence chain: World Model provenance, H-MEM provenance label, or Zetaris query ID |
 
-H-MEM keeps its own append-only ledger at `.flusso/hmem/<domain>/ledger.jsonl`, and the World Model keeps its event log at `.flusso/world/`.
+H-MEM keeps its own append-only ledger at `.flusso/hmem/<domain>/ledger.jsonl`. The World Model is rebuilt for each run from that run's fact sheet and signals, because fact IDs are unique only within one fact sheet; its audit trail goes to `logs/audit.jsonl`.
 
 ## Tests
 
@@ -277,6 +277,6 @@ The build window opened on 22 October 2026, 00:00 UTC. Run `git log --since=2026
 - **Speed.** Zetaris queries take 1 to 12 s each through federation, and a live agent run takes 1.5 to 3 minutes. The agent runs up to 3 tools in parallel.
 - **REST schema drift.** Persistent REST tables infer their schema once. One of them (`hn_wise_com`) stopped matching its API, which is why the agent uses fresh session tables. See [docs/zetaris/README.md](docs/zetaris/README.md).
 - **Images** are generated through OpenRouter's image endpoint. Text goes through Nightshift.
-- **Local state.** H-MEM and World Model state are local files under `.flusso/`, in line with the engines' local-first design. A multi-user deployment would move them to a shared store.
+- **Local state.** H-MEM state is local files under `.flusso/`, in line with the engines' local-first design. A multi-user deployment would move them to a shared store.
 
 See [docs/hackathon/](docs/hackathon/) for the demo script and the slide-deck outline, and [deploy/README.md](deploy/README.md) for the pre-existing VPS deployment.
