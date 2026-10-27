@@ -109,9 +109,12 @@ export function createZetarisRunner(
     const started = Date.now();
     tracer.write("trace", "zetaris", "query.start", { queryId, purpose: options.purpose ?? "", sql: options.traceSql ?? sql });
     let text: string | undefined;
+    // Zetaris refuses a reused query ID, so each retry sends a fresh one.
+    let sentId = queryId;
     for (let tries = 1; text === undefined; tries += 1) {
       try {
-        text = await attempt(queryId, sql, options.limit ?? 100);
+        sentId = tries === 1 ? queryId : randomUUID();
+        text = await attempt(sentId, sql, options.limit ?? 100);
       } catch (error) {
         const failure = error as ZetarisError;
         const retry = tries < MAX_ATTEMPTS && isTransientZetarisError(failure);
@@ -120,7 +123,7 @@ export function createZetarisRunner(
         await new Promise((resolve) => setTimeout(resolve, retryDelayMs * tries));
       }
     }
-    const result = parseZetarisResponse(queryId, sql, JSON.parse(text));
+    const result = parseZetarisResponse(sentId, sql, JSON.parse(text));
     tracer.write("trace", "zetaris", "query.done", { queryId, rows: result.rows.length, total: result.total });
     tracer.write("telemetry", "zetaris", "query", {
       queryId,

@@ -18,8 +18,8 @@ const METERLESS_DEFAULT_MODEL = "meterless/auto";
 const METERLESS_TIMEOUT_MS = 180_000;
 // Stable lowercase id the runtime uses to keep this app's requests apart.
 export const METERLESS_APP_ID = "flusso";
-// The reasoning agent runs on Nemotron when Flusso talks to OpenRouter directly.
-const OPENROUTER_AGENT_MODEL = "nvidia/nemotron-3-ultra-550b-a55b";
+// The evidence agent runs on Nemotron 3 Ultra, through Nightshift or OpenRouter.
+const NEMOTRON_AGENT_MODEL = "nvidia/nemotron-3-ultra-550b-a55b";
 
 export type TextProvider = {
   id: "meterless" | "openrouter";
@@ -84,7 +84,9 @@ export function textProvider(env: Env = process.env): TextProvider {
       label: "Meterless Nightshift",
       client: createMeterlessClient(env),
       model,
-      agentModel: env.METERLESS_AGENT_MODEL?.trim() || model
+      // Pinned to Nemotron 3 Ultra, which Nightshift serves from NVIDIA's endpoints:
+      // meterless/auto may route a step to a smaller model.
+      agentModel: env.METERLESS_AGENT_MODEL?.trim() || NEMOTRON_AGENT_MODEL
     };
   }
   return {
@@ -92,7 +94,7 @@ export function textProvider(env: Env = process.env): TextProvider {
     label: "OpenRouter",
     client: createOpenRouterClient(),
     model: textModel(),
-    agentModel: env.FLUSSO_AGENT_MODEL?.trim() || OPENROUTER_AGENT_MODEL
+    agentModel: env.FLUSSO_AGENT_MODEL?.trim() || NEMOTRON_AGENT_MODEL
   };
 }
 
