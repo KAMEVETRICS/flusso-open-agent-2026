@@ -151,7 +151,7 @@ On failure it prints a structured error (`{"status":"error","error":{"type":...,
 
 | Sample | Input | Accepted / rejected | One decision it reached |
 |---|---|---|---|
-| [allbirds-newsletter](samples/allbirds-newsletter/input.json) | allbirds.com: grow newsletter signups before a running shoe launch | 6 / 1 | Don't use "sustainable" in formal labelling: the SEC made Allbirds drop it at IPO (`fact:fact-29`) |
+| [allbirds-newsletter](samples/allbirds-newsletter/input.json) | allbirds.com: grow newsletter signups before a running shoe launch | 7 / 1 | Don't make capability claims about what the newsletter will deliver without a primary source: a past campaign's claim like that failed verification (`unsupported_claims#2`). H-MEM recalled 2 memories from the previous Allbirds campaign. |
 | [linear-asks](samples/linear-asks/input.json) | linear.app: get product teams to adopt Linear Asks for Slack requests | 6 / 0 | Don't imply Asks is on every plan; it needs Business or Enterprise (`prior_evidence#9`) |
 | [wise-freelancers](samples/wise-freelancers/input.json) | wise.com: get freelancers paid internationally to open an account | 5 / 1 | Stay off cards, fee changes and the Evolve Bank breach that dominate Hacker News threads (`audience_signals#3`, `#7`, `#8`, `#11`) |
 
