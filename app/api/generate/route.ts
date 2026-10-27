@@ -120,6 +120,7 @@ export async function POST(request: Request) {
             send("complete", { pack: rendered.pack, campaignId: campaign.id });
           } catch (error) {
             const message = error instanceof Error ? error.message : "Unable to generate campaign pack.";
+            console.error("Flusso campaign generation failed: " + message);
             send("error", { message });
           } finally {
             if (!cancelled) controller.close();

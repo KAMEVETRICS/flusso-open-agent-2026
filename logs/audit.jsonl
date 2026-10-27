@@ -22,3 +22,7 @@
 {"ts":"2026-10-27T20:00:25.341Z","runId":"console-replay-wise-freelancers-f3ffa8c7","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:wise.com","written":12}
 {"ts":"2026-10-27T20:01:04.947Z","runId":"console-live-linear-asks-5445ccf4","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:linear.app","facts":75,"gaps":[]}
 {"ts":"2026-10-27T20:02:06.247Z","runId":"console-live-linear-asks-5445ccf4","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:linear.app","written":12}
+{"ts":"2026-10-27T20:34:27.244Z","runId":"live-3baeb46e-4118-4322-a2e7-ea2c4e88dfc5","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:firecrawl.dev","facts":90,"gaps":[]}
+{"ts":"2026-10-27T20:36:18.571Z","runId":"live-3baeb46e-4118-4322-a2e7-ea2c4e88dfc5","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:firecrawl.dev","written":12}
+{"ts":"2026-10-27T20:43:05.676Z","runId":"live-11e31d6e-0eaf-4941-8f94-30c7d116f8cf","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:firecrawl.dev","facts":67,"gaps":[]}
+{"ts":"2026-10-27T20:44:00.116Z","runId":"live-11e31d6e-0eaf-4941-8f94-30c7d116f8cf","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:firecrawl.dev","written":12}

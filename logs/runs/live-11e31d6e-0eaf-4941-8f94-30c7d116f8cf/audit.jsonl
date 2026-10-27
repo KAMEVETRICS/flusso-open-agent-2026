@@ -1,0 +1,2 @@
+{"ts":"2026-10-27T20:43:05.676Z","runId":"live-11e31d6e-0eaf-4941-8f94-30c7d116f8cf","engine":"world-model","event":"ingest.fact-sheet","brandEntityId":"brand:domain:firecrawl.dev","facts":67,"gaps":[]}
+{"ts":"2026-10-27T20:44:00.116Z","runId":"live-11e31d6e-0eaf-4941-8f94-30c7d116f8cf","engine":"world-model","event":"ingest.signals","brandEntityId":"brand:domain:firecrawl.dev","written":12}
