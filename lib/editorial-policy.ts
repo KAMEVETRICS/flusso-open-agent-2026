@@ -232,6 +232,39 @@ function articleWordCount(asset: ContentAsset) {
 }
 
 const MAX_SOCIAL_CAPTION_CHARS = 2200;
+const X_POST_CHARS = 280;
+
+// Splits text into posts of at most 280 characters, breaking between sentences, then words.
+export function splitIntoPosts(text: string): string[] {
+  const posts: string[] = [];
+  let current = "";
+  const pieces = text.split(/(?<=[.!?])\s+/).flatMap((sentence) =>
+    sentence.length <= X_POST_CHARS ? [sentence] : sentence.split(/\s+/)
+  );
+  for (const piece of pieces) {
+    const next = current ? current + " " + piece : piece;
+    if (next.length <= X_POST_CHARS) current = next;
+    else {
+      if (current) posts.push(current);
+      current = piece.slice(0, X_POST_CHARS);
+    }
+  }
+  if (current) posts.push(current);
+  return posts;
+}
+
+// Turns an X short post that is over the limit into a thread of the same words.
+export function threadOverlongXPost<T extends Pick<ContentAsset, "platform" | "contentFormat" | "copy" | "threadPosts">>(asset: T): T {
+  if (asset.platform !== "X" || asset.contentFormat !== "short-post" || asset.copy.length <= X_POST_CHARS) return asset;
+  let posts = splitIntoPosts(asset.copy);
+  // A thread needs three posts; a post under 840 characters is split into thirds by words.
+  if (posts.length < 3) {
+    const words = asset.copy.trim().split(/\s+/);
+    const size = Math.ceil(words.length / 3);
+    posts = [0, 1, 2].map((part) => words.slice(part * size, (part + 1) * size).join(" ")).filter(Boolean);
+  }
+  return { ...asset, contentFormat: "thread", threadPosts: posts };
+}
 
 function containsTerm(text: string, term: string) {
   const escaped = term.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

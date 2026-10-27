@@ -5,7 +5,8 @@ import {
   findRepeatedHooks,
   hookSimilarity,
   inspectEditorialAssets,
-  matchAssetsToDrafts
+  matchAssetsToDrafts,
+  threadOverlongXPost
 } from "../lib/editorial-policy.ts";
 
 const brief = {
@@ -153,4 +154,15 @@ test("flags wrong formats, thin carousels, incomplete scripts, long captions, an
     "asset-3 video-script",
     "asset-4 video-duration"
   ]);
+});
+
+test("turns an over-length X short post into a thread of the same words", () => {
+  const sentence = "Linear keeps planning, triage, and review in one place so engineering managers see the whole cycle.";
+  const copy = Array(4).fill(sentence).join(" ");
+  const threaded = threadOverlongXPost({ platform: "X", contentFormat: "short-post", copy, threadPosts: [] });
+  assert.equal(threaded.contentFormat, "thread");
+  assert.ok(threaded.threadPosts.length >= 3 && threaded.threadPosts.every((post) => post.length <= 280));
+  assert.equal(threaded.threadPosts.join(" "), copy);
+  const short = { platform: "X", contentFormat: "short-post", copy: "Short.", threadPosts: [] };
+  assert.equal(threadOverlongXPost(short), short);
 });

@@ -38,6 +38,7 @@ import {
 import { buildPromptModules, type PromptRoutingResult } from "./prompt-library";
 import {
   EDITORIAL_POLICY,
+  threadOverlongXPost,
   editorialMixFor,
   findRepeatedHooks,
   inspectEditorialAssets,
@@ -1637,6 +1638,12 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
           durationMs: firstAttempt.metadata.durationMs + repairMetadata.durationMs,
           outputKeys: firstAttempt.metadata.outputKeys
         }
+      };
+      // A repaired X short post that is still too long keeps its words as a thread rather than
+      // failing the whole campaign.
+      editorialResult = {
+        ...editorialResult,
+        output: { ...editorialResult.output, assets: editorialResult.output.assets.map(threadOverlongXPost) }
       };
       editorial = normalizeEditorialStage(editorialResult.output, execution, sources, brief, avoidTerms);
     }
