@@ -3,6 +3,7 @@ import { mkdtempSync, readFileSync, readdirSync, rmSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import test, { afterEach } from "node:test";
+import { URL } from "node:url";
 import { findSampleFixture, isSampleMode, loadSampleFixture, runEvidenceAgent } from "../lib/agent/run-agent.ts";
 
 const originalFetch = globalThis.fetch;

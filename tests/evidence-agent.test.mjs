@@ -158,7 +158,7 @@ test("a failing tool is reported to the model as a failure, not as an empty resu
 
 test("live REST signals run as Zetaris session tables that are dropped even when the read fails", async () => {
   const statements = [];
-  const run = async (sql, options) => {
+  const run = async (sql) => {
     statements.push(sql);
     if (sql.startsWith("SELECT")) throw new Error("read failed");
     return { queryId: "q", sql, headers: [], rows: [], total: 0, timeUsedMs: 0 };
