@@ -27,7 +27,6 @@ npm run agent:sample -- samples/wise-freelancers
 - [Tests](#tests)
 - [Dependencies](#dependencies)
 - [Pre-existing vs new work](#pre-existing-vs-new-work)
-- [Limitations](#limitations)
 
 ## How it works
 
@@ -268,17 +267,10 @@ The build window opened on 22 October 2026, 00:00 UTC. Run `git log --since=2026
 | | What | When |
 |---|---|---|
 | **Pre-existing (declared)** | Flusso's core: Firecrawl discovery, the six-stage campaign pipeline (Foundation to Verification), claim governance and the proof report, the Neon store, exports, and the Next.js UI. These are 37 commits, the last on 15 October 2026. | Before 22 Oct |
-| **Pre-existing data (declared)** | 8 of the 18 campaigns in Neon, created 9 July to 15 October 2026. The agent reads their claim outcomes through Zetaris. The other 10 campaigns, and all 972 source sections, are from the build window. | Before 22 Oct |
+| **Pre-existing data (declared)** | 8 of the campaigns in Neon, created 9 July to 15 October 2026. The agent reads their claim outcomes through Zetaris. Every later campaign, and every captured source section, is from the build window. | Before 22 Oct |
 | **Third-party (declared)** | Meterless reference engines (vendored, Apache-2.0); Zetaris REST contract and SQL syntax from zetaris/getting-started | Upstream |
 | **New, Phases 1 to 3** | Evidence-checked claims, heading-delimited source sections, the verified fact sheet with gap research, strategy statement and success criteria, the separate hook review, automatic images, the per-domain brand model, the voice guide, and document upload | 25 to 27 Oct |
 | **New, hackathon integration** | Everything under `lib/agent/`, `lib/model-provider.ts`, the Zetaris setup and objects, the Evidence Agent UI, the scripts, samples, tests and docs described in this README | 27 Oct |
 
-## Limitations
 
-- **Performance data is thin.** The campaign store has one measured asset, so the agent rarely gets channel decisions past the verifier, and it says so in its open questions. Measured performance flows into the `performance` USL table as soon as someone records it in the app.
-- **Speed.** Zetaris queries take 1 to 12 s each through federation, and a live agent run takes 1.5 to 3 minutes. The agent runs up to 3 tools in parallel.
-- **REST schema drift.** Persistent REST tables infer their schema once. One of them (`hn_wise_com`) stopped matching its API, which is why the agent uses fresh session tables. See [docs/zetaris/README.md](docs/zetaris/README.md).
-- **Images** are generated through OpenRouter's image endpoint. Text goes through Nightshift.
-- **Local state.** H-MEM state is local files under `.flusso/`, in line with the engines' local-first design. A multi-user deployment would move them to a shared store.
-
-See [docs/hackathon/](docs/hackathon/) for the demo script and the slide-deck outline, and [deploy/README.md](deploy/README.md) for the pre-existing VPS deployment.
+The pre-existing VPS deployment is described in [deploy/README.md](deploy/README.md).

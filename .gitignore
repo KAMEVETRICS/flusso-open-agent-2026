@@ -12,3 +12,6 @@ Copy of HubSpot x MATG*
 .flusso/
 *.tmp.mjs
 *.tmp.json
+
+# Local working notes
+docs/hackathon/
