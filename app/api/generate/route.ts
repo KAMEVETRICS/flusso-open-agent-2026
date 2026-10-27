@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
-import { findSampleFixture, isSampleMode, runEvidenceAgent } from "@/lib/agent/run-agent";
+import { findSampleFixture, isSampleMode, runEvidenceAgent, sampleMatchesInput } from "@/lib/agent/run-agent";
 import { zetarisConfigFromEnv } from "@/lib/agent/zetaris";
 import { normalizeBrief } from "@/lib/brief";
 import { brandDomain, emptyBrandModel, getBrandModel, learnFromCampaign, saveBrandModel } from "@/lib/brand-model";
@@ -25,6 +25,10 @@ async function runAgentStep(discovery: DiscoveryResult, domain: string, send: (e
   const sample = isSampleMode() ? findSampleFixture(domain) : null;
   if (isSampleMode() && !sample) {
     send("agent", { status: "skipped", message: "SAMPLE_MODE has no recorded agent run for " + domain + "." });
+    return null;
+  }
+  if (sample && !sampleMatchesInput(sample, discovery.brief.goal, discovery.factSheet)) {
+    send("agent", { status: "skipped", message: "SAMPLE_MODE: the recorded run for " + domain + " was made for a different goal or fact sheet." });
     return null;
   }
   if (!sample && !zetarisConfigFromEnv()) {

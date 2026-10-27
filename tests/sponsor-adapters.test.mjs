@@ -7,7 +7,7 @@ import test from "node:test";
 import { recordingRunner, replayRunner } from "../lib/agent/recorded-zetaris.ts";
 import { recordingGenerator, replayGenerator } from "../lib/agent/recorded-generator.ts";
 import { DecisionSetSchema } from "../lib/agent/schemas.ts";
-import { silentTracer } from "../lib/agent/trace.ts";
+import { createTracer, memorySink, silentTracer } from "../lib/agent/trace.ts";
 import { jdbcFromDatabaseUrl, setupStatements } from "../lib/agent/zetaris-catalog.ts";
 import { createZetarisRunner, parseZetarisResponse, zetarisConfigFromEnv } from "../lib/agent/zetaris.ts";
 import { isMeterlessConfigured, normalizeMeterlessBaseUrl, probeMeterless, textProvider } from "../lib/model-provider.ts";
@@ -40,6 +40,34 @@ test("the Zetaris runner sends the REST contract headers and retries a federated
   const body = JSON.parse(calls[0].init.body);
   assert.equal(body.source, "SqlEditor");
   assert.equal(body.sql, "SELECT 1+1 AS two");
+});
+
+test("a Zetaris error that echoes the SQL never leaks credentials into traces or the error", async () => {
+  const records = [];
+  const tracer = createTracer("t", [memorySink(records)]);
+  const sql = 'CREATE DATASOURCE x OPTIONS (username "admin", password "s3cret-pw")';
+  const fetchImpl = async () => new Response(JSON.stringify({ msg: "Syntax error near: " + sql }), { status: 400 });
+  const run = createZetarisRunner(config, tracer, fetchImpl, 0);
+  const error = await run(sql, { traceSql: 'CREATE DATASOURCE x OPTIONS (username "<user>", password "<password>")', secrets: ["s3cret-pw"] }).catch((caught) => caught);
+  assert.match(error.message, /<password>/);
+  assert.doesNotMatch(error.message + error.sql + JSON.stringify(records), /s3cret-pw/);
+});
+
+test("after a retry, traces and the result cite the query ID that succeeded", async () => {
+  const records = [];
+  let calls = 0;
+  const fetchImpl = async () => {
+    calls += 1;
+    return calls === 1
+      ? new Response(JSON.stringify({ msg: "The connection attempt failed." }), { status: 400 })
+      : new Response(JSON.stringify({ headers: ["n"], data: [["1"]], total: 1, timeUsed: 1 }), { status: 200 });
+  };
+  const result = await createZetarisRunner(config, createTracer("t", [memorySink(records)]), fetchImpl, 0)("SELECT 1", { purpose: "p" });
+  const done = records.find(({ record }) => record.event === "query.done").record;
+  const telemetry = records.find(({ stream }) => stream === "telemetry").record;
+  assert.equal(done.queryId, result.queryId);
+  assert.equal(telemetry.queryId, result.queryId);
+  assert.notEqual(done.firstQueryId, result.queryId);
 });
 
 test("the Zetaris runner does not retry a SQL error", async () => {

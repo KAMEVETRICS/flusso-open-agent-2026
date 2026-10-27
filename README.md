@@ -236,7 +236,7 @@ H-MEM keeps its own append-only ledger at `.flusso/hmem/<domain>/ledger.jsonl`. 
 ## Tests
 
 ```bash
-npm test            # 126 tests, including the agent, engine, adapter, and sample-mode tests
+npm test            # 132 tests, including the agent, engine, adapter, and sample-mode tests
 npx tsc --noEmit
 npx eslint .
 ```

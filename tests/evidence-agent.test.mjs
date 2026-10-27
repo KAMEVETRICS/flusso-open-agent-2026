@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { openBrandMemory } from "../lib/agent/brand-memory-engine.ts";
-import { runEvidenceTool } from "../lib/agent/evidence-tools.ts";
+import { runEvidenceTool, sessionName } from "../lib/agent/evidence-tools.ts";
 import { decisionsForPrompt } from "../lib/agent/prompt.ts";
 import { buildEvidenceIndex, planCampaignEvidence, verifyDecision } from "../lib/agent/reasoning-agent.ts";
 import { createTracer, memorySink } from "../lib/agent/trace.ts";
@@ -79,6 +79,15 @@ test("the verifier rejects missing citations, the wrong evidence kind, and inven
 
   const invented = verifyDecision({ id: "d3", kind: "angle", confidence: 50, statement: "Say Asks saves 40% of triage time.", rationale: "", evidenceIds: ["fact:fact-1"] }, index, "");
   assert.match(invented.problems.join(" "), /states numbers not in its evidence: 40/);
+
+  // A number is supported only by the same whole number, never by a longer one containing it.
+  const rows = buildEvidenceIndex({ facts: [], signals: [], gaps: [], brandEntityId: "b", counts: {} }, [], [
+    { tool: "performance", queries: [], note: "", rows: [{ id: "performance#1", tool: "performance", queryId: "q", data: { impressions: "1500", engagements: "12" } }] }
+  ]);
+  const partial = verifyDecision({ id: "d5", kind: "channel_priority", confidence: 50, statement: "LinkedIn drew 500 engagements.", rationale: "", evidenceIds: ["performance#1"] }, rows, "");
+  assert.match(partial.problems.join(" "), /states numbers not in its evidence: 500/);
+  const formatted = verifyDecision({ id: "d6", kind: "channel_priority", confidence: 50, statement: "LinkedIn reached 1,500 impressions.", rationale: "", evidenceIds: ["performance#1"] }, rows, "");
+  assert.deepEqual(formatted.problems, []);
 
   // Digits inside evidence IDs, with or without the fact: prefix, are not claims.
   const ids = verifyDecision({ id: "d4", kind: "angle", confidence: 50, statement: "Lead with Slack intake.", rationale: "Per fact-1 and fact:fact-1.", evidenceIds: ["fact:fact-1"] }, index, "");
@@ -168,8 +177,11 @@ test("live REST signals run as Zetaris session tables that are dropped even when
     return { queryId: "q", sql, headers: [], rows: [], total: 0, timeUsedMs: 0 };
   };
   await assert.rejects(runEvidenceTool(run, { tool: "audience_signals" }, { domain: "linear.app", brand: "Linear", runTag: "run-9", now: new Date() }), /read failed/);
-  assert.match(statements[0], /^CREATE REST SESSION TABLE fl_hn_run9 REQUEST \(endpoint "https:\/\/hn\.algolia\.com\/api\/v1\/search\?query=linear\.app/);
-  assert.equal(statements.at(-1), "DROP TABLE session.fl_hn_run9");
+  const table = sessionName("fl_hn", { runTag: "run-9" });
+  assert.ok(statements[0].startsWith("CREATE REST SESSION TABLE " + table + " REQUEST (endpoint \"https://hn.algolia.com/api/v1/search?query=linear.app"));
+  assert.equal(statements.at(-1), "DROP TABLE session." + table);
+  // Two runs whose IDs share a long prefix still get different tables.
+  assert.notEqual(sessionName("fl_hn", { runTag: "console-live-linear-asks-1111" }), sessionName("fl_hn", { runTag: "console-live-linear-asks-2222" }));
 });
 
 test("prior_evidence escapes and limits search terms, and skips the query without any", async () => {

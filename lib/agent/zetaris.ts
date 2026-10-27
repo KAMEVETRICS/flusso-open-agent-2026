@@ -19,7 +19,8 @@ export type ZetarisResult = {
   timeUsedMs: number;
 };
 
-export type ZetarisRunner = (sql: string, options?: { limit?: number; purpose?: string; traceSql?: string }) => Promise<ZetarisResult>;
+// traceSql is what traces show in place of the SQL; secrets are scrubbed from any error text.
+export type ZetarisRunner = (sql: string, options?: { limit?: number; purpose?: string; traceSql?: string; secrets?: string[] }) => Promise<ZetarisResult>;
 
 const DEFAULT_TIMEOUT_MS = 120_000;
 
@@ -107,9 +108,21 @@ export function createZetarisRunner(
   return async (sql, options = {}) => {
     const queryId = randomUUID();
     const started = Date.now();
-    tracer.write("trace", "zetaris", "query.start", { queryId, purpose: options.purpose ?? "", sql: options.traceSql ?? sql });
+    const shownSql = options.traceSql ?? sql;
+    // Zetaris can echo the submitted SQL in an error; the masked SQL and the secrets the caller
+    // names must not reach a trace or the caller's error.
+    // Error bodies are JSON, so the echoed SQL may arrive escaped.
+    const escaped = (value: string) => JSON.stringify(value).slice(1, -1);
+    const redact = (text: string) => (options.secrets ?? [])
+      .filter(Boolean)
+      .reduce(
+        (out, secret) => out.split(secret).join("***").split(escaped(secret)).join("***"),
+        text.split(sql).join(shownSql).split(escaped(sql)).join(escaped(shownSql))
+      );
+    tracer.write("trace", "zetaris", "query.start", { queryId, purpose: options.purpose ?? "", sql: shownSql });
     let text: string | undefined;
-    // Zetaris refuses a reused query ID, so each retry sends a fresh one.
+    // Zetaris refuses a reused query ID, so each retry sends a fresh one; the attempt that
+    // succeeds is the ID every later record and the evidence cite.
     let sentId = queryId;
     for (let tries = 1; text === undefined; tries += 1) {
       try {
@@ -117,16 +130,17 @@ export function createZetarisRunner(
         text = await attempt(sentId, sql, options.limit ?? 100);
       } catch (error) {
         const failure = error as ZetarisError;
+        const safe = new ZetarisError(failure.status, shownSql, redact(failure.message.replace(/^Zetaris query failed \(HTTP \d+\): /, "")));
         const retry = tries < MAX_ATTEMPTS && isTransientZetarisError(failure);
-        tracer.write("trace", "zetaris", retry ? "query.retry" : "query.error", { queryId, attempt: tries, status: failure.status, error: failure.message.slice(0, 500) });
-        if (!retry) throw failure;
+        tracer.write("trace", "zetaris", retry ? "query.retry" : "query.error", { queryId: sentId, firstQueryId: queryId, attempt: tries, status: safe.status, error: safe.message.slice(0, 500) });
+        if (!retry) throw safe;
         await new Promise((resolve) => setTimeout(resolve, retryDelayMs * tries));
       }
     }
-    const result = parseZetarisResponse(sentId, sql, JSON.parse(text));
-    tracer.write("trace", "zetaris", "query.done", { queryId, rows: result.rows.length, total: result.total });
+    const result = parseZetarisResponse(sentId, shownSql, JSON.parse(text));
+    tracer.write("trace", "zetaris", "query.done", { queryId: sentId, firstQueryId: queryId, rows: result.rows.length, total: result.total });
     tracer.write("telemetry", "zetaris", "query", {
-      queryId,
+      queryId: sentId,
       purpose: options.purpose ?? "",
       rows: result.rows.length,
       zetarisTimeMs: result.timeUsedMs,

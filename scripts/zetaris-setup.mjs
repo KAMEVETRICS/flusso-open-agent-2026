@@ -39,7 +39,7 @@ const run = createZetarisRunner(config, tracer);
 for (let index = startAt - 1; index < statements.length; index += 1) {
   const label = masked[index].split("\n")[0].slice(0, 110);
   try {
-    const result = await run(statements[index], { purpose: "setup", limit: 10, traceSql: masked[index] });
+    const result = await run(statements[index], { purpose: "setup", limit: 10, traceSql: masked[index], secrets: [connection.password] });
     // The audit log keeps the masked statement, never the credentials.
     tracer.write("audit", "zetaris", "object.created", { step: index + 1, statement: masked[index], rows: result.rows.length });
     console.log("[" + (index + 1) + "/" + statements.length + "] ok  " + label);

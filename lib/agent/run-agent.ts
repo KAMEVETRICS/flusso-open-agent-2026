@@ -35,11 +35,24 @@ export type SampleFixture = {
   directory: string;
   zetaris: ZetarisRecording;
   model: ModelRecording;
+  // The goal and fact sheet the run was recorded against.
+  discovery: { brief: { goal: string }; factSheet: Pick<FactSheet, "facts"> };
 };
 
 export function loadSampleFixture(directory: string): SampleFixture {
   const read = (file: string) => JSON.parse(readFileSync(path.join(directory, file), "utf8"));
-  return { directory, zetaris: read("zetaris.json"), model: read("model.json") };
+  return { directory, zetaris: read("zetaris.json"), model: read("model.json"), discovery: read("discovery.json") };
+}
+
+function factFingerprint(factSheet: Pick<FactSheet, "facts">) {
+  return factSheet.facts.map((fact) => fact.id + "\u0000" + fact.statement).sort().join("\u0001");
+}
+
+// A recorded run's decisions cite fact IDs, which restart in every campaign, so a recording may
+// only replay against the exact goal and fact sheet it was recorded with.
+export function sampleMatchesInput(sample: SampleFixture, goal: string, factSheet: Pick<FactSheet, "facts">) {
+  return sample.discovery.brief.goal.trim().toLowerCase() === goal.trim().toLowerCase() &&
+    factFingerprint(sample.discovery.factSheet) === factFingerprint(factSheet);
 }
 
 // The recorded sample whose input is for this domain, if one ships in samples/.
@@ -84,6 +97,9 @@ export async function runEvidenceAgent(
   const stateDirectory = options.stateDirectory ?? STATE_DIRECTORY;
   const tracer = createTracer(options.runId, [jsonlSink(logDirectory), jsonlSink(path.join(logDirectory, "runs", options.runId)), ...(options.extraSinks ?? [])]);
   const sample = options.sample ?? null;
+  if (sample && !sampleMatchesInput(sample, input.brief.goal, input.factSheet)) {
+    throw new Error("The recorded run in " + sample.directory + " was made for a different goal or fact sheet, so its decisions cannot be replayed here.");
+  }
 
   let zetaris: ZetarisRunner;
   let generate: Generator;

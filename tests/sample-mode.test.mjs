@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import test, { afterEach } from "node:test";
 import { URL } from "node:url";
-import { findSampleFixture, isSampleMode, loadSampleFixture, runEvidenceAgent } from "../lib/agent/run-agent.ts";
+import { findSampleFixture, isSampleMode, loadSampleFixture, runEvidenceAgent, sampleMatchesInput } from "../lib/agent/run-agent.ts";
 
 const originalFetch = globalThis.fetch;
 afterEach(() => {
@@ -38,6 +38,19 @@ for (const name of readdirSync("samples")) {
     }
   });
 }
+
+test("a recorded run refuses to replay against a different goal or fact sheet", async () => {
+  const fixture = loadSampleFixture(path.join("samples", "linear-asks"));
+  const { brief, factSheet, sources } = fixture.discovery;
+  assert.equal(sampleMatchesInput(fixture, brief.goal, factSheet), true);
+  assert.equal(sampleMatchesInput(fixture, "Grow time-tracking signups", factSheet), false);
+  const swapped = { ...factSheet, facts: factSheet.facts.map((fact, i) => (i === 0 ? { ...fact, statement: "Linear tracks billable hours." } : fact)) };
+  assert.equal(sampleMatchesInput(fixture, brief.goal, swapped), false);
+  await assert.rejects(
+    runEvidenceAgent({ brief, domain: "linear.app", factSheet: swapped, sources }, { runId: "mismatch", sample: fixture, logDirectory: os.tmpdir() + "/flusso-mismatch-logs", stateDirectory: os.tmpdir() + "/flusso-mismatch-state" }),
+    /different goal or fact sheet/
+  );
+});
 
 test("SAMPLE_MODE is read from the environment, and each fixture is found by its domain", () => {
   assert.equal(isSampleMode({ SAMPLE_MODE: "true" }), true);

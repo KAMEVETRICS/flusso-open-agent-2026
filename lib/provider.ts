@@ -63,6 +63,7 @@ import {
 } from "./web-verification";
 import { decisionsForPrompt } from "./agent/prompt";
 import type { AgentPlan } from "./agent/schemas";
+import { keepPlannedAssets } from "./asset-trim";
 import { textProvider } from "./model-provider";
 import { completeStructured, OutputTruncatedError } from "./openrouter";
 import { applyHookReview, MAX_STRATEGY_WORDS, normalizeStrategy } from "./strategy";
@@ -1382,8 +1383,9 @@ export class ModelContentProvider implements ContentGenerationProvider {
     let execution = normalizeExecutionStage(executionResult.output, sources, architecture, brief);
     // An extra asset is surplus, not a broken plan: keep the cadence's count, in the model's order.
     if (execution.assets.length > assetTarget) {
-      console.warn("Flusso Execution returned " + execution.assets.length + " assets for a cadence of " + assetTarget + "; keeping the first " + assetTarget + ".");
-      execution = { ...execution, assets: execution.assets.slice(0, assetTarget) };
+      console.warn("Flusso Execution returned " + execution.assets.length + " assets for a cadence of " + assetTarget + "; keeping " + assetTarget + " planned renditions.");
+      const plannedItemIds = new Set(architecture.contentItems.map((item) => item.id));
+      execution = { ...execution, assets: keepPlannedAssets(execution.assets, assetTarget, plannedItemIds) };
     }
     if (execution.assets.length !== assetTarget) {
       throw new Error(

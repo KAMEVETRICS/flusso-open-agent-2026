@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { DQ_RULES, uslTableName } from "./zetaris-catalog";
 import { TOOL_NAMES } from "./schemas";
 import type { ToolName } from "./schemas";
@@ -50,9 +51,9 @@ function compactDate(date: Date) {
   return date.toISOString().slice(0, 10).replace(/-/g, "");
 }
 
-// Session table names must be identifiers; the run tag keeps concurrent runs apart.
-function sessionName(prefix: string, ctx: ToolContext) {
-  return prefix + "_" + ctx.runTag.replace(/[^a-z0-9]/gi, "").slice(0, 16).toLowerCase();
+export function sessionName(prefix: string, ctx: ToolContext) {
+  // A hash of the whole run tag: run IDs share long prefixes, so a truncated one would collide.
+  return prefix + "_" + createHash("sha256").update(ctx.runTag).digest("hex").slice(0, 16);
 }
 
 function restRequest(endpoint: string) {

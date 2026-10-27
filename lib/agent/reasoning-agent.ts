@@ -99,7 +99,13 @@ export function buildEvidenceIndex(world: WorldContext, memories: RecalledMemory
 function numbersIn(text: string) {
   // Models also write fact IDs without their prefix ("fact-48").
   const withoutIds = text.replace(/\b[a-z_]+#\d+|\bfact:[\w-]+|\bfact-\d+|\bmem-\d+|\bworld:[\w-]+/gi, " ");
-  return [...new Set(withoutIds.match(/\d+(?:\.\d+)?/g) ?? [])];
+  return [...new Set(wholeNumbers(withoutIds))];
+}
+
+// Every whole number in a text, normalised ("1,500" and "1500.0" are both "1500"), so "500"
+// is never supported by the "1500" inside a longer number.
+function wholeNumbers(text: string) {
+  return (text.match(/\d[\d,]*(?:\.\d+)?/g) ?? []).map((raw) => String(Number(raw.replace(/,/g, ""))));
 }
 
 // Code-side verification. A decision stands only on citations that exist, of a kind its decision
@@ -114,7 +120,8 @@ export function verifyDecision(decision: ProposedDecision, index: Map<string, Ev
     problems.push(decision.kind + " needs evidence from " + required.join(", "));
   }
   const evidenceText = cited.map((id) => index.get(id)!.text).join(" ") + " " + briefText;
-  const unsupportedNumbers = numbersIn(decision.statement + " " + decision.rationale).filter((value) => !evidenceText.includes(value));
+  const evidenceNumbers = new Set(wholeNumbers(evidenceText));
+  const unsupportedNumbers = numbersIn(decision.statement + " " + decision.rationale).filter((value) => !evidenceNumbers.has(value));
   if (unsupportedNumbers.length) problems.push("states numbers not in its evidence: " + unsupportedNumbers.slice(0, 4).join(", "));
   return { evidenceIds: cited, missing, problems };
 }

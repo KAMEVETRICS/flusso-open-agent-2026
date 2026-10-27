@@ -214,18 +214,22 @@ export function EvidenceConsole() {
         body: JSON.stringify({ sample, mode })
       });
       if (!response.ok) throw new Error((await response.json()).error ?? "The agent could not start.");
+      let finished = false;
       await readStream(response, (event, data) => {
         if (event === "record") {
           const record = data as TraceRecord;
           setRecords((current) => [...current, record]);
           setPhase((current) => phaseOf(record, current ?? "observe"));
         } else if (event === "plan") {
+          finished = true;
           setPlan((data as { plan: AgentPlan }).plan);
           setPhase(null);
         } else if (event === "error") {
           throw new Error((data as { message: string }).message);
         }
       });
+      // A stream that closes without a plan or an error was cut off; say so rather than stop silently.
+      if (!finished) throw new Error("The agent stream ended before a plan arrived. Run it again.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "The agent run failed.");
       setPhase(null);
