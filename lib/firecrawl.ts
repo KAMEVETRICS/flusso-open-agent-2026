@@ -163,7 +163,8 @@ const PARSE_TIMEOUT_MS = 120_000;
 export async function firecrawlParse(file: Blob, filename: string): Promise<{ markdown: string; title: string }> {
   const form = new FormData();
   form.append("file", file, filename);
-  form.append("options", new Blob([JSON.stringify({ formats: ["markdown"], timeout: PARSE_TIMEOUT_MS })], { type: "application/json" }));
+  // Only the file may be a file part; options travel as a JSON string field.
+  form.append("options", JSON.stringify({ formats: ["markdown"], timeout: PARSE_TIMEOUT_MS }));
   const response = await fetchWithRetry(FIRECRAWL_API_URL + "/parse", {
     method: "POST",
     headers: { Authorization: "Bearer " + apiKey() },
