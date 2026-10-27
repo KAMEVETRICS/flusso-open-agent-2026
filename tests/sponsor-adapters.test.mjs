@@ -78,7 +78,7 @@ test("a pasted Nightshift URL normalises to <host>/v1", () => {
 test("Nightshift is the primary text provider when its runtime is configured", () => {
   const meterless = textProvider({ METERLESS_BASE_URL: "http://127.0.0.1:8088", METERLESS_RUNTIME_TOKEN: "rt-abc", OPENROUTER_API_KEY: "or" });
   assert.equal(meterless.id, "meterless");
-  assert.equal(meterless.model, "meterless/auto");
+  assert.equal(meterless.model, "nvidia/nemotron-3-ultra-550b-a55b");
   assert.equal(meterless.client.baseURL, "http://127.0.0.1:8088/v1");
   // The placeholder token is rejected, so Nightshift does not count as configured.
   assert.equal(isMeterlessConfigured({ METERLESS_RUNTIME_TOKEN: "rt-local" }), false);

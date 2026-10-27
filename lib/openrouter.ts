@@ -81,7 +81,9 @@ export async function completeStructured<T extends z.ZodTypeAny>(
     { role: "user", content: typeof options.input === "string" ? options.input : JSON.stringify(options.input) }
   ];
   const viaOpenRouter = client.baseURL.startsWith(OPENROUTER_BASE_URL);
-  const effort = options.reasoningEffort;
+  // Nemotron at its default effort can think through the whole budget on a large structured
+  // answer, so it runs at low effort unless the caller asks otherwise.
+  const effort = options.reasoningEffort ?? (/nemotron/i.test(options.model) ? "low" : undefined);
   const body = {
     model: options.model,
     messages,

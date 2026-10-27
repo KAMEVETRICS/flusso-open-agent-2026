@@ -13,9 +13,12 @@ import { createOpenRouterClient, isOpenRouterConfigured, textModel } from "./ope
 export type Env = Record<string, string | undefined>;
 
 export const METERLESS_DEFAULT_BASE_URL = "http://127.0.0.1:8088/v1";
-const METERLESS_DEFAULT_MODEL = "meterless/auto";
-// A cold model load can take minutes, so the contract asks for a long timeout.
-const METERLESS_TIMEOUT_MS = 180_000;
+// The campaign stages need large structured answers; meterless/auto can route them to a small
+// model, so they ask Nightshift for Nemotron 3 Ultra by name unless METERLESS_MODEL says otherwise.
+const METERLESS_DEFAULT_MODEL = "nvidia/nemotron-3-ultra-550b-a55b";
+// The contract asks for at least 180 s; a campaign stage on Nemotron 3 Ultra can run past that,
+// so the default is 10 minutes (METERLESS_TIMEOUT_MS overrides it).
+const METERLESS_TIMEOUT_MS = 600_000;
 // Stable lowercase id the runtime uses to keep this app's requests apart.
 export const METERLESS_APP_ID = "flusso";
 // The evidence agent runs on Nemotron 3 Ultra, through Nightshift or OpenRouter.
@@ -67,7 +70,7 @@ export function createMeterlessClient(env: Env = process.env) {
   return new OpenAI({
     apiKey: token,
     baseURL: normalizeMeterlessBaseUrl(env.METERLESS_BASE_URL || METERLESS_DEFAULT_BASE_URL),
-    timeout: METERLESS_TIMEOUT_MS,
+    timeout: Number(env.METERLESS_TIMEOUT_MS || METERLESS_TIMEOUT_MS),
     defaultHeaders: meterlessHeaders()
   });
 }
