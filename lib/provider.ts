@@ -1742,6 +1742,8 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
         "Audit statements in the supplied assets and visual-brief key messages against the evidence sources.",
         "Give every claim a claimKind: statistic (numbers or metrics), capability (what the product does or supports), comparison (better, first, only, versus), attribution (named partners, customers, investors, or quotes), time-bound (prices, live values, dates, or facts likely to change).",
         "Advice, interpretation, metaphors, and calls to action are framing; stated viewpoints are opinion. List them with those kinds; they are reviewed for tone, not fact-checked.",
+        "Promises about what the campaign's own channels will deliver, such as what the newsletter, community, or next post will cover, are framing: the brand commits to them rather than proving them.",
+        "List a visual brief ID in contentUsedIn only when that brief's keyMessage or dataPoints state the claim; a claim in the post's caption or CTA belongs to the asset only.",
         "Use sequential claim IDs claim-1, claim-2, and so on.",
         "For a supported, conflict, or time-sensitive claim, set sourceId to the exact source id and evidenceQuote to an exact contiguous passage of 8 to 60 words copied from that source's text. Otherwise mark it unsupported with null sourceId and evidenceQuote.",
         "When a fact-sheet fact backs a claim, use that fact's sourceId and copy its quote as evidenceQuote.",
