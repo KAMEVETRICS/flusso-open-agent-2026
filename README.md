@@ -1,6 +1,8 @@
 # Flusso
 
-Flusso turns a website and a campaign goal into a content campaign where every claim is checked against a source. For the GenAI Works **Open Agent Hackathon 2026** (Wildcard [Tinkerer] track: an existing product, scored on what was built during the hackathon) we added an **evidence agent**. Before anything is written, it turns data, knowledge and memory into a few campaign decisions, and code verifies each one against the evidence it cites.
+Flusso is a content engine for content creators, content managers and marketers. Give it a website and a campaign goal, and it plans the strategy and audiences, builds a content calendar sized to the team's cadence, and writes platform-native posts for X, LinkedIn, Instagram, TikTok, newsletters and more, with visuals and a production plan. Every claim in the content carries a quote checked against its source, and teams track performance and export the pack.
+
+For the GenAI Works **Open Agent Hackathon 2026** (Wildcard [Tinkerer] track: an existing product, scored on what was built during the hackathon) we added an **evidence agent**. Before anything is written, it turns data, knowledge and memory into a few campaign decisions, and code verifies each one against the evidence it cites.
 
 - **Data:** Zetaris federates Flusso's campaign store (Neon Postgres), Hacker News and Wikimedia pageviews behind one unified semantic layer (USL). The agent queries it as a tool.
 - **Knowledge:** the Meterless **World Model** engine holds the brand's verified fact sheet and the live signals, with provenance on every write.
@@ -266,7 +268,7 @@ The build window opened on 22 October 2026, 00:00 UTC. Run `git log --since=2026
 
 | | What | When |
 |---|---|---|
-| **Pre-existing (declared)** | Flusso's core: Firecrawl discovery, the six-stage campaign pipeline (Foundation to Verification), claim governance and the proof report, the Neon store, exports, and the Next.js UI. These are 37 commits, the last on 15 October 2026. | Before 22 Oct |
+| **Pre-existing (declared)** | Flusso's core content engine: Firecrawl discovery, campaign strategy, the content calendar and scheduling, the six-stage campaign pipeline (Foundation to Verification), claim governance and the proof report, the Neon store, exports, and the Next.js UI. These are 37 commits, the last on 15 October 2026. | Before 22 Oct |
 | **Pre-existing data (declared)** | 8 of the campaigns in Neon, created 9 July to 15 October 2026. The agent reads their claim outcomes through Zetaris. Every later campaign, and every captured source section, is from the build window. | Before 22 Oct |
 | **Third-party (declared)** | Meterless reference engines (vendored, Apache-2.0); Zetaris REST contract and SQL syntax from zetaris/getting-started | Upstream |
 | **New, Phases 1 to 3** | Evidence-checked claims, heading-delimited source sections, the verified fact sheet with gap research, strategy statement and success criteria, the separate hook review, automatic images, the per-domain brand model, the voice guide, and document upload | 25 to 27 Oct |
