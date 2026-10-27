@@ -56,7 +56,7 @@ import {
   verificationTargets,
   type EvidenceDocument
 } from "./web-verification";
-import { completeStructured, createOpenRouterClient, textModel } from "./openrouter";
+import { completeStructured, createOpenRouterClient, OutputTruncatedError, textModel } from "./openrouter";
 import { applyHookReview, MAX_STRATEGY_WORDS, normalizeStrategy } from "./strategy";
 import { normalizeContentItems, unrenderedItems } from "./content-items";
 import { assignAssetsToDays } from "./calendar-mapping";
@@ -727,7 +727,7 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
     const startedAt = new Date();
 
     try {
-      const output = await completeStructured(this.client, {
+      const request = {
         model: this.model,
         schema,
         name: stage + "_stage",
@@ -735,6 +735,13 @@ export class OpenRouterContentProvider implements ContentGenerationProvider {
         instructions: options.instructions,
         input: options.input,
         maxTokens: options.maxOutputTokens
+      };
+      // A brand with richer material can need a longer answer; retry a cut-off reply once with
+      // twice the budget rather than failing the campaign.
+      const output = await completeStructured(this.client, request).catch((error: unknown) => {
+        if (!(error instanceof OutputTruncatedError)) throw error;
+        console.warn("Flusso " + options.label + " hit its " + error.maxTokens + "-token limit; retrying with " + error.maxTokens * 2 + ".");
+        return completeStructured(this.client, { ...request, maxTokens: error.maxTokens * 2 });
       });
       const completedAt = new Date();
       return {

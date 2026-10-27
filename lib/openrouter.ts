@@ -45,6 +45,17 @@ export function createOpenRouterClient() {
   });
 }
 
+// The model stopped at the token limit, so its JSON is incomplete.
+export class OutputTruncatedError extends Error {
+  readonly maxTokens: number;
+
+  constructor(maxTokens: number) {
+    super("output was cut off at the " + maxTokens + "-token limit");
+    this.name = "OutputTruncatedError";
+    this.maxTokens = maxTokens;
+  }
+}
+
 export async function completeStructured<T extends z.ZodTypeAny>(
   client: OpenAI,
   options: {
@@ -79,9 +90,7 @@ export async function completeStructured<T extends z.ZodTypeAny>(
     if (!message?.parsed) throw new Error("returned no structured output");
     return options.schema.parse(message.parsed);
   } catch (error) {
-    if (error instanceof LengthFinishReasonError) {
-      throw new Error("output was cut off at the " + options.maxTokens + "-token limit");
-    }
+    if (error instanceof LengthFinishReasonError) throw new OutputTruncatedError(options.maxTokens);
     throw error;
   }
 }
